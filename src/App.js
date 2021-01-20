@@ -1,6 +1,7 @@
 import './App.scss';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { SignUp } from './pages/pages';
+import pageUrl from './routes/pageUrl';
+import { SignUp, SignIn, Profile } from './pages/pages';
 
 
 
@@ -8,7 +9,9 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Route path="/signup" component={SignUp} />
+        <Route path={pageUrl.SIGNUP_PAGE} component={SignUp} />
+        <Route path={pageUrl.SIGNIN_PAGE} component={SignIn} />
+        <Route path={pageUrl.PROFILE_PAGE} component={Profile} />
       </BrowserRouter>
     </div>
   );

@@ -3,40 +3,34 @@
     margin: 0 auto;
     text-align: center;
     padding-top: 40px;
+    min-height: 100vh;
     h1 {
         font-size: 36px;
         font-weight: 700;
         color: #741763;
     }
-    .subtitle {
-        font-family: 'Source Sans Pro', sans-serif;
-        font-size: 22px;
-    }
 }
 
-.registerBox {
-    width: 55%;
+.loginBox {
     background-color: #FFFFFF;
-    box-shadow: 8px 15px 30px #0000001A;
+    padding: 40px 60px 20px;
     border-radius: 15px;
     margin: 0 auto;
+    width: 500px;
     margin-top: 50px;
-    margin-bottom: 90px;
-    padding: 60px 80px 40px;
+    margin-bottom: 50px;
+    box-shadow: 8px 15px 30px #0000001A;
+    .resetPassword {
+        color: #741763;
+        text-align: left;
+        margin-top: 5px;
+        cursor: pointer;
+    }
     .authLink {
         font-family: 'Source Sans Pro', sans-serif;
         font-size: 1.05rem;
         a {
             font-weight: 700;
-            color: #741763;
-        }
-    }
-    .legalLink {
-        font-family: 'Source Sans Pro', sans-serif;
-        font-size: 1rem;
-        margin-top: 75px;
-        a {
-            font-weight: 600;
             color: #741763;
         }
     }

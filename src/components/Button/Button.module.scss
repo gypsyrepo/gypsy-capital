@@ -1,0 +1,13 @@
+.button {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border-radius: 4px;
+    border: none;
+    &:focus {
+        outline: none;
+    }
+    &:hover {
+        background-color: rgba(116, 23, 99, 0.9);
+    }
+}

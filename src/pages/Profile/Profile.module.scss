@@ -1,0 +1,27 @@
+.container {
+    background-color: #F5F5F5;
+    overflow-x: hidden;
+    .menuPanel {
+        min-height: 100vh;
+        background-color: #741763;
+        padding-right: 0;
+        .header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            border-bottom: 1px solid #DDDDDD;
+            padding-left: 50px;
+        }
+    }
+    .mainPanel {
+        padding-left: 0;
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            height: 80px;
+            border-bottom: 1px solid #DDDDDD;
+            padding-right: 50px;
+        }
+    }
+}

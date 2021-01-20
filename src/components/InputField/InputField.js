@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './InputField.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const InputField = ({ type, label, nameAttr, value, changed }) => {
+const InputField = ({ type, label, nameAttr, value, changed, options }) => {
 
   const [ passwordVisible, setPasswordVisible ] = useState(false);
 
@@ -22,6 +22,7 @@ const InputField = ({ type, label, nameAttr, value, changed }) => {
             type={type} 
             name={nameAttr} 
             value={value}
+            onChange={(e) => changed(e.currentTarget.value)}
           /> :
           null
         }
@@ -30,17 +31,23 @@ const InputField = ({ type, label, nameAttr, value, changed }) => {
             type={ passwordVisible ? "text" : "password"} 
             name={nameAttr}
             value={value}
+            onChange={(e) => changed(e.currentTarget.value)}
           />
         }
         {
           type === "select" &&
-          <select name="publicity">
-            <option value="first">First</option>
-            <option value="second">Second</option>
+          <select name={nameAttr} onChange={(e) => changed(e.currentTarget.value)}>
+            <option value="none" selected disabled hidden>  
+              Select... 
+            </option>
+            { options.map(option => {
+              return <option key={option.toLowerCase()} value={option.toLowerCase()}>{option}</option>
+            })}
           </select>
         }
         { type === "password" && <FontAwesomeIcon 
           className={styles.passwordToggle} 
+          color="#606060"
           icon={ !passwordVisible ? faEye : faEyeSlash } 
           onClick={togglePasswordVisibility}
         /> }
