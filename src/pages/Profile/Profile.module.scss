@@ -12,6 +12,29 @@
             border-bottom: 1px solid #DDDDDD;
             padding-left: 50px;
         }
+        .menuList {
+            padding-left: 35px;
+            margin-top: 100px;
+            ul {
+                list-style-type: none;
+                padding-inline-start: 0;
+                li {
+                    display: flex;
+                    align-items: center;
+                    padding: 10px 20px;
+                    a {
+                        font-family: 'Source Sans Pro', sans-serif;
+                        color: #fff;
+                        margin-left: 25px;
+                        font-size: 1.2rem;
+                        font-weight: 600;
+                        &:hover {
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+        }
     }
     .mainPanel {
         padding-left: 0;
