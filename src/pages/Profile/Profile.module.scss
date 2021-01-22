@@ -1,50 +1,32 @@
 .container {
-    background-color: #F5F5F5;
-    overflow-x: hidden;
-    .menuPanel {
-        min-height: 100vh;
-        background-color: #741763;
-        padding-right: 0;
-        .header {
-            display: flex;
-            align-items: center;
-            height: 80px;
-            border-bottom: 1px solid #DDDDDD;
-            padding-left: 50px;
-        }
-        .menuList {
-            padding-left: 35px;
-            margin-top: 100px;
-            ul {
-                list-style-type: none;
-                padding-inline-start: 0;
-                li {
-                    display: flex;
-                    align-items: center;
-                    padding: 10px 20px;
-                    a {
-                        font-family: 'Source Sans Pro', sans-serif;
-                        color: #fff;
-                        margin-left: 25px;
-                        font-size: 1.2rem;
-                        font-weight: 600;
-                        &:hover {
-                            text-decoration: none;
-                        }
-                    }
-                }
-            }
-        }
+    text-align: center;
+    h1 {
+        font-weight: 700;
+        font-size: 1.9rem;
+        color: #741763;
     }
-    .mainPanel {
-        padding-left: 0;
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            height: 80px;
-            border-bottom: 1px solid #DDDDDD;
-            padding-right: 50px;
+    .leadText {
+        font-size: 1.3rem;
+        font-family: 'Source Sans Pro', sans-serif;
+        font-weight: 600;
+        color: #212121;
+    }
+
+    .profileProgress {
+        margin-top: 40px;
+    }
+
+    .formBox {
+        width: 500px;
+        margin: 0 auto;
+        background-color: #FFFFFF;
+        border-radius: 15px;
+        margin-top: 60px;
+        padding: 40px 60px;
+        box-shadow: 8px 15px 30px #0000001A;
+        p {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 1.2rem;
         }
     }
 }
