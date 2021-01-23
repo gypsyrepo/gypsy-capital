@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Logo from '../../assets/logo.png';
 import styles from './SignIn.module.scss';
 import { Row, Col } from 'react-bootstrap';
@@ -6,9 +6,16 @@ import InputField from '../../components/InputField/InputField';
 import Button from '../../components/Button/Button';
 import pageUrl from '../../routes/pageUrl';
 import { Link } from 'react-router-dom';
+import { Context as AuthContext } from '../../context/AuthContext';
 
 
 const SignIn = () => {
+
+  const { state } = useContext(AuthContext);
+
+  useEffect(() => {
+    console.log(state)
+  }, [])
 
   const [signinValues, setSigninValues] = useState({
     email: '',

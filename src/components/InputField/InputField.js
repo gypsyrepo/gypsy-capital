@@ -5,7 +5,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const InputField = ({ type, label, nameAttr, value, changed, options }) => {
+const InputField = ({ type, label, nameAttr, value, changed, options, placeholder }) => {
 
   const [ passwordVisible, setPasswordVisible ] = useState(false);
 
@@ -22,6 +22,7 @@ const InputField = ({ type, label, nameAttr, value, changed, options }) => {
             type={type} 
             name={nameAttr} 
             value={value}
+            placeholder={placeholder}
             onChange={(e) => changed(e.currentTarget.value)}
           /> :
           null
