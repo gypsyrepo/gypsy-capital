@@ -1,0 +1,25 @@
+.heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    h2 {
+        color: #741763;
+        font-weight: 700;
+    }
+    p {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 1.1rem;
+    }
+}
+
+.creditTable {
+    margin-top: 40px;
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 8px 15px 30px #0000001A;
+    padding: 24px 30px;
+    background-color: #FFFFFF;
+    th {
+        color: #606060;
+    }
+}

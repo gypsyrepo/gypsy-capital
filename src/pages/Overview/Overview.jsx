@@ -48,7 +48,7 @@ const Overview = ({ location }) => {
           <p>Sorry you currently have no active loan</p>
           <Button
             bgColor="#741763"
-            size="lg"
+            size="sm"
             color="#fff"
             className="mt-4"
           >
