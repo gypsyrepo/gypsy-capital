@@ -5,6 +5,11 @@
         font-size: 1.9rem;
         color: #741763;
     }
+    h2 {
+        text-align: left;
+        font-weight: 700;
+        color: #741763;
+    }
     .leadText {
         font-size: 1.3rem;
         font-family: 'Source Sans Pro', sans-serif;
@@ -130,5 +135,58 @@
         font-size: 1.1rem;
         margin-bottom: 5px;
         font-family: 'Source Sans Pro', sans-serif;
+    }
+}
+
+.profileBox {
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 8px 15px 30px #0000001A;
+    margin-top: 80px;
+    .borderStyle {
+        border-right: 1px solid #707070;
+    }
+    .tabMenu {
+        cursor: pointer;
+    }
+    .tabCol {
+        padding-right: 0px;
+        &:nth-child(2) {
+            padding-left: 0px;
+        }
+    }
+    .activeTab1 {
+        background-color: #fff;
+        border-top-left-radius: 15px;
+    }
+    .activeTab2 {
+        background-color: #fff;
+    }
+    .activeTab3 {
+        background-color: #fff;
+        border-top-right-radius: 15px;
+    }
+    .header {
+        background-color: #EBEBEB;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        p {
+            padding: 18px 0px;
+            color: #606060;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0;
+        }
+    }
+    .body {
+        padding: 50px 80px;
+        h2 {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .security {
+            padding: 0 140px;
+        }
     }
 }

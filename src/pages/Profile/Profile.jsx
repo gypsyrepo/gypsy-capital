@@ -23,7 +23,7 @@ const Profile = ({ location }) => {
     3: "complete"
   }
   const [setupStage, setSetupStage] = useState(0);
-  const [setupComplete, setSetupComplete] = useState(false);
+  const [setupComplete, setSetupComplete] = useState(true);
 
   const sidebarRoutes = [
     {
@@ -381,6 +381,140 @@ const Profile = ({ location }) => {
     )
   }
 
+  const ProfileView = () => {
+
+    const [visibleSection, setVisibleSection] = useState('personalInfo');
+
+    const goToProfileSection = (section) => {
+      console.log('works');
+      setVisibleSection(section);
+    }
+
+    return (
+      <div className={styles.profileBox}>
+        <div className={styles.header}>
+          <Row>
+            <Col 
+              onClick={() => goToProfileSection('personalInfo')} 
+              className={[styles.borderStyle, styles.tabCol].join(' ')}
+            >
+              <p 
+                className={[styles.tabMenu, visibleSection === "personalInfo" && styles.activeTab1].join(' ')}
+              >
+                Personal Information
+              </p>
+            </Col>
+            <Col 
+              onClick={() => goToProfileSection('security')} 
+              className={[styles.borderStyle, styles.tabCol].join(' ')}
+            >
+              <p
+                className={[styles.tabMenu, visibleSection === "security" && styles.activeTab2].join(' ')}
+              >
+                Security
+              </p>
+            </Col>
+            <Col>
+              <p>Payment</p>
+            </Col>
+          </Row>
+        </div>
+        <div className={styles.body}>
+          {visibleSection === "personalInfo" && <div>
+            <Row className="mb-4">
+            <Col>
+              <InputField 
+                label="First Name"
+                type="text"
+                nameAttr="firstName"
+              />
+            </Col> 
+            <Col>
+              <InputField 
+                label="Last Name"
+                type="text"
+                nameAttr="lastName"
+              />
+            </Col> 
+            </Row> 
+            <Row className="mb-4">
+            <Col>
+              <InputField 
+                label="Email"
+                type="email"
+                nameAttr="email"
+              />
+            </Col> 
+            <Col>
+              <InputField 
+                label="Phone Number"
+                type="text"
+                nameAttr="phoneNumber"
+              />
+            </Col> 
+            </Row> 
+            <Row>
+            <Col>
+              <InputField 
+                label="BVN"
+                type="text"
+                nameAttr="bvn"
+              />
+            </Col> 
+            <Col>
+              <InputField 
+                label="Residential Address"
+                type="text"
+                nameAttr="address"
+              />
+            </Col> 
+            </Row> 
+            <Button className="mt-5" fullWidth clicked={handleSubmit} bgColor="#741763" size="lg" color="#EBEBEB">
+              Edit Info
+            </Button>
+          </div>}
+          { visibleSection === "security" &&
+            <div className={styles.security}>
+              <h2>CHANGE PASSWORD</h2>
+              <Row className="mb-4">
+                <Col>
+                  <InputField 
+                    type="password"
+                    label="Current Password"
+                    nameAttr="currPassword"
+                  />
+                </Col>
+              </Row>
+              <Row className="mb-4">
+                <Col>
+                  <InputField 
+                    type="password"
+                    label="Current Password"
+                    nameAttr="currPassword"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <InputField 
+                    type="password"
+                    label="Current Password"
+                    nameAttr="currPassword"
+                  />
+                </Col>
+              </Row>
+            </div>
+          }
+          { visibleSection === "payment" && 
+            <div>
+              
+            </div>
+          }
+        </div>
+      </div>
+    )
+  }
+
   const resolveStageView = useMemo(() => {
     if(setupStage === 0) {
       return <BvnForm />
@@ -402,6 +536,12 @@ const Profile = ({ location }) => {
           <ProgressBar stage={setupStage} className={styles.profileProgress} />
           {resolveStageView}
         </div>}
+        { setupComplete &&
+          <div>
+            <h2>Profile</h2>
+            <ProfileView />
+          </div> 
+        }
       </div>
     </Dashboard>
   );
