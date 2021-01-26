@@ -42,7 +42,12 @@ const InputField = ({ type, label, nameAttr, value, changed, options, placeholde
               Select... 
             </option>
             { options.map(option => {
-              return <option key={option.toLowerCase()} value={option.toLowerCase()}>{option}</option>
+              return <option 
+                key={typeof option === 'string' ? option.toLowerCase() : option} 
+                value={typeof option === 'string' ? option.toLowerCase() : option}
+              >
+                {option}
+              </option>
             })}
           </select>
         }

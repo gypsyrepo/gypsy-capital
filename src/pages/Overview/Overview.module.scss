@@ -14,8 +14,13 @@
     width: 100%;
     border-radius: 15px;
     box-shadow: 8px 15px 30px #0000001A;
-    padding: 24px 30px;
     background-color: #FFFFFF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .mainContent {
+        padding-left: 45px;
+    }
     h3 {
         font-weight: 600;
         margin-bottom: 25px;

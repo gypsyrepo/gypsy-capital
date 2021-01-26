@@ -10,6 +10,7 @@ import Button from '../../components/Button/Button';
 import gypsyNote from '../../assets/icons/gypsyNotes.svg';
 import altInvestment from '../../assets/icons/alternative.svg';
 import { Col, Row } from 'react-bootstrap';
+import noLoan from '../../assets/no-loan.png';
 
 
 const Overview = ({ location }) => {
@@ -55,9 +56,10 @@ const Overview = ({ location }) => {
             Apply for loan
           </Button>
         </div>
-        <div className={styles.illustration}>
-
-        </div>
+        <img src={noLoan} alt="No active loan" height="280" />
+        {/* <div className={styles.illustration}>
+          <
+        </div> */}
       </div>
       <div className={styles.otherProducts}>
         <Row>
