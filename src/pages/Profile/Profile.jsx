@@ -373,7 +373,7 @@ const Profile = ({ location }) => {
     return (
       <div className={styles.stageComplete}>
         <FaCheckCircle size="4em" color="#741763" />
-        <h2>Congratulations</h2>
+        <h2>Congratulations!</h2>
         <p>Account setup completed.</p>
         <p>Enjoy our amazing loan offer</p>
       </div>
