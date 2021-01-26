@@ -23,6 +23,7 @@ const Profile = ({ location }) => {
     3: "complete"
   }
   const [setupStage, setSetupStage] = useState(0);
+  const [setupComplete, setSetupComplete] = useState(false);
 
   const sidebarRoutes = [
     {
@@ -395,10 +396,12 @@ const Profile = ({ location }) => {
   return(
     <Dashboard sidebarRoutes={sidebarRoutes} location={location}>
       <div className={styles.container}>
-        <h1>Account Setup</h1>
-        <p className={styles.leadText}>Fill the field to complete your profile</p>
-        <ProgressBar stage={setupStage} className={styles.profileProgress} />
-        {resolveStageView}
+        { !setupComplete && <div>
+          <h1>Account Setup</h1>
+          <p className={styles.leadText}>Fill the field to complete your profile</p>
+          <ProgressBar stage={setupStage} className={styles.profileProgress} />
+          {resolveStageView}
+        </div>}
       </div>
     </Dashboard>
   );

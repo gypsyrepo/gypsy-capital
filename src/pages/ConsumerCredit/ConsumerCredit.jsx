@@ -16,14 +16,68 @@ import { FaCloudUploadAlt, FaCheckCircle } from 'react-icons/fa';
 
 const ConsumerCredit = ({ location }) => {
 
-  const [applyState, setApplyState] = useState(false);
+  const [applyState, setApplyState] = useState(true);
   const [daysOfMonth, setDaysOfMonth] = useState([]);
-  const [applicationStage, setApplicationStage] = useState(0);
+  const [applicationStage, setApplicationStage] = useState(3);
   const [applicationSuccess, setApplicationSuccess] = useState(false);
+
+  const [loanCalcData, setLoanCalcData] = useState({
+    monthlySalary: "",
+    payDay: "",
+    loanAmount: "",
+    installmentPeriod: "",
+    loanPurpose: "",
+    estimatedMonthlyPayment: ""
+  });
+
+  const [contactAddress, setContactAddress] = useState({
+    streetAddress: "",
+    city: "",
+    state: "",
+    lga: "",
+    residentialStatus: "",
+    proofOfAddress:""
+  });
+
+  const [employmentInfo, setEmploymentInfo] = useState({
+    employerName: "",
+    startedDate: "",
+    employerSector: "",
+    employmentType: "",
+    emailAddress: "",
+    officialDoc: ""
+  });
+
+  const [officeAddress, setOfficeAddress] = useState({
+    street: "",
+    city: "",
+    state: "",
+    lga: ""
+  });
+
+  const [bankInfo, setBankInfo] = useState({
+    bankName: "",
+    accountType: "",
+    accountNumber: "",
+    accountName: "",
+    acctStatement: ""
+  })
 
   const proofofAddressRef = useRef();
   const officialFileRef = useRef();
   const acctStatementRef = useRef();
+
+  const loanHistory = [
+    // {
+    //   loanID: '#00032',
+    //   monthlyRepayment: '19,500',
+    //   tenor: 2,
+    //   status: 'In Review',
+    //   repaymentSource: 'Salary account',
+    //   loanAmount: '200,500',
+    //   balance: '75,000'
+    // }
+  ]
 
   useEffect(() => {
     setDaysOfMonth(fillUpDaysArray);
@@ -85,7 +139,7 @@ const ConsumerCredit = ({ location }) => {
           </Button>}
       </div>
       { !applyState ? <div className={styles.creditTable}>
-        <Table striped hover>
+        <Table striped hover className={styles.tableStyles}>
           <thead>
             <tr>
               <th>Loan ID</th>
@@ -98,12 +152,25 @@ const ConsumerCredit = ({ location }) => {
             </tr>
           </thead>
           <tbody>
+            {loanHistory.map((loanInstance, idx) => {
+              return (
+                <tr>
+                  <td>{loanInstance.loanID}</td>
+                  <td>{loanInstance.monthlyRepayment}</td>
+                  <td>{loanInstance.tenor}</td>
+                  <td>{loanInstance.status}</td>
+                  <td>{loanInstance.repaymentSource}</td>
+                  <td>{loanInstance.loanAmount}</td>
+                  <td>{loanInstance.balance}</td>
+                </tr>
+              )
+            })}
           </tbody>
         </Table>
-        <div className={styles.noLoanMessage}>
+        { (!loanHistory || loanHistory.length === 0) && <div className={styles.noLoanMessage}>
           <p>Sorry you currently have no loan</p>
           <img src={noLoan} alt="No loan history" height="250" />
-        </div>
+        </div>}
       </div> : null }
       { (applyState && !applicationSuccess) && <div className={styles.applyContainer}>
         <Row>
@@ -127,6 +194,8 @@ const ConsumerCredit = ({ location }) => {
                       label="Monthly Salary" 
                       type="text" 
                       nameAttr="salary"
+                      value={loanCalcData.monthlySalary}
+                      changed={(val) => setLoanCalcData({ ...loanCalcData, monthlySalary: val })}
                     />
                   </Col>
                   <Col>
@@ -135,6 +204,8 @@ const ConsumerCredit = ({ location }) => {
                       type="select"
                       options={daysOfMonth}
                       nameAttr="payday"
+                      value={loanCalcData.payDay}
+                      changed={(val) => setLoanCalcData({ ...loanCalcData, payDay: val })}
                     />
                   </Col>
                 </Row>
@@ -144,6 +215,8 @@ const ConsumerCredit = ({ location }) => {
                       label="Loan Amount" 
                       type="text" 
                       nameAttr="loanAmt"
+                      value={loanCalcData.loanAmount}
+                      changed={(val) => setLoanCalcData({ ...loanCalcData, loanAmount: val })}
                     />
                     <p className={styles.inputHint}>
                       <span>min amt:</span> #50,000; <span>max amt:</span> #500,000
@@ -155,6 +228,8 @@ const ConsumerCredit = ({ location }) => {
                       type="select"
                       options={['1 Month', '2 Months', '3 Months']}
                       nameAttr="installmentCycle"
+                      value={loanCalcData.installmentPeriod}
+                      changed={(val) => setLoanCalcData({ ...loanCalcData, installmentPeriod: val })}
                     />
                   </Col>
                 </Row>
@@ -177,6 +252,8 @@ const ConsumerCredit = ({ location }) => {
                         'Others'
                       ]}
                       nameAttr="loanPurpose"
+                      value={loanCalcData.loanPurpose}
+                      changed={(val) => setLoanCalcData({ ...loanCalcData, loanPurpose: val })}
                     />
                   </Col>
                 </Row>
@@ -186,6 +263,8 @@ const ConsumerCredit = ({ location }) => {
                       type="text"
                       label="Estimated Monthly Payment"
                       nameAttr="monthlyPayment"
+                      value={loanCalcData.estimatedMonthlyPayment}
+                      changed={(val) => setLoanCalcData({ ...loanCalcData, estimatedMonthlyPayment: val })}
                     />
                     <p className={styles.inputHint}>
                       <span>Eventual repayment amount may differ after risk assessment.</span>
@@ -211,6 +290,8 @@ const ConsumerCredit = ({ location }) => {
                         label="Address"
                         nameAttr="address"
                         type="text"
+                        value={contactAddress.streetAddress}
+                        changed={(val) => setContactAddress({ ...contactAddress, streetAddress: val })}
                       />
                     </Col>
                   </Row>
@@ -220,6 +301,8 @@ const ConsumerCredit = ({ location }) => {
                         type="text"
                         nameAttr="city"
                         label="City"
+                        value={contactAddress.city}
+                        changed={(val) => setContactAddress({ ...contactAddress, city: val })}
                       />
                     </Col>
                     <Col>
@@ -228,6 +311,8 @@ const ConsumerCredit = ({ location }) => {
                         nameAttr="state"
                         label="State"
                         options={['Oyo', 'Lagos', 'Osun']}
+                        value={contactAddress.state}
+                        changed={(val) => setContactAddress({ ...contactAddress, state: val })}
                       />
                     </Col>
                     <Col>
@@ -236,6 +321,8 @@ const ConsumerCredit = ({ location }) => {
                         nameAttr="localGovt"
                         label="Local Govt. Area"
                         options={['Eti-Osa', 'Alimosho', 'Ajah']}
+                        value={contactAddress.lga}
+                        changed={(val) => setContactAddress({ ...contactAddress, lga: val })}
                       />
                     </Col>
                   </Row>
@@ -245,7 +332,9 @@ const ConsumerCredit = ({ location }) => {
                         type="select"
                         label="Residential Status"
                         nameAttr="residentialStatus"
-                        options={['First', 'Second']}
+                        options={['Renting', 'Owned']}
+                        value={contactAddress.residentialStatus}
+                        changed={(val) => setContactAddress({ ...contactAddress, residentialStatus: val })}
                       />
                     </Col>
                     <Col>
@@ -279,6 +368,8 @@ const ConsumerCredit = ({ location }) => {
                           type="text"
                           nameAttr="employerName"
                           label="Employer Name"
+                          value={employmentInfo.employerName}
+                          changed={(val) => setEmploymentInfo({ ...employmentInfo, employerName: val })}
                         />
                       </Col>
                       <Col>
@@ -287,6 +378,8 @@ const ConsumerCredit = ({ location }) => {
                           nameAttr="startDate"
                           label="When did you start this job?"
                           placeholder="MM/YYYY"
+                          value={employmentInfo.startedDate}
+                          changed={(val) => setEmploymentInfo({ ...employmentInfo, startedDate: val })}
                         />
                       </Col>
                     </Row>
@@ -297,35 +390,31 @@ const ConsumerCredit = ({ location }) => {
                           nameAttr="employerSector"
                           label="Employer Sector"
                           options={['Banking', 'Finance']}
+                          value={employmentInfo.employerSector}
+                          changed={(val) => setEmploymentInfo({ ...employmentInfo, employerSector: val })}
                         />
                       </Col>
-                      <Col>
-                        <InputField 
-                          type="select"
-                          nameAttr="employerIndustry"
-                          label="Employer Industry"
-                          options={['Banking', 'Finance']}
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="mb-4">
                       <Col>
                         <InputField 
                           type="select"
                           nameAttr="employType"
                           label="Employment Type"
                           options={['Fulltime', 'Contract', 'Part-Time']}
+                          value={employmentInfo.employmentType}
+                          changed={(val) => setEmploymentInfo({ ...employmentInfo, employmentType: val })}
                         />
                       </Col>
+                    </Row>
+                    <Row className="mb-4">
                       <Col>
                         <InputField 
                           type="email"
                           nameAttr="officeEmail"
                           label="Office Email Address"
+                          value={employmentInfo.emailAddress}
+                          changed={(val) => setEmploymentInfo({ ...employmentInfo, emailAddress: val })}
                         />
                       </Col>
-                    </Row>
-                    <Row className="mb-4">
                       <Col>
                         <FileUploadButton 
                           label="Choose file"
@@ -345,6 +434,8 @@ const ConsumerCredit = ({ location }) => {
                           type="text"
                           label="Street"
                           nameAttr="officeStreet"
+                          value={officeAddress.street}
+                          changed={(val) => setOfficeAddress({ ...officeAddress, street: val })}
                         />
                       </Col>
                     </Row>
@@ -354,6 +445,8 @@ const ConsumerCredit = ({ location }) => {
                           type="text"
                           label="City"
                           nameAttr="officeCity"
+                          value={officeAddress.city}
+                          changed={(val) => setOfficeAddress({ ...officeAddress, city: val })}
                         />
                       </Col>
                       <Col>
@@ -362,6 +455,8 @@ const ConsumerCredit = ({ location }) => {
                           label="State"
                           nameAttr="officeState"
                           options={['Oyo', 'Lagos', 'Osun']}
+                          value={officeAddress.state}
+                          changed={(val) => setOfficeAddress({ ...officeAddress, state: val })}
                         />
                       </Col>
                       <Col>
@@ -370,6 +465,8 @@ const ConsumerCredit = ({ location }) => {
                           label="Local Govt Area"
                           nameAttr="officeLga"
                           options={['Oyo', 'Lagos', 'Osun']}
+                          value={officeAddress.lga}
+                          changed={(val) => setOfficeAddress({ ...officeAddress, lga: val })}
                         />
                       </Col>
                     </Row>
@@ -395,6 +492,8 @@ const ConsumerCredit = ({ location }) => {
                           nameAttr="bankName"
                           label="Bank Name"
                           options={['GTB', 'UBA']}
+                          value={bankInfo.bankName}
+                          changed={(val) => setBankInfo({ ...bankInfo, bankName: val })}
                         />
                       </Col>
                       <Col>
@@ -403,6 +502,8 @@ const ConsumerCredit = ({ location }) => {
                           nameAttr="accountType"
                           label="Bank Account Type"
                           options={['Savings', 'Current']}
+                          value={bankInfo.accountType}
+                          changed={(val) => setBankInfo({ ...bankInfo, accountType: val })}
                         />
                       </Col>
                     </Row>
@@ -412,6 +513,8 @@ const ConsumerCredit = ({ location }) => {
                           type="text"
                           nameAttr="acctNumber"
                           label="Account Number"
+                          value={bankInfo.accountNumber}
+                          changed={(val) => setBankInfo({ ...bankInfo, accountNumber: val })}
                         />
                       </Col>
                       <Col>
@@ -419,6 +522,8 @@ const ConsumerCredit = ({ location }) => {
                           type="type"
                           nameAttr="acctName"
                           label="Account Name"
+                          value={bankInfo.accountName}
+                          changed={(val) => setBankInfo({ ...bankInfo, accountName: val })}
                         />
                       </Col>
                     </Row>

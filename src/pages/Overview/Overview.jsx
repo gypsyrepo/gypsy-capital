@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Overview.module.scss';
 import pageUrl from '../../routes/pageUrl';
 import { FiLayers } from 'react-icons/fi';
@@ -11,9 +11,13 @@ import gypsyNote from '../../assets/icons/gypsyNotes.svg';
 import altInvestment from '../../assets/icons/alternative.svg';
 import { Col, Row } from 'react-bootstrap';
 import noLoan from '../../assets/no-loan.png';
+import moment from 'moment';
 
 
 const Overview = ({ location }) => {
+
+  const [loanStatus, setLoanStatus] = useState('pending_approval');
+
   const sidebarRoutes = [
     {
       label: "Dashboard",
@@ -41,25 +45,57 @@ const Overview = ({ location }) => {
     <Dashboard sidebarRoutes={sidebarRoutes} location={location}>
       <div className={styles.welcomeGroup}>
         <h2>Hey, Daniel</h2>
-        <p className={styles.currentDate}>Today is Wednesday 13, January.</p>
+        <p className={styles.currentDate}>Today is {moment().format('dddd Do[,] MMMM')}.</p>
       </div>
-      <div className={styles.loanStatus}>
-        <div className={styles.mainContent}>
-          <h3>Active Loan</h3>
-          <p>Sorry you currently have no active loan</p>
-          <Button
-            bgColor="#741763"
-            size="sm"
-            color="#fff"
-            className="mt-4"
-          >
-            Apply for loan
-          </Button>
-        </div>
-        <img src={noLoan} alt="No active loan" height="280" />
-        {/* <div className={styles.illustration}>
-          <
-        </div> */}
+      <div className={styles.loanStatus} style={{padding: '30px 40px'}}>
+        { loanStatus === "inactive" && <div className={styles.innerContainer}>
+          <div className={styles.mainContent}>
+            <h3>Active Loan</h3>
+            <p>Sorry you currently have no active loan</p>
+            <Button
+              bgColor="#741763"
+              size="sm"
+              color="#fff"
+              className="mt-4"
+            >
+              Apply for loan
+            </Button>
+          </div>
+          <img src={noLoan} alt="No active loan" height="280" />
+        </div> } 
+        { loanStatus !== "inactive" && <div className={styles.activeStyle}>
+          <div className={styles.mainContent}>
+            <h3>Active Loan <span>{loanStatus.replace('_', ' ')}</span></h3>
+            <div className={styles.statusBoard}>
+              <Row>
+                <Col className={styles.borderClass}>
+                  <div className={styles.loanData}>
+                    <div>
+                      <h6>Loan amount</h6>
+                      <h1>N150,000</h1>
+                    </div>
+                  </div>
+                </Col>
+                <Col className={styles.borderClass}>
+                  <div className={styles.loanData}>
+                    <div>
+                      <h6>Monthly Repayment</h6>
+                      <h1>N34,758</h1>
+                    </div>
+                  </div>
+                </Col>
+                <Col>
+                  <div className={styles.loanData}>
+                    <div>
+                      <h6>Tenure</h6>
+                      <h1>3 months</h1>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+            </div>
+          </div>
+        </div>}
       </div>
       <div className={styles.otherProducts}>
         <Row>
