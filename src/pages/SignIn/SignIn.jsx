@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { Context as AuthContext } from '../../context/AuthContext';
 
 
-const SignIn = () => {
+const SignIn = ({ history }) => {
 
   const { state } = useContext(AuthContext);
 
@@ -24,6 +24,7 @@ const SignIn = () => {
 
   const handleSubmit = () => {
     console.log(signinValues);
+    history.push(pageUrl.PROFILE_PAGE);
   }
 
   return (

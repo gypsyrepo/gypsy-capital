@@ -16,9 +16,9 @@ import { FaCloudUploadAlt, FaCheckCircle } from 'react-icons/fa';
 
 const ConsumerCredit = ({ location }) => {
 
-  const [applyState, setApplyState] = useState(true);
+  const [applyState, setApplyState] = useState(false);
   const [daysOfMonth, setDaysOfMonth] = useState([]);
-  const [applicationStage, setApplicationStage] = useState(3);
+  const [applicationStage, setApplicationStage] = useState(0);
   const [applicationSuccess, setApplicationSuccess] = useState(false);
 
   const [loanCalcData, setLoanCalcData] = useState({
@@ -115,7 +115,15 @@ const ConsumerCredit = ({ location }) => {
   ]
 
   const handleSubmit = () => {
+    if(applicationStage === 3) {
+      setApplicationSuccess(true)
+    } else {
+      setApplicationStage(applicationStage + 1)
+    }
+  }
 
+  const goToProcess = () => {
+    setApplyState(true);
   }
 
   if(daysOfMonth.length === 0) {
@@ -134,6 +142,7 @@ const ConsumerCredit = ({ location }) => {
             size="sm"
             color="#fff"
             className="mt-4"
+            clicked={goToProcess}
           >
             Apply for a loan
           </Button>}

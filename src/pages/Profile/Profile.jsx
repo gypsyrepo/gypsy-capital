@@ -23,7 +23,7 @@ const Profile = ({ location }) => {
     3: "complete"
   }
   const [setupStage, setSetupStage] = useState(0);
-  const [setupComplete, setSetupComplete] = useState(true);
+  const [setupComplete, setSetupComplete] = useState(false);
 
   const sidebarRoutes = [
     {
@@ -507,7 +507,7 @@ const Profile = ({ location }) => {
           }
           { visibleSection === "payment" && 
             <div>
-              
+
             </div>
           }
         </div>
