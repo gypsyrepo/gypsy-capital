@@ -11,7 +11,7 @@ import { Context as AuthContext } from '../../context/AuthContext';
 
 const SignUp = () => {
 
-  const { registerUser } = useContext(AuthContext);
+  const { state: { loading }, registerUser, getActiveUser } = useContext(AuthContext);
 
   const [signUpValues, setSignUpvalues] = useState({
     firstName: '',
@@ -95,7 +95,7 @@ const SignUp = () => {
       hearAboutUs: signUpValues.referralChoice
     }
     if(validated) {
-      registerUser(signUpData);
+      registerUser(signUpData, getActiveUser);
     }
   }
 
@@ -198,7 +198,7 @@ const SignUp = () => {
           </Col>
         </Row>
         <Button className="mt-5" fullWidth clicked={handleSubmit} bgColor="#741763" size="lg" color="#EBEBEB">
-          Sign Up
+          { loading ? 'Loading...' : 'Sign Up' }
         </Button>
         <p className={[styles.authLink, 'mt-3'].join(' ')}>
           Already have an account? <Link to={pageUrl.SIGNIN_PAGE}>Log in</Link>

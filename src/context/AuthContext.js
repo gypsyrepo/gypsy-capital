@@ -4,34 +4,75 @@ import gypsy from  '../api/gypsy-web';
 
 const authReducer = (state, action) => {
   switch(action.type) {
+    case "loading_state":
+      return { ...state, loading: action.payload }
+    case "signin":
+      return { ...state, token: action.payload, loggedIn: true }
+    case "set_user":
+      return { ...state, user: action.payload }
+    case "set_error":
+      return { ...state, error: action.payload }
     default:
       return state; 
   }
 }
 
 
-const registerUser = (dispatch) => async(data) => {
+const registerUser = (dispatch) => async(data, callback) => {
   dispatch({ type: "loading_state", payload: true });
   try {
-    const response = await gypsy.post('client/signup', data);
-    console.log(response);
+    const response = await gypsy.post('/client/signup', data);
+    const token = response.data.token;
+    localStorage.setItem('gypsyToken', token)
+    dispatch({
+      type: 'signin',
+      payload: token
+    });
+    if(callback) {
+      callback();
+    }
+    dispatch({ type: "loading_state", payload: false });
   } catch(err) {
-
+    dispatch({
+      type: 'set_error',
+      payload: 'err.message'
+    })
+    dispatch({ type: "loading_state", payload: false });
   }
 }
 
 const loginUser = (dispatch) => async({email, password}) => {
   try {
-    const response = await gypsy.post('client/signin', { email, password });
+    const response = await gypsy.post('/client/signin', { email, password });
     console.log(response);
   } catch(err) {
     console.log(err);
   }
 }
 
+const getActiveUser = (dispatch) => async() => {
+  try{
+    const token = localStorage.getItem('gypsyToken');
+    const response = await gypsy.get('/client', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    dispatch({
+      type: "set_user",
+      payload: response.data.user
+    })
+  } catch(err) {
+    dispatch({
+      type: "set_error",
+      payload: err.message
+    })
+  }
+}
+
 
 export const { Context, Provider } = createDataContext(
   authReducer,
-  { loginUser, registerUser },
-  { user: null, token: null, loggedIn: false, loading: false }
+  { loginUser, registerUser, getActiveUser },
+  { user: null, token: null, loggedIn: false, loading: false, error: "" }
 )

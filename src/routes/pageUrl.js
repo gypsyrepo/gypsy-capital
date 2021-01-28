@@ -7,6 +7,7 @@ const PROFILE_PAGE='/dashboard/profile';
 const DASHBOARD_HOMEPAGE='/dashboard/overview';
 const CONSUMER_CREDIT_PAGE='/dashboard/consumer-credit';
 const CREDIT_REPORT_PAGE= '/dashboard/credit-report';
+const VERIFY_OTP_PAGE = '/verify-otp';
 
 
 const pageUrl = {
@@ -18,7 +19,8 @@ const pageUrl = {
     PROFILE_PAGE,
     DASHBOARD_HOMEPAGE,
     CONSUMER_CREDIT_PAGE,
-    CREDIT_REPORT_PAGE
+    CREDIT_REPORT_PAGE,
+    VERIFY_OTP_PAGE
 }
 
 export default pageUrl;
