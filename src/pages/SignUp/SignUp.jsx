@@ -11,7 +11,7 @@ import { Context as AuthContext } from '../../context/AuthContext';
 
 const SignUp = () => {
 
-  const { state: { loading }, registerUser, getActiveUser } = useContext(AuthContext);
+  const { state: { loading, error }, registerUser, getActiveUser } = useContext(AuthContext);
 
   const [signUpValues, setSignUpvalues] = useState({
     firstName: '',
@@ -22,6 +22,8 @@ const SignUp = () => {
     confirmPassword: '',
     referralChoice: ''
   });
+
+  const [requestError, setRequestError]
 
   const [validationErrors, setValidationErrors] = useState({
     firstName: null,
