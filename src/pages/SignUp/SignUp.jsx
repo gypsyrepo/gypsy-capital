@@ -46,7 +46,7 @@ const SignUp = () => {
     'Other'
   ]
 
-  const validateInput = () => {
+  const validateInput = ({ history }) => {
 
     const validMail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -92,10 +92,12 @@ const SignUp = () => {
       lastName: signUpValues.lastName,
       phoneNumber: signUpValues.mobileNumber,
       password: signUpValues.password,
-      hearAboutUs: signUpValues.referralChoice
+      hearAboutUs: signUpValues.referralChoice,
+      city: "Lagos"
     }
     if(validated) {
-      registerUser(signUpData, getActiveUser);
+      // await registerUser(signUpData, getActiveUser);
+      history.push(pageUrl.VERIFY_OTP_PAGE);
     }
   }
 
