@@ -1,16 +1,17 @@
 import './App.scss';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Router, Switch, Route } from 'react-router-dom';
 import pageUrl from './routes/pageUrl';
 import { SignUp, SignIn, Profile, CreditReport, Overview, ConsumerCredit, OtpVerify } from './pages/pages';
 import { Provider as AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './routes/protectedroute/ProtectedRoute';
+import history from './utils/history';
 
 
 
 const RouteManager = () =>  {
   return (
     <div className="App">
-      <BrowserRouter>
+      <Router history={history}>
         <Route path={pageUrl.SIGNUP_PAGE} component={SignUp} />
         <Route path={pageUrl.SIGNIN_PAGE} component={SignIn} />
         <Route path={pageUrl.VERIFY_OTP_PAGE} component={OtpVerify} />
@@ -18,7 +19,7 @@ const RouteManager = () =>  {
         <ProtectedRoute path={pageUrl.CREDIT_REPORT_PAGE} component={CreditReport} />
         <ProtectedRoute path={pageUrl.DASHBOARD_HOMEPAGE} component={Overview} />
         <ProtectedRoute path={pageUrl.CONSUMER_CREDIT_PAGE} component={ConsumerCredit} />
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }

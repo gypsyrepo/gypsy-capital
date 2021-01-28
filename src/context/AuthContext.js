@@ -1,5 +1,7 @@
 import createDataContext from './createDataContext';
 import gypsy from  '../api/gypsy-web';
+import history from '../utils/history';
+import pageUrl from '../routes/pageUrl';
 
 
 const authReducer = (state, action) => {
@@ -20,8 +22,10 @@ const authReducer = (state, action) => {
 
 const registerUser = (dispatch) => async(data, callback) => {
   dispatch({ type: "loading_state", payload: true });
+  dispatch({ type: 'set_error', payload: null });
   try {
     const response = await gypsy.post('/client/signup', data);
+    console.log(response.data);
     const token = response.data.token;
     localStorage.setItem('gypsyToken', token)
     dispatch({
@@ -32,7 +36,9 @@ const registerUser = (dispatch) => async(data, callback) => {
       callback();
     }
     dispatch({ type: "loading_state", payload: false });
+    history.push(pageUrl.VERIFY_OTP_PAGE);
   } catch(err) {
+    console.log(err)
     dispatch({
       type: 'set_error',
       payload: 'err.message'
@@ -74,5 +80,5 @@ const getActiveUser = (dispatch) => async() => {
 export const { Context, Provider } = createDataContext(
   authReducer,
   { loginUser, registerUser, getActiveUser },
-  { user: null, token: null, loggedIn: false, loading: false, error: "" }
+  { user: null, token: null, loggedIn: false, loading: false, error: null }
 )

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Logo from '../../assets/logo.png';
 import InputField from '../../components/InputField/InputField';
 import Button from '../../components/Button/Button';
@@ -7,6 +7,7 @@ import { Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import pageUrl from '../../routes/pageUrl';
 import { Context as AuthContext } from '../../context/AuthContext';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const SignUp = () => {
@@ -23,8 +24,6 @@ const SignUp = () => {
     referralChoice: ''
   });
 
-  const [requestError, setRequestError]
-
   const [validationErrors, setValidationErrors] = useState({
     firstName: null,
     lastName: null,
@@ -34,6 +33,12 @@ const SignUp = () => {
     confirmPassword: null,
     referralChoice: null
   })
+
+  useEffect(() => {
+    if(error) {
+      toast("An error ocurred, try signing in again");
+    }
+  }, [error])
 
   const referralOptions = [
     'Search Engine', 
@@ -48,7 +53,7 @@ const SignUp = () => {
     'Other'
   ]
 
-  const validateInput = ({ history }) => {
+  const validateInput = () => {
 
     const validMail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -98,8 +103,7 @@ const SignUp = () => {
       city: "Lagos"
     }
     if(validated) {
-      // await registerUser(signUpData, getActiveUser);
-      history.push(pageUrl.VERIFY_OTP_PAGE);
+      registerUser(signUpData, getActiveUser);
     }
   }
 
@@ -109,6 +113,7 @@ const SignUp = () => {
       <h1>Create your account</h1>
       <p className={styles.subtitle}>Hey there, let's setup your Gypsy Capital account</p>
       <div className={styles.registerBox}>
+        <ToastContainer />
         <Row>
           <Col>
             <InputField type="text" 
