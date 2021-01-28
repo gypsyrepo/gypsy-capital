@@ -8,7 +8,7 @@ const authReducer = (state, action) => {
   switch(action.type) {
     case "loading_state":
       return { ...state, loading: action.payload }
-    case "signin":
+    case "signup":
       return { ...state, token: action.payload, loggedIn: true }
     case "set_user":
       return { ...state, user: action.payload }
@@ -29,7 +29,7 @@ const registerUser = (dispatch) => async(data, callback) => {
     const token = response.data.token;
     localStorage.setItem('gypsyToken', token)
     dispatch({
-      type: 'signin',
+      type: 'signup',
       payload: token
     });
     if(callback) {
@@ -47,13 +47,33 @@ const registerUser = (dispatch) => async(data, callback) => {
   }
 }
 
-const loginUser = (dispatch) => async({email, password}) => {
+const loginUser = (dispatch) => async({email, password}, callback) => {
+  dispatch({ type: "loading_state", payload: true });
   try {
     const response = await gypsy.post('/client/signin', { email, password });
-    console.log(response);
+    const token = response.data.token;
+    localStorage.setItem('gypsyToken', token)
+    dispatch({
+      type: 'signin',
+      payload: token
+    });
+    if(callback) {
+      callback()
+    }
+    dispatch({ type: "loading_state", payload: false });
+    history.push(pageUrl.DASHBOARD_HOMEPAGE);
   } catch(err) {
-    console.log(err);
+    console.log(err)
+    dispatch({
+      type: 'set_error',
+      payload: 'err.message'
+    })
+    dispatch({ type: "loading_state", payload: false });
   }
+}
+
+const verifyOtp = () => async() => {
+  
 }
 
 const getActiveUser = (dispatch) => async() => {

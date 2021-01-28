@@ -36,7 +36,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if(error) {
-      toast("An error ocurred, try signing in again");
+      toast.error("An error ocurred, try signing in again");
     }
   }, [error])
 
@@ -113,7 +113,7 @@ const SignUp = () => {
       <h1>Create your account</h1>
       <p className={styles.subtitle}>Hey there, let's setup your Gypsy Capital account</p>
       <div className={styles.registerBox}>
-        <ToastContainer />
+        <ToastContainer position="top-center" />
         <Row>
           <Col>
             <InputField type="text" 
