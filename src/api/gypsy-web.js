@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 let instance = axios.create({
-    baseURL: `https://www.gypsy.developer.bdigismat.com/`
+    baseURL: `https://secure-basin-18118.herokuapp.com/`
 });
 
 export default instance;

@@ -11,11 +11,11 @@ import { Context as AuthContext } from '../../context/AuthContext';
 
 const SignIn = ({ history }) => {
 
-  const { state } = useContext(AuthContext);
+  const { state, loginUser } = useContext(AuthContext);
 
   useEffect(() => {
     console.log(state)
-  }, [])
+  }, [state])
 
   const [signinValues, setSigninValues] = useState({
     email: '',
@@ -24,7 +24,8 @@ const SignIn = ({ history }) => {
 
   const handleSubmit = () => {
     console.log(signinValues);
-    history.push(pageUrl.PROFILE_PAGE);
+    loginUser({ email: signinValues.email, password: signinValues.password });
+    // history.push(pageUrl.PROFILE_PAGE);
   }
 
   return (

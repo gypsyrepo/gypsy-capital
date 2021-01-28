@@ -5,7 +5,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 
 
-const InputField = ({ type, label, nameAttr, value, changed, options, placeholder }) => {
+const InputField = ({ type, label, nameAttr, value, changed, options, placeholder, error }) => {
 
   const [ passwordVisible, setPasswordVisible ] = useState(false);
 
@@ -58,6 +58,7 @@ const InputField = ({ type, label, nameAttr, value, changed, options, placeholde
           onClick={togglePasswordVisibility}
         /> }
       </div>
+      { error && <p className={styles.errorStyle}>{error}</p> }
     </>
   );
 }
