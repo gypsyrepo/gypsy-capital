@@ -72,8 +72,28 @@ const loginUser = (dispatch) => async({email, password}, callback) => {
   }
 }
 
-const verifyOtp = () => async() => {
-  
+const verifyOtp = (dispatch) => async(otp, callback) => {
+  dispatch({ type: 'set_error', payload: null })
+  dispatch({ type: "loading_state", payload: true})
+  try {
+    const token = localStorage.getItem("gypsyToken");
+    await gypsy.post('/client/otp/verify', {inputOtp: otp}, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    if(callback) {
+      callback();
+    }
+    dispatch({ type: "loading_state", payload: false })
+    history.push(pageUrl.PROFILE_PAGE);
+  } catch(err) {
+    dispatch({
+      type: 'set_error',
+      payload: 'err.message'
+    })
+    dispatch({ type: "loading_state", payload: false })
+  }
 }
 
 const getActiveUser = (dispatch) => async() => {
@@ -99,6 +119,6 @@ const getActiveUser = (dispatch) => async() => {
 
 export const { Context, Provider } = createDataContext(
   authReducer,
-  { loginUser, registerUser, getActiveUser },
+  { loginUser, registerUser, getActiveUser, verifyOtp },
   { user: null, token: null, loggedIn: false, loading: false, error: null }
 )
