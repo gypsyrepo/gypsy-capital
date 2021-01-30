@@ -12,7 +12,7 @@ const RouteManager = () =>  {
   return (
     <div className="App">
       <Router history={history}>
-        <Route path={pageUrl.HOMEPAGE} component={HomePage} />
+        <Route exact path={pageUrl.HOMEPAGE} component={HomePage} />
         <Route path={pageUrl.SIGNUP_PAGE} component={SignUp} />
         <Route path={pageUrl.SIGNIN_PAGE} component={SignIn} />
         <Route path={pageUrl.VERIFY_OTP_PAGE} component={OtpVerify} />

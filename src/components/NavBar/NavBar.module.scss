@@ -1,0 +1,136 @@
+.navContainer {
+    img {
+        width: 170px;
+    }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 60px;
+    height: 100px;
+    .navGroup {
+        display: flex;
+        align-items: center;
+        ul {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            li {
+                margin: 0 25px;
+                a {
+                    color: #212121;
+                    font-family: 'Source Sans Pro', sans-serif;
+                    font-weight: 600;
+                    font-size: 1.15rem;
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+    }
+    .menuIcon {
+        display: none;
+    }
+    .mobileNav {
+        display: none;
+    }
+}
+
+.mainNav {
+    margin-right: 200px;
+    margin-bottom: 0;
+}
+
+.authNav {
+    margin-bottom: 0;
+    .menuBtn {
+        background-color: #A02089;
+        color: #FFFFFF;
+        padding: 8px 24px;
+        border-radius: 6px;
+        border: none;
+        font-family: 'Source Sans Pro', sans-serif;
+        font-weight: 600;
+        font-size: 1.1rem;
+        &:focus {
+            outline: none;
+        }
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    .mainNav {
+        margin-right: 30px;
+    }
+    .navContainer {
+        img {
+            width: 140px;
+        }
+        .navGroup {
+            ul {
+                li {
+                    a {
+                        font-size: 1rem;
+                    }
+                }
+            }
+        }
+    }
+    .authNav {
+        .menuBtn {
+            font-size: 1rem;
+        }
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .navContainer {
+        padding: 10px 20px;
+        height: 80px;
+        img {
+            width: 140px;
+        }
+        .navGroup {
+            display: none;
+        }
+        .menuIcon {
+            display: block;
+        }
+        .mobileNav {
+            display: block;
+            height: 100%;
+            position: fixed;
+            z-index: 10;
+            top: 0;
+            left: 0;
+            background-color: #A02089;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 80px;
+            .closeIcon {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                color: rgba(255,255,255,0.6);
+                margin-top: 20px;
+            }
+            a {
+                display: block;
+                text-align: center;
+                color: #FFFFFF;
+                font-size: 1.25rem;
+                font-family: 'Source Sans Pro', sans-serif;
+                font-weight: 600;
+                padding: 10px 8px 10px 8px;
+                text-decoration: none;
+                &:hover {
+                    text-decoration: none;
+                }
+                transition: 0.3s;
+            }
+            .removeMenu {
+                opacity: 0;
+            }
+        }
+    }
+}
