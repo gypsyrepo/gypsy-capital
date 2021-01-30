@@ -5,6 +5,7 @@ import CreditReport from './CreditReport/CreditReport';
 import Overview from './Overview/Overview';
 import ConsumerCredit from './ConsumerCredit/ConsumerCredit';
 import OtpVerify from './OtpVerify/OtpVerify';
+import HomePage from './HomePage/HomePage';
 
 
 export {
@@ -14,5 +15,6 @@ export {
   CreditReport,
   Overview,
   ConsumerCredit,
-  OtpVerify
+  OtpVerify,
+  HomePage
 }

@@ -1,0 +1,32 @@
+.navContainer {
+    img {
+        width: 190px;
+    }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    .navGroup {
+        display: flex;
+        ul {
+            display: flex;
+            list-style: none;
+            li {
+                margin: 0 25px;
+                a {
+                    color: #212121;
+                    font-family: 'Source Sans Pro', sans-serif;
+                    font-weight: 600;
+                    font-size: 1.15rem;
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.mainNav {
+    margin-right: 200px;
+}
