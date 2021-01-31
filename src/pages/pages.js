@@ -6,6 +6,7 @@ import Overview from './Overview/Overview';
 import ConsumerCredit from './ConsumerCredit/ConsumerCredit';
 import OtpVerify from './OtpVerify/OtpVerify';
 import HomePage from './HomePage/HomePage';
+import Products from './Products/Products';
 
 
 export {
@@ -16,5 +17,6 @@ export {
   Overview,
   ConsumerCredit,
   OtpVerify,
-  HomePage
+  HomePage,
+  Products
 }
