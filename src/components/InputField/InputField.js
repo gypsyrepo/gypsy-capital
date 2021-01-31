@@ -17,7 +17,7 @@ const InputField = ({ type, label, nameAttr, value, changed, options, placeholde
     <>
       <label id={nameAttr} className={styles.label}>{label}</label>
       <div className={styles.inputGroup}>
-        { type !== "password" && type !== "select" ?
+        { type !== "password" && type !== "select" && type !== "textarea" ?
           <input 
             type={type} 
             name={nameAttr} 
@@ -50,6 +50,15 @@ const InputField = ({ type, label, nameAttr, value, changed, options, placeholde
               </option>
             })}
           </select>
+        }
+        {
+          type === "textarea" &&
+          <textarea 
+            value={value}
+            onChange={(e) => changed(e.currentTarget.value)}
+            name={nameAttr}
+            placeholder={placeholder}
+          />
         }
         { type === "password" && <FontAwesomeIcon 
           className={styles.passwordToggle} 

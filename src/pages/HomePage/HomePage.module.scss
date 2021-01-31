@@ -146,7 +146,7 @@
 
 .aboutSection {
     padding: 80px 100px;
-    background-color: #A020891B;
+    background-color: #f4e7f2;
     .container {
         max-width: 1200px;
         h5 {
@@ -212,4 +212,275 @@
             }
         }
     }
+}
+
+.productSection {
+    padding: 80px 100px;
+    background-color: #F5F5F5;
+    .container {
+        max-width: 1200px;
+        h5 {
+            text-align: center;
+            font-size: 1.1rem;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 600;
+            color: #A02089;
+        }
+        h2 {
+            text-align: center;
+            font-weight: 600;
+            color: #212121;
+            font-size: 1.85rem;
+            width: 50%;
+            margin: 0 auto;
+            margin-bottom: 80px;
+        }
+        .productBox {
+            background-color: #FFFFFF;
+            box-shadow: 15px 20px 35px #00000017;
+            border-radius: 14px 14px 0px 0px;
+            padding: 35px 45px;
+            .iconWrapper {
+                height: 70px;
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-end;
+                .credit {
+                    width: 50px;
+                }
+                .notes {
+                    width: 30px;
+                }
+                .advisory {
+                    width: 50px;
+                }
+                .alternative {
+                    width: 50px;
+                }
+            }
+            h3 {
+                font-family: 'Kanit', sans-serif;
+                font-weight: 600;
+                font-size: 1.6rem;
+                margin-top: 30px;
+                margin-bottom: 18px;
+            }
+            p {
+                font-size: 1.1rem;
+                font-family: 'Source Sans Pro', sans-serif;
+            }
+        }
+    }
+}
+
+.repeatSection {
+    padding: 80px 100px;
+    background-color: #F5F5F5;
+    .container {
+        max-width: 1200px;
+        .styledBox {
+            background-color: #741763;
+            border-radius: 25px;
+            padding: 80px 100px;
+            position: relative;
+            .circlePatternOne {
+                position: absolute;
+                left: -200px;
+                bottom: -100%;
+                
+            }
+            .circlePatternTwo {
+                position: absolute;
+                right: -200px;
+                top: -100%;
+                z-index: 1;
+            }
+            .circle {
+                border-radius: 100%;
+                position: absolute;
+            }
+            .firstCircle {
+                width: 180px;
+                height: 180px;
+                background-color: #F5F5F534;
+                top: -90px;
+                left: -90px;
+            }
+            .secondCircle {
+                width: 70px;
+                height: 70px;
+                background-color: #F5F5F534;
+                top: 22.5px;
+                left: 45px;
+            }
+            .thirdCircle {
+                width: 180px;
+                height: 180px;
+                background-color: #F5F5F534;
+                left: 29%;
+                bottom: -100px;
+            }
+            .fourthCircle {
+                width: 44px;
+                height: 44px;
+                background-color: #F7CEEF9A;
+                left: 32%;
+                bottom: 56px;
+            }
+            .fifthCircle {
+                width: 70px;
+                height: 70px;
+                background-color: #F49EE453;
+                left: 43%;
+                top: 22.5px;
+            }
+            .sixthCircle {
+                width: 44px;
+                height: 44px;
+                background-color: #F7CEEF9A;
+                left: calc(43% + 50px);
+                top: calc(70px - 22.5px);
+            }
+            .seventhCircle {
+                width: 180px;
+                height: 180px;
+                background-color: #F5F5F534;
+                right: 0;
+                bottom: 35px; 
+            }
+            .eigthCircle {
+                width: 70px;
+                height: 70px;
+                background-color: #F49EE453;
+                right: 20px;
+                bottom: 15px;
+            }
+            .ninthCircle {
+                width: 44px;
+                height: 44px;
+                background-color: #F7CEEF9A;
+                right: 0;
+                bottom: 50px;
+            }
+            .access {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            h2 {
+                font-size: 2.1rem;
+                color: #fff;
+                font-weight: 600;
+                width: 90%;
+                margin-bottom: 0;
+            }
+            input {
+                display: block;
+                margin: 0 auto;
+                background-color: #E2E2E2;
+                border: 1px solid #E2E2E2;
+                text-align: center;
+                border-radius: 35px;
+                padding: 10px 25px;
+                width: 350px;
+                font-family: 'Source Sans Pro', sans-serif;
+                font-size: 1.1rem;
+                &:focus {
+                    outline: none;
+                }
+            }
+            button {
+                background-color: #F5F5F5;
+                border: 1px solid #F5F5F5;
+                border-radius: 35px;
+                display: block;
+                margin: 0 auto;
+                margin-top: 20px;
+                padding: 12px 25px;
+                width: 350px;
+                font-family: 'Source Sans Pro', sans-serif;
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: #741763;
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+    }
+}
+
+.contactSection {
+    padding: 40px 100px 80px;
+    background-color: #F5F5F5;
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        h2 {
+            text-align: center;
+            font-weight: 600;
+            color: #741763;
+            font-size: 1.9rem;
+            margin-bottom: 60px;
+        }
+        .contactContainer {
+            background-color: #fff;
+            position: relative;
+            z-index: 5;
+            box-shadow: 15px 20px 35px #00000017;
+            border-radius: 15px;
+            .addressDetails, .contactForm {
+                padding: 40px 50px;
+            }
+            .addressCol {
+                border-right: 1px solid #741763;
+            }
+            h3 {
+                font-size: 1.65rem;
+                color: #741763;
+                font-family: 'Source Sans Pro', sans-serif;
+                font-weight: 700;
+                margin-bottom: 30px;
+            }
+            .contactGroup {
+                display: flex;
+                align-items: center;
+                margin-bottom: 30px;
+                .icon {
+                    display: block;
+                    margin-right: 15px;
+                }
+                p {
+                    margin-bottom: 0;
+                    font-size: 1.1rem;
+                    font-family: 'Source Sans Pro', sans-serif;
+                }
+            }
+            .inputWrapper {
+                margin-bottom: 15px;
+            }
+            button {
+                display: block;
+                margin-top: 15px;
+                font-size: 1.1rem;
+                font-family: 'Source Sans Pro', sans-serif;
+                font-weight: 600;
+                padding: 10px 60px;
+                border-radius: 12px;
+                border: 2px solid #741763;
+                color: #741763;
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+    }
+}
+
+.subFooter {
+    padding: 80px 100px;
+    background-color: #A02089;
+    margin-top: -250px;
+    position: relative;
+    z-index: 2;
 }
