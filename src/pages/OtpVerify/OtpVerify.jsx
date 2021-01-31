@@ -4,7 +4,6 @@ import Logo from '../../assets/logo.png';
 import { Row, Col } from 'react-bootstrap';
 import InputField from '../../components/InputField/InputField';
 import Button from '../../components/Button/Button';
-import pageUrl from '../../routes/pageUrl';
 import { Link } from 'react-router-dom';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
@@ -18,7 +17,7 @@ const OtpVerify = () => {
 
   useEffect(() => {
     if(error) {
-      toast.error("An error ocurred, try signing in again");
+      toast.error("You are entering a wrong OTP");
     }
   }, [error])
 
@@ -28,6 +27,10 @@ const OtpVerify = () => {
     } else {
       verifyOtp(otp, getActiveUser);
     }
+  }
+
+  const resendOtp = () => {
+    console.log('works');
   }
 
   return(
@@ -56,7 +59,7 @@ const OtpVerify = () => {
           { loading ? 'Loading...' : 'Verify Code' }
         </Button>
         <p className={[styles.authLink, 'mt-3'].join(' ')}>
-          Didn’t receive code? <Link to={pageUrl.SIGNUP_PAGE}>Resend OTP</Link>
+          Didn’t receive code? <Link onClick={resendOtp}>Resend OTP</Link>
         </p>
       </div>
     </div>
