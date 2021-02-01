@@ -1,0 +1,100 @@
+:root {
+    --fontColorOne:  #212121;
+    --fontFamilyOne: 'Source Sans Pro';
+    --fontFamilyTwo: 'Kanit';
+    --backgroundOne: ' #F5F5F5';
+}
+
+.heroSection {
+    height: 748px;
+    h3 {
+        font: normal normal 600 100px/66px var(--fontFamilyTwo);
+        color: #741763;
+        opacity: 1;
+        margin-top: 312px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+    }
+}
+
+.heroSection::after {
+    content: "";
+    background-image: url('../../assets/Mask\ Group\ 8.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 1px solid #707070;
+    opacity: 0.1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;  
+   
+}
+
+
+.aboutCapitalSection {
+    background: var(--backgroundOne);
+    padding-bottom: 251px;
+    .aboutCapital {
+        padding: 321px 68px 0 140px;
+        min-width: 781px;
+    
+        h3 {
+            font: normal normal 600 30px/25px var(--fontFamilyOne);
+            color: #A02089;
+            margin-bottom: 15px;
+        }
+    
+        h5 {
+            font: normal normal bold 50px/64px var(--fontFamilyTwo);
+            color: var(--fontColorOne);
+            margin-bottom: 25px;
+        }
+    
+        p {
+            font: normal normal normal 30px/45px var(--fontFamilyOne);
+    
+            color: var(--fontColorOne);
+        }
+    }
+    
+    .aboutCapitalGroup {
+        margin-top: 184px;
+        background-image: url('../../assets/Group\ 183.png');
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        box-shadow: 8px 15px 30px #0000001A;
+        border-radius: 15px 15px 0px 0px;
+        margin-right: 92px;
+        height: 802px;
+    }
+}
+
+.cards {
+    width: 500px;
+    height: 530px;
+    padding: 84px 15px;
+    .cardTitle {
+        font: normal normal bold 45px/66px var(--fontFamilyTwo);
+        color: var(--fontColorOne);
+    }
+    .cardText {
+        font: normal normal normal 30px/45px var(--fontFamilyOne);
+        color: var(--fontColorOne);
+    }
+}
+
+.aboutCardSection {
+    display: flex;
+    justify-content: space-evenly;
+    background: var(--backgroundOne);
+    box-shadow: 8px 15px 30px #0000001A;
+    border-radius: 15px 15px 0px 0px;
+    padding-bottom: 302px;
+}
