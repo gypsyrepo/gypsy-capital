@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './Dashboard.module.scss';
 import { Row, Col } from 'react-bootstrap';
 import Logo from '../../assets/logo-white.png';
 import Button from '../../components/Button/Button';
 import { Link } from 'react-router-dom';
 import { MdNotificationsNone } from 'react-icons/md';
+import { Context as AuthContext } from '../../context/AuthContext';
 
 
 const Dashboard = ({ children, sidebarRoutes, location }) => {
 
   console.log(location)
+
+  const { logout } = useContext(AuthContext);
+  const signout = () => {
+    logout();
+  }
 
   return(
     <div className={styles.container}>
@@ -19,7 +25,7 @@ const Dashboard = ({ children, sidebarRoutes, location }) => {
         </Col>
         <Col className={styles.navGrid} sm={9}>
           <MdNotificationsNone size="2em" className="mr-5" color="#741763" />
-          <Button size="sm" bgColor="#A0208931" color="#212121">Log out</Button>
+          <Button clicked={signout} size="sm" bgColor="#A0208931" color="#212121">Log out</Button>
         </Col>
       </Row>
       <Row>

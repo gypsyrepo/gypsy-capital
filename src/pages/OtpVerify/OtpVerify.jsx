@@ -13,13 +13,24 @@ const OtpVerify = () => {
   const [otp, setOtp] = useState('');
   const [validationErr, setValidationErr] = useState(null);
 
-  const { state: { error, loading }, verifyOtp, getActiveUser } = useContext(AuthContext);
+  const { 
+      state: { error, loading, message }, 
+      verifyOtp, 
+      getActiveUser, 
+      resendOtp 
+  } = useContext(AuthContext);
 
   useEffect(() => {
     if(error) {
       toast.error("You are entering a wrong OTP");
     }
   }, [error])
+
+  useEffect(() => {
+    if(message) {
+      toast.success(message);
+    }
+  }, [message])
 
   const handleSubmit = () => {
     if(!otp) {
@@ -29,8 +40,8 @@ const OtpVerify = () => {
     }
   }
 
-  const resendOtp = () => {
-    console.log('works');
+  const resendCode = () => {
+    resendOtp();
   }
 
   return(
@@ -59,7 +70,7 @@ const OtpVerify = () => {
           { loading ? 'Loading...' : 'Verify Code' }
         </Button>
         <p className={[styles.authLink, 'mt-3'].join(' ')}>
-          Didn’t receive code? <Link onClick={resendOtp}>Resend OTP</Link>
+          Didn’t receive code? <Link onClick={resendCode}>Resend OTP</Link>
         </p>
       </div>
     </div>

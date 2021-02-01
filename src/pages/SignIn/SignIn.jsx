@@ -9,13 +9,13 @@ import { Link } from 'react-router-dom';
 import { Context as AuthContext } from '../../context/AuthContext';
 
 
-const SignIn = ({ history }) => {
+const SignIn = () => {
 
-  const { state, loginUser } = useContext(AuthContext);
+  const { state: { loading }, loginUser, getActiveUser } = useContext(AuthContext);
 
-  useEffect(() => {
-    console.log(state)
-  }, [state])
+  // useEffect(() => {
+  //   console.log(state)
+  // }, [state])
 
   const [signinValues, setSigninValues] = useState({
     email: '',
@@ -24,8 +24,7 @@ const SignIn = ({ history }) => {
 
   const handleSubmit = () => {
     console.log(signinValues);
-    loginUser({ email: signinValues.email, password: signinValues.password });
-    // history.push(pageUrl.PROFILE_PAGE);
+    loginUser({ email: signinValues.email, password: signinValues.password }, getActiveUser);
   }
 
   return (
@@ -57,7 +56,7 @@ const SignIn = ({ history }) => {
         </Row>
         <p className={styles.resetPassword}>Forgot password?</p>
         <Button clicked={handleSubmit} fullWidth className="mt-4" bgColor="#741763" size="lg" color="#EBEBEB">
-          Log In
+          { loading ? 'Loading' : 'Log In' }
         </Button>
         <p className={[styles.authLink, 'mt-3'].join(' ')}>
           Don’t have an account? <Link to={pageUrl.SIGNUP_PAGE}>Register</Link>
