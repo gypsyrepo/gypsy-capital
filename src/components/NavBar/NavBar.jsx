@@ -6,7 +6,7 @@ import pageUrl from '../../routes/pageUrl';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { RiCloseFill } from 'react-icons/ri';
 
-const NavBar = ({ history }) => {
+const NavBar = ({ history, location }) => {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -15,9 +15,30 @@ const NavBar = ({ history }) => {
       <Link to={pageUrl.HOMEPAGE}><img src={Logo} alt="Gypsy Logo" /></Link>
       <div className={styles.navGroup}>
         <ul className={styles.mainNav}>
-          <li><Link to={pageUrl.PRODUCTS_PAGE}>Our Products</Link></li>
-          <li><Link to={pageUrl.ABOUT_US_PAGE}>About Us</Link></li>
-          <li><Link to={pageUrl.CONTACT_PAGE}>Contact Us</Link></li>
+          <li>
+            <Link 
+              className={location.pathname === pageUrl.PRODUCTS_PAGE ? styles.activeMenu : null} 
+              to={pageUrl.PRODUCTS_PAGE}
+            >
+              Our Products
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to={pageUrl.ABOUT_US_PAGE}
+              className={location.pathname === pageUrl.ABOUT_US_PAGE ? styles.activeMenu : null}
+            >
+                About Us
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to={pageUrl.CONTACT_PAGE}
+              className={location.pathname === pageUrl.CONTACT_PAGE ? styles.activeMenu : null}
+            >
+              Contact Us
+            </Link>
+          </li>
         </ul>
         <ul className={styles.authNav}>
           <li><Link to={pageUrl.SIGNIN_PAGE}>Log In</Link></li>

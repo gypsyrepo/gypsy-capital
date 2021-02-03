@@ -11,29 +11,33 @@
             text-align: center;
             padding: 40px 30px;
             height: 220px;
-            h3 {
-                font-size: 1.35rem;
-                font-weight: 600;
-                font-family: 'Kanit', sans-serif;
-                margin-top: 25px;
+            cursor: pointer;
+        }
+        .activeMenu {
+            background-color: #fff;
+            border-radius: 14px;
+            text-align: center;
+            padding: 40px 30px;
+            height: 220px;
+            box-shadow: 8px 15px 30px #0000001A;
+            cursor: pointer;
+        }
+        h3 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            font-family: 'Kanit', sans-serif;
+            margin-top: 25px;
+        }
+        .iconWrapper {
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            .credit {
+                width: 50px;
             }
-            .iconWrapper {
-                height: 70px;
-                display: flex;
-                justify-content: center;
-                align-items: flex-end;
-                .credit {
-                    width: 50px;
-                }
-                .notes {
-                    width: 30px;
-                }
-                .advisory {
-                    width: 50px;
-                }
-                .alternative {
-                    width: 50px;
-                }
+            .notes {
+                width: 30px;
             }
         }
     }
@@ -156,6 +160,11 @@
                 font-family: 'Source Sans Pro', sans-serif;
                 font-weight: 600;
                 text-decoration: underline;
+                margin-top: 30px;
+            }
+            .customBtn {
+                z-index: 5;
+                position: relative;
             }
         }
     }
@@ -190,12 +199,12 @@
 }
 
 .howItWorks {
-    padding: 60px 100px;
+    padding: 80px 100px;
     background-color: #f5f5f5;
     .container {
         max-width: 1200px;
         .detailed {
-            height: 500px;
+            min-height: 500px;
             background-color: #E2E2E2;
             border-radius: 30px;
             padding: 60px 100px 60px 60px;
@@ -206,6 +215,20 @@
             p {
                 font-size: 1.1rem;
                 font-family: 'Source Sans Pro', sans-serif;
+            }
+            .textBtn {
+                background-color: rgba(0,0,0,0);
+                display: block;
+                margin-top: 40px;
+                border: none;
+                color:#741763;
+                font-size: 1.2rem;
+                font-family: 'Source Sans Pro', sans-serif;
+                font-weight: 600;
+                text-decoration: underline;
+                &:focus {
+                    outline: none;
+                }
             }
         }
         .steps {
@@ -238,6 +261,70 @@
                     font-family: 'Source Sans Pro', sans-serif;
                     font-weight: 600;
                 }
+            }
+        }
+        .imageCopy {
+            height: 450px;
+            background-color:#FFFFFF;
+            border-radius: 30px;
+            margin: auto 0;
+            margin-left: -80px;
+            box-shadow: 15px 20px 35px #00000017;
+            padding: 0;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                // object-position: top;
+                border-radius: 30px;
+            }
+        }
+    }
+}
+
+.subscribeEmail {
+    padding: 60px 100px;
+    text-align: center;
+    background-color: #f4e7f2;
+    .container {
+        max-width: 1200px;
+        h2 {
+            width: 60%;
+            margin: 0 auto;
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: #741763;
+            margin-bottom: 50px;
+        }
+        .emailInput {
+            width: 70%;
+            margin: 0 auto;
+            position: relative;
+            input {
+                width: 100%;
+                padding: 25px 50px;
+                border-radius: 15px;
+                border: none;
+                box-shadow: 5px 10px 20px #00000017;
+                font-size: 1.1rem;
+                font-family: 'Source Sans Pro', sans-serif;
+                &:focus {
+                    outline: none;
+                }
+            }
+            button {
+                font-size: 1.1rem;
+                font-family: 'Source Sans Pro', sans-serif;
+                background-color: #A02089;
+                border-radius: 10px;
+                color: #fff;
+                text-transform: uppercase;
+                font-weight: 700;
+                padding: 13px 35px;
+                border: 1px solid #A02089;
+                position: absolute;
+                right: 10px;
+                top: 10.5px;
             }
         }
     }

@@ -3,6 +3,7 @@ import { Router, Switch, Route } from 'react-router-dom';
 import pageUrl from './routes/pageUrl';
 import { SignUp, SignIn, Profile, CreditReport, Overview, ConsumerCredit, OtpVerify, HomePage, Products, AboutUs } from './pages/pages';
 import { Provider as AuthProvider } from './context/AuthContext';
+import { Provider as UserProvider } from './context/UserContext';
 import ProtectedRoute from './routes/protectedroute/ProtectedRoute';
 import history from './utils/history';
 
@@ -30,7 +31,9 @@ const RouteManager = () =>  {
 const App = () => {
   return (
     <AuthProvider>
-      <RouteManager />
+      <UserProvider>
+        <RouteManager />
+      </UserProvider>
     </AuthProvider>
   )
 }

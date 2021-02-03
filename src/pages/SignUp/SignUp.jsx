@@ -97,11 +97,11 @@ const SignUp = () => {
       email: signUpValues.email,
       firstName: signUpValues.firstName,
       lastName: signUpValues.lastName,
-      phoneNumber: signUpValues.mobileNumber,
+      phoneNumber: signUpValues.mobileNumber.replace('0', '234'),
       password: signUpValues.password,
       hearAboutUs: signUpValues.referralChoice,
-      city: "Lagos"
     }
+    console.log(signUpData);
     if(validated) {
       registerUser(signUpData, getActiveUser);
     }

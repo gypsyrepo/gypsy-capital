@@ -1,5 +1,5 @@
 import createDataContext from './createDataContext';
-import { gypsy, gypsyWithToken } from  '../api/gypsy-web';
+import gypsy from  '../api/gypsy-web';
 import resolveToken from '../utils/resolveToken';
 import history from '../utils/history';
 import pageUrl from '../routes/pageUrl';
@@ -75,12 +75,12 @@ const loginUser = (dispatch) => async({email, password}, callback) => {
   }
 }
 
-const verifyOtp = (dispatch) => async(otp, callback) => {
+const verifyOtp = (dispatch) => async(otp, phoneNo, callback) => {
   dispatch({ type: 'set_error', payload: null })
   dispatch({ type: "loading_state", payload: true})
   const token = resolveToken();
   try {
-    await gypsy.post('/client/otp/verify', {inputOtp: otp}, {
+    await gypsy.post(`/otp/verify/${phoneNo}`, {inputOtp: otp}, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -99,12 +99,12 @@ const verifyOtp = (dispatch) => async(otp, callback) => {
   }
 }
 
-const resendOtp = (dispatch) => async() => {
+const resendOtp = (dispatch) => async(phoneNo) => {
   dispatch({ type: 'set_error', payload: null })
   dispatch({ type: "loading_state", payload: true})
   const token = resolveToken();
   try {
-    const response = await gypsy.get('/client/otp/resend', {
+    const response = await gypsy.get(`/otp/${phoneNo}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -124,17 +124,13 @@ const resendOtp = (dispatch) => async() => {
 }
 
 const getActiveUser = (dispatch) => async(token) => {
+  console.log(token);
   try{
-    let response;
-    if(token) {
-      response = await gypsy.get('/client', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-    } else {
-      response = await gypsyWithToken.get('/client');
-    }
+    const response = await gypsy.get('/client', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
     dispatch({
       type: "set_user",
       payload: response.data.user

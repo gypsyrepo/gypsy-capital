@@ -21,7 +21,7 @@ import FaqSection from '../../components/FaqSection/FaqSection';
 import Footer from '../../components/Footer/Footer';
 
 
-const HomePage = ({ history }) => {
+const HomePage = ({ history, location }) => {
 
   const [loanAmt, setLoanAmt] = useState('');
   const [loanRequest, setLoanRequest] = useState('');
@@ -35,7 +35,7 @@ const HomePage = ({ history }) => {
 
   return (
     <>
-      <NavBar history={history} />
+      <NavBar history={history} location={location} />
       <div className={styles.heroSection}>
         <Row className={styles.container}>
           <Col md={6} sm={12} className={styles.mainCopy}>
