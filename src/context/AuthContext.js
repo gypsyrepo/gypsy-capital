@@ -79,8 +79,9 @@ const verifyOtp = (dispatch) => async(otp, phoneNo, callback) => {
   dispatch({ type: 'set_error', payload: null })
   dispatch({ type: "loading_state", payload: true})
   const token = resolveToken();
+  console.log(token)
   try {
-    await gypsy.post(`/otp/verify/${phoneNo}`, {inputOtp: otp}, {
+    await gypsy.post(`/otp/verify/${phoneNo}`, {code: otp}, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -126,11 +127,21 @@ const resendOtp = (dispatch) => async(phoneNo) => {
 const getActiveUser = (dispatch) => async(token) => {
   console.log(token);
   try{
-    const response = await gypsy.get('/client', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
+    let response;
+    if(token) {
+      response = await gypsy.get('/client', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+    } else {
+      const token = resolveToken();
+      response = await gypsy.get('/client', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+    }
     dispatch({
       type: "set_user",
       payload: response.data.user

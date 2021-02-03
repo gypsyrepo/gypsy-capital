@@ -14,7 +14,7 @@ const OtpVerify = () => {
   const [validationErr, setValidationErr] = useState(null);
 
   const { 
-      state: { error, loading, message }, 
+      state: { error, loading, message, user }, 
       verifyOtp, 
       getActiveUser, 
       resendOtp 
@@ -36,7 +36,7 @@ const OtpVerify = () => {
     if(!otp) {
       setValidationErr('You need to enter your otp to verify your account')
     } else {
-      verifyOtp(otp, getActiveUser);
+      verifyOtp(otp, user.phoneNumber, getActiveUser);
     }
   }
 
