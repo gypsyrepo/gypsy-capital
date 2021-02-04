@@ -30,7 +30,7 @@ const registerUser = (dispatch) => async(data, callback) => {
   dispatch({ type: 'set_error', payload: null });
   try {
     const response = await gypsy.post('/client/signup', data);
-    console.log(response.data);
+    // console.log(response.data);
     const token = response.data.token;
     dispatch({
       type: 'signin',
@@ -42,16 +42,31 @@ const registerUser = (dispatch) => async(data, callback) => {
     dispatch({ type: "loading_state", payload: false });
     history.push(pageUrl.VERIFY_OTP_PAGE);
   } catch(err) {
-    console.log(err)
-    dispatch({
-      type: 'set_error',
-      payload: 'err.message'
-    })
+    if(err.response) {
+      // console.log(err.response.data);
+      if(err.response.data.message) {
+        dispatch({
+          type: 'set_error',
+          payload: err.response.data.message
+        })
+      } else if(err.response.data.error) {
+        const errorMessage = err.response.data.error;
+        if(errorMessage.includes('duplicate key')) {
+          if(errorMessage.includes('phoneNumber')) {
+            dispatch({ type: 'set_error', payload: "This Phone Number already exist"})
+          }
+          if(errorMessage.includes('email')) {
+            dispatch({ type: 'set_error', payload: "This Email already exist"})
+          }
+        }
+      }
+    }
     dispatch({ type: "loading_state", payload: false });
   }
 }
 
 const loginUser = (dispatch) => async({email, password}, callback) => {
+  dispatch({ type: 'set_error', payload: null })
   dispatch({ type: "loading_state", payload: true });
   try {
     const response = await gypsy.post('/client/signin', { email, password });
@@ -66,11 +81,13 @@ const loginUser = (dispatch) => async({email, password}, callback) => {
     dispatch({ type: "loading_state", payload: false });
     history.push(pageUrl.DASHBOARD_HOMEPAGE);
   } catch(err) {
-    console.log(err)
-    dispatch({
-      type: 'set_error',
-      payload: 'err.message'
-    })
+    if(err.response) {
+      // console.log(err.response.data.message);
+      dispatch({
+        type: 'set_error',
+        payload: err.response.data.message
+      })
+    }
     dispatch({ type: "loading_state", payload: false });
   }
 }
@@ -92,10 +109,13 @@ const verifyOtp = (dispatch) => async(otp, phoneNo, callback) => {
     dispatch({ type: "loading_state", payload: false })
     history.push(pageUrl.PROFILE_PAGE);
   } catch(err) {
-    dispatch({
-      type: 'set_error',
-      payload: 'err.message'
-    })
+    if(err.response) {
+      // console.log(err.response.data);
+      dispatch({
+        type: 'set_error',
+        payload: err.response.data.error
+      })
+    }
     dispatch({ type: "loading_state", payload: false })
   }
 }
@@ -147,11 +167,22 @@ const getActiveUser = (dispatch) => async(token) => {
       payload: response.data.user
     })
   } catch(err) {
-    dispatch({
-      type: "set_error",
-      payload: err.message
-    })
+    if(err.response) {
+      // console.log(err.response.data.message);
+      dispatch({
+        type: 'set_error',
+        payload: err.response.data.message
+      })
+    }
   }
+}
+
+
+const clearErrors = dispatch => () => {
+  dispatch({
+    type: 'set_error',
+    payload: null
+  })
 }
 
 
@@ -171,7 +202,7 @@ const saveUserState = (state) => {
 
 export const { Context, Provider } = createDataContext(
   authReducer,
-  { loginUser, registerUser, getActiveUser, verifyOtp, resendOtp, logout },
+  { loginUser, registerUser, getActiveUser, verifyOtp, resendOtp, logout, clearErrors },
   { user: null, token: null, loggedIn: false, loading: false, error: null, message: null },
   true,
   saveUserState

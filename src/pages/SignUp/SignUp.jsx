@@ -12,7 +12,12 @@ import { ToastContainer, toast } from 'react-toastify';
 
 const SignUp = () => {
 
-  const { state: { loading, error }, registerUser, getActiveUser } = useContext(AuthContext);
+  const { 
+    state: { loading, error }, 
+    registerUser, 
+    getActiveUser, 
+    clearErrors 
+  } = useContext(AuthContext);
 
   const [signUpValues, setSignUpvalues] = useState({
     firstName: '',
@@ -36,7 +41,8 @@ const SignUp = () => {
 
   useEffect(() => {
     if(error) {
-      toast.error("An error ocurred, try signing in again");
+      toast.error(error);
+      clearErrors();
     }
   }, [error])
 
@@ -91,7 +97,6 @@ const SignUp = () => {
   }
 
   const handleSubmit = () => {
-    console.log(signUpValues);
     const validated = validateInput();
     const signUpData = {
       email: signUpValues.email,
@@ -101,7 +106,7 @@ const SignUp = () => {
       password: signUpValues.password,
       hearAboutUs: signUpValues.referralChoice,
     }
-    console.log(signUpData);
+    // console.log(signUpData);
     if(validated) {
       registerUser(signUpData, getActiveUser);
     }
@@ -206,8 +211,17 @@ const SignUp = () => {
             />
           </Col>
         </Row>
-        <Button className="mt-5" fullWidth clicked={handleSubmit} bgColor="#741763" size="lg" color="#EBEBEB">
-          { loading ? 'Loading...' : 'Sign Up' }
+        <Button 
+          className={ loading ? [styles.loadingBtn, "mt-5"].join(' ') : "mt-5" } 
+          fullWidth 
+          clicked={handleSubmit} 
+          bgColor="#741763" 
+          size="lg" 
+          color="#EBEBEB"
+          disabled={loading}
+          loading={loading}
+        >
+          Sign Up
         </Button>
         <p className={[styles.authLink, 'mt-3'].join(' ')}>
           Already have an account? <Link to={pageUrl.SIGNIN_PAGE}>Log in</Link>

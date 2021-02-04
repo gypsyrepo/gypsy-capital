@@ -7,15 +7,24 @@ import Button from '../../components/Button/Button';
 import pageUrl from '../../routes/pageUrl';
 import { Link } from 'react-router-dom';
 import { Context as AuthContext } from '../../context/AuthContext';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const SignIn = () => {
 
-  const { state: { loading }, loginUser, getActiveUser } = useContext(AuthContext);
+  const { 
+      state: { loading, error }, 
+      loginUser, 
+      getActiveUser, 
+      clearErrors 
+  } = useContext(AuthContext);
 
-  // useEffect(() => {
-  //   console.log(state)
-  // }, [state])
+  useEffect(() => {
+    if(error) {
+      toast.error(error);
+      clearErrors();
+    }
+  }, [error])
 
   const [signinValues, setSigninValues] = useState({
     email: '',
@@ -29,6 +38,7 @@ const SignIn = () => {
 
   return (
     <div className={styles.container}>
+      <ToastContainer position="top-center" />
       <img src={Logo} alt="Gypsy Logo" />
       <h1>Login to your account</h1>
       <div className={styles.loginBox}>
@@ -55,8 +65,17 @@ const SignIn = () => {
           </Col>
         </Row>
         <p className={styles.resetPassword}>Forgot password?</p>
-        <Button clicked={handleSubmit} fullWidth className="mt-4" bgColor="#741763" size="lg" color="#EBEBEB">
-          { loading ? 'Loading' : 'Log In' }
+        <Button 
+          clicked={handleSubmit} 
+          fullWidth 
+          className="mt-4" 
+          bgColor="#741763" 
+          size="lg" 
+          color="#EBEBEB"
+          disabled={loading}
+          loading={loading}
+        >
+          Login
         </Button>
         <p className={[styles.authLink, 'mt-3'].join(' ')}>
           Don’t have an account? <Link to={pageUrl.SIGNUP_PAGE}>Register</Link>

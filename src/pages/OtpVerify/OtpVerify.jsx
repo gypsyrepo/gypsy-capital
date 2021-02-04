@@ -17,12 +17,14 @@ const OtpVerify = () => {
       state: { error, loading, message, user }, 
       verifyOtp, 
       getActiveUser, 
-      resendOtp 
+      resendOtp,
+      clearErrors 
   } = useContext(AuthContext);
 
   useEffect(() => {
     if(error) {
-      toast.error("You are entering a wrong OTP");
+      toast.error(error);
+      clearErrors();
     }
   }, [error])
 
@@ -66,8 +68,17 @@ const OtpVerify = () => {
             />
           </Col>
         </Row>
-        <Button clicked={handleSubmit} fullWidth className="mt-4" bgColor="#741763" size="lg" color="#EBEBEB">
-          { loading ? 'Loading...' : 'Verify Code' }
+        <Button 
+          clicked={handleSubmit} 
+          fullWidth 
+          className="mt-4" 
+          bgColor="#741763" 
+          size="lg" 
+          color="#EBEBEB"
+          disabled={loading}
+          loading={loading}
+        >
+          Verify Code
         </Button>
         <p className={[styles.authLink, 'mt-3'].join(' ')}>
           Didn’t receive code? <Link onClick={resendCode}>Resend OTP</Link>
