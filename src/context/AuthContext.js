@@ -1,4 +1,4 @@
-import createDataContext from './createDataContext';
+import createPersistDataContext from './createPersistDataContext';
 import gypsy from  '../api/gypsy-web';
 import resolveToken from '../utils/resolveToken';
 import history from '../utils/history';
@@ -200,7 +200,7 @@ const saveUserState = (state) => {
   localStorage.setItem('gypsy', JSON.stringify(userData))
 }
 
-export const { Context, Provider } = createDataContext(
+export const { Context, Provider } = createPersistDataContext(
   authReducer,
   { loginUser, registerUser, getActiveUser, verifyOtp, resendOtp, logout, clearErrors },
   { user: null, token: null, loggedIn: false, loading: false, error: null, message: null },
