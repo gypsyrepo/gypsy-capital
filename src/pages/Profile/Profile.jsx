@@ -15,6 +15,7 @@ import FileUploadButton from '../../components/FileUploadButton/FileUploadButton
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
+import PersonalForm from '../../components/PersonalForm/PersonalForm';
 
 
 const BvnForm = ({ submit }) => {
@@ -49,296 +50,6 @@ const BvnForm = ({ submit }) => {
         Verify
       </Button>
       <p className={styles.extraTip}>To get your BVN, <span>Dial *565*0#</span></p>
-    </div>
-  )
-}
-
-
-const PersonalInfoForm = () => {
-
-  const { state: { user } } = useContext(AuthContext);
-
-  const [biodata, setBiodata] = useState({
-    fullName: '',
-    dateOfBirth: '',
-    bvnPhoneNo: '',
-    email: '',
-    phoneNo: '',
-    altPhone: '',
-    gender: ''
-  });
-  const [biodataErrors, setBiodataErrors] = useState({
-    fullName: null,
-    dateOfBirth: null,
-    bvnPhoneNo: null,
-    email: null,
-    phoneNo: null,
-    altPhone: null,
-    gender: null
-  });
-  const [residentialInfo, setResidentialInfo] = useState({
-    street: '',
-    city: '',
-    state: ''
-  });
-  const [residentialErrors, setResidentialErrors] = useState({
-    street: null,
-    city: null,
-    state: null
-  })
-  const [kinInfo, setKinInfo] = useState({
-    fullName: '',
-    relationship: '',
-    emailAddress: '',
-    phoneNo: '',
-    address: ''
-  });
-  const [kinErrors, setKinErrors] = useState({
-    fullName: null,
-    relationship: null,
-    emailAddress: null,
-    phoneNo: null,
-    address: null
-  });
-  const [bankInfo, setBankInfo] = useState({
-    bankName: '',
-    accountType: '',
-    accountNumber: '',
-    accountName: ''
-  });
-  const [bankInfoErrors, setBankInfoErrors] = useState({
-    bankName: null,
-    accountType: null,
-    accountNumber: null,
-    accountName: null
-  })
-
-
-  useEffect(() => {
-    if(user) {
-      setBiodata({ ...biodata, 
-        fullName: `${user.firstName} ${user.lastName}`,
-        email: user.email,
-        phoneNo: user.phoneNumber
-      })
-    }
-  }, [user])
-
-  return (
-    <div className={styles.personalInfo}>
-      <div className={styles.biodata}>
-        <h3>Biodata Information</h3>
-        <Row className="mb-4">
-          <Col>
-            <InputField 
-              label="Full name"
-              type="text"
-              nameAttr="fullname"
-              value={biodata.fullName}
-              changed={(val) => setBiodata({...biodata, fullName: val})}
-            />
-          </Col>
-          <Col>
-            <InputField 
-              label="Date of Birth"
-              type="text"
-              nameAttr="dob"
-              value={biodata.dateOfBirth}
-              changed={(val) => setBiodata({...biodata, dateOfBirth: val})}
-            />
-          </Col>
-        </Row>
-        <Row className="mb-4">
-          <Col>
-            <InputField 
-              label="BVN-linked Phone Number"
-              type="text"
-              nameAttr="bvnPhoneNo"
-              value={biodata.bvnPhoneNo}
-              changed={(val) => setBiodata({...biodata, bvnPhoneNo: val})}
-            />
-          </Col>
-          <Col>
-            <InputField 
-              label="Email"
-              type="email"
-              nameAttr="email"
-              value={biodata.email}
-              changed={(val) => setBiodata({...biodata, email: val})}
-            />
-          </Col>
-        </Row>
-        <Row className="mb-4">
-          <Col>
-            <InputField 
-              label="Phone Number"
-              type="text"
-              nameAttr="PhoneNo"
-              value={biodata.phoneNo}
-              changed={(val) => setBiodata({...biodata, phoneNo: val})}
-            />
-          </Col>
-          <Col>
-            <InputField 
-              label="Alternative Phone Number"
-              type="text"
-              nameAttr="altPhoneNo"
-              value={biodata.altPhone}
-              changed={(val) => setBiodata({ ...biodata, altPhone: val})}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <InputField 
-              label="Gender"
-              type="select"
-              options={['Female', 'Male', 'Other']}
-              nameAttr="gender"
-              value={biodata.gender}
-              changed={(val) => setBiodata({...biodata, gender: val})}
-            />
-          </Col>
-        </Row>
-      </div>
-      <div className={styles.residentialInfo}>
-        <h3>Residential Address</h3>
-        <Row className="mb-4">
-          <Col>
-            <InputField 
-              label="Street"
-              type="text"
-              nameAttr="residentStreet"
-              value={residentialInfo.street}
-              changed={(val) => setResidentialInfo({...residentialInfo, street: val})}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <InputField 
-              label="City"
-              type="text"
-              nameAttr="city"
-              value={residentialInfo.city}
-              changed={(val) => setResidentialInfo({...residentialInfo, city: val})}
-            />
-          </Col>
-          <Col>
-            <InputField 
-              label="State"
-              type="select"
-              options={['Oyo', 'Lagos']}
-              nameAttr="state"
-              value={residentialInfo.state}
-              changed={(val) => setResidentialInfo({...residentialInfo, state: val})}
-            />
-          </Col>
-        </Row>
-      </div>
-      <div className={styles.kinInfo}>
-        <h3>Next of Kin Information</h3>
-        <Row className="mb-4">
-          <Col>
-            <InputField 
-              label="Full name"
-              type="text"
-              nameAttr="kinFullname"
-              value={kinInfo.fullName}
-              changed={(val) => setKinInfo({...kinInfo, fullName: val})}
-            />
-          </Col>
-          <Col>
-            <InputField 
-              label="Relationship"
-              type="text"
-              nameAttr="kinRelationship"
-              value={kinInfo.relationship}
-              changed={(val) => setKinInfo({...kinInfo, relationship: val})}
-            />
-          </Col>
-        </Row>
-        <Row className="mb-4">
-          <Col>
-            <InputField 
-              label="Email Address"
-              type="email"
-              nameAttr="kinEmail"
-              value={kinInfo.emailAddress}
-              changed={(val) => setKinInfo({...kinInfo, emailAddress: val})}
-            />
-          </Col>
-          <Col>
-            <InputField 
-              label="Phone Number"
-              type="text"
-              nameAttr="kinPhone"
-              value={kinInfo.phoneNo}
-              changed={(val) => setKinInfo({...kinInfo, phoneNo: val})}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <InputField 
-              label="Residential Address"
-              type="text"
-              nameAttr="kinAddress"
-              placeholder="Street address to the nearest bus stop"
-              value={kinInfo.address}
-              changed={(val) => setKinInfo({...kinInfo, address: val})}
-            />
-          </Col>
-        </Row>
-      </div>
-      <div className={styles.bankInfo}>
-        <h3>Bank Information</h3>
-        <p>Please provide a bank account where we can send your investment proceeds or loan requests to.</p>
-        <Row className="mb-4">
-          <Col>
-            <InputField 
-              type="text"
-              label="Bank"
-              nameAttr="bank"
-              value={bankInfo.bankName}
-              changed={(val) => setBankInfo({...bankInfo, bankName: val})}
-            />
-          </Col>
-          <Col>
-            <InputField 
-              label="Account Type"
-              type="select"
-              options={["Savings", "Current"]}
-              nameAttr="acountType"
-              value={bankInfo.accountType}
-              changed={(val) => setBankInfo({...bankInfo, accountType: val})}
-            />
-          </Col>
-        </Row>
-        <Row className="mb-4">
-          <Col>
-            <InputField 
-              type="text"
-              label="Account Number"
-              nameAttr="accountNo"
-              value={bankInfo.accountNumber}
-              changed={(val) => setBankInfo({...bankInfo, accountNumber: val})}
-            />
-          </Col>
-          <Col>
-            <InputField 
-              label="Account Name"
-              type="text"
-              nameAttr="accountName"
-              value={bankInfo.accountName}
-              changed={(val) => setBankInfo({ ...bankInfo, accountName: val })}
-            />
-          </Col>
-        </Row>
-      </div>
-      <Button className="mt-4" fullWidth bgColor="#741763" size="lg" color="#EBEBEB">
-        Save & Continue
-      </Button>
     </div>
   )
 }
@@ -379,11 +90,25 @@ const Profile = ({ location }) => {
   ]
 
   const { 
-    state: { loading, error, bvnVerified }, 
+    state: { loading, error, bvnVerified, userDetails }, 
     verifyBvn, 
-    clearErrors 
+    clearErrors,
+    getClientDetails 
   } = useContext(UserContext);
   const { state: { user }, getActiveUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    getClientDetails(user.user_id);
+  }, [])
+
+  useEffect(() => {
+    if(userDetails) {
+      const { bioData } = userDetails;
+      if(bioData.BVN) {
+        setSetupStage(1);
+      }
+    }
+  }, [userDetails])
 
   useEffect(() => {
     if(error) {
@@ -597,13 +322,17 @@ const Profile = ({ location }) => {
     if(setupStage === 0) {
       return <BvnForm submit={submitBvn} />
     } else if (setupStage === 1) {
-      return <PersonalInfoForm />
+      return <PersonalForm userData={userDetails.bioData} />
     } else if(setupStage === 2) {
       return <IdentityForm />
     } else if(setupStage === 3) {
       return <CompleteStage />
     }
   }, [setupStage])
+
+  if(!userDetails) {
+    return null;
+  }
 
   return(
     <Dashboard sidebarRoutes={sidebarRoutes} location={location}>

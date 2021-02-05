@@ -7,6 +7,8 @@
     justify-content: space-between;
     padding: 20px 60px;
     height: 100px;
+    position: relative;
+    z-index: 10;
     .navGroup {
         display: flex;
         align-items: center;

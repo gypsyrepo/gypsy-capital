@@ -149,19 +149,20 @@ const getActiveUser = (dispatch) => async(token) => {
   try{
     let response;
     if(token) {
-      response = await gypsy.get('/client', {
+      response = await gypsy.get('/user/unbox', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       })
     } else {
       const token = resolveToken();
-      response = await gypsy.get('/client', {
+      response = await gypsy.get('/user/unbox', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       })
     }
+    console.log(response.data);
     dispatch({
       type: "set_user",
       payload: response.data.user

@@ -8,6 +8,7 @@ import OtpVerify from './OtpVerify/OtpVerify';
 import HomePage from './HomePage/HomePage';
 import Products from './Products/Products';
 import AboutUs from './AboutUs/AboutUs';
+import ContactPage from './ContactPage/ContactPage';
 
 
 export {
@@ -20,5 +21,6 @@ export {
   OtpVerify,
   HomePage,
   Products,
-  AboutUs
+  AboutUs,
+  ContactPage
 }

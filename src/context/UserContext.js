@@ -9,6 +9,8 @@ const userReducer = (state, action) => {
       return { ...state, loading: action.payload }
     case 'verify_bvn':
       return { ...state, bvnVerified: action.payload }
+    case 'set_user_details':
+      return { ...state, userDetails: action.payload }
     case 'set_error':
       return { ...state, error: action.payload }
     default:
@@ -69,6 +71,28 @@ const verifyBvn = dispatch => async(userId, bvn, callback) => {
   }
 }
 
+const getClientDetails = dispatch => async(userId) => {
+  try {
+    const token = resolveToken();
+    const response = await gypsy.get(`/client/details/${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    console.log(response.data.data)
+    dispatch({ type: 'set_user_details', payload: response.data.data });
+    console.log(response.data);
+  } catch(err) {
+    if(err.response) {
+      console.log(err.response)
+      dispatch({
+        type: 'set_error',
+        payload: err.response.error
+      })
+    }
+  }
+}
+
 const clearErrors = dispatch => () => {
   dispatch({
     type: 'set_error',
@@ -78,6 +102,6 @@ const clearErrors = dispatch => () => {
 
 export const { Context, Provider } = createDataContext(
   userReducer,
-  { completeSetup, verifyBvn, clearErrors },
-  { loading: false, error: null, bvnVerified: false }
+  { completeSetup, verifyBvn, clearErrors, getClientDetails },
+  { loading: false, error: null, bvnVerified: false, userDetails: null }
 )
