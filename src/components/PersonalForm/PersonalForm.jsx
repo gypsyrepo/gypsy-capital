@@ -9,7 +9,7 @@ import nigeriaStates from '../../utils/nigeriaStates';
 import { Context as BankContext } from '../../context/BankCotext';
 
 
-const PersonalForm = () => {
+const PersonalForm = ({ submit }) => {
 
   const { 
     state: { bankList, userBankDetails }, 
@@ -146,7 +146,9 @@ const PersonalForm = () => {
     const validatedResidence = validateInput(residentialInfo, setResidentialErrors);
     const validatedKinInfo = validateInput(kinInfo, setKinErrors)
     const validatedBankInfo = validateInput(bankInfo, setBankInfoErrors)
-    console.log(validatedBiodata, validatedKinInfo, validatedResidence, validatedBankInfo);
+    if(validatedBiodata && validatedResidence && validatedKinInfo && validatedBankInfo) {
+      submit(biodata, residentialInfo, kinInfo, bankInfo)
+    }
   }
 
 

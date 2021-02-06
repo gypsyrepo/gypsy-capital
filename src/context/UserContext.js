@@ -19,16 +19,20 @@ const userReducer = (state, action) => {
 }
 
 
-const completeSetup = dispatch => async(userId, updateData) => {
+const completeSetup = dispatch => async(userId, updateData, callback) => {
   dispatch({ type: 'set_error', payload: null });
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
-    await gypsy.patch(`/client_details/${userId}`, updateData, {
+    const response = await gypsy.patch(`/client_details/${userId}`, updateData, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
+    console.log(response.data);
+    if(callback) {
+      callback();
+    }
     dispatch({ type: "set_loading", payload: false });
   } catch(err) {  
     dispatch({

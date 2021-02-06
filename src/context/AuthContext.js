@@ -206,5 +206,6 @@ export const { Context, Provider } = createPersistDataContext(
   { loginUser, registerUser, getActiveUser, verifyOtp, resendOtp, logout, clearErrors },
   { user: null, token: null, loggedIn: false, loading: false, error: null, message: null },
   true,
-  saveUserState
+  saveUserState,
+  'local'
 )

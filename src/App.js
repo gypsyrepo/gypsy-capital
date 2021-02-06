@@ -5,6 +5,7 @@ import { SignUp, SignIn, Profile, CreditReport, Overview, ConsumerCredit, OtpVer
 import { Provider as AuthProvider } from './context/AuthContext';
 import { Provider as UserProvider } from './context/UserContext';
 import { Provider as BankProvider } from './context/BankCotext';
+import { Provider as ProfileStageProvider } from './context/ProfileStageContext';
 import ProtectedRoute from './routes/protectedroute/ProtectedRoute';
 import history from './utils/history';
 
@@ -35,7 +36,9 @@ const App = () => {
     <AuthProvider>
       <UserProvider>
         <BankProvider>
-          <RouteManager />
+          <ProfileStageProvider>
+            <RouteManager />
+          </ProfileStageProvider>
         </BankProvider>
       </UserProvider>
     </AuthProvider>

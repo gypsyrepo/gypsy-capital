@@ -17,20 +17,24 @@ import { ToastContainer, toast } from 'react-toastify';
 import PersonalForm from '../../components/PersonalForm/PersonalForm';
 import BvnForm from '../../components/BvnForm/BvnForm';
 import IdentityForm from '../../components/IdentityForm/IdentityForm';
-
+import { Context as ProfileStageContext } from '../../context/ProfileStageContext';
+import useCloudinary from '../../hooks/useCloudinary';
 
 
 
 const Profile = ({ location }) => {
 
-  const stages = {
-    0: "bvnVerification",
-    1: "personalInformation",
-    2: "identity",
-    3: "complete"
-  }
-  const [setupStage, setSetupStage] = useState(0);
+  const { 
+    state: { profileStage, userVerifyData }, 
+    incrementStage,
+    setVerifyData 
+  } = useContext(ProfileStageContext);
+  const [setupStage, setSetupStage] = useState();
   const [setupComplete, setSetupComplete] = useState(false);
+
+  useEffect(() => {
+    setSetupStage(profileStage);
+  }, [profileStage])
 
   const sidebarRoutes = [
     {
@@ -59,16 +63,17 @@ const Profile = ({ location }) => {
     state: { loading, error, bvnVerified, userDetails }, 
     verifyBvn, 
     clearErrors,
-    getClientDetails 
+    getClientDetails,
+    completeSetup
   } = useContext(UserContext);
   const { state: { user }, getActiveUser } = useContext(AuthContext);
 
-  const [verificationData, setVerificationData] = useState({
-    biodata: null,
-    residence: null,
-    kinInfo: null,
-    bankInfo: null
-  })
+  const [verificationData, setVerificationData] = useState(null);
+  
+  useEffect(() => {
+    // console.log(userVerifyData);
+    setVerificationData(userVerifyData);
+  }, [userVerifyData]);
 
   useEffect(() => {
     getClientDetails(user.user_id);
@@ -76,9 +81,11 @@ const Profile = ({ location }) => {
 
   useEffect(() => {
     if(userDetails) {
-      const { bioData } = userDetails;
-      if(bioData.BVN) {
-        setSetupStage(1);
+      const { bioData, identity } = userDetails;
+      if(bioData.BVN && (profileStage < 2 || !profileStage )) {
+        incrementStage(1)
+      } else if(identity.identityType) {
+        incrementStage(3)
       }
     }
   }, [userDetails])
@@ -96,10 +103,60 @@ const Profile = ({ location }) => {
     }
   }, [bvnVerified])
 
+
+  const [ handleUpload ] = useCloudinary();
+
   const submitBvn = async(bvn) => {
     await verifyBvn(user.user_id, bvn, getActiveUser);
   }
 
+
+  const submitPersonalInfo = (biodata, residence, kin, bank) => {
+    setVerifyData({biodata, residence, kin, bank});
+    incrementStage(2)
+  }
+
+  
+  const submitIdentityInfo = async(idRef, passportRef, idType) => {
+    // console.log(idRef, idType, passportRef);
+    const { secure_url: idUrl } = await handleUpload(idRef);
+    const { secure_url: passportUrl } = await handleUpload(passportRef);
+    // console.log(idUrl, passportCloudRef);
+    // console.log(userVerifyData);
+    const { 
+      biodata: { altPhone, gender }, 
+      bank: { accountName, accountNumber, accountType, bankName }, 
+      kin: { address, email, fullName, phoneNo, relationship }, 
+      residence: { city, state, street } 
+    } = userVerifyData;
+    const data = {
+      alternativePhoneNumber: altPhone,
+      gender,
+      residence_street: street,
+      residence_city: city,
+      residence_state: state,
+      nextOfKin_fullName: fullName,
+      nextOfKin_relationship: relationship,
+      nextOfKin_email: email,
+      nextOfKin_phoneNumber: phoneNo,
+      nextOfKin_residentialAddress: address,
+      bank_name: bankName,
+      bank_accountType: accountType,
+      bank_accountNumber: accountNumber,
+      bank_accountName: accountName,
+      identity_type: idType,
+      identity_imageUrl: idUrl,
+      identity_profilePhoto: passportUrl
+    }
+
+    // console.log(data);
+    await completeSetup(user.user_id, data, getClientDetails(user.user_id));
+  }
+
+
+  useEffect(() => {
+    console.log(verificationData);
+  }, [verificationData])
   
 
   const CompleteStage = () => {
@@ -251,9 +308,9 @@ const Profile = ({ location }) => {
     if(setupStage === 0) {
       return <BvnForm submit={submitBvn} />
     } else if (setupStage === 1) {
-      return <PersonalForm />
+      return <PersonalForm submit={submitPersonalInfo} />
     } else if(setupStage === 2) {
-      return <IdentityForm />
+      return <IdentityForm submit={submitIdentityInfo} />
     } else if(setupStage === 3) {
       return <CompleteStage />
     }

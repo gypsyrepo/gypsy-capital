@@ -6,12 +6,19 @@ import FileUploadButton from '../FileUploadButton/FileUploadButton';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 
 
-const IdentityForm = () => {
+const IdentityForm = ({ submit }) => {
 
   const idFileRef = useRef();
   const passportFileRef= useRef();
 
   const [idType, setIdType] = useState('');
+
+  const handleSubmit = () => {
+    const idFile = idFileRef.current.files[0];
+    const passportFile = passportFileRef.current.files[0]
+    console.log(idFile, passportFile);
+    submit(idFile, passportFile, idType)
+  }
 
   return (
     <div className={styles.identityForm}>
@@ -43,7 +50,14 @@ const IdentityForm = () => {
           fileRef={passportFileRef}
         />
       </div>
-      <Button className="mt-4" fullWidth  bgColor="#741763" size="lg" color="#EBEBEB">
+      <Button 
+        className="mt-4" 
+        fullWidth  
+        bgColor="#741763" 
+        size="lg" 
+        color="#EBEBEB"
+        clicked={handleSubmit}
+      >
         Save & Continue
       </Button>
       <p className={styles.extraTip}>Maximum file size accepted: <span>2mb</span></p>
