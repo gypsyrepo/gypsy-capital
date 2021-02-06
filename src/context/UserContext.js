@@ -62,10 +62,19 @@ const verifyBvn = dispatch => async(userId, bvn, callback) => {
   } catch(err) {
     if(err.response) {
       console.log(err.response.data);
-      dispatch({
-        type: 'set_error',
-        payload: err.response.data.message
-      })
+      if(err.response.data.error){
+        if(err.response.data.error.includes('duplicate key')) {
+          dispatch({
+            type: 'set_error',
+            payload: "This BVN already exists in our system"
+          })
+        }
+      } else {
+        dispatch({
+          type: 'set_error',
+          payload: err.response.data.message
+        })
+      }
     }
     dispatch({ type: "set_loading", payload: false })
   }
@@ -85,6 +94,9 @@ const getClientDetails = dispatch => async(userId) => {
   } catch(err) {
     if(err.response) {
       console.log(err.response)
+      const { error } = err.response.data
+      console.log(error)
+      // if()
       dispatch({
         type: 'set_error',
         payload: err.response.error

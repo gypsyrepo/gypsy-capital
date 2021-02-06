@@ -1,13 +1,40 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useMemo } from 'react';
 import styles from './PersonalForm.module.scss';
 import { Row, Col } from 'react-bootstrap';
 import { Context as AuthContext } from '../../context/AuthContext';
 import InputField from '../InputField/InputField';
 import Button from '../Button/Button';
+import { Context as UserContext } from '../../context/UserContext';
+import nigeriaStates from '../../utils/nigeriaStates';
+import { Context as BankContext } from '../../context/BankCotext';
 
-const PersonalForm = ({ userData }) => {
 
+const PersonalForm = () => {
+
+  const { 
+    state: { bankList, userBankDetails }, 
+    getBankList, 
+    verifyBankInfo,
+  } = useContext(BankContext);
   const { state: { user } } = useContext(AuthContext);
+  const {
+    state: { userDetails },
+    getClientDetails
+  } = useContext(UserContext);
+
+  useEffect(() => {
+    (async() => {
+      await getClientDetails(user.user_id);
+      await getBankList();
+    })()
+  }, [])
+ 
+  const bankNames = useMemo(() => {
+    return bankList ? 
+      bankList.map((bank) => bank.name) :
+      []
+  }, [bankList])
+
 
   const [biodata, setBiodata] = useState({
     fullName: '',
@@ -64,6 +91,15 @@ const PersonalForm = ({ userData }) => {
     accountName: null
   })
 
+  useEffect(() => {
+    if(bankInfo.accountNumber.length === 10 && bankInfo.bankName) {
+      const bank = bankList.find(bank => bank.name.toLowerCase() === bankInfo.bankName);
+      const bankCode = bank.code;
+      console.log(bankCode)
+      verifyBankInfo(bankInfo.accountNumber, bankCode)
+    }
+  }, [bankInfo.accountNumber, bankInfo.bankName])
+
 
   const validateInput = (inputValues, errorSetter) => {
 
@@ -97,6 +133,14 @@ const PersonalForm = ({ userData }) => {
   }
 
 
+  useEffect(() => {
+    console.log(userBankDetails);
+    if(userBankDetails) {
+      setBankInfo({ ...bankInfo, accountName: userBankDetails.account_name })
+    }
+  }, [userBankDetails]);
+
+
   const handleSubmit = () => {
     const validatedBiodata = validateInput(biodata, setBiodataErrors);
     const validatedResidence = validateInput(residentialInfo, setResidentialErrors);
@@ -107,16 +151,22 @@ const PersonalForm = ({ userData }) => {
 
 
   useEffect(() => {
-    if(user) {
+    if(user && userDetails) {
+      const { bioData } = userDetails;
       setBiodata({ ...biodata, 
         fullName: `${user.firstName} ${user.lastName}`,
         email: user.email,
-        phoneNo: user.phoneNumber,
-        dateOfBirth: userData.DOB,
-        bvnPhoneNo: userData.bvnPhoneNumber
+        phoneNo: user.phoneNumber.replace('234', '0'),
+        dateOfBirth: bioData.DOB,
+        bvnPhoneNo: bioData.bvnPhoneNumber
       })
     }
-  }, [user])
+  }, [user, userDetails])
+
+  if(!userDetails) {
+    return null
+  }
+
   return (
     <div className={styles.personalInfo}>
       <div className={styles.biodata}>
@@ -257,7 +307,7 @@ const PersonalForm = ({ userData }) => {
             <InputField 
               label="State"
               type="select"
-              options={['Oyo', 'Lagos']}
+              options={nigeriaStates}
               nameAttr="state"
               value={residentialInfo.state}
               changed={(val) => {
@@ -350,8 +400,9 @@ const PersonalForm = ({ userData }) => {
         <Row className="mb-4">
           <Col>
             <InputField 
-              type="text"
+              type="select"
               label="Bank"
+              options={bankNames}
               nameAttr="bank"
               value={bankInfo.bankName}
               changed={(val) => {

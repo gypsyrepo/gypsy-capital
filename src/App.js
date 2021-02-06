@@ -4,6 +4,7 @@ import pageUrl from './routes/pageUrl';
 import { SignUp, SignIn, Profile, CreditReport, Overview, ConsumerCredit, OtpVerify, HomePage, Products, AboutUs, ContactPage } from './pages/pages';
 import { Provider as AuthProvider } from './context/AuthContext';
 import { Provider as UserProvider } from './context/UserContext';
+import { Provider as BankProvider } from './context/BankCotext';
 import ProtectedRoute from './routes/protectedroute/ProtectedRoute';
 import history from './utils/history';
 
@@ -33,7 +34,9 @@ const App = () => {
   return (
     <AuthProvider>
       <UserProvider>
-        <RouteManager />
+        <BankProvider>
+          <RouteManager />
+        </BankProvider>
       </UserProvider>
     </AuthProvider>
   )

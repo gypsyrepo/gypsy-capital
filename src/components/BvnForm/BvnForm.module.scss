@@ -1,0 +1,22 @@
+.bvnFormBox {
+    width: 500px;
+    margin: 0 auto;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    margin-top: 60px;
+    margin-bottom: 70px;
+    padding: 40px 60px;
+    box-shadow: 8px 15px 30px #0000001A;
+    p {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 1.2rem;
+    }
+    .extraTip {
+        font-family: 'Source Sans Pro', sans-serif;
+        margin-top: 5px;
+        font-size: .85rem;
+        span {
+            font-weight: 600;
+        }
+    }
+}

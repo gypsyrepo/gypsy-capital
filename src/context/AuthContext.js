@@ -92,13 +92,13 @@ const loginUser = (dispatch) => async({email, password}, callback) => {
   }
 }
 
-const verifyOtp = (dispatch) => async(otp, phoneNo, callback) => {
+const verifyOtp = (dispatch) => async(otp, email, callback) => {
   dispatch({ type: 'set_error', payload: null })
   dispatch({ type: "loading_state", payload: true})
   const token = resolveToken();
   console.log(token)
   try {
-    await gypsy.post(`/otp/verify/${phoneNo}`, {code: otp}, {
+    await gypsy.post(`/otp/3/verify/${email}`, {code: otp}, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -120,12 +120,12 @@ const verifyOtp = (dispatch) => async(otp, phoneNo, callback) => {
   }
 }
 
-const resendOtp = (dispatch) => async(phoneNo) => {
+const resendOtp = (dispatch) => async(email) => {
   dispatch({ type: 'set_error', payload: null })
   dispatch({ type: "loading_state", payload: true})
   const token = resolveToken();
   try {
-    const response = await gypsy.get(`/otp/${phoneNo}`, {
+    const response = await gypsy.get(`/otp/3/${email}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }

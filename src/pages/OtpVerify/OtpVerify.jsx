@@ -38,19 +38,19 @@ const OtpVerify = () => {
     if(!otp) {
       setValidationErr('You need to enter your otp to verify your account')
     } else {
-      verifyOtp(otp, user.phoneNumber, getActiveUser);
+      verifyOtp(otp, user.email, getActiveUser);
     }
   }
 
   const resendCode = () => {
-    resendOtp();
+    resendOtp(user.email);
   }
 
   return(
     <div className={styles.container}>
       <img src={Logo} alt="Gypsy Logo" />
       <h1>Verify Your Details</h1>
-      <p>Please enter the OTP sent to your mobile number to continue</p>
+      <p>Please enter the OTP sent to your email to continue</p>
       <div className={styles.verifyBox}>
         <ToastContainer position="top-center" />
         <Row>
