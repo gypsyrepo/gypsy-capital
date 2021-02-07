@@ -13,7 +13,8 @@ import {
   Products, 
   AboutUs, 
   ContactPage,
-  LoanCalculator 
+  LoanCalculator,
+  MonoWidget 
 } from './pages/pages';
 import { Provider as AuthProvider } from './context/AuthContext';
 import { Provider as UserProvider } from './context/UserContext';
@@ -34,6 +35,7 @@ const RouteManager = () =>  {
         <Route exact path={pageUrl.VERIFY_OTP_PAGE} component={OtpVerify} />
         <Route exact path={pageUrl.ABOUT_US_PAGE} component={AboutUs} />
         <Route exact path={pageUrl.CONTACT_PAGE} component={ContactPage} />
+        <Route exact path={pageUrl.MONO_WIDGET_PAGE} component={MonoWidget} />
         <Route exact path={pageUrl.LOAN_CALCULATOR_PAGE} component={LoanCalculator} />
         <ProtectedRoute exact path={pageUrl.PROFILE_PAGE} component={Profile} />
         <ProtectedRoute exact path={pageUrl.CREDIT_REPORT_PAGE} component={CreditReport} />
