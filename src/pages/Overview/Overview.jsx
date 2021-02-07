@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './Overview.module.scss';
 import pageUrl from '../../routes/pageUrl';
 import { FiLayers } from 'react-icons/fi';
@@ -12,11 +12,18 @@ import altInvestment from '../../assets/icons/alternative.svg';
 import { Col, Row } from 'react-bootstrap';
 import noLoan from '../../assets/no-loan.png';
 import moment from 'moment';
+import { Context as AuthContext } from '../../context/AuthContext';
 
 
 const Overview = ({ location }) => {
 
   const [loanStatus, setLoanStatus] = useState('pending_approval');
+
+  const { state: { user } } = useContext(AuthContext);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user])
 
   const sidebarRoutes = [
     {
@@ -41,10 +48,14 @@ const Overview = ({ location }) => {
     },
   ]
 
+  if(!user) {
+    return null
+  }
+
   return (
     <Dashboard sidebarRoutes={sidebarRoutes} location={location}>
       <div className={styles.welcomeGroup}>
-        <h2>Hey, Daniel</h2>
+        <h2>Hey, {user.firstName}</h2>
         <p className={styles.currentDate}>Today is {moment().format('dddd Do[,] MMMM')}.</p>
       </div>
       <div className={styles.loanStatus} style={{padding: '30px 40px'}}>

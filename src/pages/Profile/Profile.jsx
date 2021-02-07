@@ -8,15 +8,13 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { GiTakeMyMoney } from 'react-icons/gi';
 import { FaCheckCircle } from 'react-icons/fa';
 import ProgressBar from '../../components/ProgressBar/ProgressBar';
-import InputField from '../../components/InputField/InputField';
-import Button from '../../components/Button/Button';
-import { Row, Col } from 'react-bootstrap';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
 import PersonalForm from '../../components/PersonalForm/PersonalForm';
 import BvnForm from '../../components/BvnForm/BvnForm';
 import IdentityForm from '../../components/IdentityForm/IdentityForm';
+import ProfileView from '../../components/ProfileView/ProfileView';
 
 
 
@@ -174,139 +172,6 @@ const Profile = ({ location }) => {
     )
   }
 
-  const ProfileView = () => {
-
-    const [visibleSection, setVisibleSection] = useState('personalInfo');
-
-    const goToProfileSection = (section) => {
-      console.log('works');
-      setVisibleSection(section);
-    }
-
-    return (
-      <div className={styles.profileBox}>
-        <div className={styles.header}>
-          <Row>
-            <Col 
-              onClick={() => goToProfileSection('personalInfo')} 
-              className={[styles.borderStyle, styles.tabCol].join(' ')}
-            >
-              <p 
-                className={[styles.tabMenu, visibleSection === "personalInfo" && styles.activeTab1].join(' ')}
-              >
-                Personal Information
-              </p>
-            </Col>
-            <Col 
-              onClick={() => goToProfileSection('security')} 
-              className={[styles.borderStyle, styles.tabCol].join(' ')}
-            >
-              <p
-                className={[styles.tabMenu, visibleSection === "security" && styles.activeTab2].join(' ')}
-              >
-                Security
-              </p>
-            </Col>
-            <Col>
-              <p>Payment</p>
-            </Col>
-          </Row>
-        </div>
-        <div className={styles.body}>
-          {visibleSection === "personalInfo" && <div>
-            <Row className="mb-4">
-            <Col>
-              <InputField 
-                label="First Name"
-                type="text"
-                nameAttr="firstName"
-              />
-            </Col> 
-            <Col>
-              <InputField 
-                label="Last Name"
-                type="text"
-                nameAttr="lastName"
-              />
-            </Col> 
-            </Row> 
-            <Row className="mb-4">
-            <Col>
-              <InputField 
-                label="Email"
-                type="email"
-                nameAttr="email"
-              />
-            </Col> 
-            <Col>
-              <InputField 
-                label="Phone Number"
-                type="text"
-                nameAttr="phoneNumber"
-              />
-            </Col> 
-            </Row> 
-            <Row>
-            <Col>
-              <InputField 
-                label="BVN"
-                type="text"
-                nameAttr="bvn"
-              />
-            </Col> 
-            <Col>
-              <InputField 
-                label="Residential Address"
-                type="text"
-                nameAttr="address"
-              />
-            </Col> 
-            </Row> 
-            <Button className="mt-5" fullWidth  bgColor="#741763" size="lg" color="#EBEBEB">
-              Edit Info
-            </Button>
-          </div>}
-          { visibleSection === "security" &&
-            <div className={styles.security}>
-              <h2>CHANGE PASSWORD</h2>
-              <Row className="mb-4">
-                <Col>
-                  <InputField 
-                    type="password"
-                    label="Current Password"
-                    nameAttr="currPassword"
-                  />
-                </Col>
-              </Row>
-              <Row className="mb-4">
-                <Col>
-                  <InputField 
-                    type="password"
-                    label="Current Password"
-                    nameAttr="currPassword"
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <InputField 
-                    type="password"
-                    label="Current Password"
-                    nameAttr="currPassword"
-                  />
-                </Col>
-              </Row>
-            </div>
-          }
-          { visibleSection === "payment" && 
-            <div>
-
-            </div>
-          }
-        </div>
-      </div>
-    )
-  }
 
   const resolveStageView = useMemo(() => {
     if(setupStage === 0) {
