@@ -1,0 +1,28 @@
+:root {
+    --fontColorOne:  #212121;
+    --fontFamilyOne: 'Source Sans Pro';
+    --fontFamilyTwo: 'Kanit';
+    --backgroundOne: ' #F5F5F5';
+}
+
+.calculatorForm {
+    // padding: 36px  40px;
+    // border-radius: 15px;
+    // background-color: #fff;
+    // box-shadow: 8px 15px 30px #0000001A;
+    .inputHint {
+        font-family: var(--fontFamilyOne);
+        font-size: 0.85rem;
+        margin-bottom: 0;
+        margin-top: 3px;
+        span {
+            font-weight: 600;
+            color: #741763;
+        }
+    }
+    .limitError {
+        font-family: var(--fontFamilyOne);
+        font-size: 0.85rem;
+        color: red;
+    }
+}

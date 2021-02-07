@@ -17,7 +17,7 @@ import { Context as AuthContext } from '../../context/AuthContext';
 
 const Overview = ({ location }) => {
 
-  const [loanStatus, setLoanStatus] = useState('pending_approval');
+  const [loanStatus, setLoanStatus] = useState('inactive');
 
   const { state: { user } } = useContext(AuthContext);
 
