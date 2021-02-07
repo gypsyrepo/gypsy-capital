@@ -1,18 +1,59 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import styles from './ProfileView.module.scss';
 import { Row, Col } from 'react-bootstrap';
 import InputField from '../InputField/InputField';
 import Button from '../Button/Button';
-import { BiCreditCard,  } from 'react-icons/bi';
+import { BiCreditCard, BiPlus } from 'react-icons/bi';
 import { RiBankFill } from 'react-icons/ri';
+import { Context as AuthContext } from '../../context/AuthContext';
+import { Context as UserContext } from '../../context/UserContext';
 
 
 const ProfileView = () => {
 
   const [visibleSection, setVisibleSection] = useState('personalInfo');
   const [profileImg, setProfileImg] = useState(null);
+  const [visiblePaymentSection, setVisiblePaymentSection] = useState('card');
+
+  const [profileData, setProfileData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNo: "",
+    bvn: "",
+    residence: ""
+  })
 
   const profilePicRef = useRef();
+
+  const { state: { user } } = useContext(AuthContext);
+  const { 
+    state: { userDetails },
+    getClientDetails, 
+  } = useContext(UserContext);
+
+  useEffect(() => {
+    getClientDetails(user.user_id);
+  }, [])
+
+  useEffect(() => {
+    if(userDetails) {
+      // setProfileData({
+      //   firstName
+      // })
+      console.log(userDetails)
+      const { bioData, identity, residence } = userDetails;
+      setProfileData({
+        firstName: bioData.firstName,
+        lastName: bioData.lastName,
+        email: bioData.email,
+        phoneNo: bioData.phoneNumber.replace('234', '0'),
+        bvn: bioData.BVN,
+        residence: residence.street
+      })
+      setProfileImg(identity.profilePhoto)
+    }
+  }, [userDetails])
 
   const goToProfileSection = (section) => {
     console.log('works');
@@ -58,7 +99,7 @@ const ProfileView = () => {
       <div className={styles.body}>
         {visibleSection === "personalInfo" && <div>
           <div className={styles.profilePictureSection}>
-            { profileImg && <img src="" alt="profile image"/> }
+            { profileImg && <img src={profileImg} alt="profile image"/> }
           </div>
           <div className={styles.uploadBtn}>
             <input type="file" id="profilePic" hidden ref={profilePicRef} />
@@ -74,6 +115,7 @@ const ProfileView = () => {
               label="First Name"
               type="text"
               nameAttr="firstName"
+              value={profileData.firstName}
             />
           </Col> 
           <Col>
@@ -81,6 +123,7 @@ const ProfileView = () => {
               label="Last Name"
               type="text"
               nameAttr="lastName"
+              value={profileData.lastName}
             />
           </Col> 
           </Row> 
@@ -90,6 +133,7 @@ const ProfileView = () => {
               label="Email"
               type="email"
               nameAttr="email"
+              value={profileData.email}
             />
           </Col> 
           <Col>
@@ -97,6 +141,7 @@ const ProfileView = () => {
               label="Phone Number"
               type="text"
               nameAttr="phoneNumber"
+              value={profileData.phoneNo}
             />
           </Col> 
           </Row> 
@@ -106,6 +151,7 @@ const ProfileView = () => {
               label="BVN"
               type="text"
               nameAttr="bvn"
+              value={profileData.bvn}
             />
           </Col> 
           <Col>
@@ -113,6 +159,7 @@ const ProfileView = () => {
               label="Residential Address"
               type="text"
               nameAttr="address"
+              value={profileData.residence}
             />
           </Col> 
           </Row> 
@@ -155,17 +202,28 @@ const ProfileView = () => {
         { visibleSection === "payment" && 
           <div className={styles.payment}>
             <div className={styles.btnGroup}>
-              <button>
+              <button 
+                className={ visiblePaymentSection === 'card' && styles.activeMenu }
+                onClick={() => setVisiblePaymentSection('card')}
+              >
                 <BiCreditCard className={styles.icon} />
                 Card
               </button>
-              <button>
+              <button
+                className={ visiblePaymentSection === 'bank' && styles.activeMenu }
+                onClick={() => setVisiblePaymentSection('bank')}
+              >
                 <RiBankFill className={styles.icon} />
                 Bank
               </button>
             </div>
             <div className={styles.content}>
-              <div></div>
+              { visiblePaymentSection === "card" && <div className={styles.addCard}>
+                <div className={styles.cardInner}>
+                  <BiPlus size="2em" />
+                  <p>Add Card</p>
+                </div>
+              </div> }
             </div>
           </div>
         }
