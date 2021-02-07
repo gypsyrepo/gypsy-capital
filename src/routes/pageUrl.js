@@ -13,6 +13,7 @@ const ABOUT_US_PAGE = '/about-us';
 const CONTACT_PAGE = '/contact-us';
 const LOAN_CALCULATOR_PAGE = '/loan-calculator';
 const SALES_AGENT_OVERVIEW = '/sales-agent/overview';
+const CLIENT_LIST_PAGE = '/sales-agent/clients';
 
 
 const pageUrl = {
@@ -30,7 +31,8 @@ const pageUrl = {
     ABOUT_US_PAGE,
     CONTACT_PAGE,
     LOAN_CALCULATOR_PAGE,
-    SALES_AGENT_OVERVIEW
+    SALES_AGENT_OVERVIEW,
+    CLIENT_LIST_PAGE
 }
 
 export default pageUrl;
