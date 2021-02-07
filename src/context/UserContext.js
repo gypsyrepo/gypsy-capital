@@ -35,6 +35,7 @@ const completeSetup = dispatch => async(userId, updateData, callback) => {
     }
     dispatch({ type: "set_loading", payload: false });
   } catch(err) {  
+    console.log(err.response);
     dispatch({
       type: "set_error",
       payload: err.message

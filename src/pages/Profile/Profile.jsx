@@ -149,7 +149,7 @@ const Profile = ({ location }) => {
       identity_profilePhoto: passportUrl
     }
 
-    // console.log(data);
+    console.log(data);
     await completeSetup(user.user_id, data, getClientDetails(user.user_id));
   }
 

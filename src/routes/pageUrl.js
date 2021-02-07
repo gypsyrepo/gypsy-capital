@@ -11,6 +11,8 @@ const VERIFY_OTP_PAGE = '/verify-otp';
 const PRODUCTS_PAGE = '/products';
 const ABOUT_US_PAGE = '/about-us';
 const CONTACT_PAGE = '/contact-us';
+const LOAN_CALCULATOR_PAGE = '/loan-calculator';
+const SALES_AGENT_OVERVIEW = '/sales-agent/overview';
 
 
 const pageUrl = {
@@ -26,7 +28,9 @@ const pageUrl = {
     VERIFY_OTP_PAGE,
     PRODUCTS_PAGE,
     ABOUT_US_PAGE,
-    CONTACT_PAGE
+    CONTACT_PAGE,
+    LOAN_CALCULATOR_PAGE,
+    SALES_AGENT_OVERVIEW
 }
 
 export default pageUrl;

@@ -1,7 +1,20 @@
 import './App.scss';
 import { Router, Switch, Route } from 'react-router-dom';
 import pageUrl from './routes/pageUrl';
-import { SignUp, SignIn, Profile, CreditReport, Overview, ConsumerCredit, OtpVerify, HomePage, Products, AboutUs, ContactPage } from './pages/pages';
+import { 
+  SignUp, 
+  SignIn, 
+  Profile, 
+  CreditReport, 
+  Overview, 
+  ConsumerCredit, 
+  OtpVerify, 
+  HomePage, 
+  Products, 
+  AboutUs, 
+  ContactPage,
+  LoanCalculator 
+} from './pages/pages';
 import { Provider as AuthProvider } from './context/AuthContext';
 import { Provider as UserProvider } from './context/UserContext';
 import { Provider as BankProvider } from './context/BankCotext';
@@ -22,6 +35,7 @@ const RouteManager = () =>  {
         <Route exact path={pageUrl.VERIFY_OTP_PAGE} component={OtpVerify} />
         <Route exact path={pageUrl.ABOUT_US_PAGE} component={AboutUs} />
         <Route exact path={pageUrl.CONTACT_PAGE} component={ContactPage} />
+        <Route exact path={pageUrl.LOAN_CALCULATOR_PAGE} component={LoanCalculator} />
         <ProtectedRoute exact path={pageUrl.PROFILE_PAGE} component={Profile} />
         <ProtectedRoute exact path={pageUrl.CREDIT_REPORT_PAGE} component={CreditReport} />
         <ProtectedRoute exact path={pageUrl.DASHBOARD_HOMEPAGE} component={Overview} />

@@ -9,6 +9,9 @@ import HomePage from './HomePage/HomePage';
 import Products from './Products/Products';
 import AboutUs from './AboutUs/AboutUs';
 import ContactPage from './ContactPage/ContactPage';
+import LoanCalculator from './LoanCalculator/LoanCalculator';
+import AgentOverview from './AgentOverview/AgentOverview';
+import ClientListPage from './ClientListPage/ClientListPage';
 
 
 export {
@@ -22,5 +25,8 @@ export {
   HomePage,
   Products,
   AboutUs,
-  ContactPage
+  ContactPage,
+  LoanCalculator,
+  AgentOverview,
+  ClientListPage
 }
