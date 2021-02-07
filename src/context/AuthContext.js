@@ -43,7 +43,7 @@ const registerUser = (dispatch) => async(data, callback) => {
     history.push(pageUrl.VERIFY_OTP_PAGE);
   } catch(err) {
     if(err.response) {
-      // console.log(err.response.data);
+      console.log(err.response);
       if(err.response.data.message) {
         dispatch({
           type: 'set_error',
@@ -51,6 +51,7 @@ const registerUser = (dispatch) => async(data, callback) => {
         })
       } else if(err.response.data.error) {
         const errorMessage = err.response.data.error;
+        dispatch({ type: 'set_error', payload: errorMessage })
         if(errorMessage.includes('duplicate key')) {
           if(errorMessage.includes('phoneNumber')) {
             dispatch({ type: 'set_error', payload: "This Phone Number already exist"})
@@ -189,6 +190,7 @@ const clearErrors = dispatch => () => {
 
 const logout = dispatch => () => {
   localStorage.removeItem('gypsy');
+  sessionStorage.removeItem('gypsyUI')
   dispatch({
     type: 'sign_out',
   })

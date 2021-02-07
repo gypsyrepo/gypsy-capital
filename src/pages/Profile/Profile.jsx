@@ -17,24 +17,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import PersonalForm from '../../components/PersonalForm/PersonalForm';
 import BvnForm from '../../components/BvnForm/BvnForm';
 import IdentityForm from '../../components/IdentityForm/IdentityForm';
-import { Context as ProfileStageContext } from '../../context/ProfileStageContext';
-import useCloudinary from '../../hooks/useCloudinary';
 
 
 
 const Profile = ({ location }) => {
 
-  const { 
-    state: { profileStage, userVerifyData }, 
-    incrementStage,
-    setVerifyData 
-  } = useContext(ProfileStageContext);
-  const [setupStage, setSetupStage] = useState();
-  const [setupComplete, setSetupComplete] = useState(false);
 
-  useEffect(() => {
-    setSetupStage(profileStage);
-  }, [profileStage])
+  const [setupStage, setSetupStage] = useState(0);
+  const [setupComplete, setSetupComplete] = useState(false);
 
   const sidebarRoutes = [
     {
@@ -60,20 +50,14 @@ const Profile = ({ location }) => {
   ]
 
   const { 
-    state: { loading, error, bvnVerified, userDetails }, 
+    state: { error, bvnVerified, userDetails, completeState, personalInfoStatus }, 
     verifyBvn, 
     clearErrors,
     getClientDetails,
-    completeSetup
+    updatePersonalInfo,
+    updateIdentityInfo
   } = useContext(UserContext);
   const { state: { user }, getActiveUser } = useContext(AuthContext);
-
-  const [verificationData, setVerificationData] = useState(null);
-  
-  useEffect(() => {
-    // console.log(userVerifyData);
-    setVerificationData(userVerifyData);
-  }, [userVerifyData]);
 
   useEffect(() => {
     getClientDetails(user.user_id);
@@ -81,11 +65,13 @@ const Profile = ({ location }) => {
 
   useEffect(() => {
     if(userDetails) {
-      const { bioData, identity } = userDetails;
-      if(bioData.BVN && (profileStage < 2 || !profileStage )) {
-        incrementStage(1)
-      } else if(identity.identityType) {
-        incrementStage(3)
+      const { bioData, identity, bank } = userDetails;
+      if(identity.identityType) {
+        setSetupComplete(true);
+      } else if(bank.accountName) {
+        setSetupStage(2)
+      } else if(bioData.BVN) {
+        setSetupStage(1)
       }
     }
   }, [userDetails])
@@ -104,31 +90,31 @@ const Profile = ({ location }) => {
   }, [bvnVerified])
 
 
-  const [ handleUpload ] = useCloudinary();
+  useEffect(() => {
+    if(personalInfoStatus) {
+      setSetupStage(2)
+    }
+  }, [personalInfoStatus])
+
+  useEffect(() => {
+    if(completeState) {
+      setSetupStage(3)
+    }
+  }, [completeState])
+
 
   const submitBvn = async(bvn) => {
     await verifyBvn(user.user_id, bvn, getActiveUser);
   }
 
 
-  const submitPersonalInfo = (biodata, residence, kin, bank) => {
-    setVerifyData({biodata, residence, kin, bank});
-    incrementStage(2)
-  }
+  const submitPersonalInfo = async(biodata, residence, kin, bank) => {
+    console.log(biodata, residence, bank, kin);
+    const { altPhone, gender } = biodata;
+    const { city, state, street } = residence;
+    const { accountName, accountNumber, accountType, bankName } = bank;
+    const { address, email, fullName, phoneNo, relationship } = kin;
 
-  
-  const submitIdentityInfo = async(idRef, passportRef, idType) => {
-    // console.log(idRef, idType, passportRef);
-    const { secure_url: idUrl } = await handleUpload(idRef);
-    const { secure_url: passportUrl } = await handleUpload(passportRef);
-    // console.log(idUrl, passportCloudRef);
-    // console.log(userVerifyData);
-    const { 
-      biodata: { altPhone, gender }, 
-      bank: { accountName, accountNumber, accountType, bankName }, 
-      kin: { address, email, fullName, phoneNo, relationship }, 
-      residence: { city, state, street } 
-    } = userVerifyData;
     const data = {
       alternativePhoneNumber: altPhone,
       gender,
@@ -144,22 +130,40 @@ const Profile = ({ location }) => {
       bank_accountType: accountType,
       bank_accountNumber: accountNumber,
       bank_accountName: accountName,
-      identity_type: idType,
-      identity_imageUrl: idUrl,
-      identity_profilePhoto: passportUrl
+      identity_type: null,
+      identity_imageUrl: null,
+      identity_profilePhoto: null
     }
 
-    console.log(data);
-    await completeSetup(user.user_id, data, getClientDetails(user.user_id));
+    await updatePersonalInfo(user.user_id, data)
+  }
+
+  
+  const submitIdentityInfo = async(idRef, passportRef, idType) => {
+    
+    console.log(idRef, passportRef, idType);
+    const data = new FormData();
+    data.append('identification', idRef);
+    data.append('passport', passportRef);
+    data.append('identity_type', idType)
+    await updateIdentityInfo(user.user_id, data);
   }
 
 
-  useEffect(() => {
-    console.log(verificationData);
-  }, [verificationData])
+
+  const goToProfileView = () => {
+    setSetupComplete(true);
+  }
   
 
-  const CompleteStage = () => {
+  const CompleteStage = ({ redirect }) => {
+
+    useEffect(() => {
+      setTimeout(() => {
+        redirect();
+      }, 3000)
+    }, [])
+
     return (
       <div className={styles.stageComplete}>
         <FaCheckCircle size="4em" color="#741763" />
@@ -312,7 +316,7 @@ const Profile = ({ location }) => {
     } else if(setupStage === 2) {
       return <IdentityForm submit={submitIdentityInfo} />
     } else if(setupStage === 3) {
-      return <CompleteStage />
+      return <CompleteStage redirect={goToProfileView} />
     }
   }, [setupStage])
 

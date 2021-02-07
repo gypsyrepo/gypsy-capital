@@ -1,14 +1,14 @@
 import React, {createContext, useReducer, useEffect } from 'react';
 
 
-export default (reducer, actions, initialState, persist, saveData, storageType) => {
+export default (reducer, actions, initialState, persist, saveData) => {
   const Context = createContext();
 
   const Provider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState, () => {
       if(persist) {
-        const localData = storageType === "local" ? localStorage.getItem('gypsy') : sessionStorage.getItem('gypsyUI');
-        return localData ? JSON.parse(localData) : []
+        const localData = localStorage.getItem('gypsy');
+        return localData ? JSON.parse(localData) : {}
       }
     });
 

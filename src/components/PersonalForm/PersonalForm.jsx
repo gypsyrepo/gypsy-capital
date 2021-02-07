@@ -18,7 +18,7 @@ const PersonalForm = ({ submit }) => {
   } = useContext(BankContext);
   const { state: { user } } = useContext(AuthContext);
   const {
-    state: { userDetails },
+    state: { userDetails, loading },
     getClientDetails
   } = useContext(UserContext);
 
@@ -461,6 +461,8 @@ const PersonalForm = ({ submit }) => {
       <Button 
         className="mt-4" 
         clicked={handleSubmit} 
+        loading={loading}
+        disabled={loading}
         fullWidth 
         bgColor="#741763" 
         size="lg" 

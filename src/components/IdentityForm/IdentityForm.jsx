@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import styles from './IdentityForm.module.scss';
 import InputField from '../InputField/InputField';
 import Button from '../Button/Button';
 import FileUploadButton from '../FileUploadButton/FileUploadButton';
 import { FaCloudUploadAlt } from 'react-icons/fa';
+import { Context as UserContext } from '../../context/UserContext';
 
 
 const IdentityForm = ({ submit }) => {
@@ -12,10 +13,11 @@ const IdentityForm = ({ submit }) => {
   const passportFileRef= useRef();
 
   const [idType, setIdType] = useState('');
+  const { state: { loading } } = useContext(UserContext);
 
   const handleSubmit = () => {
     const idFile = idFileRef.current.files[0];
-    const passportFile = passportFileRef.current.files[0]
+    const passportFile = passportFileRef.current.files[0];
     console.log(idFile, passportFile);
     submit(idFile, passportFile, idType)
   }
@@ -57,6 +59,8 @@ const IdentityForm = ({ submit }) => {
         size="lg" 
         color="#EBEBEB"
         clicked={handleSubmit}
+        disabled={loading}
+        loading={loading}
       >
         Save & Continue
       </Button>
