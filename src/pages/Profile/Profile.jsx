@@ -15,12 +15,12 @@ import PersonalForm from '../../components/PersonalForm/PersonalForm';
 import BvnForm from '../../components/BvnForm/BvnForm';
 import IdentityForm from '../../components/IdentityForm/IdentityForm';
 import ProfileView from '../../components/ProfileView/ProfileView';
-
+import { useRouteMatch, Link } from 'react-router-dom';
 
 
 const Profile = ({ location }) => {
 
-
+  const { url } = useRouteMatch();
   const [setupStage, setSetupStage] = useState(0);
   const [setupComplete, setSetupComplete] = useState(false);
 
@@ -190,7 +190,7 @@ const Profile = ({ location }) => {
   // }
 
   return(
-    <Dashboard sidebarRoutes={sidebarRoutes} location={location}>
+    <Dashboard sidebarRoutes={sidebarRoutes} location={url}>
       <div className={styles.container}>
         <ToastContainer position="top-center" />
         { !setupComplete && <div>

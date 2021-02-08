@@ -33,7 +33,7 @@ const Dashboard = ({ children, sidebarRoutes, location }) => {
           <div className={styles.menuList}>
             <ul>
               { sidebarRoutes.map(route => {
-                if(location.pathname === route.link) {
+                if(location === route.link) {
                   return (
                     <li className={[styles.activeMenu, "mb-4"].join(' ')}>
                       <route.icon size="1.3em" color="#741763" />

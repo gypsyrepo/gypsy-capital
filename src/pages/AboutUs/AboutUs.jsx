@@ -12,6 +12,7 @@ import CEO from '../../assets/ceo.png';
 import Partner from '../../assets/partner.png';
 import Director1 from '../../assets/director.png';
 import Director2 from '../../assets/director-2.png';
+import { useRouteMatch, Link } from 'react-router-dom';
 
 
 const ValueBox = ({ title, children, icon, borderColor }) => {
@@ -60,10 +61,13 @@ const TeamDisplay = ({ memberImg, name, title, fbLink, twitterLink, linkedIn, ch
   )
 }
 
-const AboutUs = ({ history, location }) => {
+const AboutUs = ({ history }) => {
+
+  const { url } = useRouteMatch();
+
   return (
     <>
-      <NavBar history={history} location={location} />
+      <NavBar history={history} location={url} />
       <div className={styles.heroSection}>
         <div className={styles.container}>
           <h2>About Us</h2>

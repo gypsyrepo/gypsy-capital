@@ -19,10 +19,12 @@ import CirclePattern from '../../assets/patternCircle.png';
 import InputField from '../../components/InputField/InputField';
 import FaqSection from '../../components/FaqSection/FaqSection';
 import Footer from '../../components/Footer/Footer';
+import { useRouteMatch, Link } from 'react-router-dom';
 
 
-const HomePage = ({ history, location }) => {
+const HomePage = ({ history }) => {
 
+  const { url } = useRouteMatch();
   const [loanAmt, setLoanAmt] = useState('');
   const [loanRequest, setLoanRequest] = useState('');
 
@@ -35,7 +37,7 @@ const HomePage = ({ history, location }) => {
 
   return (
     <>
-      <NavBar history={history} location={location} />
+      <NavBar history={history} location={url} />
       <div className={styles.heroSection}>
         <Row className={styles.container}>
           <Col md={6} sm={12} className={styles.mainCopy}>

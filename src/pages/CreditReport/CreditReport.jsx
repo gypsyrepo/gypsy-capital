@@ -6,10 +6,12 @@ import { FiLayers } from 'react-icons/fi';
 import { BiCreditCard } from 'react-icons/bi';
 import { AiOutlineUser } from 'react-icons/ai';
 import { GiTakeMyMoney } from 'react-icons/gi';
+import { useRouteMatch, Link } from 'react-router-dom';
 
 
 const CreditReport = ({ location }) => {
 
+  const { url } = useRouteMatch();
   const sidebarRoutes = [
     {
       label: "Dashboard",
@@ -34,7 +36,7 @@ const CreditReport = ({ location }) => {
   ]
 
   return (
-    <Dashboard sidebarRoutes={sidebarRoutes} location={location}>
+    <Dashboard sidebarRoutes={sidebarRoutes} location={url}>
 
     </Dashboard>
   )

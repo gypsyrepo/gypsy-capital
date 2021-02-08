@@ -15,9 +15,14 @@ import LoanCalculatorForm from '../../components/LoanCalculatorForm/LoanCalculat
 import LoanContactForm from '../../components/LoanContactForm/LoanContactForm';
 import EmployerInfoForm from '../../components/EmployerInfoForm/EmployerInfoForm';
 import BankInfoForm from '../../components/BankInfoForm/BankInfoForm';
+import { Route, useRouteMatch, Switch, Link } from 'react-router-dom';
 
 
-const ConsumerCredit = ({ location }) => {
+const ConsumerCredit = () => {
+
+  const { url, path } = useRouteMatch();
+  console.log(path);
+  console.log(url);
 
   const [applyState, setApplyState] = useState(false);
   const [applicationStage, setApplicationStage] = useState(0);
@@ -70,10 +75,11 @@ const ConsumerCredit = ({ location }) => {
 
   const goToProcess = () => {
     setApplyState(true);
+
   }
 
   return (
-    <Dashboard sidebarRoutes={sidebarRoutes} location={location}>
+    <Dashboard sidebarRoutes={sidebarRoutes} location={url}>
       <div className={styles.heading}>
         <div>
           <h2>Consumer Credit</h2>
@@ -89,7 +95,7 @@ const ConsumerCredit = ({ location }) => {
             Apply for a loan
           </Button>}
       </div>
-      { !applyState ? <div className={styles.creditTable}>
+      { !applyState && !applicationSuccess ? <div className={styles.creditTable}>
         <Table striped hover className={styles.tableStyles}>
           <thead>
             <tr>
@@ -122,8 +128,8 @@ const ConsumerCredit = ({ location }) => {
           <p>Sorry you currently have no loan</p>
           <img src={noLoan} alt="No loan history" height="250" />
         </div>}
-      </div> : null }
-      { (applyState && !applicationSuccess) && <div className={styles.applyContainer}>
+      </div> : null}
+      { applyState && <div className={styles.applyContainer}>
         <Row>
           <Col md={4}>
             <ul className={styles.joinedBullets}>
@@ -137,14 +143,15 @@ const ConsumerCredit = ({ location }) => {
           </Col>
           <Col md={8}>
             <div className={styles.applyForm}>
-            { applicationStage === 0 && <LoanCalculatorForm />}
+                {/* <LoanCalculatorForm /> */}
+              { applicationStage === 0 && <LoanCalculatorForm />}
               { applicationStage === 1 && <LoanContactForm />}
                 { applicationStage === 2 &&  <EmployerInfoForm />}
                 { applicationStage === 3 &&  <BankInfoForm /> }
             </div>
           </Col>
         </Row>
-      </div>}
+      </div> }
       { applicationSuccess && 
         <div className={styles.applicationComplete}>
           <FaCheckCircle size="4em" color="#741763" />

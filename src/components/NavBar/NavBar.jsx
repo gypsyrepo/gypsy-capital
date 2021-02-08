@@ -17,7 +17,7 @@ const NavBar = ({ history, location }) => {
         <ul className={styles.mainNav}>
           <li>
             <Link 
-              className={location.pathname === pageUrl.PRODUCTS_PAGE ? styles.activeMenu : null} 
+              className={location === pageUrl.PRODUCTS_PAGE ? styles.activeMenu : null} 
               to={pageUrl.PRODUCTS_PAGE}
             >
               Our Products
@@ -26,7 +26,7 @@ const NavBar = ({ history, location }) => {
           <li>
             <Link 
               to={pageUrl.ABOUT_US_PAGE}
-              className={location.pathname === pageUrl.ABOUT_US_PAGE ? styles.activeMenu : null}
+              className={location === pageUrl.ABOUT_US_PAGE ? styles.activeMenu : null}
             >
                 About Us
             </Link>
@@ -34,7 +34,7 @@ const NavBar = ({ history, location }) => {
           <li>
             <Link 
               to={pageUrl.CONTACT_PAGE}
-              className={location.pathname === pageUrl.CONTACT_PAGE ? styles.activeMenu : null}
+              className={location === pageUrl.CONTACT_PAGE ? styles.activeMenu : null}
             >
               Contact Us
             </Link>

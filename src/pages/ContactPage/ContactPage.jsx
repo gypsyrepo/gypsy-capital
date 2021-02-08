@@ -6,10 +6,12 @@ import { HiLocationMarker, HiMail, HiPhone } from 'react-icons/hi';
 import { IoLogoWhatsapp } from 'react-icons/io';
 import Footer from '../../components/Footer/Footer';
 import InputField from '../../components/InputField/InputField';
+import { useRouteMatch, Link } from 'react-router-dom';
 
 
-const ContactPage = ({ history, location }) => {
+const ContactPage = ({ history }) => {
 
+  const { url } = useRouteMatch();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,7 +21,7 @@ const ContactPage = ({ history, location }) => {
 
   return (
     <>
-      <NavBar history={history} location={location} />
+      <NavBar history={history} location={url} />
       <div className={styles.heroSection}>
         <div className={styles.container}>
           <h2>Contact Us</h2>

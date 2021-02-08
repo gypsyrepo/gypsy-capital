@@ -28,19 +28,27 @@ const RouteManager = () =>  {
   return (
     <div className="App">
       <Router history={history}>
-        <Route exact path={pageUrl.HOMEPAGE} component={HomePage} />
-        <Route exact path={pageUrl.PRODUCTS_PAGE} component={Products} />
-        <Route exact path={pageUrl.SIGNUP_PAGE} component={SignUp} />
-        <Route exact path={pageUrl.SIGNIN_PAGE} component={SignIn} />
-        <Route exact path={pageUrl.VERIFY_OTP_PAGE} component={OtpVerify} />
-        <Route exact path={pageUrl.ABOUT_US_PAGE} component={AboutUs} />
-        <Route exact path={pageUrl.CONTACT_PAGE} component={ContactPage} />
-        <Route exact path={pageUrl.MONO_WIDGET_PAGE} component={MonoWidget} />
-        <Route exact path={pageUrl.LOAN_CALCULATOR_PAGE} component={LoanCalculator} />
-        <ProtectedRoute exact path={pageUrl.PROFILE_PAGE} component={Profile} />
-        <ProtectedRoute exact path={pageUrl.CREDIT_REPORT_PAGE} component={CreditReport} />
-        <ProtectedRoute exact path={pageUrl.DASHBOARD_HOMEPAGE} component={Overview} />
-        <ProtectedRoute exact path={pageUrl.CONSUMER_CREDIT_PAGE} component={ConsumerCredit} />
+        <Switch>
+          <Route exact path={pageUrl.HOMEPAGE}><HomePage /></Route>
+          <Route exact path={pageUrl.PRODUCTS_PAGE}><Products /></Route>
+          <Route exact path={pageUrl.SIGNUP_PAGE}><SignUp /></Route>
+          <Route exact path={pageUrl.SIGNIN_PAGE}><SignIn /></Route>
+          <Route exact path={pageUrl.VERIFY_OTP_PAGE}><OtpVerify /></Route>
+          <Route exact path={pageUrl.ABOUT_US_PAGE}><AboutUs /></Route>
+          <Route exact path={pageUrl.CONTACT_PAGE}><ContactPage /></Route>
+          <Route exact path={pageUrl.MONO_WIDGET_PAGE}><MonoWidget /></Route>
+          <Route exact path={pageUrl.LOAN_CALCULATOR_PAGE}><LoanCalculator /></Route>
+          <ProtectedRoute exact path={pageUrl.PROFILE_PAGE}><Profile /></ProtectedRoute>
+          <ProtectedRoute exact path={pageUrl.CREDIT_REPORT_PAGE}>
+            <CreditReport />
+          </ProtectedRoute>
+          <ProtectedRoute exact path={pageUrl.DASHBOARD_HOMEPAGE}>
+            <Overview />
+          </ProtectedRoute>
+          <ProtectedRoute exact path={pageUrl.CONSUMER_CREDIT_PAGE}>
+            <ConsumerCredit />
+          </ProtectedRoute>
+        </Switch>
       </Router>
     </div>
   );

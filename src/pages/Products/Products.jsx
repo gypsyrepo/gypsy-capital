@@ -17,6 +17,7 @@ import { RiSendPlaneFill } from 'react-icons/ri';
 import Footer from '../../components/Footer/Footer';
 import Customer from '../../assets/excited-customer.jpeg';
 import Investor from '../../assets/excited-investor.jpg';
+import { useRouteMatch, Link } from 'react-router-dom';
 
 
 const ProductBanner = ({ productTitle, btnType, copy, btnText }) => {
@@ -157,8 +158,9 @@ const MenuBox = ({ icon, menuTitle, clicked, menuState }) => {
 }
 
 
-const Products = ({ history, location }) => {
+const Products = ({ history }) => {
 
+  const { url } = useRouteMatch();
   const [menuState, setMenuState] = useState('credit');
 
   const navigateProducts = (menuAlias) => {
@@ -168,7 +170,7 @@ const Products = ({ history, location }) => {
 
   return (
     <>
-    <NavBar history={history} location={location} />
+    <NavBar history={history} location={url} />
     <div className={styles.productsMenu}>
       <div className={styles.container}>
         <Row>
