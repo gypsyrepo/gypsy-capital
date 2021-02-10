@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import styles from './LoanContactForm.module.scss';
 import { Row, Col } from 'react-bootstrap';
 import InputField from '../InputField/InputField';
@@ -7,12 +7,15 @@ import { FaCloudUploadAlt } from 'react-icons/fa';
 import Button from '../Button/Button';
 import { validateInput } from '../../utils/validateInput';
 import axios from 'axios';
-import nigeriaStates from '../../utils/nigeriaStates';
+import { nigeriaStates } from '../../utils/nigeriaStates';
 import { ToastContainer, toast } from 'react-toastify';
+import { Context as LoanContext } from '../../context/LoanContext';
 
 
 
 const LoanContactForm = ({ submit }) => {
+
+  const { state: { loading } } = useContext(LoanContext);
 
   const [contactAddress, setContactAddress] = useState({
     streetAddress: "",
@@ -31,7 +34,6 @@ const LoanContactForm = ({ submit }) => {
   })
 
   const [lgaOptions, setLgaOptions] = useState([]);
-  const [fileError, setFileError] = useState(null);
 
   useEffect(() => {
     if(contactAddress.state.length > 0) {
@@ -48,7 +50,6 @@ const LoanContactForm = ({ submit }) => {
   const proofofAddressRef = useRef(null);
 
   const updateContactInfo = () => {
-    setFileError(null);
     if(proofofAddressRef.current.files.length > 0) {
       console.log(proofofAddressRef);
       const proofofAddress = proofofAddressRef.current.files[0];
@@ -66,16 +67,9 @@ const LoanContactForm = ({ submit }) => {
         submit(data);
       }
     } else {
-      setFileError("You need to upload a proof of address document to proceed");
+      toast.error("You need to upload a proof of address document to proceed");
     }
   }
-
-
-  useEffect(() =>{
-    if(fileError) {
-      toast.error(fileError);
-    }
-  }, [fileError]);
 
   return (
     <div className={styles.contactForm}>
@@ -172,6 +166,8 @@ const LoanContactForm = ({ submit }) => {
         bgColor="#741763" 
         size="lg" 
         color="#EBEBEB"
+        disabled={loading}
+        loading={loading}
       >
         Continue
       </Button>

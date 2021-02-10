@@ -28,8 +28,7 @@ const LoanCalculatorForm = ({ submit }) => {
     payDay: null,
     loanAmount: null,
     installmentPeriod: null,
-    loanPurpose: null,
-    estimatedMonthlyPayment: null
+    loanPurpose: null
   });
 
   useEffect(() => {
@@ -50,20 +49,28 @@ const LoanCalculatorForm = ({ submit }) => {
     if(monthlySalary && loanAmount && installmentPeriod) {
       // console.log(typeof monthlySalary, typeof loanAmount, installmentPeriod);
       const tenor = Number(installmentPeriod.split(' ')[0]);
-      const toRepay = Number(loanAmount) + (Number(loanAmount)  * 0.04);
+      let initRate = Number(loanAmount);
+      let toRepay = initRate + (initRate * 0.04);
+      toRepay = toRepay + (toRepay * 0.04 * tenor)
+      // for(let i=0; i < tenor; i++) {
+      //   toRepay = initRate + (initRate * 0.04);
+      //   initRate = toRepay;
+      // }
       const monthlyRepay = toRepay / tenor;
+      console.log(monthlyRepay)
       if(monthlyRepay > (0.333 * Number(monthlySalary))) {
         setLimitError('You are not eligible for this amount, kindly enter a lower loan amount');
       } else {
         setLimitError(null)
       }
-      setLoanCalcData({ ...loanCalcData, estimatedMonthlyPayment: Math.ceil(monthlyRepay) })
+      setLoanCalcData({ ...loanCalcData, estimatedMonthlyPayment: Math.floor(monthlyRepay) })
     }
   }, [monthlySalary, loanAmount, installmentPeriod])
 
   const submitLoanCalcData = () => {
     console.log('works');
-    const validated = validateInput(loanCalcData, setLoanCalcDataErrors);
+    const fieldsTovalidate = { monthlySalary, payDay, loanAmount, installmentPeriod, loanPurpose }
+    const validated = validateInput(fieldsTovalidate, setLoanCalcDataErrors);
     if(validated) {
       const applyData = {
         monthlySalary,
@@ -181,6 +188,7 @@ const LoanCalculatorForm = ({ submit }) => {
             label="Estimated Monthly Payment"
             nameAttr="monthlyPayment"
             value={loanCalcData.estimatedMonthlyPayment}
+            disable={true}
             changed={(val) => {
               setLoanCalcDataErrors({ ...loanCalcDataErrors, estimatedMonthlyPayment: null })
               setLoanCalcData({ ...loanCalcData, estimatedMonthlyPayment: val })

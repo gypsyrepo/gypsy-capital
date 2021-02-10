@@ -13,12 +13,13 @@ import { Col, Row } from 'react-bootstrap';
 import noLoan from '../../assets/no-loan.png';
 import moment from 'moment';
 import { Context as AuthContext } from '../../context/AuthContext';
-import { useRouteMatch, Link } from 'react-router-dom';
+import { useRouteMatch, Link, useHistory } from 'react-router-dom';
 
 
 const Overview = ({ location }) => {
 
   const { url, path } = useRouteMatch();
+  const history = useHistory();
   const [loanStatus, setLoanStatus] = useState('inactive');
 
   const { state: { user } } = useContext(AuthContext);
@@ -70,6 +71,7 @@ const Overview = ({ location }) => {
               size="sm"
               color="#fff"
               className="mt-4"
+              clicked={() => history.push({ pathname: '/dashboard/consumer-credit', state: { applyState: true }})}
             >
               Apply for loan
             </Button>

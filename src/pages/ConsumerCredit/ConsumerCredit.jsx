@@ -15,28 +15,40 @@ import LoanCalculatorForm from '../../components/LoanCalculatorForm/LoanCalculat
 import LoanContactForm from '../../components/LoanContactForm/LoanContactForm';
 import EmployerInfoForm from '../../components/EmployerInfoForm/EmployerInfoForm';
 import BankInfoForm from '../../components/BankInfoForm/BankInfoForm';
-import { Route, useRouteMatch, Switch, Link } from 'react-router-dom';
+import { Route, useRouteMatch, Switch, Link, useLocation } from 'react-router-dom';
 import { Context as LoanContext } from '../../context/LoanContext';
 import { Context as AuthContext } from '../../context/AuthContext';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const ConsumerCredit = () => {
 
   const { url, path } = useRouteMatch();
-  console.log(path);
-  console.log(url);
+  const location = useLocation();
+
+  useEffect(() => {
+    if(location.state) {
+      setApplyState(location.state.applyState)
+    }
+  }, [location])
 
   const [applyState, setApplyState] = useState(false);
   const [applicationStage, setApplicationStage] = useState(0);
   const [applicationSuccess, setApplicationSuccess] = useState(false);
 
   const { 
-    state: { loading, loanStart, addressStatus }, 
+    state: { loading, loans, loanStart, addressStatus, workStatus, error }, 
+    retrieveClientLoans,
     loanApply, 
     addAddressForLoan,
-    addWorkInfoForLoan
+    addWorkInfoForLoan,
+    clearError
   } = useContext(LoanContext);
   const { state: { user } } = useContext(AuthContext);
+
+  useEffect(() => {
+    retrieveClientLoans();
+  }, [])
 
   useEffect(() => {
     if(loanStart) {
@@ -51,6 +63,12 @@ const ConsumerCredit = () => {
     }
   }, [addressStatus])
 
+  useEffect(() => {
+    if(workStatus) {
+      setApplicationStage(3);
+    }
+  }, [workStatus])
+
   const loanHistory = [
     // {
     //   loanID: '#00032',
@@ -62,6 +80,13 @@ const ConsumerCredit = () => {
     //   balance: '75,000'
     // }
   ]
+
+  useEffect(() => {
+    if(error) {
+      toast.error(error);
+      clearError();
+    }
+  }, [error])
 
 
   const sidebarRoutes = [
@@ -112,8 +137,13 @@ const ConsumerCredit = () => {
     addWorkInfoForLoan(data, user.user_id);
   }
 
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
   return (
     <Dashboard sidebarRoutes={sidebarRoutes} location={url}>
+      <ToastContainer position="top-center" />
       <div className={styles.heading}>
         <div>
           <h2>Consumer Credit</h2>
@@ -143,22 +173,22 @@ const ConsumerCredit = () => {
             </tr>
           </thead>
           <tbody>
-            {loanHistory.map((loanInstance, idx) => {
+            {loans.map((loanInstance, idx) => {
               return (
                 <tr>
-                  <td>{loanInstance.loanID}</td>
-                  <td>{loanInstance.monthlyRepayment}</td>
-                  <td>{loanInstance.tenor}</td>
+                  <td>{loanInstance._id.substring(0, 5)}</td>
+                  <td>{`N ${numberWithCommas(loanInstance.monthlyRepayment)}`}</td>
+                  <td>{!loanInstance.approvedTenure ? loanInstance.paymentPeriod : loanInstance.approvedTenure}</td>
                   <td>{loanInstance.status}</td>
-                  <td>{loanInstance.repaymentSource}</td>
-                  <td>{loanInstance.loanAmount}</td>
-                  <td>{loanInstance.balance}</td>
+                  <td>Salary</td>
+                  <td>{`N ${numberWithCommas(loanInstance.amount)}`}</td>
+                  <td>______</td>
                 </tr>
               )
             })}
           </tbody>
         </Table>
-        { (!loanHistory || loanHistory.length === 0) && <div className={styles.noLoanMessage}>
+        { (!loans || loans.length === 0) && <div className={styles.noLoanMessage}>
           <p>Sorry you currently have no loan</p>
           <img src={noLoan} alt="No loan history" height="250" />
         </div>}

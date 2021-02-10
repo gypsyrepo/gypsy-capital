@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import styles from './EmployerInfoForm.module.scss';
 import { Row, Col } from 'react-bootstrap';
 import InputField from '../InputField/InputField';
@@ -6,14 +6,21 @@ import FileUploadButton from '../FileUploadButton/FileUploadButton';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import Button from '../Button/Button';
 import { validateInput } from '../../utils/validateInput';
+import { workSector, nigeriaStates, workIndustries } from '../../utils/nigeriaStates';
+import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
+import { Context as LoanContext } from '../../context/LoanContext';
 
 
 const EmployerInfoForm = ({ submit }) => {
+
+  const { state: { loading } } = useContext(LoanContext);
 
   const [employmentInfo, setEmploymentInfo] = useState({
     employerName: "",
     startedDate: "",
     employerSector: "",
+    employerIndustry: "",
     employmentType: "",
     email: "",
     // officialDoc: ""
@@ -23,6 +30,7 @@ const EmployerInfoForm = ({ submit }) => {
     employerName: null,
     startedDate: null,
     employerSector: null,
+    employerIndustry: null,
     employmentType: null,
     email: null
     // officialDoc: ""
@@ -43,16 +51,52 @@ const EmployerInfoForm = ({ submit }) => {
     lga: null
   });
 
+  const [lgaOptions, setLgaOptions] = useState([]);
+
+  useEffect(() => {
+    if(officeAddress.state.length > 0) {
+      const getLga = async() => {
+        const response = await axios.get(`http://locationsng-api.herokuapp.com/api/v1/states/${officeAddress.state}/lgas`)
+        setLgaOptions(response.data);
+      };
+  
+      getLga();
+    }
+  }, [officeAddress.state])
+
   const officialFileRef = useRef();
 
   const updateLoanWorkData = () => {
-    const validatedWorkInfo = validateInput(employmentInfo, setEmploymentErrors);
-    const validatedWorkAddress = validateInput(officeAddress, setOfficeAddressErrors);
-    console.log(validatedWorkInfo, validatedWorkAddress);
+    if(officialFileRef.current.files.length > 0) {
+      const validatedWorkInfo = validateInput(employmentInfo, setEmploymentErrors);
+      const validatedWorkAddress = validateInput(officeAddress, setOfficeAddressErrors);
+      const officialDoc = officialFileRef.current.files[0];
+      console.log(validatedWorkInfo, validatedWorkAddress);
+      if(validatedWorkAddress && validatedWorkInfo) {
+        const data = new FormData();
+        data.append('employer_name', employmentInfo.employerName);
+        data.append('resumption_date', employmentInfo.startedDate);
+        data.append('sector', employmentInfo.employerSector);
+        data.append('industry', employmentInfo.employerIndustry);
+        data.append('employment_type', employmentInfo.employmentType);
+        data.append('official_email', employmentInfo.email);
+        data.append('state', officeAddress.state);
+        data.append('city', officeAddress.city);
+        data.append('street', officeAddress.street);
+        data.append('local_government', officeAddress.lga);
+        data.append('image', officialDoc);
+
+        submit(data);
+        // console.log(true);
+      }
+    } else {
+      toast.error('You need to upload an official document to prove your employment data to proceed')
+    }
   }
 
   return (
     <div className={styles.employerInfo}>
+      <ToastContainer position="top-center" />
       <Row className="mb-4">
         <Col>
           <InputField 
@@ -88,7 +132,7 @@ const EmployerInfoForm = ({ submit }) => {
             type="select"
             nameAttr="employerSector"
             label="Employer Sector"
-            options={['Banking', 'Finance']}
+            options={workSector}
             value={employmentInfo.employerSector}
             changed={(val) => {
               setEmploymentErrors({ ...employmentErrors, employerSector: null })
@@ -98,6 +142,22 @@ const EmployerInfoForm = ({ submit }) => {
           />
         </Col>
         <Col>
+          <InputField 
+            type="select"
+            nameAttr="employerIndustry"
+            label="Employer Industry"
+            options={workIndustries}
+            value={employmentInfo.employerIndustry}
+            changed={(val) => {
+              setEmploymentErrors({ ...employmentErrors, employerIndustry: null })
+              setEmploymentInfo({ ...employmentInfo, employerIndustry: val })
+            }}
+            error={employmentErrors.employerIndustry && employmentErrors.employerIndustry}
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4">
+      <Col>
           <InputField 
             type="select"
             nameAttr="employType"
@@ -111,8 +171,6 @@ const EmployerInfoForm = ({ submit }) => {
             error={employmentErrors.employmentType && employmentErrors.employmentType}
           />
         </Col>
-      </Row>
-      <Row className="mb-4">
         <Col>
           <InputField 
             type="email"
@@ -126,6 +184,8 @@ const EmployerInfoForm = ({ submit }) => {
             error={employmentErrors.email && employmentErrors.email}
           />
         </Col>
+      </Row>
+      <Row className="mb-4">
         <Col>
           <FileUploadButton 
             label="Choose file"
@@ -173,7 +233,7 @@ const EmployerInfoForm = ({ submit }) => {
             type="select"
             label="State"
             nameAttr="officeState"
-            options={['Oyo', 'Lagos', 'Osun']}
+            options={nigeriaStates}
             value={officeAddress.state}
             changed={(val) => {
               setOfficeAddressErrors({ ...officeAddressErrors, state: null })
@@ -187,7 +247,7 @@ const EmployerInfoForm = ({ submit }) => {
             type="select"
             label="Local Govt Area"
             nameAttr="officeLga"
-            options={['Oyo', 'Lagos', 'Osun']}
+            options={lgaOptions}
             value={officeAddress.lga}
             changed={(val) => {
               setOfficeAddressErrors({ ...officeAddressErrors, lga: null })
@@ -204,6 +264,8 @@ const EmployerInfoForm = ({ submit }) => {
         bgColor="#741763" 
         size="lg" 
         color="#EBEBEB"
+        disabled={loading}
+        loading={loading}
       >
         Continue
       </Button>

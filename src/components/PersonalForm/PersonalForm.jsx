@@ -5,7 +5,7 @@ import { Context as AuthContext } from '../../context/AuthContext';
 import InputField from '../InputField/InputField';
 import Button from '../Button/Button';
 import { Context as UserContext } from '../../context/UserContext';
-import nigeriaStates from '../../utils/nigeriaStates';
+import { nigeriaStates } from '../../utils/nigeriaStates';
 import { Context as BankContext } from '../../context/BankCotext';
 import { validateInput } from '../../utils/validateInput';
 
