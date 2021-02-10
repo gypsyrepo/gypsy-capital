@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from './LoanCalculatorForm.module.scss';
 import InputField from '../InputField/InputField';
 import Button from '../Button/Button';
 import { Row, Col } from 'react-bootstrap';
 import { validateInput } from '../../utils/validateInput';
 import { ToastContainer, toast } from 'react-toastify';
+import { Context as LoanContext } from '../../context/LoanContext';
 
 
-const LoanCalculatorForm = () => {
+const LoanCalculatorForm = ({ submit }) => {
+
+  const { state: { loading } } = useContext(LoanContext);
 
   const [daysOfMonth, setDaysOfMonth] = useState([]);
   const [limitError, setLimitError] = useState(null);
@@ -41,11 +44,11 @@ const LoanCalculatorForm = () => {
     return daysArray;
   }
 
-  const { monthlySalary, loanAmount, installmentPeriod } = loanCalcData;
+  const { monthlySalary, loanAmount, installmentPeriod, payDay, loanPurpose } = loanCalcData;
 
   useEffect(() => {
     if(monthlySalary && loanAmount && installmentPeriod) {
-      console.log(typeof monthlySalary, typeof loanAmount, installmentPeriod);
+      // console.log(typeof monthlySalary, typeof loanAmount, installmentPeriod);
       const tenor = Number(installmentPeriod.split(' ')[0]);
       const toRepay = Number(loanAmount) + (Number(loanAmount)  * 0.04);
       const monthlyRepay = toRepay / tenor;
@@ -59,9 +62,19 @@ const LoanCalculatorForm = () => {
   }, [monthlySalary, loanAmount, installmentPeriod])
 
   const submitLoanCalcData = () => {
+    console.log('works');
     const validated = validateInput(loanCalcData, setLoanCalcDataErrors);
     if(validated) {
-      limitError ? toast.error(limitError) : console.log(validated);
+      const applyData = {
+        monthlySalary,
+        payDay,
+        amount: loanAmount,
+        paymentPeriod: installmentPeriod,
+        loanPurpose,
+        monthlyRepayment: loanCalcData.estimatedMonthlyPayment
+      }
+      console.log(applyData);
+      limitError ? toast.error(limitError) : submit(applyData);
     }
   }
 
@@ -187,6 +200,8 @@ const LoanCalculatorForm = () => {
         bgColor="#741763" 
         size="lg" 
         color="#EBEBEB"
+        disabled={loading}
+        loading={loading}
       >
         Continue
       </Button>

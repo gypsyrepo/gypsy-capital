@@ -5,17 +5,27 @@ import InputField from '../InputField/InputField';
 import FileUploadButton from '../FileUploadButton/FileUploadButton';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import Button from '../Button/Button';
+import { validateInput } from '../../utils/validateInput';
 
 
-const EmployerInfoForm = () => {
+const EmployerInfoForm = ({ submit }) => {
 
   const [employmentInfo, setEmploymentInfo] = useState({
     employerName: "",
     startedDate: "",
     employerSector: "",
     employmentType: "",
-    emailAddress: "",
-    officialDoc: ""
+    email: "",
+    // officialDoc: ""
+  });
+
+  const [employmentErrors, setEmploymentErrors] = useState({
+    employerName: null,
+    startedDate: null,
+    employerSector: null,
+    employmentType: null,
+    email: null
+    // officialDoc: ""
   });
 
 
@@ -26,7 +36,20 @@ const EmployerInfoForm = () => {
     lga: ""
   });
 
+  const [officeAddressErrors, setOfficeAddressErrors] = useState({
+    street: null,
+    city: null,
+    state: null,
+    lga: null
+  });
+
   const officialFileRef = useRef();
+
+  const updateLoanWorkData = () => {
+    const validatedWorkInfo = validateInput(employmentInfo, setEmploymentErrors);
+    const validatedWorkAddress = validateInput(officeAddress, setOfficeAddressErrors);
+    console.log(validatedWorkInfo, validatedWorkAddress);
+  }
 
   return (
     <div className={styles.employerInfo}>
@@ -37,7 +60,11 @@ const EmployerInfoForm = () => {
             nameAttr="employerName"
             label="Employer Name"
             value={employmentInfo.employerName}
-            changed={(val) => setEmploymentInfo({ ...employmentInfo, employerName: val })}
+            changed={(val) => {
+              setEmploymentErrors({ ...employmentErrors, employerName: null })
+              setEmploymentInfo({ ...employmentInfo, employerName: val })
+            }}
+            error={employmentErrors.employerName && employmentErrors.employerName}
           />
         </Col>
         <Col>
@@ -47,7 +74,11 @@ const EmployerInfoForm = () => {
             label="When did you start this job?"
             placeholder="MM/YYYY"
             value={employmentInfo.startedDate}
-            changed={(val) => setEmploymentInfo({ ...employmentInfo, startedDate: val })}
+            changed={(val) => {
+              setEmploymentErrors({ ...employmentErrors, startedDate: null })
+              setEmploymentInfo({ ...employmentInfo, startedDate: val })
+            }}
+            error={employmentErrors.startedDate && employmentErrors.startedDate}
           />
         </Col>
       </Row>
@@ -59,7 +90,11 @@ const EmployerInfoForm = () => {
             label="Employer Sector"
             options={['Banking', 'Finance']}
             value={employmentInfo.employerSector}
-            changed={(val) => setEmploymentInfo({ ...employmentInfo, employerSector: val })}
+            changed={(val) => {
+              setEmploymentErrors({ ...employmentErrors, employerSector: null })
+              setEmploymentInfo({ ...employmentInfo, employerSector: val })
+            }}
+            error={employmentErrors.employerSector && employmentErrors.employerSector}
           />
         </Col>
         <Col>
@@ -69,7 +104,11 @@ const EmployerInfoForm = () => {
             label="Employment Type"
             options={['Fulltime', 'Contract', 'Part-Time']}
             value={employmentInfo.employmentType}
-            changed={(val) => setEmploymentInfo({ ...employmentInfo, employmentType: val })}
+            changed={(val) => {
+              setEmploymentErrors({ ...employmentErrors, employmentType: null })
+              setEmploymentInfo({ ...employmentInfo, employmentType: val })
+            }}
+            error={employmentErrors.employmentType && employmentErrors.employmentType}
           />
         </Col>
       </Row>
@@ -79,8 +118,12 @@ const EmployerInfoForm = () => {
             type="email"
             nameAttr="officeEmail"
             label="Office Email Address"
-            value={employmentInfo.emailAddress}
-            changed={(val) => setEmploymentInfo({ ...employmentInfo, emailAddress: val })}
+            value={employmentInfo.email}
+            changed={(val) => {
+              setEmploymentErrors({ ...employmentErrors, email: null })
+              setEmploymentInfo({ ...employmentInfo, email: val })
+            }}
+            error={employmentErrors.email && employmentErrors.email}
           />
         </Col>
         <Col>
@@ -103,7 +146,11 @@ const EmployerInfoForm = () => {
             label="Street"
             nameAttr="officeStreet"
             value={officeAddress.street}
-            changed={(val) => setOfficeAddress({ ...officeAddress, street: val })}
+            changed={(val) => {
+              setOfficeAddressErrors({ ...officeAddressErrors, street: null })
+              setOfficeAddress({ ...officeAddress, street: val })
+            }}
+            error={officeAddressErrors.street && officeAddressErrors.street}
           />
         </Col>
       </Row>
@@ -114,7 +161,11 @@ const EmployerInfoForm = () => {
             label="City"
             nameAttr="officeCity"
             value={officeAddress.city}
-            changed={(val) => setOfficeAddress({ ...officeAddress, city: val })}
+            changed={(val) => {
+              setOfficeAddressErrors({ ...officeAddressErrors, city: null })
+              setOfficeAddress({ ...officeAddress, city: val })
+            }}
+            error={officeAddressErrors.city && officeAddressErrors.city}
           />
         </Col>
         <Col>
@@ -124,7 +175,11 @@ const EmployerInfoForm = () => {
             nameAttr="officeState"
             options={['Oyo', 'Lagos', 'Osun']}
             value={officeAddress.state}
-            changed={(val) => setOfficeAddress({ ...officeAddress, state: val })}
+            changed={(val) => {
+              setOfficeAddressErrors({ ...officeAddressErrors, state: null })
+              setOfficeAddress({ ...officeAddress, state: val })
+            }}
+            error={officeAddressErrors.state && officeAddressErrors.state}
           />
         </Col>
         <Col>
@@ -134,14 +189,18 @@ const EmployerInfoForm = () => {
             nameAttr="officeLga"
             options={['Oyo', 'Lagos', 'Osun']}
             value={officeAddress.lga}
-            changed={(val) => setOfficeAddress({ ...officeAddress, lga: val })}
+            changed={(val) => {
+              setOfficeAddressErrors({ ...officeAddressErrors, lga: null })
+              setOfficeAddress({ ...officeAddress, lga: val })
+            }}
+            error={officeAddressErrors.lga && officeAddressErrors.lga}
           />
         </Col>
       </Row>
       <Button 
         className="mt-5" 
         fullWidth 
-        // clicked={handleSubmit} 
+        clicked={updateLoanWorkData} 
         bgColor="#741763" 
         size="lg" 
         color="#EBEBEB"

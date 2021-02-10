@@ -19,6 +19,7 @@ import {
 import { Provider as AuthProvider } from './context/AuthContext';
 import { Provider as UserProvider } from './context/UserContext';
 import { Provider as BankProvider } from './context/BankCotext';
+import { Provider as LoanProvider } from './context/LoanContext';
 import ProtectedRoute from './routes/protectedroute/ProtectedRoute';
 import history from './utils/history';
 
@@ -59,7 +60,9 @@ const App = () => {
     <AuthProvider>
       <UserProvider>
         <BankProvider>
-          <RouteManager />
+          <LoanProvider>
+            <RouteManager />
+          </LoanProvider>
         </BankProvider>
       </UserProvider>
     </AuthProvider>

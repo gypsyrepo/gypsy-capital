@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext, useEffect } from 'react';
 import pageUrl from '../../routes/pageUrl';
 import { FiLayers } from 'react-icons/fi';
 import { BiCreditCard } from 'react-icons/bi';
@@ -16,6 +16,8 @@ import LoanContactForm from '../../components/LoanContactForm/LoanContactForm';
 import EmployerInfoForm from '../../components/EmployerInfoForm/EmployerInfoForm';
 import BankInfoForm from '../../components/BankInfoForm/BankInfoForm';
 import { Route, useRouteMatch, Switch, Link } from 'react-router-dom';
+import { Context as LoanContext } from '../../context/LoanContext';
+import { Context as AuthContext } from '../../context/AuthContext';
 
 
 const ConsumerCredit = () => {
@@ -28,6 +30,26 @@ const ConsumerCredit = () => {
   const [applicationStage, setApplicationStage] = useState(0);
   const [applicationSuccess, setApplicationSuccess] = useState(false);
 
+  const { 
+    state: { loading, loanStart, addressStatus }, 
+    loanApply, 
+    addAddressForLoan,
+    addWorkInfoForLoan
+  } = useContext(LoanContext);
+  const { state: { user } } = useContext(AuthContext);
+
+  useEffect(() => {
+    if(loanStart) {
+      setApplicationStage(1);
+    }
+  }, [loanStart])
+
+
+  useEffect(() => {
+    if(addressStatus) {
+      setApplicationStage(2);
+    }
+  }, [addressStatus])
 
   const loanHistory = [
     // {
@@ -76,6 +98,18 @@ const ConsumerCredit = () => {
   const goToProcess = () => {
     setApplyState(true);
 
+  }
+
+  const startApplication = (data) => {
+    loanApply(data, user.user_id);
+  }
+
+  const addAddress = (data) => {
+    addAddressForLoan(data, user.user_id);
+  }
+
+  const addWorkInfo = (data) => {
+    addWorkInfoForLoan(data, user.user_id);
   }
 
   return (
@@ -144,9 +178,9 @@ const ConsumerCredit = () => {
           <Col md={8}>
             <div className={styles.applyForm}>
                 {/* <LoanCalculatorForm /> */}
-              { applicationStage === 0 && <LoanCalculatorForm />}
-              { applicationStage === 1 && <LoanContactForm />}
-                { applicationStage === 2 &&  <EmployerInfoForm />}
+              { applicationStage === 0 && <LoanCalculatorForm submit={startApplication}/>}
+              { applicationStage === 1 && <LoanContactForm submit={addAddress} />}
+                { applicationStage === 2 &&  <EmployerInfoForm submit={addWorkInfo} />}
                 { applicationStage === 3 &&  <BankInfoForm /> }
             </div>
           </Col>
