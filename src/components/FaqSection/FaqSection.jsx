@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import styles from './FaqSection.module.scss';
 import { useAccordionToggle, Accordion, Card, AccordionCollapse } from 'react-bootstrap';
 import { FaPlus, FaMinus } from 'react-icons/fa';
-import { limitFaqContent } from '../../utils/nigeriaStates';
+import { limitFaqContent, faqContent } from '../../utils/nigeriaStates';
+import { useHistory } from 'react-router';
 
 
 const CustomToggle = ({ children, eventKey }) => {
@@ -27,12 +28,17 @@ const CustomToggle = ({ children, eventKey }) => {
   )
 }
 
-const FaqSection = () => {
+const FaqSection = ({ returnNumber }) => {
 
   const [faqs, setFaqs] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
-    setFaqs(limitFaqContent(4))
+    if(typeof returnNumber === "number") {
+      setFaqs(limitFaqContent(returnNumber))
+    } else if(typeof returnNumber === "string" && returnNumber === 'all') {
+      setFaqs(faqContent)
+    }
   }, [])
 
   if(faqs.length === 0) {
@@ -42,7 +48,7 @@ const FaqSection = () => {
   return (
     <div className={styles.faqSection}>
       <div className={styles.container}>
-        <h2>Frequently Asked Questions</h2>
+        { returnNumber !== 'all' && <h2>Frequently Asked Questions</h2> }
         <Accordion>
           { faqs.map((faq, index) => (
             <Card className={styles.accordionTab}>
@@ -59,9 +65,11 @@ const FaqSection = () => {
             </Card>
           ))}
         </Accordion>
-        <button>
-          View All
-        </button>
+        { returnNumber !== "all" && 
+          <button onClick={() => history.push('/frequently-asked-questions')}>
+            View All
+          </button>
+        }
       </div>
     </div>
   );

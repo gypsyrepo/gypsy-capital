@@ -188,7 +188,7 @@ const HomePage = () => {
           </Row>
         </div>
       </div>
-      <FaqSection />
+      <FaqSection returnNumber={4} />
       <div className={styles.repeatSection}>
         <div className={styles.container}>
           <div className={styles.styledBox}>

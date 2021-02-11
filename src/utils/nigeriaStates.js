@@ -205,7 +205,7 @@ export const workIndustries = [
   "Writing & Editing"
 ]
 
-const faqContent = [
+export const faqContent = [
   {
     title: 'Am I eligible for a Gypsy Capital loan? / why am I not qualified for a loan?',
     bodyContent: () => (
