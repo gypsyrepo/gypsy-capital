@@ -56,7 +56,7 @@ const EmployerInfoForm = ({ submit }) => {
   useEffect(() => {
     if(officeAddress.state.length > 0) {
       const getLga = async() => {
-        const response = await axios.get(`http://locationsng-api.herokuapp.com/api/v1/states/${officeAddress.state}/lgas`)
+        const response = await axios.get(`https://locationsng-api.herokuapp.com/api/v1/states/${officeAddress.state}/lgas`)
         setLgaOptions(response.data);
       };
   
