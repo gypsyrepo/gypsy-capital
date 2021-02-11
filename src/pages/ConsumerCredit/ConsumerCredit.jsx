@@ -23,9 +23,6 @@ const ConsumerCredit = () => {
   const location = useLocation();
   const history = useHistory();
 
-  const [applyState, setApplyState] = useState(false);
-  const [applicationStage, setApplicationStage] = useState(2);
-  const [applicationSuccess, setApplicationSuccess] = useState(false);
 
   const applyStageArray = {
     '/dashboard/consumer-credit/apply/calculator': 0,
@@ -34,14 +31,10 @@ const ConsumerCredit = () => {
     '/dashboard/consumer-credit/apply/bank-info': 3
   }
 
-  console.log(applyStageArray[location.pathname]);
 
   const { 
-    state: { loading, loans, loanStart, addressStatus, workStatus, error }, 
+    state: { loans, error }, 
     retrieveClientLoans,
-    loanApply, 
-    addAddressForLoan,
-    addWorkInfoForLoan,
     clearError
   } = useContext(LoanContext);
   const { state: { user } } = useContext(AuthContext);
@@ -50,24 +43,6 @@ const ConsumerCredit = () => {
     retrieveClientLoans();
   }, [])
 
-  useEffect(() => {
-    if(loanStart) {
-      setApplicationStage(1);
-    }
-  }, [loanStart])
-
-
-  useEffect(() => {
-    if(addressStatus) {
-      setApplicationStage(2);
-    }
-  }, [addressStatus])
-
-  useEffect(() => {
-    if(workStatus) {
-      setApplicationStage(3);
-    }
-  }, [workStatus])
 
   useEffect(() => {
     if(error) {
@@ -76,19 +51,6 @@ const ConsumerCredit = () => {
     }
   }, [error])
 
-  
-
-  const startApplication = (data) => {
-    loanApply(data, user.user_id);
-  }
-
-  const addAddress = (data) => {
-    addAddressForLoan(data, user.user_id);
-  }
-
-  const addWorkInfo = (data) => {
-    addWorkInfoForLoan(data, user.user_id);
-  }
 
   const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -178,13 +140,13 @@ const ConsumerCredit = () => {
                 <div className={styles.applyForm}>
                   <Switch>
                     <Route path={`${path}/apply/calculator`}>
-                      <LoanCalculatorForm submit={startApplication} />
+                      <LoanCalculatorForm />
                     </Route>
                     <Route path={`${path}/apply/contact-info`}>
-                      <LoanContactForm submit={addAddress} />
+                      <LoanContactForm />
                     </Route>
                     <Route path={`${path}/apply/employer-info`}>
-                      <EmployerInfoForm submit={addWorkInfo} />
+                      <EmployerInfoForm />
                     </Route>
                     <Route path={`${path}/apply/bank-info`}>
                       <BankInfoForm />

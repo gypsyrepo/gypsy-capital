@@ -6,11 +6,13 @@ import { Row, Col } from 'react-bootstrap';
 import { validateInput } from '../../utils/validateInput';
 import { ToastContainer, toast } from 'react-toastify';
 import { Context as LoanContext } from '../../context/LoanContext';
+import { Context as AuthContext } from '../../context/AuthContext';
 
 
-const LoanCalculatorForm = ({ submit }) => {
+const LoanCalculatorForm = () => {
 
-  const { state: { loading } } = useContext(LoanContext);
+  const { state: { loading }, loanApply } = useContext(LoanContext);
+  const { state: { user } } = useContext(AuthContext);
 
   const [daysOfMonth, setDaysOfMonth] = useState([]);
   const [limitError, setLimitError] = useState(null);
@@ -81,7 +83,7 @@ const LoanCalculatorForm = ({ submit }) => {
         monthlyRepayment: loanCalcData.estimatedMonthlyPayment
       }
       console.log(applyData);
-      limitError ? toast.error(limitError) : submit(applyData);
+      limitError ? toast.error(limitError) : loanApply(applyData, user.user_id);
     }
   }
 

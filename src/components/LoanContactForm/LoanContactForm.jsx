@@ -10,12 +10,14 @@ import axios from 'axios';
 import { nigeriaStates } from '../../utils/nigeriaStates';
 import { ToastContainer, toast } from 'react-toastify';
 import { Context as LoanContext } from '../../context/LoanContext';
+import { Context as AuthContext } from '../../context/AuthContext';
 
 
 
-const LoanContactForm = ({ submit }) => {
+const LoanContactForm = () => {
 
-  const { state: { loading } } = useContext(LoanContext);
+  const { state: { user } } = useContext(AuthContext);
+  const { state: { loading }, addAddressForLoan } = useContext(LoanContext);
 
   const [contactAddress, setContactAddress] = useState({
     streetAddress: "",
@@ -64,7 +66,8 @@ const LoanContactForm = ({ submit }) => {
         data.append("local_government", contactAddress.lga);
         data.append("residential_status", contactAddress.residentialStatus);
         data.append("image", proofofAddress);
-        submit(data);
+        // submit(data);
+        addAddressForLoan(data, user.user_id);
       }
     } else {
       toast.error("You need to upload a proof of address document to proceed");
