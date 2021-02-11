@@ -5,6 +5,12 @@
     .container {
         max-width: 1200px;
         margin-top: 120px;
+        .boxLink {
+            color: #000;
+            &:hover {
+                text-decoration: none;
+            }
+        }
         .menuBox {
             background-color: #E2E2E2;
             border-radius: 14px;

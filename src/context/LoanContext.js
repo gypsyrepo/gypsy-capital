@@ -91,7 +91,7 @@ const addWorkInfoForLoan = dispatch => async(workData, userId) => {
     const token = resolveToken()
     const response = await gypsy.post(`/client/loan/work/${userId}`, workData, {
       headers: {
-        "Authorizaton": `Bearer ${token}`
+        "Authorization": `Bearer ${token}`
       }
     });
     console.log(response);

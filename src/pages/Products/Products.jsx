@@ -17,7 +17,7 @@ import { RiSendPlaneFill } from 'react-icons/ri';
 import Footer from '../../components/Footer/Footer';
 import Customer from '../../assets/excited-customer.jpeg';
 import Investor from '../../assets/excited-investor.jpg';
-import { useRouteMatch, Link } from 'react-router-dom';
+import { useRouteMatch, Link, useHistory, Switch, Route, useLocation } from 'react-router-dom';
 
 
 const ProductBanner = ({ productTitle, btnType, copy, btnText }) => {
@@ -134,39 +134,34 @@ const EmailSubscription = ({ title }) => {
 }
 
 
-const MenuBox = ({ icon, menuTitle, clicked, menuState }) => {
-  
-  let strippedTitle = menuTitle.split(' ')[1];
-  strippedTitle = strippedTitle.toLowerCase();
-  // console.log(strippedTitle);
+const MenuBox = ({ icon, menuTitle, linkUrl, linkPath }) => {
+
+  console.log(linkPath);
 
   return (
-    <div 
-      className={ menuState === strippedTitle ? styles.activeMenu : styles.menuBox } 
-      onClick={clicked}
-    >
-      <div className={styles.iconWrapper}>
-        <img 
-          src={icon} 
-          alt="Consumer Credit" 
-          className={menuTitle === "Gypsy Notes" ? styles.notes : styles.credit} 
-        />
+    <Link to={linkUrl} className={styles.boxLink}>
+      <div 
+        className={ linkUrl === linkPath ? styles.activeMenu : styles.menuBox } 
+      >
+        <div className={styles.iconWrapper}>
+          <img 
+            src={icon} 
+            alt="Consumer Credit" 
+            className={menuTitle === "Gypsy Notes" ? styles.notes : styles.credit} 
+          />
+        </div>
+        <h3>{menuTitle}</h3>
       </div>
-      <h3>{menuTitle}</h3>
-    </div>
+    </Link>
   )
 }
 
 
-const Products = ({ history }) => {
+const Products = () => {
 
-  const { url } = useRouteMatch();
-  const [menuState, setMenuState] = useState('credit');
-
-  const navigateProducts = (menuAlias) => {
-    console.log(menuAlias);
-    setMenuState(menuAlias);
-  }
+  const { url, path } = useRouteMatch();
+  const history = useHistory();
+  const location = useLocation();
 
   return (
     <>
@@ -178,146 +173,152 @@ const Products = ({ history }) => {
             <MenuBox 
               icon={Credit} 
               menuTitle="Consumer Credit" 
-              clicked={() => navigateProducts('credit')} 
-              menuState={menuState}
+              linkUrl="/products/consumer-credit"
+              linkPath={location.pathname}
             />
           </Col>
           <Col>
             <MenuBox 
               icon={Notes} 
               menuTitle="Gypsy Notes" 
-              clicked={() => navigateProducts('notes')}
-              menuState={menuState}
+              linkUrl="/products/gypsy-notes"
+              linkPath={location.pathname}
             />
           </Col>
           <Col>
             <MenuBox 
               icon={Advisory} 
               menuTitle="Financial Advisory" 
-              clicked={() => navigateProducts('advisory')}
-              menuState={menuState}
+              linkUrl="/products/financial-advisory"
+              linkPath={location.pathname}
             />
           </Col>
           <Col>
             <MenuBox 
               icon={Alternative} 
               menuTitle="Alternative Investment" 
-              clicked={() => navigateProducts('investment')}
-              menuState={menuState}
+              linkUrl="/products/alternative-investment"
+              linkPath={location.pathname}
             />
           </Col>
         </Row>
       </div>
     </div>
-    { menuState === 'credit' && <ProductBanner 
-      productTitle="Consumer Credit" 
-      copy="The extra money for all life's personal needs, Why not?"
-      btnType="normal"
-      btnText="Apply Now!"
-    /> }
-    { menuState === 'notes' && <ProductBanner 
-      productTitle="Gypsy Notes" 
-      copy="Enjoy capital retention and attractive returns on your investment"
-      btnType="textButton"
-    /> }
-    { menuState === 'advisory' && <ProductBanner 
-      productTitle="Financial Advisory" 
-      copy="Optimum advice on a wide range of strategic and financial goals"
-      btnType="normal"
-      btnText="Book an Appointment"
-    /> }
-    { menuState === 'investment' && <ProductBanner 
-      productTitle="Alternative Investment" 
-      copy="For investors who seek greater rewards"
-      btnType="textButton"
-    /> }
-    { menuState === "credit" && <div className={styles.features}>
-      <div className={styles.container}>
-        <Row>
-          <Col>
-            <div className={styles.iconWrapper}>
-              <img src={Funding} alt="Fast funding" />
-            </div>
-            <h3>Funding Capacity</h3>
-            <p>Up to ₦500,000</p>
-          </Col>
-          <Col>
-            <div className={styles.iconWrapper}>
-              <img src={Accept} alt="terms" />
-            </div>
-            <h3>Term</h3>
-            <p>Up to 6 months</p>
-          </Col>
-          <Col>
-            <div className={styles.iconWrapper}>
-              <img src={Calendar} alt="schedule" />
-            </div>
-            <h3>Payment Schedule</h3>
-            <p>Monthly</p>
-          </Col>
-          <Col>
-            <div className={styles.iconWrapper}>
-              <img src={Time} alt="speed" />
-            </div>
-            <h3>Speed</h3>
-            <p>As fast as 24 hours</p>
-          </Col>
-        </Row>
-      </div>
-    </div>}
-    { menuState === "credit" && <HowItWorks 
-      mainTitle="Convenient personal and lifestyle loans."
-      minorTitle="How It Works"
-      btnText="Apply Now!"
-      btnType="normal"
-      productName="Consumer Credit"
-      steps={["Create a free Gypsy account", "Complete our online application", "Receive money within 24 hours if approved."]}
-    >
-      <p>We are committed to providing consumer loan services, with efficiency and convenience at the forefront of all we do while ensuring best practices.</p>
-      <p>We utilize cutting technological solutions with speed and accurate data capturing, simple and secured.</p>
-    </HowItWorks>}
-    { menuState === "notes" && <HowItWorks 
-      mainTitle="Enjoy capital retention and attractive returns on your investment"
-      btnText="Apply Now!"
-      btnType="normal"
-      imageCopy={Customer}
-      productName="Gypsy Notes"
-    >
-      <p>Enjoy capital retention and attractive returns on your investment</p>
-      <p>We offer annual returns up to 13% Per Annum which are tiered according to individual preferences with a minimum investment amount of N1million for a minimum tenor of 100 days.</p>
-      <p>At Gypsy, we recognize the dynamic nature of the market and help our clientele better manage liquidity with our flexible tenor and structured fixed income services.</p>
-    </HowItWorks>}
-    { menuState === "advisory" && <HowItWorks 
-      mainTitle="Optimum advice on a wide range of strategic and financial goals"
-      btnText="Book an Appointment"
-      btnType="normal"
-      imageCopy={Investor}
-      productName="Financial Advisory"
-    >
-      <p>We provide expert financial advisory and wealth management services to individual lifestyle needs. With a diverse range of industry experts, global knowledge and insight we achieve ranging clientele needs.</p>
-      <p>Our understanding of the sub-Saharan market avails us the opportunity to forge possibilities and create values for our interested client’s seeking to explore the market.</p>
-    </HowItWorks>}
-    { menuState === "investment" && <HowItWorks 
-      mainTitle="Earn More…"
-      btnType="textBtn"
-      productName="Alternative Investment"
-      minorTitle="We Primarily Invest Across:"
-      steps={[
-        "Real estate brokerage, development and financing.",
-        "Agriculture and agro-financing.",
-        "Hospitality and retail."
-      ]}
-    >
-      <p>This investment arm is driven by our interest in real estate financing, financial services, agriculture and hospitality projects. We are focused on delivering solutions that inspire global possibilities that drive value and growth.</p>
-      <p>While we focus our effort on those sectors that are closely geared to our core themes, we are open to investments prospects across other sectors. We select our investment opportunities via expert-led insights and reviews delivered by our network of experienced investment brokers, allowing us to invest in viable opportunities.</p>
-      <p>We support our clients at operational and strategic levels, offering day to day advisory services, tailored to their lifestyle needs.</p>
-    </HowItWorks>}
-    { menuState === "notes" &&
-      <EmailSubscription title="Be The First to Know When We Launch Gypsy Notes" />
-    }
-    { menuState === "investment" &&
-      <EmailSubscription title="Be The First to Know When We Launch Alternative Investment" />
-    }
+    <Switch>
+      <Route path={`${path}/consumer-credit`}>
+        <ProductBanner 
+          productTitle="Consumer Credit" 
+          copy="The extra money for all life's personal needs, Why not?"
+          btnType="normal"
+          btnText="Apply Now!"
+        /> 
+        <div className={styles.features}>
+          <div className={styles.container}>
+            <Row>
+              <Col>
+                <div className={styles.iconWrapper}>
+                  <img src={Funding} alt="Fast funding" />
+                </div>
+                <h3>Funding Capacity</h3>
+                <p>Up to ₦500,000</p>
+              </Col>
+              <Col>
+                <div className={styles.iconWrapper}>
+                  <img src={Accept} alt="terms" />
+                </div>
+                <h3>Term</h3>
+                <p>Up to 6 months</p>
+              </Col>
+              <Col>
+                <div className={styles.iconWrapper}>
+                  <img src={Calendar} alt="schedule" />
+                </div>
+                <h3>Payment Schedule</h3>
+                <p>Monthly</p>
+              </Col>
+              <Col>
+                <div className={styles.iconWrapper}>
+                  <img src={Time} alt="speed" />
+                </div>
+                <h3>Speed</h3>
+                <p>As fast as 24 hours</p>
+              </Col>
+            </Row>
+          </div>
+        </div>
+        <HowItWorks 
+          mainTitle="Convenient personal and lifestyle loans."
+          minorTitle="How It Works"
+          btnText="Apply Now!"
+          btnType="normal"
+          productName="Consumer Credit"
+          steps={["Create a free Gypsy account", "Complete our online application", "Receive money within 24 hours if approved."]}
+        >
+          <p>We are committed to providing consumer loan services, with efficiency and convenience at the forefront of all we do while ensuring best practices.</p>
+          <p>We utilize cutting technological solutions with speed and accurate data capturing, simple and secured.</p>
+        </HowItWorks>
+      </Route>
+      <Route path={`${path}/gypsy-notes`}>
+        <ProductBanner 
+          productTitle="Gypsy Notes" 
+          copy="Enjoy capital retention and attractive returns on your investment"
+          btnType="textButton"
+        />
+        <HowItWorks 
+          mainTitle="Enjoy capital retention and attractive returns on your investment"
+          btnText="Apply Now!"
+          btnType="normal"
+          imageCopy={Customer}
+          productName="Gypsy Notes"
+        >
+          <p>Enjoy capital retention and attractive returns on your investment</p>
+          <p>We offer annual returns up to 13% Per Annum which are tiered according to individual preferences with a minimum investment amount of N1million for a minimum tenor of 100 days.</p>
+          <p>At Gypsy, we recognize the dynamic nature of the market and help our clientele better manage liquidity with our flexible tenor and structured fixed income services.</p>
+        </HowItWorks>
+        <EmailSubscription title="Be The First to Know When We Launch Gypsy Notes" />
+      </Route>
+      <Route path={`${path}/financial-advisory`}>
+        <ProductBanner 
+          productTitle="Financial Advisory" 
+          copy="Optimum advice on a wide range of strategic and financial goals"
+          btnType="normal"
+          btnText="Book an Appointment"
+        />
+        <HowItWorks 
+          mainTitle="Optimum advice on a wide range of strategic and financial goals"
+          btnText="Book an Appointment"
+          btnType="normal"
+          imageCopy={Investor}
+          productName="Financial Advisory"
+        >
+          <p>We provide expert financial advisory and wealth management services to individual lifestyle needs. With a diverse range of industry experts, global knowledge and insight we achieve ranging clientele needs.</p>
+          <p>Our understanding of the sub-Saharan market avails us the opportunity to forge possibilities and create values for our interested client’s seeking to explore the market.</p>
+        </HowItWorks>
+      </Route>
+      <Route path={`${path}/alternative-investment`}>
+        <ProductBanner 
+          productTitle="Alternative Investment" 
+          copy="For investors who seek greater rewards"
+          btnType="textButton"
+        />
+        <HowItWorks 
+          mainTitle="Earn More…"
+          btnType="textBtn"
+          productName="Alternative Investment"
+          minorTitle="We Primarily Invest Across:"
+          steps={[
+            "Real estate brokerage, development and financing.",
+            "Agriculture and agro-financing.",
+            "Hospitality and retail."
+          ]}
+        >
+          <p>This investment arm is driven by our interest in real estate financing, financial services, agriculture and hospitality projects. We are focused on delivering solutions that inspire global possibilities that drive value and growth.</p>
+          <p>While we focus our effort on those sectors that are closely geared to our core themes, we are open to investments prospects across other sectors. We select our investment opportunities via expert-led insights and reviews delivered by our network of experienced investment brokers, allowing us to invest in viable opportunities.</p>
+          <p>We support our clients at operational and strategic levels, offering day to day advisory services, tailored to their lifestyle needs.</p>
+        </HowItWorks>
+        <EmailSubscription title="Be The First to Know When We Launch Alternative Investment" />
+      </Route>
+    </Switch>
     <Footer />
     </>
   )

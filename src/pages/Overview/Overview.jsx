@@ -1,10 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './Overview.module.scss';
-import pageUrl from '../../routes/pageUrl';
-import { FiLayers } from 'react-icons/fi';
-import { BiCreditCard } from 'react-icons/bi';
-import { AiOutlineUser } from 'react-icons/ai';
-import { GiTakeMyMoney } from 'react-icons/gi';
+import { clientRoutes } from '../../routes/sidebarRoutes';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import Button from '../../components/Button/Button';
 import gypsyNote from '../../assets/icons/gypsyNotes.svg';
@@ -13,13 +9,14 @@ import { Col, Row } from 'react-bootstrap';
 import noLoan from '../../assets/no-loan.png';
 import moment from 'moment';
 import { Context as AuthContext } from '../../context/AuthContext';
-import { useRouteMatch, Link, useHistory } from 'react-router-dom';
+import { useRouteMatch, Link, useHistory, useLocation } from 'react-router-dom';
 
 
-const Overview = ({ location }) => {
+const Overview = () => {
 
   const { url, path } = useRouteMatch();
   const history = useHistory();
+  const location = useLocation();
   const [loanStatus, setLoanStatus] = useState('inactive');
 
   const { state: { user } } = useContext(AuthContext);
@@ -28,35 +25,12 @@ const Overview = ({ location }) => {
     console.log(user);
   }, [user])
 
-  const sidebarRoutes = [
-    {
-      label: "Dashboard",
-      link: pageUrl.DASHBOARD_HOMEPAGE,
-      icon: FiLayers
-    },
-    {
-      label: "Consumer Credit",
-      link: pageUrl.CONSUMER_CREDIT_PAGE,
-      icon: GiTakeMyMoney
-    },
-    {
-      label: "Credit Report",
-      link: pageUrl.CREDIT_REPORT_PAGE,
-      icon: BiCreditCard
-    },
-    {
-      label: "Profile",
-      link: pageUrl.PROFILE_PAGE,
-      icon: AiOutlineUser
-    },
-  ]
-
   if(!user) {
     return null
   }
 
   return (
-    <Dashboard sidebarRoutes={sidebarRoutes} location={url}>
+    <Dashboard sidebarRoutes={clientRoutes} location={location}>
       <div className={styles.welcomeGroup}>
         <h2>Hey, {user.firstName}</h2>
         <p className={styles.currentDate}>Today is {moment().format('dddd Do[,] MMMM')}.</p>
@@ -71,7 +45,7 @@ const Overview = ({ location }) => {
               size="sm"
               color="#fff"
               className="mt-4"
-              clicked={() => history.push({ pathname: '/dashboard/consumer-credit', state: { applyState: true }})}
+              clicked={() => history.push('/dashboard/consumer-credit/apply/calculator')}
             >
               Apply for loan
             </Button>

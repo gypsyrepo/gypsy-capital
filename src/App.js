@@ -32,7 +32,7 @@ const RouteManager = () =>  {
       <Router history={history}>
         <Switch>
           <Route exact path={pageUrl.HOMEPAGE}><HomePage /></Route>
-          <Route exact path={pageUrl.PRODUCTS_PAGE}><Products /></Route>
+          <Route path={pageUrl.PRODUCTS_PAGE}><Products /></Route>
           <Route exact path={pageUrl.SIGNUP_PAGE}><SignUp /></Route>
           <Route exact path={pageUrl.SIGNIN_PAGE}><SignIn /></Route>
           <Route exact path={pageUrl.VERIFY_OTP_PAGE}><OtpVerify /></Route>
@@ -48,7 +48,7 @@ const RouteManager = () =>  {
           <ProtectedRoute exact path={pageUrl.DASHBOARD_HOMEPAGE}>
             <Overview />
           </ProtectedRoute>
-          <ProtectedRoute exact path={pageUrl.CONSUMER_CREDIT_PAGE}>
+          <ProtectedRoute path={pageUrl.CONSUMER_CREDIT_PAGE}>
             <ConsumerCredit />
           </ProtectedRoute>
         </Switch>

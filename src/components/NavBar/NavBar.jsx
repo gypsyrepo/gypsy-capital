@@ -18,7 +18,7 @@ const NavBar = ({ history, location }) => {
           <li>
             <Link 
               className={location === pageUrl.PRODUCTS_PAGE ? styles.activeMenu : null} 
-              to={pageUrl.PRODUCTS_PAGE}
+              to='/products/consumer-credit'
             >
               Our Products
             </Link>
