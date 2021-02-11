@@ -33,7 +33,7 @@ const ConsumerCredit = () => {
   }, [location])
 
   const [applyState, setApplyState] = useState(false);
-  const [applicationStage, setApplicationStage] = useState(0);
+  const [applicationStage, setApplicationStage] = useState(2);
   const [applicationSuccess, setApplicationSuccess] = useState(false);
 
   const { 

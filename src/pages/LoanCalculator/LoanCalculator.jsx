@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './LoanCalculator.module.scss';
 import NavBar from '../../components/NavBar/NavBar';
 import InputField from '../../components/InputField/InputField';
 import { Row, Col } from 'react-bootstrap';
 import Button from '../../components/Button/Button';
+import { useLocation, useRouteMatch, useHistory } from 'react-router-dom';
 
 
-const LoanCalculator = ({ location, history }) => {
+const LoanCalculator = () => {
 
   const [loanData, setLoanData] = useState({
     proposedAmount: '',
@@ -16,9 +17,19 @@ const LoanCalculator = ({ location, history }) => {
     proposedMonthyRepayment: '',
   })
 
+  const location = useLocation();
+  const history = useHistory();
+  const { url } = useRouteMatch();
+
+  useEffect(() => {
+    if(location.state) {
+      setLoanData({ ...loanData, proposedAmount: location.state.loanAmount });
+    }
+  },[location])
+
   return (
     <>
-    <NavBar location={location} history={history} />
+    <NavBar location={url} history={history} />
     <div className={styles.mainSection}>
       <div className={styles.container}>
         <h3>Access Quick Loans of Up to ₦500,000</h3>

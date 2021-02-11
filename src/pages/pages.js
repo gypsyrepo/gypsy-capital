@@ -13,6 +13,7 @@ import LoanCalculator from './LoanCalculator/LoanCalculator';
 import AgentOverview from './AgentOverview/AgentOverview';
 import ClientListPage from './ClientListPage/ClientListPage';
 import MonoWidget from './MonoWidget/MonoWidget';
+import Faqs from './Faqs/Faqs';
 
 
 export {
@@ -30,5 +31,6 @@ export {
   LoanCalculator,
   AgentOverview,
   ClientListPage,
-  MonoWidget
+  MonoWidget,
+  Faqs
 }

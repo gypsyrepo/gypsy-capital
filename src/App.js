@@ -14,7 +14,8 @@ import {
   AboutUs, 
   ContactPage,
   LoanCalculator,
-  MonoWidget 
+  MonoWidget, 
+  Faqs
 } from './pages/pages';
 import { Provider as AuthProvider } from './context/AuthContext';
 import { Provider as UserProvider } from './context/UserContext';
@@ -39,6 +40,7 @@ const RouteManager = () =>  {
           <Route exact path={pageUrl.CONTACT_PAGE}><ContactPage /></Route>
           <Route exact path={pageUrl.MONO_WIDGET_PAGE}><MonoWidget /></Route>
           <Route exact path={pageUrl.LOAN_CALCULATOR_PAGE}><LoanCalculator /></Route>
+          <Route exact path={pageUrl.FAQ_PAGE}><Faqs /></Route>
           <ProtectedRoute exact path={pageUrl.PROFILE_PAGE}><Profile /></ProtectedRoute>
           <ProtectedRoute exact path={pageUrl.CREDIT_REPORT_PAGE}>
             <CreditReport />

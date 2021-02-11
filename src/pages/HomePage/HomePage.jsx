@@ -19,12 +19,13 @@ import CirclePattern from '../../assets/patternCircle.png';
 import InputField from '../../components/InputField/InputField';
 import FaqSection from '../../components/FaqSection/FaqSection';
 import Footer from '../../components/Footer/Footer';
-import { useRouteMatch, Link } from 'react-router-dom';
+import { useRouteMatch, Link, useHistory } from 'react-router-dom';
 
 
-const HomePage = ({ history }) => {
+const HomePage = () => {
 
   const { url } = useRouteMatch();
+  const history = useHistory()
   const [loanAmt, setLoanAmt] = useState('');
   const [loanRequest, setLoanRequest] = useState('');
 
@@ -51,7 +52,9 @@ const HomePage = ({ history }) => {
                 placeholder="How much do you need?"
                 onChange={(e) => setLoanAmt(e.currentTarget.value)} 
               />
-              <button>
+              <button
+                onClick={() => history.push({ pathname: '/loan-calculator', state: { loanAmount: loanAmt }})}
+              >
                 Get Started
               </button>
               <img 
@@ -127,7 +130,7 @@ const HomePage = ({ history }) => {
             <p>Our core vision is to impact and empower our environment and creating a life of financial freedom for individuals seeking the power to do more.</p>
             <p className={styles.founderQuote}>“No matter what your personal goals may be, at Gypsy, we are invested in you, if you have the credible financial data”.</p>
             <p className={styles.quoter}><span>Ayo M.,</span> CEO Gypsy Capital</p>
-            <button>
+            <button onClick={() => history.push('/about-us')}>
               Learn More
             </button>
           </Col>

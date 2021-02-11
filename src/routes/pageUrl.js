@@ -15,6 +15,7 @@ const LOAN_CALCULATOR_PAGE = '/loan-calculator';
 const SALES_AGENT_OVERVIEW = '/sales-agent/overview';
 const CLIENT_LIST_PAGE = '/sales-agent/clients';
 const MONO_WIDGET_PAGE = '/mono-connect';
+const FAQ_PAGE = '/frequently-asked-questions';
 
 
 const pageUrl = {
@@ -34,7 +35,8 @@ const pageUrl = {
     LOAN_CALCULATOR_PAGE,
     SALES_AGENT_OVERVIEW,
     CLIENT_LIST_PAGE,
-    MONO_WIDGET_PAGE
+    MONO_WIDGET_PAGE,
+    FAQ_PAGE
 }
 
 export default pageUrl;
