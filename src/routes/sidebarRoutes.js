@@ -2,7 +2,10 @@ import pageUrl from './pageUrl';
 import { FiLayers } from 'react-icons/fi';
 import { BiCreditCard } from 'react-icons/bi';
 import { AiOutlineUser } from 'react-icons/ai';
-import { GiTakeMyMoney } from 'react-icons/gi';
+import { GiTakeMyMoney, GiMoneyStack } from 'react-icons/gi';
+import { FaUser } from 'react-icons/fa';
+import { BiSupport } from 'react-icons/bi';
+import { RiUser3Fill } from 'react-icons/ri';
 
 
 export const clientRoutes = [
@@ -30,4 +33,38 @@ export const clientRoutes = [
       rootLink: pageUrl.PROFILE_PAGE,
       icon: AiOutlineUser
     },
+]
+
+
+const salesRoutes = [
+  {
+    label: "Dashboard",
+    link: pageUrl.SALES_AGENT_OVERVIEW,
+    rootLink: pageUrl.SALES_AGENT_OVERVIEW,
+    icon: FiLayers
+  },
+  {
+    label: "Clients",
+    link: pageUrl.CLIENT_LIST_PAGE,
+    rootLink: '/sales-agent/client',
+    icon: FaUser
+  },
+  {
+    label: "Loans",
+    link: pageUrl.LOAN_LIST_PAGE,
+    rootLink: '/sales-agent/loan',
+    icon: GiMoneyStack
+  }, 
+  {
+    label: "Support",
+    link: pageUrl.SUPPORT_PAGE,
+    rootLink: pageUrl.SUPPORT_PAGE,
+    icon: BiSupport
+  }
+]
+
+
+export const routes = [
+  clientRoutes,
+  salesRoutes
 ]

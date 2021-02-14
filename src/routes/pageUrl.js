@@ -16,6 +16,10 @@ const SALES_AGENT_OVERVIEW = '/sales-agent/overview';
 const CLIENT_LIST_PAGE = '/sales-agent/clients';
 const MONO_WIDGET_PAGE = '/mono-connect';
 const FAQ_PAGE = '/frequently-asked-questions';
+const LOAN_LIST_PAGE = '/sales-agent/loans';
+const SUPPORT_PAGE = '/sales-agent/support';
+const CLIENT_DETAILS_PAGE = '/sales-agent/client/:clientId';
+const LOAN_DETAIL_PAGE = '/sales-agent/loan/:loanId'
 
 
 const pageUrl = {
@@ -36,7 +40,11 @@ const pageUrl = {
     SALES_AGENT_OVERVIEW,
     CLIENT_LIST_PAGE,
     MONO_WIDGET_PAGE,
-    FAQ_PAGE
+    FAQ_PAGE,
+    LOAN_LIST_PAGE,
+    SUPPORT_PAGE,
+    CLIENT_DETAILS_PAGE,
+    LOAN_DETAIL_PAGE
 }
 
 export default pageUrl;

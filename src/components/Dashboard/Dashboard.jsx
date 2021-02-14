@@ -1,11 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './Dashboard.module.scss';
 import { Row, Col } from 'react-bootstrap';
 import Logo from '../../assets/logo-white.png';
 import Button from '../../components/Button/Button';
+import { FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { MdNotificationsNone } from 'react-icons/md';
 import { Context as AuthContext } from '../../context/AuthContext';
+import placeholderAvatar from '../../assets/placeholder.png';
 
 
 const Dashboard = ({ children, sidebarRoutes, location }) => {
@@ -17,15 +19,51 @@ const Dashboard = ({ children, sidebarRoutes, location }) => {
     logout();
   }
 
+  const role = "sales";
+
+  const [searchTerm, setSearchTerm] = useState('');
+
   return(
     <div className={styles.container}>
       <Row className={styles.header}>
         <Col className={styles.logoGrid} sm={3}>
           <img src={Logo} alt="Gypsy Logo" width={150} />
         </Col>
-        <Col className={styles.navGrid} sm={9}>
-          <MdNotificationsNone size="2em" className="mr-5" color="#741763" />
-          <Button clicked={signout} size="sm" bgColor="#A0208931" color="#212121">Log out</Button>
+        <Col className={styles.altNavGrid} sm={9}>
+          { role && role === "client" ? 
+          <>
+            <MdNotificationsNone size="2em" className="mr-5" color="#741763" />
+            <Button clicked={signout} size="sm" bgColor="#A0208931" color="#212121">Log out</Button>
+          </> : null
+          }
+          {
+            role && role === "sales" ?
+            <>
+              <div className={styles.searchBar}>
+                <FaSearch className={styles.searchIcon} />
+                <input 
+                  type="text"
+                  name="searchTerm"
+                  placeholder="Search for customer by  name, number or BVN"
+                  className={styles.searchTerm}
+                  value={searchTerm}
+                  onChange={(e) => {
+                    setSearchTerm(e.currentTarget.value)
+                  }}
+                />
+              </div>
+              <div className={styles.profileGroup}>
+                <MdNotificationsNone style={{ display: "block" }} size="2em" className="mr-5" color="#741763" />
+                <div className={styles.profileAvi}>
+                  <img src={placeholderAvatar} alt="Profile Picture" />
+                  <div className={styles.userInfo}>
+                    <p>Moses Emmanuel</p>
+                    <p>Sales agent</p>
+                  </div>
+                </div>
+              </div>
+            </> : null
+          }
         </Col>
       </Row>
       <Row>

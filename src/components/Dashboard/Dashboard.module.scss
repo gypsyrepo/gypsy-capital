@@ -16,6 +16,13 @@
             justify-content: flex-end;
             padding-right: 50px;
         }
+        .altNavGrid {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-right: 50px;
+            padding-left: 50px;
+        }
     }
     .menuPanel {
         min-height: calc(100vh - 80px);
@@ -64,4 +71,56 @@ a.activeLink {
     padding: 40px 50px;
     max-height: calc(100vh - 80px);
     overflow-y: scroll;
+}
+
+.searchBar {
+    position: relative;
+    .searchTerm {
+        border: 0.5px solid rgba(0, 0, 0, 0.2);
+        width: 450px;
+        border-radius: 5px;
+        padding: 9px 60px;
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 1.05rem;
+        &:focus {
+            outline: none;
+        }
+    }
+    .searchIcon {
+        position: absolute;
+        left: 25px;
+        font-size: 1rem;
+        color: #741763;
+        top: calc(50% - 0.5rem);
+    }
+}
+
+.profileGroup {
+    display: flex;
+    align-items: center;
+}
+
+.profileAvi {
+    display: flex;
+    align-items: center;
+    img {
+        width: 54px;
+        height: 54px;
+        border-radius: 100%;
+    }
+    p {
+        font-family: 'Source Sans Pro', sans-serif;
+        &:first-child {
+            margin-bottom: 0;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+        &:last-child {
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+    }
+    .userInfo {
+        margin-left: 20px;
+    }
 }

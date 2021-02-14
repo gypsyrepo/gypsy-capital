@@ -1,33 +1,33 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Dashboard from '../../components/Dashboard/Dashboard';
-import styles from './ClientListPage.module.scss';
+import styles from './LoanList.module.scss';
+import { useLocation } from 'react-router-dom';
 import { routes } from '../../routes/sidebarRoutes';
-import { useLocation,Link } from 'react-router-dom';
+import InputField from '../../components/InputField/InputField';
 import moment from 'moment';
-import  Button from '../../components/Button/Button';
 import { Table, Pagination } from 'react-bootstrap';
-import { clientList } from '../../utils/dummyData';
+import { loanList } from '../../utils/dummyData';
 
 
-const ClientListPage = () => {
+const LoanList = () => {
 
   const location = useLocation();
-  const salesRoute = routes[1];
+  const salesRoutes = routes[1];
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
 
-  const indexOfLastClient = useMemo(() => {
+  const indexOfLastLoan = useMemo(() => {
     return currentPage * postsPerPage
   }, [currentPage, postsPerPage]);
 
-  const indexOfFirstClient = useMemo(() => {
-    return indexOfLastClient - postsPerPage
-  }, [indexOfLastClient, postsPerPage]);
+  const indexOfFirstLoan = useMemo(() => {
+    return indexOfLastLoan - postsPerPage
+  }, [indexOfLastLoan, postsPerPage]);
 
-  const currentClients = useMemo(() => {
-    return clientList.slice(indexOfFirstClient, indexOfLastClient);
-  }, [indexOfLastClient, indexOfFirstClient])
+  const currentLoans = useMemo(() => {
+    return loanList.slice(indexOfFirstLoan, indexOfLastLoan);
+  }, [indexOfLastLoan, indexOfFirstLoan])
 
   const goToPage = (event) => {
     if(event.target.text) {
@@ -37,7 +37,7 @@ const ClientListPage = () => {
 
   let items = [];
 
-  for (let i=1; i <= Math.ceil(clientList.length / postsPerPage); i++) {
+  for (let i=1; i <= Math.ceil(loanList.length / postsPerPage); i++) {
     items.push(
       <Pagination.Item onClick={goToPage} key={i} active={i === currentPage}>
         {i}
@@ -52,49 +52,55 @@ const ClientListPage = () => {
   }
 
   const goToNextPage = () => {
-    if(currentPage < Math.ceil(clientList.length / postsPerPage)) {
+    if(currentPage < Math.ceil(loanList.length / postsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   }
 
   return (
-    <Dashboard sidebarRoutes={salesRoute} location={location}>
+    <Dashboard sidebarRoutes={salesRoutes} location={location}>
       <div className={styles.welcomeGroup}>
         <div>
-          <h2>Clients</h2>
+          <h2>Loans</h2>
           <p className={styles.currentDate}>Today is {moment().format('dddd Do[,] MMMM')}.</p>
         </div>
-        <Button
-          size="sm" 
-          bgColor="#741763" 
-          color="#fff"
-        >
-          Onboard New Client
-        </Button>
       </div>
-      <div className={styles.overview}>
-        <div className={styles.overviewBox}>
-          <h3>Clients Overview</h3>
-          <Table className={styles.table}>
+      <div className={styles.loansTable}>
+        <div className={styles.filterInput}>
+          <p>Filter</p>
+          <div className={styles.inputWrapper}>
+            <InputField 
+              type="select"
+              options={['Status', 'Tenure']}
+              nameAttr='filterInput'
+            />
+          </div>
+        </div>
+        <div className={styles.cardTable}>
+          <Table>
             <thead>
               <tr>
-                <th>Client Name</th>
-                <th>Client ID</th>
-                <th>Phone Number</th>
-                <th>BVN</th>
-                <th>Date Created</th>
+                <th>Loan ID</th>
+                <th>Monthly Repayment</th>
+                <th>Tenure</th>
+                <th>Status</th>
+                <th>Repayment Source</th>
+                <th>Loan Amount</th>
+                <th>Balance</th>
               </tr>
             </thead>
             <tbody>
-              { currentClients.map((client, idx) => (
+              { currentLoans.map((loan, idx) => (
                 <tr>
-                  <td>{client.clientName}</td>
                   <td className={styles.loanId}>
-                    <Link to='/sales-agent/client/general'>{client.loanId}</Link>
+                    {loan.loanId}
                   </td>
-                  <td>{client.phoneNo}</td>
-                  <td>{client.bvn}</td>
-                  <td>{client.dateCreated}</td>
+                  <td>{loan.monthlyRepayment}</td>
+                  <td>{loan.tenure}</td>
+                  <td>{loan.status}</td>
+                  <td>{loan.repaymentSource}</td>
+                  <td>{loan.loanAmt}</td>
+                  <td>{loan.balance}</td>
                 </tr>
               ))}
             </tbody>
@@ -124,4 +130,4 @@ const ClientListPage = () => {
 }
 
 
-export default ClientListPage;
+export default LoanList;

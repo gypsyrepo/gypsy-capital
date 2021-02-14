@@ -15,7 +15,13 @@ import {
   ContactPage,
   LoanCalculator,
   MonoWidget, 
-  Faqs
+  Faqs,
+  AgentOverview,
+  ClientListPage,
+  LoanList,
+  Support,
+  ClientDetails,
+  LoanDetail
 } from './pages/pages';
 import { Provider as AuthProvider } from './context/AuthContext';
 import { Provider as UserProvider } from './context/UserContext';
@@ -50,6 +56,24 @@ const RouteManager = () =>  {
           </ProtectedRoute>
           <ProtectedRoute path={pageUrl.CONSUMER_CREDIT_PAGE}>
             <ConsumerCredit />
+          </ProtectedRoute>
+          <ProtectedRoute path={pageUrl.SALES_AGENT_OVERVIEW}>
+            <AgentOverview />
+          </ProtectedRoute>
+          <ProtectedRoute path={pageUrl.CLIENT_LIST_PAGE}>
+            <ClientListPage />
+          </ProtectedRoute>
+          <ProtectedRoute path={pageUrl.CLIENT_DETAILS_PAGE}>
+            <ClientDetails />
+          </ProtectedRoute>
+          <ProtectedRoute path={pageUrl.LOAN_LIST_PAGE}>
+            <LoanList />
+          </ProtectedRoute>
+          <ProtectedRoute path={pageUrl.LOAN_DETAIL_PAGE}>
+            <LoanDetail />
+          </ProtectedRoute>
+          <ProtectedRoute path={pageUrl.SUPPORT_PAGE}>
+            <Support />
           </ProtectedRoute>
         </Switch>
       </Router>

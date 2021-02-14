@@ -14,6 +14,10 @@ import AgentOverview from './AgentOverview/AgentOverview';
 import ClientListPage from './ClientListPage/ClientListPage';
 import MonoWidget from './MonoWidget/MonoWidget';
 import Faqs from './Faqs/Faqs';
+import LoanList from './LoanList/LoanList';
+import Support from './Support/Support';
+import ClientDetails from './ClientDetails/ClientDetails';
+import LoanDetail from './LoanDetail/LoanDetail';
 
 
 export {
@@ -32,5 +36,9 @@ export {
   AgentOverview,
   ClientListPage,
   MonoWidget,
-  Faqs
+  Faqs,
+  LoanList,
+  Support,
+  ClientDetails,
+  LoanDetail
 }
