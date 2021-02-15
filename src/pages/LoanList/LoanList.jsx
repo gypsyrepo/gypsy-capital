@@ -1,61 +1,30 @@
 import React, { useState, useMemo } from 'react';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import styles from './LoanList.module.scss';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { routes } from '../../routes/sidebarRoutes';
 import InputField from '../../components/InputField/InputField';
 import moment from 'moment';
 import { Table, Pagination } from 'react-bootstrap';
 import { loanList } from '../../utils/dummyData';
+import usePagination from '../../hooks/usePagination';
 
 
 const LoanList = () => {
 
   const location = useLocation();
   const salesRoutes = routes[1];
+  const [filterInput, setFilterInput] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
 
-  const indexOfLastLoan = useMemo(() => {
-    return currentPage * postsPerPage
-  }, [currentPage, postsPerPage]);
-
-  const indexOfFirstLoan = useMemo(() => {
-    return indexOfLastLoan - postsPerPage
-  }, [indexOfLastLoan, postsPerPage]);
-
-  const currentLoans = useMemo(() => {
-    return loanList.slice(indexOfFirstLoan, indexOfLastLoan);
-  }, [indexOfLastLoan, indexOfFirstLoan])
-
-  const goToPage = (event) => {
-    if(event.target.text) {
-      setCurrentPage(Number(event.target.text));
-    }
-  }
-
-  let items = [];
-
-  for (let i=1; i <= Math.ceil(loanList.length / postsPerPage); i++) {
-    items.push(
-      <Pagination.Item onClick={goToPage} key={i} active={i === currentPage}>
-        {i}
-      </Pagination.Item>
-    )
-  }
-
-  const goToPrevPage = () => {
-    if(currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  }
-
-  const goToNextPage = () => {
-    if(currentPage < Math.ceil(loanList.length / postsPerPage)) {
-      setCurrentPage(currentPage + 1);
-    }
-  }
+   const {  
+     currentList,
+     items,
+     goToPrevPage,
+     goToNextPage
+   } = usePagination(currentPage, postsPerPage, loanList, setCurrentPage, styles);
 
   return (
     <Dashboard sidebarRoutes={salesRoutes} location={location}>
@@ -71,8 +40,10 @@ const LoanList = () => {
           <div className={styles.inputWrapper}>
             <InputField 
               type="select"
-              options={['Status', 'Tenure']}
+              options={['Active Loans', 'Pending Loans', 'Declined Loans', 'Expired Loans']}
               nameAttr='filterInput'
+              value={filterInput}
+              changed={(val) => setFilterInput(val)}
             />
           </div>
         </div>
@@ -90,10 +61,12 @@ const LoanList = () => {
               </tr>
             </thead>
             <tbody>
-              { currentLoans.map((loan, idx) => (
+              { currentList.map((loan, idx) => (
                 <tr>
                   <td className={styles.loanId}>
-                    {loan.loanId}
+                    <Link to="/sales-agent/loan/general">
+                      {loan.loanId}
+                    </Link>
                   </td>
                   <td>{loan.monthlyRepayment}</td>
                   <td>{loan.tenure}</td>

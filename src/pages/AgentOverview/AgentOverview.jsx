@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link, useHistory } from 'react-router-dom';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import { routes } from '../../routes/sidebarRoutes';
 import styles from './AgentOverview.module.scss';
@@ -28,6 +28,7 @@ const StatBox = ({ icon, title, statData }) => {
 const AgentOverview = () => {
 
   const location = useLocation();
+  const history = useHistory();
   const salesRoute = routes[1];
 
   return (
@@ -62,6 +63,7 @@ const AgentOverview = () => {
             size="sm" 
             bgColor="#741763" 
             color="#fff"
+            clicked={() => history.push('/sales-agent/loans')}
           >
             View All
           </Button>
@@ -82,7 +84,11 @@ const AgentOverview = () => {
               { recentLoans.map((loan, idx) => (
                 <tr key={idx}>
                   <td>{loan.clientName}</td>
-                  <td className={styles.loanId}>{loan.loanId}</td>
+                  <td className={styles.loanId}>
+                    <Link to="/sales-agent/loan/general">
+                      {loan.loanId}
+                    </Link>
+                  </td>
                   <td>{loan.loanAmt}</td>
                   <td>{loan.status}</td>
                   <td>{loan.tenure}</td>

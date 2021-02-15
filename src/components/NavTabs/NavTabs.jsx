@@ -4,7 +4,7 @@ import styles from './NavTabs.module.scss';
 
 const NavTabs = ({ navs, setActive, currentTab }) => {
   return (
-    <nav>
+    <nav className={styles.navTab}>
       <ul>
         { navs.map((nav, index) => (
           <li 

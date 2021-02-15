@@ -7,6 +7,7 @@ import moment from 'moment';
 import  Button from '../../components/Button/Button';
 import { Table, Pagination } from 'react-bootstrap';
 import { clientList } from '../../utils/dummyData';
+import usePagination from '../../hooks/usePagination';
 
 
 const ClientListPage = () => {
@@ -17,45 +18,13 @@ const ClientListPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
 
-  const indexOfLastClient = useMemo(() => {
-    return currentPage * postsPerPage
-  }, [currentPage, postsPerPage]);
+  const { 
+    currentList, 
+    items, 
+    goToNextPage, 
+    goToPrevPage 
+  } = usePagination(currentPage, postsPerPage, clientList, setCurrentPage, styles);
 
-  const indexOfFirstClient = useMemo(() => {
-    return indexOfLastClient - postsPerPage
-  }, [indexOfLastClient, postsPerPage]);
-
-  const currentClients = useMemo(() => {
-    return clientList.slice(indexOfFirstClient, indexOfLastClient);
-  }, [indexOfLastClient, indexOfFirstClient])
-
-  const goToPage = (event) => {
-    if(event.target.text) {
-      setCurrentPage(Number(event.target.text));
-    }
-  }
-
-  let items = [];
-
-  for (let i=1; i <= Math.ceil(clientList.length / postsPerPage); i++) {
-    items.push(
-      <Pagination.Item onClick={goToPage} key={i} active={i === currentPage}>
-        {i}
-      </Pagination.Item>
-    )
-  }
-
-  const goToPrevPage = () => {
-    if(currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  }
-
-  const goToNextPage = () => {
-    if(currentPage < Math.ceil(clientList.length / postsPerPage)) {
-      setCurrentPage(currentPage + 1);
-    }
-  }
 
   return (
     <Dashboard sidebarRoutes={salesRoute} location={location}>
@@ -86,7 +55,7 @@ const ClientListPage = () => {
               </tr>
             </thead>
             <tbody>
-              { currentClients.map((client, idx) => (
+              { currentList.map((client, idx) => (
                 <tr>
                   <td>{client.clientName}</td>
                   <td className={styles.loanId}>
