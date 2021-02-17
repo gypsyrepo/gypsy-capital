@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import styles from './ClientListPage.module.scss';
 import { routes } from '../../routes/sidebarRoutes';
@@ -8,6 +8,7 @@ import  Button from '../../components/Button/Button';
 import { Table, Pagination } from 'react-bootstrap';
 import { clientList } from '../../utils/dummyData';
 import usePagination from '../../hooks/usePagination';
+import ModalForm from '../../components/ModalForm/ModalForm';
 
 
 const ClientListPage = () => {
@@ -17,6 +18,7 @@ const ClientListPage = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const { 
     currentList, 
@@ -24,6 +26,15 @@ const ClientListPage = () => {
     goToNextPage, 
     goToPrevPage 
   } = usePagination(currentPage, postsPerPage, clientList, setCurrentPage, styles);
+
+
+  const onboardStart = () => {
+    setModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setModalOpen(false);
+  }
 
 
   return (
@@ -37,6 +48,7 @@ const ClientListPage = () => {
           size="sm" 
           bgColor="#741763" 
           color="#fff"
+          clicked={onboardStart}
         >
           Onboard New Client
         </Button>
@@ -88,6 +100,7 @@ const ClientListPage = () => {
           </div>
         </div>
       </div>
+      <ModalForm openState={modalOpen} closeHandler={closeModal} />
     </Dashboard>
   )
 }

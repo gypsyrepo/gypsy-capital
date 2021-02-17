@@ -1,0 +1,44 @@
+:root {
+    --fontColorOne:  #212121;
+    --fontFamilyOne: 'Source Sans Pro';
+    --fontFamilyTwo: 'Kanit';
+    --backgroundOne: ' #F5F5F5';
+}
+
+.body {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.headerText {
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.subtitle {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+.hint {
+    text-align: center;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+.validID {
+    font-family: var(--fontFamilyOne);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.passportVerify {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.passportImg {
+    font-family: var(--fontFamilyOne);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
