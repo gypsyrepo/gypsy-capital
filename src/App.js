@@ -47,34 +47,16 @@ const RouteManager = () =>  {
           <Route exact path={pageUrl.MONO_WIDGET_PAGE}><MonoWidget /></Route>
           <Route exact path={pageUrl.LOAN_CALCULATOR_PAGE}><LoanCalculator /></Route>
           <Route exact path={pageUrl.FAQ_PAGE}><Faqs /></Route>
-          <ProtectedRoute exact path={pageUrl.PROFILE_PAGE}><Profile /></ProtectedRoute>
-          <ProtectedRoute exact path={pageUrl.CREDIT_REPORT_PAGE}>
-            <CreditReport />
-          </ProtectedRoute>
-          <ProtectedRoute exact path={pageUrl.DASHBOARD_HOMEPAGE}>
-            <Overview />
-          </ProtectedRoute>
-          <ProtectedRoute path={pageUrl.CONSUMER_CREDIT_PAGE}>
-            <ConsumerCredit />
-          </ProtectedRoute>
-          <ProtectedRoute path={pageUrl.SALES_AGENT_OVERVIEW}>
-            <AgentOverview />
-          </ProtectedRoute>
-          <ProtectedRoute path={pageUrl.CLIENT_LIST_PAGE}>
-            <ClientListPage />
-          </ProtectedRoute>
-          <ProtectedRoute path={pageUrl.CLIENT_DETAILS_PAGE}>
-            <ClientDetails />
-          </ProtectedRoute>
-          <ProtectedRoute path={pageUrl.LOAN_LIST_PAGE}>
-            <LoanList />
-          </ProtectedRoute>
-          <ProtectedRoute path={pageUrl.LOAN_DETAIL_PAGE}>
-            <LoanDetail />
-          </ProtectedRoute>
-          <ProtectedRoute path={pageUrl.SUPPORT_PAGE}>
-            <Support />
-          </ProtectedRoute>
+          <ProtectedRoute exact path={pageUrl.PROFILE_PAGE} component={Profile} />
+          <ProtectedRoute exact path={pageUrl.CREDIT_REPORT_PAGE} component={CreditReport} />
+          <ProtectedRoute exact path={pageUrl.DASHBOARD_HOMEPAGE} component={Overview} />
+          <ProtectedRoute path={pageUrl.CONSUMER_CREDIT_PAGE} component={ConsumerCredit} />
+          <ProtectedRoute path={pageUrl.SALES_AGENT_OVERVIEW} component={AgentOverview} />
+          <ProtectedRoute path={pageUrl.CLIENT_LIST_PAGE} component={ClientListPage} />
+          <ProtectedRoute path={pageUrl.CLIENT_DETAILS_PAGE} component={ClientDetails} />
+          <ProtectedRoute path={pageUrl.LOAN_LIST_PAGE} component={LoanList} />
+          <ProtectedRoute path={pageUrl.LOAN_DETAIL_PAGE} component={LoanDetail} />
+          <ProtectedRoute path={pageUrl.SUPPORT_PAGE} component={Support} />
         </Switch>
       </Router>
     </div>
