@@ -18,6 +18,9 @@ import LoanList from './LoanList/LoanList';
 import Support from './Support/Support';
 import ClientDetails from './ClientDetails/ClientDetails';
 import LoanDetail from './LoanDetail/LoanDetail';
+import ProcessorDashboard from './ProcessorDashboard/ProcessorDashboard';
+import ProcessorClients from './ProcessorClients/ProcessorClients';
+import ProcessorLoans from './ProcessorLoans/ProcessorLoans';
 
 
 export {
@@ -40,5 +43,8 @@ export {
   LoanList,
   Support,
   ClientDetails,
-  LoanDetail
+  LoanDetail,
+  ProcessorDashboard,
+  ProcessorClients,
+  ProcessorLoans
 }

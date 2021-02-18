@@ -23,7 +23,6 @@ const ConsumerCredit = () => {
   const location = useLocation();
   const history = useHistory();
 
-
   const applyStageArray = {
     '/dashboard/consumer-credit/apply/calculator': 0,
     '/dashboard/consumer-credit/apply/contact-info': 1,
@@ -35,7 +34,11 @@ const ConsumerCredit = () => {
   const { 
     state: { loans, error }, 
     retrieveClientLoans,
-    clearError
+    clearError,
+    loanApply,
+    addAddressForLoan,
+    addWorkInfoForLoan,
+    addBankInfoForLoan
   } = useContext(LoanContext);
   const { state: { user } } = useContext(AuthContext);
 
@@ -54,6 +57,22 @@ const ConsumerCredit = () => {
 
   const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  const calculateLoan = (data) => {
+    loanApply(data, user.user_id)
+  }
+
+  const updateAddress = (data) => {
+    addAddressForLoan(data, user.user_id)
+  }
+
+  const updateEmployerInfo = (data) => {
+    addWorkInfoForLoan(data, user.user_id)
+  }
+
+  const updateBankInfo = (data) => {
+    addBankInfoForLoan(data, user.user_id)
   }
 
   return (
@@ -140,16 +159,16 @@ const ConsumerCredit = () => {
                 <div className={styles.applyForm}>
                   <Switch>
                     <Route path={`${path}/apply/calculator`}>
-                      <LoanCalculatorForm />
+                      <LoanCalculatorForm delegateApply={calculateLoan} />
                     </Route>
                     <Route path={`${path}/apply/contact-info`}>
-                      <LoanContactForm />
+                      <LoanContactForm submitContact={updateAddress} />
                     </Route>
                     <Route path={`${path}/apply/employer-info`}>
-                      <EmployerInfoForm />
+                      <EmployerInfoForm submitEmployerInfo={updateEmployerInfo} />
                     </Route>
                     <Route path={`${path}/apply/bank-info`}>
-                      <BankInfoForm />
+                      <BankInfoForm submitBankInfo={updateBankInfo} />
                     </Route>
                   </Switch>
                 </div>

@@ -6,16 +6,14 @@ import FileUploadButton from '../FileUploadButton/FileUploadButton';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import Button from '../Button/Button';
 import { Context as BankContext } from '../../context/BankCotext';
-import { Context as AuthContext } from '../../context/AuthContext';
 import { Context as LoanContext } from '../../context/LoanContext';
 import { validateInput } from '../../utils/validateInput';
 import { ToastContainer, toast } from 'react-toastify';
 
 
-const BankInfoForm = () => {
+const BankInfoForm = ({ submitBankInfo }) => {
 
-  const { state: { user } } = useContext(AuthContext);
-  const { state: { loading }, addBankInfoForLoan } = useContext(LoanContext);
+  const { state: { loading } } = useContext(LoanContext);
 
   const { 
     state: { bankList, userBankDetails }, 
@@ -63,7 +61,8 @@ const BankInfoForm = () => {
         data.append('bank_account_name', bankInfo.accountName);
         data.append('image', acctStatement);
 
-        addBankInfoForLoan(data, user.user_id);
+        // addBankInfoForLoan(data, user.user_id);
+        submitBankInfo(data);
       }
     } else {
       toast.error("You need to upload your account statement to be able to proceed")

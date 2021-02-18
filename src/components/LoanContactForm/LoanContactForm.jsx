@@ -14,10 +14,10 @@ import { Context as AuthContext } from '../../context/AuthContext';
 
 
 
-const LoanContactForm = () => {
+const LoanContactForm = ({ submitContact }) => {
 
-  const { state: { user } } = useContext(AuthContext);
-  const { state: { loading }, addAddressForLoan } = useContext(LoanContext);
+  // const { state: { user } } = useContext(AuthContext);
+  const { state: { loading } } = useContext(LoanContext);
 
   const [contactAddress, setContactAddress] = useState({
     streetAddress: "",
@@ -66,8 +66,8 @@ const LoanContactForm = () => {
         data.append("local_government", contactAddress.lga);
         data.append("residential_status", contactAddress.residentialStatus);
         data.append("image", proofofAddress);
-        // submit(data);
-        addAddressForLoan(data, user.user_id);
+        submitContact(data);
+        // addAddressForLoan(data, user.user_id);
       }
     } else {
       toast.error("You need to upload a proof of address document to proceed");

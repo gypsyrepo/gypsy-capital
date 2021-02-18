@@ -10,13 +10,11 @@ import { workSector, nigeriaStates, workIndustries } from '../../utils/nigeriaSt
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import { Context as LoanContext } from '../../context/LoanContext';
-import { Context as AuthContext } from '../../context/AuthContext';
 
 
-const EmployerInfoForm = () => {
+const EmployerInfoForm = ({ submitEmployerInfo }) => {
 
-  const { state: { loading }, addWorkInfoForLoan } = useContext(LoanContext);
-  const { state: { user } } = useContext(AuthContext);
+  const { state: { loading } } = useContext(LoanContext);
 
   const [employmentInfo, setEmploymentInfo] = useState({
     employerName: "",
@@ -88,8 +86,8 @@ const EmployerInfoForm = () => {
         data.append('local_government', officeAddress.lga);
         data.append('image', officialDoc);
 
-        addWorkInfoForLoan(data, user.user_id);
-        // submit(data);
+        // addWorkInfoForLoan(data, user.user_id);
+        submitEmployerInfo(data);
         // console.log(true);
       }
     } else {

@@ -1,27 +1,30 @@
 import React from 'react';
-import { useLocation, Link, useHistory } from 'react-router-dom';
+import styles from './ProcessorDashboard.module.scss';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import { routes } from '../../routes/sidebarRoutes';
-import styles from './AgentOverview.module.scss';
+import { useHistory, useLocation, Link } from 'react-router-dom';
 import moment from 'moment';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import ClientStat from '../../assets/salesDashboard/clientstat.png';
 import DisburseStat from '../../assets/salesDashboard/loanstat.png';
 import LoanStat from '../../assets/salesDashboard/loanchange.png';
+import PendingStat from '../../assets/salesDashboard/pending.png';
+import RepaymentStat from '../../assets/salesDashboard/repayment.png';
+import TotalStat from '../../assets/salesDashboard/total.png';
 import { Row, Col, Table } from 'react-bootstrap';
+import StatBox from '../../components/StatBox/StatBox';
 import Button from '../../components/Button/Button';
 import { recentLoans } from '../../utils/dummyData';
-import StatBox from '../../components/StatBox/StatBox';
 
 
-const AgentOverview = () => {
+const ProcessorDashboard = () => {
 
   const location = useLocation();
+  const processorRoute = routes[2];
   const history = useHistory();
-  const salesRoute = routes[1];
 
   return (
-    <Dashboard sidebarRoutes={salesRoute} location={location}>
+    <Dashboard sidebarRoutes={processorRoute} location={location}>
       <div className={styles.welcomeGroup}>
         <div>
           <h2>Hey, Moses</h2>
@@ -38,10 +41,21 @@ const AgentOverview = () => {
             <StatBox icon={ClientStat} title="Total Clients" statData="25" />
           </Col>
           <Col>
-            <StatBox icon={DisburseStat} title="Total Disbursed Loans" statData="1.21M" />
+            <StatBox icon={DisburseStat} title="Total Disbursed Loans" statData="5.2" />
           </Col>
           <Col>
-            <StatBox icon={LoanStat} title="Total Active Loans" statData="20" />
+            <StatBox icon={LoanStat} title="Total Active Loans" statData="200" />
+          </Col>
+        </Row>
+        <Row className="mt-4">
+          <Col>
+            <StatBox icon={RepaymentStat} title="Total Repayment Received" statData="3.75M" />
+          </Col>
+          <Col>
+            <StatBox icon={TotalStat} title="Total Loans" statData="250" />
+          </Col>
+          <Col>
+            <StatBox icon={PendingStat} title="Total Pending Loans" statData="25" />
           </Col>
         </Row>
       </div>
@@ -52,13 +66,13 @@ const AgentOverview = () => {
             size="sm" 
             bgColor="#741763" 
             color="#fff"
-            clicked={() => history.push('/sales-agent/loans')}
+            clicked={() => history.push('/processor/loans')}
           >
             View All
           </Button>
         </div>
         <div className={styles.recentCard}>
-          <Table className={styles.table}>
+          <Table className={styles.table} striped>
             <thead>
               <tr>
                 <th>Client Name</th>
@@ -93,4 +107,4 @@ const AgentOverview = () => {
 }
 
 
-export default AgentOverview;
+export default ProcessorDashboard;

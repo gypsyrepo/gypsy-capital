@@ -7,6 +7,7 @@ import InputField from '../../components/InputField/InputField';
 import { Row, Col, Table } from 'react-bootstrap';
 import NavTabs from '../../components/NavTabs/NavTabs';
 import Button from '../../components/Button/Button';
+import LoanModal from '../../components/LoanModal/LoanModal';
 
 
 const Biodata = () => {
@@ -339,10 +340,21 @@ const Employer = () => {
 
 
 const ClientLoan = () => {
+
+  const [modalOpen, setModalOpen] = useState(false)
+  const closeModal = () => {
+    setModalOpen(false);
+  }
+
+  const startApply = () => {
+    setModalOpen(true);
+  }
+
   return (
     <div className={styles.loanTable}>
       <Button
         size="sm" 
+        clicked={startApply}
         bgColor="#741763" 
         color="#fff"
         className={styles.btn}
@@ -375,6 +387,7 @@ const ClientLoan = () => {
           </tbody>
         </Table>
       </div>
+      <LoanModal openState={modalOpen} closeHandler={closeModal} />
     </div>
   )
 }

@@ -64,7 +64,36 @@ const salesRoutes = [
 ]
 
 
+const processorRoutes = [
+  {
+    label: "Dashboard",
+    link: pageUrl.PROCESSORS_DASHBOARD,
+    rootLink: pageUrl.PROCESSORS_DASHBOARD,
+    icon: FiLayers
+  },
+  {
+    label: "Clients",
+    link: pageUrl.PROCESSORS_CLIENTS_PAGE,
+    rootLink: pageUrl.PROCESSORS_CLIENTS_PAGE,
+    icon: FaUser
+  },
+  {
+    label: "Loans",
+    link: pageUrl.PROCESSORS_LOANS_PAGE,
+    rootLink: pageUrl.PROCESSORS_LOANS_PAGE,
+    icon: GiMoneyStack
+  }, 
+  {
+    label: "Support",
+    link: pageUrl.SUPPORT_PAGE,
+    rootLink: pageUrl.SUPPORT_PAGE,
+    icon: BiSupport
+  }
+]
+
+
 export const routes = [
   clientRoutes,
-  salesRoutes
+  salesRoutes,
+  processorRoutes
 ]

@@ -21,7 +21,7 @@ const loanReducer = (state, action) => {
 
 
 
-const loanApply = dispatch => async(applyData, userId) => {
+const loanApply = dispatch => async(applyData, userId, inModal) => {
   dispatch({ type: "set_loading", payload: true });
   dispatch({ type: "set_error", payload: null });
   try {
@@ -34,7 +34,9 @@ const loanApply = dispatch => async(applyData, userId) => {
     console.log(response);
     dispatch({ type: 'set_application_stage', payload: 'calculated' });
     dispatch({ type: "set_loading", payload: false });
-    history.push('/dashboard/consumer-credit/apply/contact-info');
+    if(!inModal) {
+      history.push('/dashboard/consumer-credit/apply/contact-info');
+    }
   } catch(err) {
     if(err.response) {
       console.log(err.response.data);
@@ -49,7 +51,7 @@ const loanApply = dispatch => async(applyData, userId) => {
 }
 
 
-const addAddressForLoan = dispatch => async(addressData, userId) => {
+const addAddressForLoan = dispatch => async(addressData, userId, inModal) => {
   dispatch({ type: "set_loading", payload: true });
   dispatch({ type: "set_error", payload: null });
   try {
@@ -62,7 +64,9 @@ const addAddressForLoan = dispatch => async(addressData, userId) => {
     console.log(response);
     dispatch({ type: 'set_application_stage', payload: 'address_added' });
     dispatch({ type: "set_loading", payload: false });
-    history.push('/dashboard/consumer-credit/apply/employer-info');
+    if(!inModal) {
+      history.push('/dashboard/consumer-credit/apply/employer-info');
+    }
   } catch(err) {
     if(err.response) {
       console.log(err.response.data);
@@ -77,7 +81,7 @@ const addAddressForLoan = dispatch => async(addressData, userId) => {
 }
 
 
-const addWorkInfoForLoan = dispatch => async(workData, userId) => {
+const addWorkInfoForLoan = dispatch => async(workData, userId, inModal) => {
   dispatch({ type: "set_loading", payload: true });
   dispatch({ type: "set_error", payload: null });
   try {
@@ -90,7 +94,9 @@ const addWorkInfoForLoan = dispatch => async(workData, userId) => {
     console.log(response);
     dispatch({ type: 'set_application_stage', payload: 'employer_added' });
     dispatch({ type: "set_loading", payload: false });
-    history.push('/dashboard/consumer-credit/apply/bank-info');
+    if(!inModal) {
+      history.push('/dashboard/consumer-credit/apply/bank-info');
+    }
   } catch(err) {
     if(err.response) {
       console.log(err.response.data);
@@ -105,7 +111,7 @@ const addWorkInfoForLoan = dispatch => async(workData, userId) => {
 }
 
 
-const addBankInfoForLoan = dispatch => async(bankData, userId) => {
+const addBankInfoForLoan = dispatch => async(bankData, userId, inModal) => {
   dispatch({ type: "set_loading", payload: true });
   dispatch({ type: "set_error", payload: null });
   try {
@@ -118,7 +124,9 @@ const addBankInfoForLoan = dispatch => async(bankData, userId) => {
     console.log(response);
     dispatch({ type: 'set_application_stage', payload: 'bank_added' });
     dispatch({ type: "set_loading", payload: false });
-    history.push('/dashboard/consumer-credit/success');
+    if(!inModal) {
+      history.push('/dashboard/consumer-credit/success');
+    }
   } catch(err) {
     if(err.response) {
       console.log(err.response.data);

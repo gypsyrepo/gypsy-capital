@@ -19,8 +19,10 @@ const FAQ_PAGE = '/frequently-asked-questions';
 const LOAN_LIST_PAGE = '/sales-agent/loans';
 const SUPPORT_PAGE = '/sales-agent/support';
 const CLIENT_DETAILS_PAGE = '/sales-agent/client/:clientId';
-const LOAN_DETAIL_PAGE = '/sales-agent/loan/:loanId'
-
+const LOAN_DETAIL_PAGE = '/sales-agent/loan/:loanId';
+const PROCESSORS_DASHBOARD = '/processor/overview';
+const PROCESSORS_CLIENTS_PAGE = '/processor/clients';
+const PROCESSORS_LOANS_PAGE = '/processor/loans';
 
 const pageUrl = {
     HOMEPAGE,
@@ -44,7 +46,10 @@ const pageUrl = {
     LOAN_LIST_PAGE,
     SUPPORT_PAGE,
     CLIENT_DETAILS_PAGE,
-    LOAN_DETAIL_PAGE
+    LOAN_DETAIL_PAGE,
+    PROCESSORS_DASHBOARD,
+    PROCESSORS_CLIENTS_PAGE,
+    PROCESSORS_LOANS_PAGE
 }
 
 export default pageUrl;
