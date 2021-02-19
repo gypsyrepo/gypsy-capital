@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useMemo } from 'react';
 import styles from './PersonalForm.module.scss';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Spinner } from 'react-bootstrap';
 import { Context as AuthContext } from '../../context/AuthContext';
 import InputField from '../InputField/InputField';
 import Button from '../Button/Button';
@@ -135,7 +135,7 @@ const PersonalForm = ({ submit }) => {
   }, [user, userDetails])
 
   if(!userDetails) {
-    return null
+    return <div className={styles.loadingStyle}><Spinner animation="grow" /></div>
   }
 
   return (

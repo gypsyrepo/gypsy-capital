@@ -1,7 +1,7 @@
 import createDataContext from './createDataContext';
 import gypsy from '../api/gypsy-web';
 import resolveToken from '../utils/resolveToken';
-// import history from '../utils/history';
+import history from '../utils/history';
 
 const userReducer = (state, action) => {
   switch(action.type) {
@@ -23,7 +23,7 @@ const userReducer = (state, action) => {
 }
 
 
-const updatePersonalInfo = dispatch => async(userId, updateData) => {
+const updatePersonalInfo = dispatch => async(userId, updateData, inModal) => {
   dispatch({ type: 'set_error', payload: null });
   dispatch({ type: "set_loading", payload: true });
   try {
@@ -35,10 +35,13 @@ const updatePersonalInfo = dispatch => async(userId, updateData) => {
     });
     console.log(response.data);
     dispatch({
-      type: 'set_personal_status',
-      payload: true
+      type: 'set_setup_stage',
+      payload: 'personal_info_added'
     })
     dispatch({ type: "set_loading", payload: false });
+    if(!inModal) {
+      history.push('/dashboard/profile/setup/identity');
+    }
   } catch(err) {  
     console.log(err.response);
     if(err.response) {
@@ -52,7 +55,7 @@ const updatePersonalInfo = dispatch => async(userId, updateData) => {
 }
 
 
-const verifyBvn = dispatch => async(userId, bvn, callback) => {
+const verifyBvn = dispatch => async(userId, bvn, callback, inModal) => {
   dispatch({ type: 'set_error', payload: null });
   dispatch({ type: "set_loading", payload: true });
   try {
@@ -64,13 +67,16 @@ const verifyBvn = dispatch => async(userId, bvn, callback) => {
     });
     console.log(response);
     dispatch({
-      type: "verify_bvn",
-      payload: true
+      type: "set_setup_stage",
+      payload: "bvn_verified"
     })
     if(callback) {
       callback();
     }
     dispatch({ type: "set_loading", payload: false });
+    if(!inModal) {
+      history.push('/dashboard/profile/setup/info')
+    }
   } catch(err) {
     if(err.response) {
       console.log(err.response.data);
@@ -93,7 +99,7 @@ const verifyBvn = dispatch => async(userId, bvn, callback) => {
 }
 
 
-const updateIdentityInfo = dispatch => async(userId, updateData) => {
+const updateIdentityInfo = dispatch => async(userId, updateData, inModal) => {
   dispatch({ type: 'set_error', payload: null });
   dispatch({ type: "set_loading", payload: true });
   try {
@@ -105,10 +111,13 @@ const updateIdentityInfo = dispatch => async(userId, updateData) => {
     });
     console.log(response.data);
     dispatch({
-      type: 'set_complete',
-      payload: true
+      type: 'set_setup_stage',
+      payload: 'identity_added'
     })
     dispatch({ type: "set_loading", payload: false });
+    if(!inModal) {
+      history.push('/dashboard/profile/setup/success');
+    }
   } catch(err) {
     if(err.response) {
       console.log(err.response)
@@ -156,5 +165,5 @@ const clearErrors = dispatch => () => {
 export const { Context, Provider } = createDataContext(
   userReducer,
   { updatePersonalInfo, verifyBvn, clearErrors, getClientDetails, updateIdentityInfo },
-  { loading: false, error: null, bvnVerified: false, userDetails: null, completeState: false, personalInfoStatus: false }
+  { loading: false, error: null, userDetails: null, setupStage: null }
 )

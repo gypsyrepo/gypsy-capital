@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styles from './ConsumerCredit.module.scss';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import Button from '../../components/Button/Button';
@@ -10,7 +10,7 @@ import LoanCalculatorForm from '../../components/LoanCalculatorForm/LoanCalculat
 import LoanContactForm from '../../components/LoanContactForm/LoanContactForm';
 import EmployerInfoForm from '../../components/EmployerInfoForm/EmployerInfoForm';
 import BankInfoForm from '../../components/BankInfoForm/BankInfoForm';
-import { Route, useRouteMatch, Switch, Link, useLocation, useHistory } from 'react-router-dom';
+import { Route, useRouteMatch, Switch, useLocation, useHistory } from 'react-router-dom';
 import { Context as LoanContext } from '../../context/LoanContext';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
@@ -19,7 +19,7 @@ import { clientRoutes } from '../../routes/sidebarRoutes';
 
 const ConsumerCredit = () => {
 
-  const { url, path } = useRouteMatch();
+  const { path } = useRouteMatch();
   const location = useLocation();
   const history = useHistory();
 
@@ -32,7 +32,7 @@ const ConsumerCredit = () => {
 
 
   const { 
-    state: { loans, error }, 
+    state: { loans, error, currentLoanId }, 
     retrieveClientLoans,
     clearError,
     loanApply,
@@ -64,15 +64,15 @@ const ConsumerCredit = () => {
   }
 
   const updateAddress = (data) => {
-    addAddressForLoan(data, user.user_id)
+    addAddressForLoan(data, currentLoanId)
   }
 
   const updateEmployerInfo = (data) => {
-    addWorkInfoForLoan(data, user.user_id)
+    addWorkInfoForLoan(data, currentLoanId)
   }
 
   const updateBankInfo = (data) => {
-    addBankInfoForLoan(data, user.user_id)
+    addBankInfoForLoan(data, currentLoanId)
   }
 
   return (

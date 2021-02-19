@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styles from './Profile.module.scss';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import { clientRoutes } from '../../routes/sidebarRoutes';
@@ -11,18 +11,31 @@ import PersonalForm from '../../components/PersonalForm/PersonalForm';
 import BvnForm from '../../components/BvnForm/BvnForm';
 import IdentityForm from '../../components/IdentityForm/IdentityForm';
 import ProfileView from '../../components/ProfileView/ProfileView';
-import { useRouteMatch, Link, useLocation } from 'react-router-dom';
+import { useRouteMatch, useLocation, Switch, Route, useHistory } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
+
+
+const Loader = () => {
+  return <div className={styles.loadingStyle}><Spinner animation="grow" /></div>
+}
 
 
 const Profile = () => {
 
-  const { url } = useRouteMatch();
+  const { path } = useRouteMatch();
   const location = useLocation();
-  const [setupStage, setSetupStage] = useState(0);
-  const [setupComplete, setSetupComplete] = useState(false);
+  const history = useHistory();
+  const setupStage = {
+    '/dashboard/profile/setup/bvn': 0,
+    '/dashboard/profile/setup/info': 1,
+    '/dashboard/profile/setup/identity': 2,
+    '/dashboard/profile/setup/success': 3
+  };
+
+  console.log(location.pathname);
 
   const { 
-    state: { error, bvnVerified, userDetails, completeState, personalInfoStatus }, 
+    state: { error, userDetails }, 
     verifyBvn, 
     clearErrors,
     getClientDetails,
@@ -39,11 +52,11 @@ const Profile = () => {
     if(userDetails) {
       const { bioData, identity, bank } = userDetails;
       if(identity.identityType) {
-        setSetupComplete(true);
+        history.replace('/dashboard/profile/user')
       } else if(bank.accountName) {
-        setSetupStage(2)
+        history.replace('/dashboard/profile/setup/identity');
       } else if(bioData.BVN) {
-        setSetupStage(1)
+        history.replace('/dashboard/profile/setup/info');
       }
     }
   }, [userDetails])
@@ -54,25 +67,6 @@ const Profile = () => {
       clearErrors();
     }
   }, [error])
-
-  useEffect(() => {
-    if(bvnVerified) {
-      setSetupStage(1);
-    }
-  }, [bvnVerified])
-
-
-  useEffect(() => {
-    if(personalInfoStatus) {
-      setSetupStage(2)
-    }
-  }, [personalInfoStatus])
-
-  useEffect(() => {
-    if(completeState) {
-      setSetupStage(3)
-    }
-  }, [completeState])
 
 
   const submitBvn = async(bvn) => {
@@ -120,19 +114,12 @@ const Profile = () => {
     data.append('identity_type', idType)
     await updateIdentityInfo(user.user_id, data);
   }
-
-
-
-  const goToProfileView = () => {
-    setSetupComplete(true);
-  }
   
 
-  const CompleteStage = ({ redirect }) => {
-
+  const CompleteStage = () => {
     useEffect(() => {
       setTimeout(() => {
-        redirect();
+        history.push('/dashboard/profile/user')
       }, 3000)
     }, [])
 
@@ -146,40 +133,38 @@ const Profile = () => {
     )
   }
 
-
-  const resolveStageView = useMemo(() => {
-    if(setupStage === 0) {
-      return <BvnForm submit={submitBvn} />
-    } else if (setupStage === 1) {
-      return <PersonalForm submit={submitPersonalInfo} />
-    } else if(setupStage === 2) {
-      return <IdentityForm submit={submitIdentityInfo} />
-    } else if(setupStage === 3) {
-      return <CompleteStage redirect={goToProfileView} />
-    }
-  }, [setupStage])
-
-  // if(!userDetails && setupStage === 1) {
-  //   return null;
-  // }
-
   return(
     <Dashboard sidebarRoutes={clientRoutes} location={location}>
-      <div className={styles.container}>
+      { userDetails ? <div className={styles.container}>
         <ToastContainer position="top-center" />
-        { !setupComplete && <div>
-          <h1>Account Setup</h1>
-          <p className={styles.leadText}>Fill the field to complete your profile</p>
-          <ProgressBar stage={setupStage} className={styles.profileProgress} />
-          {resolveStageView}
-        </div>}
-        { setupComplete &&
-          <div>
-            <h2>Profile</h2>
-            <ProfileView />
-          </div> 
-        }
-      </div>
+          <Switch>
+            <Route path={`${path}/setup`}>
+              <h1>Account Setup</h1>
+              <p className={styles.leadText}>Fill the field to complete your profile</p>
+              <ProgressBar stage={setupStage[location.pathname]} className={styles.profileProgress} />
+              <Switch>
+                <Route path={`${path}/setup/bvn`}>
+                  <BvnForm submit={submitBvn} />
+                </Route>
+                <Route path={`${path}/setup/identity`}>
+                  <IdentityForm submit={submitIdentityInfo} />
+                </Route>
+                <Route path={`${path}/setup/info`}>
+                  <PersonalForm submit={submitPersonalInfo} />
+                </Route>
+                <Route path={`${path}/setup/success`}>
+                  <CompleteStage />
+                </Route>
+              </Switch>
+            </Route>
+            <Route path={`${path}/user`}>
+              <div>
+                <h2>Profile</h2>
+                <ProfileView />
+              </div> 
+            </Route> 
+          </Switch>
+      </div> : <Loader /> }
     </Dashboard>
   );
 }

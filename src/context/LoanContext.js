@@ -14,6 +14,8 @@ const loanReducer = (state, action) => {
       return { ...state, loanApplicationStage: action.payload }
     case 'set_loan_list':
       return { ...state, loans: action.payload }
+    case 'set_current_loan':
+      return { ...state, currentLoanId: action.payload }
     default:
       return state; 
   }
@@ -32,6 +34,7 @@ const loanApply = dispatch => async(applyData, userId, inModal) => {
       }
     });
     console.log(response);
+    dispatch({ type: 'set_current_loan', payload: response.data.data.loanId })
     dispatch({ type: 'set_application_stage', payload: 'calculated' });
     dispatch({ type: "set_loading", payload: false });
     if(!inModal) {
@@ -51,12 +54,12 @@ const loanApply = dispatch => async(applyData, userId, inModal) => {
 }
 
 
-const addAddressForLoan = dispatch => async(addressData, userId, inModal) => {
+const addAddressForLoan = dispatch => async(addressData, loanId, inModal) => {
   dispatch({ type: "set_loading", payload: true });
   dispatch({ type: "set_error", payload: null });
   try {
     const token = resolveToken();
-    const response = await gypsy.post(`/client/loan/address/${userId}`, addressData, {
+    const response = await gypsy.post(`/client/loan/address/${loanId}`, addressData, {
       headers: {
         "Authorization": `Bearer ${token}`
       }
@@ -81,12 +84,12 @@ const addAddressForLoan = dispatch => async(addressData, userId, inModal) => {
 }
 
 
-const addWorkInfoForLoan = dispatch => async(workData, userId, inModal) => {
+const addWorkInfoForLoan = dispatch => async(workData, loanId, inModal) => {
   dispatch({ type: "set_loading", payload: true });
   dispatch({ type: "set_error", payload: null });
   try {
     const token = resolveToken()
-    const response = await gypsy.post(`/client/loan/work/${userId}`, workData, {
+    const response = await gypsy.post(`/client/loan/work/${loanId}`, workData, {
       headers: {
         "Authorization": `Bearer ${token}`
       }
@@ -111,12 +114,12 @@ const addWorkInfoForLoan = dispatch => async(workData, userId, inModal) => {
 }
 
 
-const addBankInfoForLoan = dispatch => async(bankData, userId, inModal) => {
+const addBankInfoForLoan = dispatch => async(bankData, loanId, inModal) => {
   dispatch({ type: "set_loading", payload: true });
   dispatch({ type: "set_error", payload: null });
   try {
     const token = resolveToken();
-    const response = await gypsy.post(`/client/loan/bank/${userId}`, bankData, {
+    const response = await gypsy.post(`/client/loan/bank/${loanId}`, bankData, {
       headers: {
         "Authorization": `Bearer ${token}`
       }
@@ -182,5 +185,5 @@ const clearError = dispatch => () => {
 export const { Context, Provider } = createDataContext(
   loanReducer,
   { loanApply, addAddressForLoan, addWorkInfoForLoan, clearError, retrieveClientLoans, addBankInfoForLoan },
-  { loading: false, error: null, loans: [], loanDetails: null, loanApplicationStage: null }
+  { loading: false, error: null, loans: [], loanDetails: null, loanApplicationStage: null, currentLoanId: null }
 )

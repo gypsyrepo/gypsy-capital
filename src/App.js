@@ -50,7 +50,7 @@ const RouteManager = () =>  {
           <Route exact path={pageUrl.MONO_WIDGET_PAGE}><MonoWidget /></Route>
           <Route exact path={pageUrl.LOAN_CALCULATOR_PAGE}><LoanCalculator /></Route>
           <Route exact path={pageUrl.FAQ_PAGE}><Faqs /></Route>
-          <ProtectedRoute exact path={pageUrl.PROFILE_PAGE} component={Profile} />
+          <ProtectedRoute path={pageUrl.PROFILE_PAGE} component={Profile} />
           <ProtectedRoute exact path={pageUrl.CREDIT_REPORT_PAGE} component={CreditReport} />
           <ProtectedRoute exact path={pageUrl.DASHBOARD_HOMEPAGE} component={Overview} />
           <ProtectedRoute path={pageUrl.CONSUMER_CREDIT_PAGE} component={ConsumerCredit} />
