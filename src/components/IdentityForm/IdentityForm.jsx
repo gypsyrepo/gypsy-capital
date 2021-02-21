@@ -19,7 +19,7 @@ const IdentityForm = ({ submit }) => {
     const idFile = idFileRef.current.files[0];
     const passportFile = passportFileRef.current.files[0];
     console.log(idFile, passportFile);
-    submit(idFile, passportFile, idType)
+    submit(idFile, passportFile, idType);
   }
 
   return (

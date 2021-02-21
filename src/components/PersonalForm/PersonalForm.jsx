@@ -8,12 +8,13 @@ import { Context as UserContext } from '../../context/UserContext';
 import { nigeriaStates } from '../../utils/nigeriaStates';
 import { Context as BankContext } from '../../context/BankCotext';
 import { validateInput } from '../../utils/validateInput';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 
 const PersonalForm = ({ submit }) => {
 
   const { 
-    state: { bankList, userBankDetails }, 
+    state: { bankList, userBankDetails, bankLoading }, 
     getBankList, 
     verifyBankInfo,
   } = useContext(BankContext);
@@ -413,17 +414,22 @@ const PersonalForm = ({ submit }) => {
             />
           </Col>
           <Col>
-            <InputField 
+            { !bankLoading ? <InputField 
               label="Account Name"
               type="text"
               nameAttr="accountName"
               value={bankInfo.accountName}
+              disable={true}
               changed={(val) => {
                 setBankInfoErrors({ ...bankInfoErrors, accountName: null })
                 setBankInfo({ ...bankInfo, accountName: val})
               }}
               error={bankInfoErrors.accountName && bankInfoErrors.accountName}
-            />
+            /> : 
+              <div className={styles.loaderWrapper}>
+                <BeatLoader color="#741763" size={10} />
+              </div>
+            }
           </Col>
         </Row>
       </div>

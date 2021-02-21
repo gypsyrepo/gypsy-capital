@@ -58,6 +58,8 @@ const Profile = () => {
       } else if(bioData.BVN) {
         history.replace('/dashboard/profile/setup/info');
       }
+    } else if(!userDetails) {
+      history.replace('/dashboard/profile/setup/bvn');
     }
   }, [userDetails])
 
@@ -135,7 +137,7 @@ const Profile = () => {
 
   return(
     <Dashboard sidebarRoutes={clientRoutes} location={location}>
-      { userDetails ? <div className={styles.container}>
+      <div className={styles.container}>
         <ToastContainer position="top-center" />
           <Switch>
             <Route path={`${path}/setup`}>
@@ -158,13 +160,13 @@ const Profile = () => {
               </Switch>
             </Route>
             <Route path={`${path}/user`}>
-              <div>
+              { userDetails  ? <div>
                 <h2>Profile</h2>
                 <ProfileView />
-              </div> 
+              </div> : <Loader /> } 
             </Route> 
           </Switch>
-      </div> : <Loader /> }
+      </div>
     </Dashboard>
   );
 }

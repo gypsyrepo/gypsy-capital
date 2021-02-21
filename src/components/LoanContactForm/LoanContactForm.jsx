@@ -11,6 +11,7 @@ import { nigeriaStates } from '../../utils/nigeriaStates';
 import { ToastContainer, toast } from 'react-toastify';
 import { Context as LoanContext } from '../../context/LoanContext';
 import { Context as AuthContext } from '../../context/AuthContext';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 
 
@@ -36,12 +37,15 @@ const LoanContactForm = ({ submitContact }) => {
   })
 
   const [lgaOptions, setLgaOptions] = useState([]);
+  const [lgaLoading, setLgaLoading] = useState(false);
 
   useEffect(() => {
     if(contactAddress.state.length > 0) {
       const getLga = async() => {
+        setLgaLoading(true);
         const response = await axios.get(`https://locationsng-api.herokuapp.com/api/v1/states/${contactAddress.state}/lgas`)
         setLgaOptions(response.data);
+        setLgaLoading(false);
       };
   
       getLga();
@@ -121,7 +125,7 @@ const LoanContactForm = ({ submitContact }) => {
           />
         </Col>
         <Col>
-          <InputField 
+          { !lgaLoading ? <InputField 
             type="select"
             nameAttr="localGovt"
             label="Local Govt. Area"
@@ -132,7 +136,11 @@ const LoanContactForm = ({ submitContact }) => {
               setContactAddress({ ...contactAddress, lga: val })
             }}
             error={contactErrors.lga && contactErrors.lga}
-          />
+          /> :
+            <div className={styles.loaderWrapper}>
+              <BeatLoader color="#741763" size={10} />
+            </div>
+          }
         </Col>
       </Row>
       <Row>

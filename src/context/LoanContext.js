@@ -16,6 +16,8 @@ const loanReducer = (state, action) => {
       return { ...state, loans: action.payload }
     case 'set_current_loan':
       return { ...state, currentLoanId: action.payload }
+    case 'set_incomplete_state':
+      return { ...state, incomplete: action.payload }
     default:
       return state; 
   }
@@ -44,10 +46,26 @@ const loanApply = dispatch => async(applyData, userId, inModal) => {
     if(err.response) {
       console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message
-      dispatch({
-        type: 'set_error',
-        payload: errorMessage
-      });
+      if(errorMessage.toLowerCase() === "complete your previuos loan request") {
+        // console.log(errorMessage);
+        const { loanId, data: stage } = err.response.data.data;
+        dispatch({ type: 'set_current_loan', payload: loanId });
+        dispatch({ type: 'set_incomplete_state', payload: true });
+        if(stage === "address") {
+          dispatch({ type: 'set_application_stage', payload: 'calculated' });
+        }
+        if(stage === "work") {
+          dispatch({ type: 'set_application_stage', payload: 'address_added' });
+        }
+        if(stage === "bank") {
+          dispatch({ type: 'set_application_stage', payload: 'employer_added' });
+        }
+      } else {
+        dispatch({
+          type: 'set_error',
+          payload: errorMessage
+        });
+      }
     }
     dispatch({ type: "set_loading", payload: false });
   }
@@ -182,8 +200,16 @@ const clearError = dispatch => () => {
 }
 
 
+const clearCompleteState = dispatch => () => {
+  dispatch({
+    type: 'set_incomplete_state',
+    payload: false
+  })
+}
+
+
 export const { Context, Provider } = createDataContext(
   loanReducer,
-  { loanApply, addAddressForLoan, addWorkInfoForLoan, clearError, retrieveClientLoans, addBankInfoForLoan },
-  { loading: false, error: null, loans: [], loanDetails: null, loanApplicationStage: null, currentLoanId: null }
+  { loanApply, addAddressForLoan, addWorkInfoForLoan, clearError, retrieveClientLoans, addBankInfoForLoan, clearCompleteState },
+  { loading: false, error: null, loans: [], loanDetails: null, loanApplicationStage: null, currentLoanId: null, incomplete: false }
 )

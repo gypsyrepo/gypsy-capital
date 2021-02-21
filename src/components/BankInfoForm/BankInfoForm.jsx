@@ -9,6 +9,7 @@ import { Context as BankContext } from '../../context/BankCotext';
 import { Context as LoanContext } from '../../context/LoanContext';
 import { validateInput } from '../../utils/validateInput';
 import { ToastContainer, toast } from 'react-toastify';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 
 const BankInfoForm = ({ submitBankInfo }) => {
@@ -16,7 +17,7 @@ const BankInfoForm = ({ submitBankInfo }) => {
   const { state: { loading } } = useContext(LoanContext);
 
   const { 
-    state: { bankList, userBankDetails }, 
+    state: { bankList, userBankDetails, bankLoading }, 
     getBankList, 
     verifyBankInfo,
   } = useContext(BankContext);
@@ -134,14 +135,18 @@ const BankInfoForm = ({ submitBankInfo }) => {
           />
         </Col>
         <Col>
-          <InputField 
+          { !bankLoading ? <InputField 
             type="type"
             nameAttr="acctName"
             label="Account Name"
             value={bankInfo.accountName}
             disable={true}
             changed={(val) => setBankInfo({ ...bankInfo, accountName: val })}
-          />
+          /> : 
+            <div className={styles.loaderWrapper}>
+              <BeatLoader color="#741763" size={10} />
+            </div>
+          }
         </Col>
       </Row>
       <Row>

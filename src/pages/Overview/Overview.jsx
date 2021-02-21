@@ -9,21 +9,37 @@ import { Col, Row } from 'react-bootstrap';
 import noLoan from '../../assets/no-loan.png';
 import moment from 'moment';
 import { Context as AuthContext } from '../../context/AuthContext';
-import { useRouteMatch, Link, useHistory, useLocation } from 'react-router-dom';
+import { Context as LoanContext } from '../../context/LoanContext';
+import { useRouteMatch, useHistory, useLocation } from 'react-router-dom';
 
 
 const Overview = () => {
 
-  const { url, path } = useRouteMatch();
+  const { path } = useRouteMatch();
   const history = useHistory();
   const location = useLocation();
-  const [loanStatus, setLoanStatus] = useState('inactive');
+  const [activeLoan, setActiveLoan] = useState(null);
 
   const { state: { user } } = useContext(AuthContext);
+  const { state: { loans }, retrieveClientLoans } = useContext(LoanContext)
+
+  useEffect(() => {
+    retrieveClientLoans()
+  }, []);
+
+  useEffect(() => {
+    const statusToDisplay = loans.filter(loan => loan.status.toLowerCase() === 'pending' || 'active');
+    console.log(statusToDisplay[0]);
+    setActiveLoan(statusToDisplay[0]);
+  }, [loans]);
 
   useEffect(() => {
     console.log(user);
-  }, [user])
+  }, [user]);
+
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
 
   if(!user) {
     return null
@@ -36,7 +52,7 @@ const Overview = () => {
         <p className={styles.currentDate}>Today is {moment().format('dddd Do[,] MMMM')}.</p>
       </div>
       <div className={styles.loanStatus} style={{padding: '30px 40px'}}>
-        { loanStatus === "inactive" && <div className={styles.innerContainer}>
+        { !activeLoan && <div className={styles.innerContainer}>
           <div className={styles.mainContent}>
             <h3>Active Loan</h3>
             <p>Sorry you currently have no active loan</p>
@@ -52,16 +68,16 @@ const Overview = () => {
           </div>
           <img src={noLoan} alt="No active loan" height="280" />
         </div> } 
-        { loanStatus !== "inactive" && <div className={styles.activeStyle}>
+        { activeLoan && <div className={styles.activeStyle}>
           <div className={styles.mainContent}>
-            <h3>Active Loan <span>{loanStatus.replace('_', ' ')}</span></h3>
+            <h3>Active Loan <span>{activeLoan.status}</span></h3>
             <div className={styles.statusBoard}>
               <Row>
                 <Col className={styles.borderClass}>
                   <div className={styles.loanData}>
                     <div>
                       <h6>Loan amount</h6>
-                      <h1>N150,000</h1>
+                      <h1>{`N${numberWithCommas(activeLoan.amount)}`}</h1>
                     </div>
                   </div>
                 </Col>
@@ -69,7 +85,7 @@ const Overview = () => {
                   <div className={styles.loanData}>
                     <div>
                       <h6>Monthly Repayment</h6>
-                      <h1>N34,758</h1>
+                      <h1>{`N${numberWithCommas(activeLoan.monthlyRepayment)}`}</h1>
                     </div>
                   </div>
                 </Col>
@@ -77,7 +93,7 @@ const Overview = () => {
                   <div className={styles.loanData}>
                     <div>
                       <h6>Tenure</h6>
-                      <h1>3 months</h1>
+                      <h1>{activeLoan.paymentPeriod}</h1>
                     </div>
                   </div>
                 </Col>

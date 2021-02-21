@@ -9,6 +9,8 @@ const bankReducer = (state, action) => {
       return { ...state, bankList: action.payload }
     case 'set_error':
       return { ...state, error: action.payload }
+    case 'set_loading':
+      return { ...state, bankLoading: action.payload }
     case 'set_user_bank_details':
       return { ...state, userBankDetails: action.payload }
     default:
@@ -42,6 +44,7 @@ const getBankList = dispatch => async() => {
 
 
 const verifyBankInfo = dispatch => async(accountNo, bankCode) => {
+  dispatch({ type: 'set_loading', payload: true });
   try {
     const token = resolveToken();
     const response = await gypsy.get(`/bank/verify/${accountNo}/${bankCode}`, {
@@ -54,6 +57,7 @@ const verifyBankInfo = dispatch => async(accountNo, bankCode) => {
       type: 'set_user_bank_details',
       payload: response.data.data
     })
+    dispatch({ type: 'set_loading', payload: false });
   } catch(err) {
     if(err.response) {
       console.log(err.response);
@@ -62,6 +66,7 @@ const verifyBankInfo = dispatch => async(accountNo, bankCode) => {
         payload: err.response.message
       })
     }
+    dispatch({ type: 'set_loading', payload: false });
   }
 }
 
@@ -69,5 +74,5 @@ const verifyBankInfo = dispatch => async(accountNo, bankCode) => {
 export const { Context, Provider } = createDataContext(
   bankReducer,
   { getBankList, verifyBankInfo },
-  { bankList: [], error: null, userBankDetails: null }
+  { bankList: [], error: null, userBankDetails: null, bankLoading: false }
 )
