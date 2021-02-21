@@ -95,7 +95,9 @@ const SignIn = () => {
             />
           </Col>
         </Row>
-        <p className={styles.resetPassword}>Forgot password?</p>
+        <p className={styles.resetPassword}>
+          <Link to="/password/email">Forgot password?</Link>
+        </p>
         <Button 
           clicked={handleSubmit} 
           fullWidth 

@@ -24,7 +24,10 @@ import {
   LoanDetail,
   ProcessorDashboard,
   ProcessorClients,
-  ProcessorLoans
+  ProcessorLoans,
+  ForgotPassword,
+  ResetPassword,
+  ResetSuccess
 } from './pages/pages';
 import { Provider as AuthProvider } from './context/AuthContext';
 import { Provider as UserProvider } from './context/UserContext';
@@ -50,6 +53,9 @@ const RouteManager = () =>  {
           <Route exact path={pageUrl.MONO_WIDGET_PAGE}><MonoWidget /></Route>
           <Route exact path={pageUrl.LOAN_CALCULATOR_PAGE}><LoanCalculator /></Route>
           <Route exact path={pageUrl.FAQ_PAGE}><Faqs /></Route>
+          <Route exact path={pageUrl.FORGOT_PASSWORD_PAGE}><ForgotPassword /></Route>
+          <Route exact path={pageUrl.RESET_PASSWORD_PAGE}><ResetPassword /></Route>
+          <Route exact path={pageUrl.RESET_SUCCESS_PAGE}><ResetSuccess /></Route>
           <ProtectedRoute path={pageUrl.PROFILE_PAGE} component={Profile} />
           <ProtectedRoute exact path={pageUrl.CREDIT_REPORT_PAGE} component={CreditReport} />
           <ProtectedRoute exact path={pageUrl.DASHBOARD_HOMEPAGE} component={Overview} />

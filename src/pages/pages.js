@@ -21,6 +21,9 @@ import LoanDetail from './LoanDetail/LoanDetail';
 import ProcessorDashboard from './ProcessorDashboard/ProcessorDashboard';
 import ProcessorClients from './ProcessorClients/ProcessorClients';
 import ProcessorLoans from './ProcessorLoans/ProcessorLoans';
+import ForgotPassword from './ForgotPassword/ForgotPassword';
+import ResetPassword from './ResetPassword/ResetPassword';
+import ResetSuccess from './ResetSuccess/ResetSuccess';
 
 
 export {
@@ -46,5 +49,8 @@ export {
   LoanDetail,
   ProcessorDashboard,
   ProcessorClients,
-  ProcessorLoans
+  ProcessorLoans,
+  ForgotPassword,
+  ResetPassword,
+  ResetSuccess
 }

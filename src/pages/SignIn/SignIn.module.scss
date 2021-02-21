@@ -25,6 +25,12 @@
         text-align: left;
         margin-top: 5px;
         cursor: pointer;
+        a {
+            color: #741763; 
+            &:hover {
+                text-decoration: none;
+            }
+        }
     }
     .authLink {
         font-family: 'Source Sans Pro', sans-serif;

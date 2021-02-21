@@ -155,6 +155,61 @@ const getClientDetails = dispatch => async(userId) => {
   }
 }
 
+const resetPassword = dispatch => async(userEmail) => {
+  dispatch({ type: 'set_error', payload: null });
+  dispatch({ type: "set_loading", payload: true });
+  try {
+    const token = resolveToken();
+    const response = await gypsy.post('/client/reset_pwd', { email: userEmail }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    console.log(response);
+    dispatch({ type: "set_loading", payload: false });
+    history.push({ pathname: '/password/reset', state: { email: userEmail }});
+  } catch(err) {
+    if(err.response) {
+      console.log(err.response)
+      const errorMessage = err.response.data.error || err.response.data.message
+      console.log(errorMessage);
+      dispatch({
+        type: 'set_error',
+        payload: errorMessage
+      })
+    }
+    dispatch({ type: "set_loading", payload: false });
+  }
+}
+
+
+const createNewPassword = dispatch => async(data) => {
+  dispatch({ type: 'set_error', payload: null });
+  dispatch({ type: "set_loading", payload: true });
+  try {
+    const token = resolveToken();
+    const response = await gypsy.post('/otp/3/new_pwd', data, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    console.log(response);
+    dispatch({ type: "set_loading", payload: false });
+    history.push('/password/reset-success');
+  } catch(err) {
+    if(err.response) {
+      console.log(err.response)
+      const errorMessage = err.response.data.error || err.response.data.message
+      console.log(errorMessage);
+      dispatch({
+        type: 'set_error',
+        payload: errorMessage
+      })
+    }
+    dispatch({ type: "set_loading", payload: false });
+  }
+}
+
 const clearErrors = dispatch => () => {
   dispatch({
     type: 'set_error',
@@ -164,6 +219,6 @@ const clearErrors = dispatch => () => {
 
 export const { Context, Provider } = createDataContext(
   userReducer,
-  { updatePersonalInfo, verifyBvn, clearErrors, getClientDetails, updateIdentityInfo },
+  { updatePersonalInfo, verifyBvn, clearErrors, getClientDetails, updateIdentityInfo, resetPassword, createNewPassword },
   { loading: false, error: null, userDetails: null, setupStage: null }
 )

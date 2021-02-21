@@ -23,6 +23,9 @@ const LOAN_DETAIL_PAGE = '/sales-agent/loan/:loanId';
 const PROCESSORS_DASHBOARD = '/processor/overview';
 const PROCESSORS_CLIENTS_PAGE = '/processor/clients';
 const PROCESSORS_LOANS_PAGE = '/processor/loans';
+const FORGOT_PASSWORD_PAGE = '/password/email';
+const RESET_PASSWORD_PAGE = '/password/reset';
+const RESET_SUCCESS_PAGE = '/password/reset-success';
 
 const pageUrl = {
     HOMEPAGE,
@@ -49,7 +52,10 @@ const pageUrl = {
     LOAN_DETAIL_PAGE,
     PROCESSORS_DASHBOARD,
     PROCESSORS_CLIENTS_PAGE,
-    PROCESSORS_LOANS_PAGE
+    PROCESSORS_LOANS_PAGE,
+    FORGOT_PASSWORD_PAGE,
+    RESET_PASSWORD_PAGE,
+    RESET_SUCCESS_PAGE
 }
 
 export default pageUrl;

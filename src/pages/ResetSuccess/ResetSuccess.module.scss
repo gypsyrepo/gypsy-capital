@@ -1,0 +1,42 @@
+:root {
+    --fontColorOne:  #212121;
+    --fontFamilyOne: 'Source Sans Pro';
+    --fontFamilyTwo: 'Kanit';
+    --backgroundOne: ' #F5F5F5';
+}
+
+.container {
+    background-color: #F5F5F5;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 40px;
+    min-height: 100vh;
+}
+
+.formBox {
+    background-color: #FFFFFF;
+    padding: 40px 60px 20px;
+    border-radius: 15px;
+    margin: 0 auto;
+    width: 600px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    box-shadow: 8px 15px 30px #0000001A;
+    h2 {
+        font-weight: 600;
+        margin-top: 20px;
+        color: #741763;
+    }
+    p {
+        font-family: var(--fontFamilyOne);
+        font-size: 1.15rem;
+        margin-top: 20px;
+    }
+    a {
+        font-family: var(--fontFamilyOne);
+        font-weight: 700;
+        color: #741763;
+        font-size: 1.2rem;
+        text-decoration: underline;
+    }
+}

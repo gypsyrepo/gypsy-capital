@@ -16,7 +16,13 @@ export const validateInput = (inputValues, errorSetter) => {
     } 
     if(fields.phoneNo && !fields.phoneNo.match(validPhoneNumber)) {
       errorsInit.phoneNo = "Please enter a valid phone number"
-    } 
+    }
+    if(fields.password && fields.password.length < 8) {
+      errorsInit.password = "Password must be at least 8 characters";
+    }
+    if(fields.confirmPassword && fields.confirmPassword !== fields.password) {
+      errorsInit.confirmPassword = "Your password does not match"
+    }
   }
 
   errorSetter(errorsInit);
