@@ -83,7 +83,7 @@ const loginUser = (dispatch) => async({email, password}, callback) => {
     history.push(pageUrl.DASHBOARD_HOMEPAGE);
   } catch(err) {
     if(err.response) {
-      // console.log(err.response.data.message);
+      console.log(err.response);
       dispatch({
         type: 'set_error',
         payload: err.response.data.message
