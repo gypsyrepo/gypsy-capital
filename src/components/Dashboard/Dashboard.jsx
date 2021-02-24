@@ -14,14 +14,18 @@ const Dashboard = ({ children, sidebarRoutes, location }) => {
 
   console.log(location)
 
-  const { logout } = useContext(AuthContext);
+  const { state: { user }, logout } = useContext(AuthContext);
   const signout = () => {
     logout();
   }
 
-  const role = "sales";
+  // const role = "sales";
 
   const [searchTerm, setSearchTerm] = useState('');
+
+  if(!user){
+    return null;
+  }
 
   return(
     <div className={styles.container}>
@@ -29,15 +33,15 @@ const Dashboard = ({ children, sidebarRoutes, location }) => {
         <Col className={styles.logoGrid} sm={3}>
           <img src={Logo} alt="Gypsy Logo" width={150} />
         </Col>
-        <Col className={styles.altNavGrid} sm={9}>
-          { role && role === "client" ? 
+        <Col className={ user.role === "client" ? styles.navGrid : styles.altNavGrid} sm={9}>
+          { user.role && user.role === "client" ? 
           <>
             <MdNotificationsNone size="2em" className="mr-5" color="#741763" />
             <Button clicked={signout} size="sm" bgColor="#A0208931" color="#212121">Log out</Button>
           </> : null
           }
           {
-            role && role === "sales" ?
+            user.role && user.role !== "client" ?
             <>
               <div className={styles.searchBar}>
                 <FaSearch className={styles.searchIcon} />
