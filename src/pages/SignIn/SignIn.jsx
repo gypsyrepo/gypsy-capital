@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
 import { validateInput } from '../../utils/validateInput';
+import useNavigateAfterAuth from '../../hooks/useNavigateAfterAuth';
 
 
 const SignIn = () => {
@@ -16,7 +17,6 @@ const SignIn = () => {
   const { 
       state: { loading, error }, 
       loginUser, 
-      getActiveUser, 
       clearErrors 
   } = useContext(AuthContext);
 
@@ -37,12 +37,14 @@ const SignIn = () => {
     password: null
   });
 
+  const [ signinAndNavigate ] = useNavigateAfterAuth(signinValues.email, signinValues.password);
+
   const handleSubmit = () => {
-    console.log(signinValues);
+    // console.log(signinValues);
     const validated = validateInput(signinValues, setSigninErrors);
-    console.log(validated);
+    // console.log(validated);
     if(validated) {
-      loginUser({ email: signinValues.email, password: signinValues.password }, getActiveUser);
+      signinAndNavigate(loginUser);
     }
   }
 

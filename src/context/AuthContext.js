@@ -80,7 +80,6 @@ const loginUser = (dispatch) => async({email, password}, callback) => {
       callback(token)
     }
     dispatch({ type: "loading_state", payload: false });
-    history.push(pageUrl.DASHBOARD_HOMEPAGE);
   } catch(err) {
     if(err.response) {
       console.log(err.response);
@@ -146,7 +145,6 @@ const resendOtp = (dispatch) => async(email) => {
 }
 
 const getActiveUser = (dispatch) => async(token) => {
-  console.log(token);
   try{
     let response;
     if(token) {
