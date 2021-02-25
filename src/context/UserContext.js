@@ -7,16 +7,12 @@ const userReducer = (state, action) => {
   switch(action.type) {
     case 'set_loading':
       return { ...state, loading: action.payload }
-    case 'verify_bvn':
-      return { ...state, bvnVerified: action.payload }
-    case 'set_personal_status':
-      return { ...state, personalInfoStatus: action.payload }
     case 'set_user_details':
       return { ...state, userDetails: action.payload }
     case 'set_error':
       return { ...state, error: action.payload }
-    case 'set_complete':
-      return { ...state, completeState: true }
+    case 'set_setup_stage':
+      return { ...state, setupStage: action.payload }
     default:
       return state;
   }

@@ -6,9 +6,13 @@ import Button from '../../components/Button/Button';
 import { validateInput } from '../../utils/validateInput';
 import { nigeriaStates } from '../../utils/nigeriaStates';
 import { Context as BankContext } from '../../context/BankCotext';
-import FileUploadButton from '../FileUploadButton/FileUploadButton';
 import { Context as UserContext } from '../../context/UserContext';
+import { Context as AuthContext } from '../../context/AuthContext';
+import FileUploadButton from '../FileUploadButton/FileUploadButton';
 import { FaCloudUploadAlt } from 'react-icons/fa';
+import { toast, ToastContainer } from 'react-toastify';
+import Loader from '../Loader/Loader';
+import { FaCheckCircle } from 'react-icons/fa';
 
 
 export const VerifyBvn = ({ submit }) => {
@@ -67,6 +71,10 @@ export const VerifyBvn = ({ submit }) => {
 
 export const PersonalInfo = ({ submit }) => {
 
+  const { state: { userDetails }, getClientDetails } = useContext(UserContext);
+  const { state: { currentAddedUser} } = useContext(AuthContext);
+
+
   const [biodata, setBiodata] = useState({
     fullName: '',
     dateOfBirth: '',
@@ -88,13 +96,34 @@ export const PersonalInfo = ({ submit }) => {
   });
 
 
+  useEffect(() => {
+    const { user_id } = currentAddedUser;
+    getClientDetails(user_id);
+  }, []);
+
+  useEffect(() => {
+    if(userDetails) {
+      const { bioData } = userDetails;
+      setBiodata({ ...biodata, 
+        fullName: `${bioData.firstName} ${bioData.lastName}`,
+        email: bioData.email,
+        phoneNo: bioData.phoneNumber.replace('234', '0'),
+        dateOfBirth: bioData.DOB,
+        bvnPhoneNo: bioData.bvnPhoneNumber
+      })
+    }
+  }, [currentAddedUser, userDetails]);
+
+
   const addPersonalInfo = () => {
     const validated = validateInput(biodata, setBiodataErrors);
     if(validated) {
       submit(biodata);
     }
   }
-
+  if(!userDetails) {
+    return <Loader />
+  }
   return (
     <>
       <Modal.Header closeButton>
@@ -241,7 +270,7 @@ export const Residence = ({ submit }) => {
   const addResidence = () => {
     const validated = validateInput(residentialInfo, setResidentialErrors);
     if(validated) {
-      submit();
+      submit(residentialInfo);
     }
   }
 
@@ -338,7 +367,7 @@ export const NextOfKin = ({ submit }) => {
   const addNextOfKin = () => {
     const validated = validateInput(kinInfo, setKinErrors);
     if(validated) {
-      submit();
+      submit(kinInfo);
     }
   }
 
@@ -443,6 +472,8 @@ export const NextOfKin = ({ submit }) => {
 
 export const BankInfo = ({ submit }) => {
 
+  const { state: { loading } } = useContext(UserContext);
+
   const [bankInfo, setBankInfo] = useState({
     bankName: '',
     accountType: '',
@@ -493,7 +524,7 @@ export const BankInfo = ({ submit }) => {
   const addBankInfo = () => {
     const validated = validateInput(bankInfo, setBankInfoErrors);
     if(validated) {
-      submit();
+      submit(bankInfo);
     }
   }
 
@@ -572,6 +603,8 @@ export const BankInfo = ({ submit }) => {
           className="mt-4" 
           clicked={addBankInfo} 
           fullWidth 
+          loading={loading}
+          disabled={loading}
           bgColor="#741763" 
           size="lg" 
           color="#EBEBEB"
@@ -583,15 +616,33 @@ export const BankInfo = ({ submit }) => {
   )
 }
 
-export const IdentityForm = () => {
+export const IdentityForm = ({ submit }) => {
 
+  const { state: { loading } } = useContext(UserContext);
   const idFileRef = useRef();
   const passportFileRef= useRef();
 
   const [idType, setIdType] = useState('');
 
+  const addIdentityInfo = () => {
+    if(idFileRef.current.files.length > 0) {
+      if(passportFileRef.current.files.length > 0) {
+        if(idType) {
+          const idFile = idFileRef.current.files[0];
+          const passportFile = passportFileRef.current.files[0];
+          submit(idFile, passportFile, idType);
+        }
+      } else {
+        toast.error("Please upload a passport photograph of yourself")
+      }
+    } else {
+      toast.error("Please upload a verified identification card")
+    }
+  }
+
   return (
     <>
+      <ToastContainer position="top-center" />
       <Modal.Header closeButton>
         <Modal.Title>
           <h2 className={styles.headerText}>Identity</h2>
@@ -632,8 +683,10 @@ export const IdentityForm = () => {
       <Modal.Footer className={styles.body}>
         <Button 
           className="mt-4" 
-          // clicked={addBankInfo} 
+          clicked={addIdentityInfo} 
           fullWidth 
+          loading={loading}
+          disabled={loading}
           bgColor="#741763" 
           size="lg" 
           color="#EBEBEB"
@@ -641,6 +694,36 @@ export const IdentityForm = () => {
           Save & Continue
         </Button>
       </Modal.Footer>
+    </>
+  )
+}
+
+
+export const OnboardSuccess = ({ close }) => {
+
+  useEffect(() => {
+    setTimeout(() => {
+      close();
+    }, 3000);
+  }, []);
+
+  return (
+    <>
+      <Modal.Body>
+        <div className={styles.onboard}>
+          <FaCheckCircle size="4em" color="#741763" />
+          <h4>User successfully onboarded.</h4>
+          <Button
+            className="mt-4" 
+            clicked={close} 
+            bgColor="#741763" 
+            size="sm" 
+            color="#EBEBEB"
+          >
+            Continue
+          </Button>
+        </div>
+      </Modal.Body>
     </>
   )
 }

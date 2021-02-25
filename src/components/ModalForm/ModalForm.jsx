@@ -10,7 +10,8 @@ import {
   Residence,
   NextOfKin,
   BankInfo,
-  IdentityForm
+  IdentityForm,
+  OnboardSuccess
 } from '../../components/AccountSetupModal/AccountSetupModal';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { Context as UserContext } from '../../context/UserContext';
@@ -58,6 +59,8 @@ const VerifyOtp = ({ submit }) => {
           size="lg" 
           clicked={submitOtp}
           color="#EBEBEB"
+          loading={loading}
+          disabled={loading}
         >
           Verify
         </Button>
@@ -263,6 +266,12 @@ const RegisterForm = ({ submit }) => {
 const ModalForm = ({ openState, closeHandler }) => {
 
   const [stage, setStage] = useState(0);
+  const [infoData, setInfoData] = useState({
+    personalInfo: null,
+    residenceInfo: null,
+    kinInfo: null,
+    bankInfo: null
+  });
   const { 
     state: { registerStatus, currentAddedUser, error }, 
     addUserByAgent, 
@@ -271,9 +280,10 @@ const ModalForm = ({ openState, closeHandler }) => {
     clearErrors 
   } = useContext(AuthContext);
   const { 
-    state: { setupStage }, 
+    state: { setupStage, error: userError }, 
     verifyBvn, 
-    updatePersonalInfo 
+    updatePersonalInfo,
+    updateIdentityInfo
   } = useContext(UserContext);
 
   const startUserRegistration = (data) => {
@@ -291,22 +301,64 @@ const ModalForm = ({ openState, closeHandler }) => {
     verifyBvn(user_id, bvn, null, true);
   }
 
-  const goToResidence = () => {
+  const goToResidence = (data) => {
+    setInfoData({
+      ...infoData,
+      personalInfo: data
+    });
     setStage(4)
   }
 
-  const goToNextOfKin = () => {
+  const goToNextOfKin = (data) => {
+    setInfoData({
+      ...infoData,
+      residenceInfo: data
+    });
     setStage(5)
   }
 
-  const goToBankInfo = () => {
+  const goToBankInfo = (data) => {
+    setInfoData({
+      ...infoData,
+      kinInfo: data
+    });
     setStage(6)
   }
 
-  // const addPersonalInfo = (data) => {
-  //   const { user_id } = currentAddedUser;
-  //   updatePersonalInfo(data);
-  // }
+  const addPersonalInfo = (data) => {
+    const { user_id } = currentAddedUser;
+    const { personalInfo, residenceInfo, kinInfo } = infoData;
+    const reqData = {
+      alternativePhoneNumber: personalInfo.altPhone,
+      gender: personalInfo.gender,
+      residence_street: residenceInfo.street,
+      residence_city: residenceInfo.city,
+      residence_state: residenceInfo.state,
+      nextOfKin_fullName: kinInfo.fullName,
+      nextOfKin_relationship: kinInfo.relationship,
+      nextOfKin_email: kinInfo.email,
+      nextOfKin_phoneNumber: kinInfo.phoneNo,
+      nextOfKin_residentialAddress: kinInfo.address,
+      bank_name: data.bankName,
+      bank_accountType: data.accountType,
+      bank_accountNumber: data.accountNumber,
+      bank_accountName: data.accountName,
+      identity_type: null,
+      identity_imageUrl: null,
+      identity_profilePhoto: null
+    }
+    console.log(reqData);
+    updatePersonalInfo(user_id, reqData, true);
+  }
+
+  const addIdentityInfo = (id, passport, type) => {
+    const { user_id } = currentAddedUser;
+    const data = new FormData();
+    data.append('identification', id);
+    data.append('passport', passport);
+    data.append('identity_type', type)
+    updateIdentityInfo(user_id, data, true);
+  }
 
   useEffect(() => {
     console.log(currentAddedUser)
@@ -318,6 +370,12 @@ const ModalForm = ({ openState, closeHandler }) => {
       clearErrors();
     }
   }, [error])
+
+  useEffect(() => {
+    if(userError) {
+      toast.error(userError);
+    }
+  }, [userError])
 
   useEffect(() => {
     if(registerStatus === "unverified") {
@@ -332,6 +390,12 @@ const ModalForm = ({ openState, closeHandler }) => {
     if(setupStage === "bvn_verified") {
       setStage(3);
     }
+    if(setupStage === "personal_info_added") {
+      setStage(7);
+    }
+    if(setupStage === "identity_added") {
+      setStage(8);
+    }
   }, [setupStage])
 
   return (
@@ -339,14 +403,15 @@ const ModalForm = ({ openState, closeHandler }) => {
       <ToastContainer position="top-center" />
       <Modal 
         show={openState}
-        size="lg"
+        size={ stage === 8 ? "sm" : "lg" }
         onHide={() => {
           // setRegisterData(emptyState);
           closeHandler();
         }}
       > 
-        { stage === 7 && <IdentityForm submit={verifyUserNo} /> }
-        { stage === 6 && <BankInfo submit={verifyUserNo} /> }
+        { stage === 8 && <OnboardSuccess close={closeHandler} /> }
+        { stage === 7 && <IdentityForm submit={addIdentityInfo} /> }
+        { stage === 6 && <BankInfo submit={addPersonalInfo} /> }
         { stage === 5 && <NextOfKin submit={goToBankInfo} /> }
         { stage === 4 && <Residence submit={goToNextOfKin} /> }
         { stage === 3 && <PersonalInfo submit={goToResidence} /> }
