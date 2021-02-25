@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { MdNotificationsNone } from 'react-icons/md';
 import { Context as AuthContext } from '../../context/AuthContext';
 import placeholderAvatar from '../../assets/placeholder.png';
+import { FiLogOut } from 'react-icons/fi';
 
 
 const Dashboard = ({ children, sidebarRoutes, location }) => {
@@ -92,6 +93,15 @@ const Dashboard = ({ children, sidebarRoutes, location }) => {
                 }
               })}
             </ul>
+            { user.role && user.role !== "client" ? 
+              <ul className={styles.authGroup}>
+                <li onClick={signout}>
+                  <FiLogOut className="mr-3" size="1.3em" color="#fff" />
+                  Log out
+                </li>
+              </ul> :
+              null
+            }
           </div>
         </Col>
         <Col sm={9} className={styles.mainPanel}>

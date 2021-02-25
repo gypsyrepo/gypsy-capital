@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './ModalForm.module.scss';
 import InputField from '../../components/InputField/InputField';
 import { Row, Col, Modal } from 'react-bootstrap';
@@ -12,14 +12,18 @@ import {
   BankInfo,
   IdentityForm
 } from '../../components/AccountSetupModal/AccountSetupModal';
+import { Context as AuthContext } from '../../context/AuthContext';
+import { Context as UserContext } from '../../context/UserContext';
+import { toast, ToastContainer } from 'react-toastify';
 
 const VerifyOtp = ({ submit }) => {
 
+  const { state: { loading } } = useContext(AuthContext);
   const [otp, setOtp] = useState('');
 
   const submitOtp = () => {
     if(otp) {
-      submit();
+      submit(otp);
     }
   }
 
@@ -64,6 +68,8 @@ const VerifyOtp = ({ submit }) => {
 
 
 const RegisterForm = ({ submit }) => {
+
+  const { state: { loading } } = useContext(AuthContext);
 
   const emptyState = {
     firstName: null,
@@ -114,7 +120,14 @@ const RegisterForm = ({ submit }) => {
     const validated = validateInput(registerData, setRegisterError);
     console.log(validated);
     if(validated) {
-      submit();
+      submit({
+        firstName,
+        lastName,
+        email,
+        phoneNumber: phoneNo.replace('0', '234'),
+        password,
+        hearAboutUs: referralChoice
+      });
     }
   }
 
@@ -234,6 +247,8 @@ const RegisterForm = ({ submit }) => {
               size="lg" 
               clicked={register}
               color="#EBEBEB"
+              loading={loading}
+              disabled={loading}
             >
               Sign Up
             </Button>
@@ -248,30 +263,77 @@ const RegisterForm = ({ submit }) => {
 const ModalForm = ({ openState, closeHandler }) => {
 
   const [stage, setStage] = useState(0);
+  const { 
+    state: { registerStatus, currentAddedUser, error }, 
+    addUserByAgent, 
+    verifyOtp,
+    getCurrentlyAddedUser,
+    clearErrors 
+  } = useContext(AuthContext);
+  const { state: { setupStage }, verifyBvn } = useContext(UserContext);
 
-  const goToNextStage = () => {
+  const startUserRegistration = (data) => {
     console.log('works');
-    setStage(stage + 1);
+    addUserByAgent(data, getCurrentlyAddedUser);
   }
 
+  const verifyUserNo = (otp) => {
+    const { email } = currentAddedUser;
+    verifyOtp(otp, email, null, true);
+  }
+
+  const addBvn = (bvn) => {
+    const { user_id } = currentAddedUser;
+    verifyBvn(user_id, bvn, null, true);
+  }
+
+  useEffect(() => {
+    console.log(currentAddedUser)
+  }, [currentAddedUser]);
+
+  useEffect(() => {
+    if(error) {
+      toast.error(error);
+      clearErrors();
+    }
+  }, [error])
+
+  useEffect(() => {
+    if(registerStatus === "unverified") {
+      setStage(1);
+    }
+    if(registerStatus === "verified") {
+      setStage(2);
+    }
+  }, [registerStatus])
+
+  useEffect(() => {
+    if(setupStage === "bvn_verified") {
+      setStage(3);
+    }
+  }, [setupStage])
+
   return (
-    <Modal 
-      show={openState}
-      size="lg"
-      onHide={() => {
-        // setRegisterData(emptyState);
-        closeHandler();
-      }}
-    > 
-      { stage === 7 && <IdentityForm submit={goToNextStage} /> }
-      { stage === 6 && <BankInfo submit={goToNextStage} /> }
-      { stage === 5 && <NextOfKin submit={goToNextStage} /> }
-      { stage === 4 && <Residence submit={goToNextStage} /> }
-      { stage === 3 && <PersonalInfo submit={goToNextStage} /> }
-      { stage === 2 && <VerifyBvn submit={goToNextStage} /> }
-      { stage === 1 && <VerifyOtp submit={goToNextStage} /> }
-      { stage === 0 && <RegisterForm  submit={goToNextStage} /> }
-    </Modal>
+    <>
+      <ToastContainer position="top-center" />
+      <Modal 
+        show={openState}
+        size="lg"
+        onHide={() => {
+          // setRegisterData(emptyState);
+          closeHandler();
+        }}
+      > 
+        { stage === 7 && <IdentityForm submit={verifyUserNo} /> }
+        { stage === 6 && <BankInfo submit={verifyUserNo} /> }
+        { stage === 5 && <NextOfKin submit={verifyUserNo} /> }
+        { stage === 4 && <Residence submit={verifyUserNo} /> }
+        { stage === 3 && <PersonalInfo submit={verifyUserNo} /> }
+        { stage === 2 && <VerifyBvn submit={addBvn} /> }
+        { stage === 1 && <VerifyOtp submit={verifyUserNo} /> }
+        { stage === 0 && <RegisterForm  submit={startUserRegistration} /> }
+      </Modal>
+    </>
   )
 }
 

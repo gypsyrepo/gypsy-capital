@@ -28,6 +28,7 @@
         min-height: calc(100vh - 80px);
         background-color: #741763;
         padding-right: 0;
+        position: relative;
         .menuList {
             padding-left: 35px;
             margin-top: 100px;
@@ -48,6 +49,17 @@
                             text-decoration: none;
                         }
                     }
+                }
+            }
+            .authGroup {
+                position: absolute;
+                bottom: 30px;
+                li {
+                    cursor: pointer;
+                    font-family: 'Source Sans Pro', sans-serif;
+                    color: #fff;
+                    font-size: 1.1rem;
+                    font-weight: 600;
                 }
             }
         }

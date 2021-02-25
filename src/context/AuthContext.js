@@ -17,6 +17,10 @@ const authReducer = (state, action) => {
       return { ...state, message: action.payload}
     case "sign_out":
       return { ...state, user: null, loggedIn: false, token: null }
+    case "set_register_status":
+      return { ...state, registerStatus: action.payload }
+    case "set_current_added_user":
+      return { ...state, currentAddedUser: action.payload }
     case "set_error":
       return { ...state, error: action.payload }
     default:
@@ -30,7 +34,7 @@ const registerUser = (dispatch) => async(data, callback) => {
   dispatch({ type: 'set_error', payload: null });
   try {
     const response = await gypsy.post('/client/signup', data);
-    // console.log(response.data);
+    console.log(response.data);
     const token = response.data.token;
     dispatch({
       type: 'signin',
@@ -41,6 +45,48 @@ const registerUser = (dispatch) => async(data, callback) => {
     }
     dispatch({ type: "loading_state", payload: false });
     history.push(pageUrl.VERIFY_OTP_PAGE);
+  } catch(err) {
+    if(err.response) {
+      console.log(err.response);
+      if(err.response.data.message) {
+        dispatch({
+          type: 'set_error',
+          payload: err.response.data.message
+        })
+      } else if(err.response.data.error) {
+        const errorMessage = err.response.data.error;
+        dispatch({ type: 'set_error', payload: errorMessage })
+        if(errorMessage.includes('duplicate key')) {
+          if(errorMessage.includes('phoneNumber')) {
+            dispatch({ type: 'set_error', payload: "This Phone Number already exist"})
+          }
+          if(errorMessage.includes('email')) {
+            dispatch({ type: 'set_error', payload: "This Email already exist"})
+          }
+        }
+      }
+    }
+    dispatch({ type: "loading_state", payload: false });
+  }
+}
+
+const addUserByAgent = dispatch => async(data, callback) => {
+  dispatch({ type: "loading_state", payload: true });
+  dispatch({ type: 'set_error', payload: null });
+  try {
+    const token = resolveToken();
+    const response = await gypsy.post('/client/signup', data, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    const newUserToken = response.data.token
+    // console.log(response.data.token);
+    if(callback) {
+      callback(newUserToken);
+    }
+    dispatch({ type: "set_register_status", payload: "unverified" });
+    dispatch({ type: "loading_state", payload: false });
   } catch(err) {
     if(err.response) {
       console.log(err.response);
@@ -92,7 +138,7 @@ const loginUser = (dispatch) => async({email, password}, callback) => {
   }
 }
 
-const verifyOtp = (dispatch) => async(otp, email, callback) => {
+const verifyOtp = (dispatch) => async(otp, email, callback, inModal) => {
   dispatch({ type: 'set_error', payload: null })
   dispatch({ type: "loading_state", payload: true})
   const token = resolveToken();
@@ -107,7 +153,11 @@ const verifyOtp = (dispatch) => async(otp, email, callback) => {
       callback();
     }
     dispatch({ type: "loading_state", payload: false })
-    history.push(pageUrl.PROFILE_PAGE);
+    if(!inModal) {
+      history.push(pageUrl.PROFILE_PAGE);
+    } else {
+      dispatch({ type: "set_register_status", payload: "verified" })
+    }
   } catch(err) {
     if(err.response) {
       // console.log(err.response.data);
@@ -178,6 +228,27 @@ const getActiveUser = (dispatch) => async(token) => {
 }
 
 
+const getCurrentlyAddedUser = dispatch => async(token) => {
+  try {
+    const response = await gypsy.get('/user/unbox', {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    dispatch({ type: "set_current_added_user", payload: response.data.user })
+  } catch(err) {
+    if(err.response) {
+      console.log(err.response.data);
+      const errorMessage = err.response.data.error || err.response.data.message
+      dispatch({
+        type: "set_error",
+        payload: errorMessage
+      });
+    }
+  }
+}
+
+
 const clearErrors = dispatch => () => {
   dispatch({
     type: 'set_error',
@@ -203,8 +274,8 @@ const saveUserState = (state) => {
 
 export const { Context, Provider } = createPersistDataContext(
   authReducer,
-  { loginUser, registerUser, getActiveUser, verifyOtp, resendOtp, logout, clearErrors },
-  { user: null, token: null, loggedIn: false, loading: false, error: null, message: null },
+  { loginUser, registerUser, getActiveUser, verifyOtp, resendOtp, logout, clearErrors, getCurrentlyAddedUser, addUserByAgent },
+  { user: null, token: null, loggedIn: false, loading: false, error: null, message: null, registerStatus: null, currentAddedUser: null },
   true,
   saveUserState,
   'local'

@@ -7,16 +7,18 @@ import { validateInput } from '../../utils/validateInput';
 import { nigeriaStates } from '../../utils/nigeriaStates';
 import { Context as BankContext } from '../../context/BankCotext';
 import FileUploadButton from '../FileUploadButton/FileUploadButton';
+import { Context as UserContext } from '../../context/UserContext';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 
 
 export const VerifyBvn = ({ submit }) => {
 
   const [bvn, setBvn] = useState('');
+  const { state: { loading } } = useContext(UserContext);
 
   const submitBvn = () => {
     if(bvn) {
-      submit();
+      submit(bvn);
     }
   }
 
@@ -51,6 +53,8 @@ export const VerifyBvn = ({ submit }) => {
           size="lg" 
           clicked={submitBvn}
           color="#EBEBEB"
+          loading={loading}
+          disabled={loading}
         >
           Verify
         </Button>
