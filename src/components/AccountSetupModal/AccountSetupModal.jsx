@@ -91,7 +91,7 @@ export const PersonalInfo = ({ submit }) => {
   const addPersonalInfo = () => {
     const validated = validateInput(biodata, setBiodataErrors);
     if(validated) {
-      submit();
+      submit(biodata);
     }
   }
 

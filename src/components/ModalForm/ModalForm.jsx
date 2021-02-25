@@ -270,7 +270,11 @@ const ModalForm = ({ openState, closeHandler }) => {
     getCurrentlyAddedUser,
     clearErrors 
   } = useContext(AuthContext);
-  const { state: { setupStage }, verifyBvn } = useContext(UserContext);
+  const { 
+    state: { setupStage }, 
+    verifyBvn, 
+    updatePersonalInfo 
+  } = useContext(UserContext);
 
   const startUserRegistration = (data) => {
     console.log('works');
@@ -286,6 +290,23 @@ const ModalForm = ({ openState, closeHandler }) => {
     const { user_id } = currentAddedUser;
     verifyBvn(user_id, bvn, null, true);
   }
+
+  const goToResidence = () => {
+    setStage(4)
+  }
+
+  const goToNextOfKin = () => {
+    setStage(5)
+  }
+
+  const goToBankInfo = () => {
+    setStage(6)
+  }
+
+  // const addPersonalInfo = (data) => {
+  //   const { user_id } = currentAddedUser;
+  //   updatePersonalInfo(data);
+  // }
 
   useEffect(() => {
     console.log(currentAddedUser)
@@ -326,9 +347,9 @@ const ModalForm = ({ openState, closeHandler }) => {
       > 
         { stage === 7 && <IdentityForm submit={verifyUserNo} /> }
         { stage === 6 && <BankInfo submit={verifyUserNo} /> }
-        { stage === 5 && <NextOfKin submit={verifyUserNo} /> }
-        { stage === 4 && <Residence submit={verifyUserNo} /> }
-        { stage === 3 && <PersonalInfo submit={verifyUserNo} /> }
+        { stage === 5 && <NextOfKin submit={goToBankInfo} /> }
+        { stage === 4 && <Residence submit={goToNextOfKin} /> }
+        { stage === 3 && <PersonalInfo submit={goToResidence} /> }
         { stage === 2 && <VerifyBvn submit={addBvn} /> }
         { stage === 1 && <VerifyOtp submit={verifyUserNo} /> }
         { stage === 0 && <RegisterForm  submit={startUserRegistration} /> }
