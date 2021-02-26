@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useLocation, Link, useHistory } from 'react-router-dom';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import { routes } from '../../routes/sidebarRoutes';
@@ -12,6 +12,8 @@ import { Row, Col, Table } from 'react-bootstrap';
 import Button from '../../components/Button/Button';
 import { recentLoans } from '../../utils/dummyData';
 import StatBox from '../../components/StatBox/StatBox';
+import { Context as AuthContext } from '../../context/AuthContext';
+import { Context as LoanContext } from '../../context/LoanContext';
 
 
 const AgentOverview = () => {
@@ -20,11 +22,23 @@ const AgentOverview = () => {
   const history = useHistory();
   const salesRoute = routes[1];
 
+  const { state: { user } } = useContext(AuthContext);
+  const { state: { loans }, retrieveClientLoans } = useContext(LoanContext);
+
+  useEffect(() => {
+    retrieveClientLoans()
+  }, [])
+  useEffect(() => {
+    if(loans) {
+      console.log(loans);
+    }
+  }, [loans])
+
   return (
     <Dashboard sidebarRoutes={salesRoute} location={location}>
       <div className={styles.welcomeGroup}>
         <div>
-          <h2>Hey, Moses</h2>
+          <h2>Hey, {user.firstName}</h2>
           <p className={styles.currentDate}>Today is {moment().format('dddd Do[,] MMMM')}.</p>
         </div>
         <button>

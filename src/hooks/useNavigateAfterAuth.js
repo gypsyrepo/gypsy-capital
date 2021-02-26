@@ -14,6 +14,8 @@ export default (email, password) => {
       history.push(pageUrl.PROCESSORS_DASHBOARD)
     } else if(user?.role && user.role === "sales") {
       history.push(pageUrl.SALES_AGENT_OVERVIEW)
+    } else if(user?.role && user.role === "processor") {
+      history.push(pageUrl.PROCESSORS_DASHBOARD)
     }
   }, [user])
 

@@ -120,6 +120,15 @@ a.activeLink {
         height: 54px;
         border-radius: 100%;
     }
+    .avatarWrapper {
+        width: 54px;
+        height: 54px;
+        border-radius: 100%;
+        background-color: #DDDDDD; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
     p {
         font-family: 'Source Sans Pro', sans-serif;
         &:first-child {

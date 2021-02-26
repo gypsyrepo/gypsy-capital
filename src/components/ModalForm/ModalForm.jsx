@@ -283,7 +283,8 @@ const ModalForm = ({ openState, closeHandler }) => {
     state: { setupStage, error: userError }, 
     verifyBvn, 
     updatePersonalInfo,
-    updateIdentityInfo
+    updateIdentityInfo,
+    clearErrors: clearErr
   } = useContext(UserContext);
 
   const startUserRegistration = (data) => {
@@ -374,6 +375,7 @@ const ModalForm = ({ openState, closeHandler }) => {
   useEffect(() => {
     if(userError) {
       toast.error(userError);
+      clearErr();
     }
   }, [userError])
 

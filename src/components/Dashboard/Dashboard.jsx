@@ -3,12 +3,13 @@ import styles from './Dashboard.module.scss';
 import { Row, Col } from 'react-bootstrap';
 import Logo from '../../assets/logo-white.png';
 import Button from '../../components/Button/Button';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { MdNotificationsNone } from 'react-icons/md';
 import { Context as AuthContext } from '../../context/AuthContext';
 import placeholderAvatar from '../../assets/placeholder.png';
 import { FiLogOut } from 'react-icons/fi';
+import _ from 'lodash';
 
 
 const Dashboard = ({ children, sidebarRoutes, location }) => {
@@ -60,10 +61,13 @@ const Dashboard = ({ children, sidebarRoutes, location }) => {
               <div className={styles.profileGroup}>
                 <MdNotificationsNone style={{ display: "block" }} size="2em" className="mr-5" color="#741763" />
                 <div className={styles.profileAvi}>
-                  <img src={placeholderAvatar} alt="Profile Picture" />
+                  { user.profilePhoto.length === 0 ? 
+                    <div className={styles.avatarWrapper}><FaUser size="1.4em" color="gray" /></div> :
+                    <img src={placeholderAvatar} alt="Profile Picture" />
+                  }
                   <div className={styles.userInfo}>
-                    <p>Moses Emmanuel</p>
-                    <p>Sales agent</p>
+                    <p>{user.firstName} {user.lastName}</p>
+                    <p>{_.capitalize(user.role)} { user.role === "sales" && 'agent'}</p>
                   </div>
                 </div>
               </div>
