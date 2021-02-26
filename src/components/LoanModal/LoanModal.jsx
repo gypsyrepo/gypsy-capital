@@ -7,12 +7,13 @@ import { Context as LoanContext } from '../../context/LoanContext';
 import { Context as AuthContext } from '../../context/AuthContext';
 import EmployerInfoForm from '../EmployerInfoForm/EmployerInfoForm';
 import BankInfoForm from '../BankInfoForm/BankInfoForm';
+import { FaCheckCircle } from 'react-icons/fa';
+import Button from '../Button/Button';
 
 
 const Calculator = ({ clientId }) => {
 
   const { loanApply } = useContext(LoanContext);
-  // const { state: { user } } = useContext(AuthContext);
 
   const calculateLoan = (data) => {
     loanApply(data, clientId, true);
@@ -38,7 +39,6 @@ const Calculator = ({ clientId }) => {
 const ContactAddr = () => {
 
   const { state: { currentLoanId }, addAddressForLoan } = useContext(LoanContext);
-  const { state: { user } } = useContext(AuthContext);
 
   const updateAddress = (data) => {
     addAddressForLoan(data, currentLoanId, true);
@@ -64,7 +64,6 @@ const ContactAddr = () => {
 const EmployerInfo = () => {
 
   const { state: { currentLoanId }, addWorkInfoForLoan } = useContext(LoanContext);
-  const { state: { user } } = useContext(AuthContext);
 
   const updateEmployerInfo = (data) => {
     addWorkInfoForLoan(data, currentLoanId, true);
@@ -90,7 +89,6 @@ const EmployerInfo = () => {
 const BankInfo = () => {
 
   const { state: { currentLoanId }, addBankInfoForLoan } = useContext(LoanContext);
-  const { state: { user } } = useContext(AuthContext);
 
   const updateBankInfo = (data) => {
     addBankInfoForLoan(data, currentLoanId, true);
@@ -112,11 +110,40 @@ const BankInfo = () => {
   )
 }
 
+const ApplySuccess = ({ close }) => {
+
+  useEffect(() => {
+    setTimeout(() => {
+      close();
+    }, 3000);
+  }, []);
+
+  return (
+    <>
+      <Modal.Body>
+        <div className={styles.success}>
+          <FaCheckCircle size="4em" color="#741763" />
+          <h4>User successfully onboarded.</h4>
+          <Button
+            className="mt-4" 
+            clicked={close} 
+            bgColor="#741763" 
+            size="sm" 
+            color="#EBEBEB"
+          >
+            Continue
+          </Button>
+        </div>
+      </Modal.Body>
+    </>
+  )
+}
+
 
 const LoanModal = ({ openState, closeHandler, userId }) => {
 
   const { state: { loanApplicationStage } } = useContext(LoanContext); 
-  const [stage, setStage] = useState(0);
+  const [stage, setStage] = useState(4);
 
   useEffect(() => {
     if(loanApplicationStage === "calculated") {
@@ -136,7 +163,7 @@ const LoanModal = ({ openState, closeHandler, userId }) => {
   return (
     <Modal
       show={openState}
-      size="lg"
+      size={ stage === 4 ? "sm" : "lg" }
       onHide={() => {
         closeHandler();
       }}
@@ -145,6 +172,7 @@ const LoanModal = ({ openState, closeHandler, userId }) => {
       { stage === 1 && <ContactAddr /> }
       { stage === 2 && <EmployerInfo /> }
       { stage === 3 && <BankInfo /> }
+      { stage === 4 && <ApplySuccess close={closeHandler} /> }
     </Modal>
   )
 }
