@@ -13,7 +13,7 @@ export default (currentPage, postsPerPage, list, setPage, cssStyles) => {
 
   const currentList = useMemo(() => {
     return list.slice(indexOfFirstItem, indexOfLastItem);
-  }, [indexOfFirstItem, indexOfLastItem]);
+  }, [indexOfFirstItem, indexOfLastItem, list]);
 
   const goToPage = (event) => {
     if(event.target.text) {

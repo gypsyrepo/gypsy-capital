@@ -6,11 +6,11 @@ import { useLocation,Link } from 'react-router-dom';
 import moment from 'moment';
 import  Button from '../../components/Button/Button';
 import { Table, Pagination } from 'react-bootstrap';
-import { clientList } from '../../utils/dummyData';
 import usePagination from '../../hooks/usePagination';
 import ModalForm from '../../components/ModalForm/ModalForm';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as AuthContext } from '../../context/AuthContext';
+import { TiCancelOutline } from 'react-icons/ti';
 
 
 const ClientListPage = () => {
@@ -85,7 +85,7 @@ const ClientListPage = () => {
                 <th>Date Created</th>
               </tr>
             </thead>
-            <tbody>
+            { currentList && currentList.length > 0 ? <tbody>
               { currentList.map((client, idx) => (
                 <tr>
                   <td>{client.firstName} {client.lastName}</td>
@@ -97,9 +97,12 @@ const ClientListPage = () => {
                   <td>{moment(client.createdAt).format('lll')}</td>
                 </tr>
               ))}
-            </tbody>
+            </tbody> : null }
           </Table>
-          <div className={styles.tableFooter}>
+          { currentList && currentList.length === 0 ? <div className={styles.nullList}>
+            <TiCancelOutline size="6em" color="rgba(116, 23, 99, 0.6)" />
+          </div> : null }
+          { currentList && currentList.length > 0 ? <div className={styles.tableFooter}>
             <div className={styles.rowsInput}>
               <p>Rows per page: </p>
               <select onChange={(e) => setPostsPerPage(Number(e.currentTarget.value))}>
@@ -116,7 +119,7 @@ const ClientListPage = () => {
               {items}
               <Pagination.Next onClick={goToNextPage} />
             </Pagination>
-          </div>
+          </div> : null }
         </div>
       </div>
       <ModalForm openState={modalOpen} closeHandler={closeModal} />
