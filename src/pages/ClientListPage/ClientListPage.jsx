@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import styles from './ClientListPage.module.scss';
 import { routes } from '../../routes/sidebarRoutes';
@@ -9,6 +9,8 @@ import { Table, Pagination } from 'react-bootstrap';
 import { clientList } from '../../utils/dummyData';
 import usePagination from '../../hooks/usePagination';
 import ModalForm from '../../components/ModalForm/ModalForm';
+import { Context as UserContext } from '../../context/UserContext';
+import { Context as AuthContext } from '../../context/AuthContext';
 
 
 const ClientListPage = () => {
@@ -20,12 +22,29 @@ const ClientListPage = () => {
   const [postsPerPage, setPostsPerPage] = useState(5);
   const [modalOpen, setModalOpen] = useState(false);
 
+  const { state: { clients }, getClientList } = useContext(UserContext);
+  const { state: { user } } = useContext(AuthContext);
+
+  useEffect(() => {
+    getClientList();
+  }, []);
+
+  const salesClients = useMemo(() => {
+    if(clients && clients.length > 0) {
+      return clients.filter(client => client.addedBy === user.user_id )
+    } else {
+      return []
+    }
+  }, [clients]);
+
+  console.log(salesClients);
+
   const { 
     currentList, 
     items, 
     goToNextPage, 
     goToPrevPage 
-  } = usePagination(currentPage, postsPerPage, clientList, setCurrentPage, styles);
+  } = usePagination(currentPage, postsPerPage, salesClients, setCurrentPage, styles);
 
 
   const onboardStart = () => {
@@ -69,13 +88,13 @@ const ClientListPage = () => {
             <tbody>
               { currentList.map((client, idx) => (
                 <tr>
-                  <td>{client.clientName}</td>
+                  <td>{client.firstName} {client.lastName}</td>
                   <td className={styles.loanId}>
-                    <Link to='/sales-agent/client/general'>{client.loanId}</Link>
+                    <Link to={`/sales-agent/client/${client._id}`}>{client._id.substr(0,6)}</Link>
                   </td>
-                  <td>{client.phoneNo}</td>
+                  <td>{client.phoneNumber.replace('234', '0')}</td>
                   <td>{client.bvn}</td>
-                  <td>{client.dateCreated}</td>
+                  <td>{moment(client.createdAt).format('lll')}</td>
                 </tr>
               ))}
             </tbody>

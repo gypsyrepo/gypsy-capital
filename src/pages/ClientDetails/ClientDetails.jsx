@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './ClientDetails.module.scss';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import { routes } from '../../routes/sidebarRoutes';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import InputField from '../../components/InputField/InputField';
 import { Row, Col, Table } from 'react-bootstrap';
 import NavTabs from '../../components/NavTabs/NavTabs';
 import Button from '../../components/Button/Button';
 import LoanModal from '../../components/LoanModal/LoanModal';
+import { Context as UserContext } from '../../context/UserContext';
+import Loader from '../../components/Loader/Loader';
+import _ from 'lodash';
 
 
-const Biodata = () => {
+const Biodata = ({ data }) => {
 
   const [biodata, setBiodata] = useState({
     firstName: "",
@@ -24,6 +27,21 @@ const Biodata = () => {
     residentialAddress: ""
   });
 
+  useEffect(() => {
+    console.log(data);
+    setBiodata({
+      ...biodata,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      gender: _.capitalize(data.gender),
+      dateOfBirth: data.DOB,
+      emailAddress: data.email,
+      phoneNumber: data.phoneNumber.replace('234', '0'),
+      altPhoneNumber: data.alternativePhoneNumber,
+      residentialAddress: `${data.street}, ${_.capitalize(data.state)}`
+    })
+  }, []);
+
   return (
     <>
       <Row className="mb-4">
@@ -32,6 +50,8 @@ const Biodata = () => {
             type="text"
             label="First Name"
             nameAttr="firstName"
+            value={biodata.firstName}
+            disable={true}
           />
         </Col>
         <Col>
@@ -39,6 +59,8 @@ const Biodata = () => {
             type="text"
             label="Last Name"
             nameAttr="lastName"
+            value={biodata.lastName}
+            disable={true}
           />
         </Col>
       </Row>
@@ -48,6 +70,8 @@ const Biodata = () => {
             type="text"
             label="Gender"
             nameAttr="gender"
+            value={biodata.gender}
+            disable={true}
           />
         </Col>
         <Col>
@@ -55,6 +79,8 @@ const Biodata = () => {
             type="text"
             label="Date of Birth"
             nameAttr="dob"
+            value={biodata.dateOfBirth}
+            disable={true}
           />
         </Col>
       </Row>
@@ -64,6 +90,8 @@ const Biodata = () => {
             type="email"
             label="Email Address"
             nameAttr="emailAddress"
+            value={biodata.emailAddress}
+            disable={true}
           />
         </Col>
         <Col>
@@ -71,6 +99,8 @@ const Biodata = () => {
             type="text"
             label="Phone Number"
             nameAttr="phoneNo"
+            value={biodata.phoneNumber}
+            disable={true}
           />
         </Col>
       </Row>
@@ -80,6 +110,8 @@ const Biodata = () => {
             type="text"
             label="Residential Status"
             nameAttr="residentStatus"
+            value={biodata.residentialStatus}
+            disable={true}
           />
         </Col>
         <Col>
@@ -87,6 +119,8 @@ const Biodata = () => {
             type="text"
             label="Alternative Phone Number"
             nameAttr="altPhoneNo"
+            value={biodata.altPhoneNumber}
+            disable={true}
           />
         </Col>
       </Row>
@@ -96,6 +130,8 @@ const Biodata = () => {
             type="text"
             label="Residential Address"
             nameAttr="homeAddress"
+            value={biodata.residentialAddress}
+            disable={true}
           />
         </Col>
       </Row>
@@ -104,7 +140,7 @@ const Biodata = () => {
 }
 
 
-const NextOfKin = () => {
+const NextOfKin = ({ data }) => {
 
   const [nextOfKin, setNextOfKin] = useState({
     firstName: "",
@@ -114,6 +150,20 @@ const NextOfKin = () => {
     residentialAddress: ""
   });
 
+  useEffect(() => {
+
+    const names = data.fullName.split(' ');
+
+    setNextOfKin({
+      ...nextOfKin,
+      firstName: names[0],
+      lastName: names[names.length - 1],
+      relationship: data.relationship,
+      phoneNumber: data.phoneNumber,
+      residentialAddress: data.residentialAddress
+    })
+  }, [])
+
   return (
     <>
       <Row className="mb-4">
@@ -122,6 +172,8 @@ const NextOfKin = () => {
             type="text"
             label="First Name"
             nameAttr="firstName"
+            value={nextOfKin.firstName}
+            disable={true}
           />
         </Col>
         <Col>
@@ -129,6 +181,8 @@ const NextOfKin = () => {
             type="text"
             label="Last Name"
             nameAttr="lastName"
+            value={nextOfKin.lastName}
+            disable={true}
           />
         </Col>
       </Row>
@@ -138,6 +192,8 @@ const NextOfKin = () => {
             type="text"
             label="Relationship"
             nameAttr="relationship"
+            value={nextOfKin.relationship}
+            disable={true}
           />
         </Col>
         <Col>
@@ -145,6 +201,8 @@ const NextOfKin = () => {
             type="text"
             label="Phone Number"
             nameAttr="phoneNo"
+            value={nextOfKin.phoneNumber}
+            disable={true}
           />
         </Col>
       </Row>
@@ -154,6 +212,8 @@ const NextOfKin = () => {
             type="text"
             label="Residential Address"
             nameAttr="kinAddress"
+            value={nextOfKin.residentialAddress}
+            disable={true}
           />
         </Col>
       </Row>
@@ -162,7 +222,7 @@ const NextOfKin = () => {
 }
 
 
-const Bank = () => {
+const Bank = ({ data }) => {
 
   const [disburseBank, setDisburseBank] = useState({
     bankName: "",
@@ -178,6 +238,17 @@ const Bank = () => {
     accountName: ""
   });
 
+  useEffect(() => {
+    console.log(data);
+    setDisburseBank({
+      ...disburseBank,
+      bankName: _.startCase(data.bankName),
+      accountType: _.capitalize(data.accountType),
+      accountNumber: data.accountNumber,
+      accountName: data.accountName
+    })
+  }, [])
+
   return (
     <>
       <div className={styles.disburse}>
@@ -188,6 +259,7 @@ const Bank = () => {
               type="text"
               label="Bank Name"
               nameAttr="bankName"
+              value={disburseBank.bankName}
             />
           </Col>
           <Col>
@@ -195,6 +267,7 @@ const Bank = () => {
               type="text"
               label="Account Type"
               nameAttr="accountType"
+              value={disburseBank.accountType}
             />
           </Col>
         </Row>
@@ -204,6 +277,7 @@ const Bank = () => {
               type="text"
               label="Account Number"
               nameAttr="accountNumber"
+              value={disburseBank.accountNumber}
             />
           </Col>
           <Col>
@@ -211,6 +285,7 @@ const Bank = () => {
               type="text"
               label="Account Name"
               nameAttr="accountName"
+              value={disburseBank.accountName}
             />
           </Col>
         </Row>
@@ -339,7 +414,7 @@ const Employer = () => {
 }
 
 
-const ClientLoan = () => {
+const ClientLoan = ({ userId }) => {
 
   const [modalOpen, setModalOpen] = useState(false)
   const closeModal = () => {
@@ -387,7 +462,7 @@ const ClientLoan = () => {
           </tbody>
         </Table>
       </div>
-      <LoanModal openState={modalOpen} closeHandler={closeModal} />
+      <LoanModal userId={userId} openState={modalOpen} closeHandler={closeModal} />
     </div>
   )
 }
@@ -397,6 +472,17 @@ const ClientDetails = () => {
 
   const salesRoute = routes[1];
   const location = useLocation();
+  const { clientId } = useParams();
+
+  const { state: { userDetails }, getClientDetails } = useContext(UserContext);
+
+  useEffect(() => {
+    getClientDetails(clientId);
+  }, [])
+
+  useEffect(() => {
+    console.log(userDetails);
+  }, [userDetails]);
 
   const [detailSection, setDetailSection] = useState('biodata');
 
@@ -430,13 +516,16 @@ const ClientDetails = () => {
   return (
     <Dashboard sidebarRoutes={salesRoute} location={location}>
       <NavTabs navs={navArray} setActive={setActiveTab} currentTab={detailSection} />
-      <div className={detailSection !== "loans" && styles.detailFields}>
-        { detailSection === "biodata" && <Biodata /> }
-        { detailSection === "kin" && <NextOfKin /> }
-        { detailSection === "bank" && <Bank /> }
-        { detailSection === "employ" && <Employer /> }
-        { detailSection === "loans" && <ClientLoan /> }
-      </div>
+      { userDetails ? 
+        <div className={detailSection !== "loans" && styles.detailFields}>
+          { detailSection === "biodata" && <Biodata data={{...userDetails.bioData, ...userDetails.residence}} /> }
+          { detailSection === "kin" && <NextOfKin data={{ ...userDetails.nextOfKin }} /> }
+          { detailSection === "bank" && <Bank data={{ ...userDetails.bank }} /> }
+          { detailSection === "employ" && <Employer data={userDetails.employer && { ...userDetails.employer }} /> }
+          { detailSection === "loans" && <ClientLoan userId={userDetails.clientId} /> }
+        </div> :
+        <Loader />
+      }
     </Dashboard>
   )
 }

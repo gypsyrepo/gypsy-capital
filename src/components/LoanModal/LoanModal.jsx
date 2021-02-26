@@ -9,13 +9,13 @@ import EmployerInfoForm from '../EmployerInfoForm/EmployerInfoForm';
 import BankInfoForm from '../BankInfoForm/BankInfoForm';
 
 
-const Calculator = () => {
+const Calculator = ({ clientId }) => {
 
   const { loanApply } = useContext(LoanContext);
-  const { state: { user } } = useContext(AuthContext);
+  // const { state: { user } } = useContext(AuthContext);
 
   const calculateLoan = (data) => {
-    loanApply(data, user.user_id, true);
+    loanApply(data, clientId, true);
   }
 
   return (
@@ -37,11 +37,11 @@ const Calculator = () => {
 
 const ContactAddr = () => {
 
-  const { addAddressForLoan } = useContext(LoanContext);
+  const { state: { currentLoanId }, addAddressForLoan } = useContext(LoanContext);
   const { state: { user } } = useContext(AuthContext);
 
   const updateAddress = (data) => {
-    addAddressForLoan(data, user.user_id, true);
+    addAddressForLoan(data, currentLoanId, true);
   }
 
   return (
@@ -63,11 +63,11 @@ const ContactAddr = () => {
 
 const EmployerInfo = () => {
 
-  const { addWorkInfoForLoan } = useContext(LoanContext);
+  const { state: { currentLoanId }, addWorkInfoForLoan } = useContext(LoanContext);
   const { state: { user } } = useContext(AuthContext);
 
   const updateEmployerInfo = (data) => {
-    addWorkInfoForLoan(data, user.user_id, true);
+    addWorkInfoForLoan(data, currentLoanId, true);
   }
 
   return (
@@ -89,11 +89,11 @@ const EmployerInfo = () => {
 
 const BankInfo = () => {
 
-  const { addBankInfoForLoan } = useContext(LoanContext);
+  const { state: { currentLoanId }, addBankInfoForLoan } = useContext(LoanContext);
   const { state: { user } } = useContext(AuthContext);
 
   const updateBankInfo = (data) => {
-    addBankInfoForLoan(data, user.user_id, true);
+    addBankInfoForLoan(data, currentLoanId, true);
   }
 
   return (
@@ -113,7 +113,7 @@ const BankInfo = () => {
 }
 
 
-const LoanModal = ({ openState, closeHandler }) => {
+const LoanModal = ({ openState, closeHandler, userId }) => {
 
   const { state: { loanApplicationStage } } = useContext(LoanContext); 
   const [stage, setStage] = useState(0);
@@ -141,7 +141,7 @@ const LoanModal = ({ openState, closeHandler }) => {
         closeHandler();
       }}
     >
-      { stage === 0 && <Calculator /> }
+      { stage === 0 && <Calculator clientId={userId} /> }
       { stage === 1 && <ContactAddr /> }
       { stage === 2 && <EmployerInfo /> }
       { stage === 3 && <BankInfo /> }

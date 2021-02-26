@@ -13,6 +13,8 @@ const userReducer = (state, action) => {
       return { ...state, error: action.payload }
     case 'set_setup_stage':
       return { ...state, setupStage: action.payload }
+    case 'set_client_list':
+      return { ...state, clients: action.payload }
     default:
       return state;
   }
@@ -151,6 +153,28 @@ const getClientDetails = dispatch => async(userId) => {
   }
 }
 
+const getClientList = dispatch => async() => {
+  try {
+    const token = resolveToken();
+    const response = await gypsy.get('/clients', {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    console.log(response.data);
+    dispatch({ type: "set_client_list", payload: response.data.users });
+  } catch(err) {
+    if(err.response) {
+      console.log(err.response.data);
+      const errorMessage = err.response.data.error || err.response.data.message
+      dispatch({
+        type: 'set_error',
+        payload: errorMessage
+      });
+    }
+  }
+}
+
 const resetPassword = dispatch => async(userEmail) => {
   dispatch({ type: 'set_error', payload: null });
   dispatch({ type: "set_loading", payload: true });
@@ -215,6 +239,6 @@ const clearErrors = dispatch => () => {
 
 export const { Context, Provider } = createDataContext(
   userReducer,
-  { updatePersonalInfo, verifyBvn, clearErrors, getClientDetails, updateIdentityInfo, resetPassword, createNewPassword },
-  { loading: false, error: null, userDetails: null, setupStage: null }
+  { updatePersonalInfo, verifyBvn, clearErrors, getClientDetails, updateIdentityInfo, resetPassword, createNewPassword, getClientList },
+  { loading: false, error: null, userDetails: null, setupStage: null, clients: [] }
 )
