@@ -9,6 +9,7 @@ import EmployerInfoForm from '../EmployerInfoForm/EmployerInfoForm';
 import BankInfoForm from '../BankInfoForm/BankInfoForm';
 import { FaCheckCircle } from 'react-icons/fa';
 import Button from '../Button/Button';
+import { toast, ToastContainer } from 'react-toastify';
 
 
 const Calculator = ({ clientId }) => {
@@ -123,7 +124,7 @@ const ApplySuccess = ({ close }) => {
       <Modal.Body>
         <div className={styles.success}>
           <FaCheckCircle size="4em" color="#741763" />
-          <h4>User successfully onboarded.</h4>
+          <h4>Loan successfully requested for this user.</h4>
           <Button
             className="mt-4" 
             clicked={close} 
@@ -142,8 +143,8 @@ const ApplySuccess = ({ close }) => {
 
 const LoanModal = ({ openState, closeHandler, userId }) => {
 
-  const { state: { loanApplicationStage } } = useContext(LoanContext); 
-  const [stage, setStage] = useState(4);
+  const { state: { loanApplicationStage, error }, clearErrors } = useContext(LoanContext); 
+  const [stage, setStage] = useState(0);
 
   useEffect(() => {
     if(loanApplicationStage === "calculated") {
@@ -160,20 +161,30 @@ const LoanModal = ({ openState, closeHandler, userId }) => {
     }
   }, [loanApplicationStage])
 
+  useEffect(() => {
+    if(error) {
+      toast.error(error);
+      clearErrors();
+    }
+  }, [error]);
+
   return (
-    <Modal
-      show={openState}
-      size={ stage === 4 ? "sm" : "lg" }
-      onHide={() => {
-        closeHandler();
-      }}
-    >
-      { stage === 0 && <Calculator clientId={userId} /> }
-      { stage === 1 && <ContactAddr /> }
-      { stage === 2 && <EmployerInfo /> }
-      { stage === 3 && <BankInfo /> }
-      { stage === 4 && <ApplySuccess close={closeHandler} /> }
-    </Modal>
+    <>
+      <ToastContainer position="top-center" />
+      <Modal
+        show={openState}
+        size={ stage === 4 ? "sm" : "lg" }
+        onHide={() => {
+          closeHandler();
+        }}
+      >
+        { stage === 0 && <Calculator clientId={userId} /> }
+        { stage === 1 && <ContactAddr /> }
+        { stage === 2 && <EmployerInfo /> }
+        { stage === 3 && <BankInfo /> }
+        { stage === 4 && <ApplySuccess close={closeHandler} /> }
+      </Modal>
+    </>
   )
 }
 
