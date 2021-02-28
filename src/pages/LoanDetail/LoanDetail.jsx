@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './LoanDetail.module.scss';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, Link } from 'react-router-dom';
 import { routes } from '../../routes/sidebarRoutes';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import NavTabs from '../../components/NavTabs/NavTabs';
@@ -54,7 +54,11 @@ const BasicInfo = ({ data }) => {
         </Col>
         <Col>
           <h6>Client ID</h6>
-          <h4>{basicInfo.clientID.slice(0,6)}</h4>
+          <h4>
+            <Link to={`/sales-agent/client/${basicInfo.clientID}`}>
+              {basicInfo.clientID.slice(0,6)}
+            </Link>
+          </h4>
         </Col>
         <Col>
           <h6>Loan Amount</h6>
@@ -173,7 +177,34 @@ const LoanStatus = ({ data }) => {
   )
 }
 
-const RepaymentSchedule = () => {
+const RepaymentSchedule = ({ data }) => {
+
+  const [repaymentArr, setRepaymentArr] = useState(null);
+
+  useEffect(() => {
+    if(data) {
+      const paymentPeriod = Number(data.paymentPeriod.split(' ')[0]);
+      // console.log(paymentPeriod);
+      let repaymentTrack = [];
+      let instance = {
+        month: 1,
+        dueDate: moment(data.createdAt).format('LL'),
+        status: data.payments.length === 0 ? 'Waiting' : data.payments[0],
+        overdueAmount: data.overdue
+      }
+      for(let i=0; i < paymentPeriod; i++) {
+        repaymentTrack.push(instance);
+        instance = {
+          month: instance.month + 1,
+          dueDate: moment(data.createdAt).add(i + 1, 'M').format('LL'),
+          status: data.payments.length === 0 ? 'Waiting' : data.payments[i+1],
+          overdueAmount: data.overdue
+        }
+      }
+      console.log(repaymentTrack);
+      setRepaymentArr(repaymentTrack);
+    }
+  }, [data]);
 
   const repaymentTrack = [
     {
@@ -208,9 +239,9 @@ const RepaymentSchedule = () => {
           </tr>
         </thead>
         <tbody>
-          { repaymentTrack.map((track, idx) => (
+          { repaymentArr && repaymentArr.map((track, idx) => (
             <tr key={idx}>
-              <td>{track?.month}</td>
+              <td>{`Month ${track?.month}`}</td>
               <td>{track?.dueDate}</td>
               <td>{track?.status}</td>
               <td>{track?.overdueAmount}</td>
@@ -274,7 +305,14 @@ const LoanDetail = () => {
             } : null }
           /> 
         }
-        { visibleSection === "repayment" && <RepaymentSchedule /> }
+        { visibleSection === "repayment" && 
+          <RepaymentSchedule 
+            data={ loanDetails ? {
+              ...loanDetails.loan,
+              payments: loanDetails.payments
+            } : null }
+          /> 
+        }
       </div> : <Loader /> } 
     </Dashboard>
   )
