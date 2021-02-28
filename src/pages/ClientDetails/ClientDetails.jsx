@@ -9,6 +9,7 @@ import NavTabs from '../../components/NavTabs/NavTabs';
 import Button from '../../components/Button/Button';
 import LoanModal from '../../components/LoanModal/LoanModal';
 import { Context as UserContext } from '../../context/UserContext';
+import { Context as LoanContext } from '../../context/LoanContext';
 import Loader from '../../components/Loader/Loader';
 import _ from 'lodash';
 
@@ -28,19 +29,20 @@ const Biodata = ({ data }) => {
   });
 
   useEffect(() => {
-    console.log(data);
-    setBiodata({
-      ...biodata,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      gender: _.capitalize(data.gender),
-      dateOfBirth: data.DOB,
-      emailAddress: data.email,
-      phoneNumber: data.phoneNumber.replace('234', '0'),
-      altPhoneNumber: data.alternativePhoneNumber,
-      residentialAddress: `${data.street}, ${_.capitalize(data.state)}`
-    })
-  }, []);
+    if(data) {
+      setBiodata({
+        ...biodata,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        gender: _.capitalize(data.gender),
+        dateOfBirth: data.DOB,
+        emailAddress: data.email,
+        phoneNumber: data.phoneNumber.replace('234', '0'),
+        altPhoneNumber: data.alternativePhoneNumber,
+        residentialAddress: `${data.street}, ${_.capitalize(data.state)}`
+      })
+    }
+  }, [data]);
 
   return (
     <>
@@ -152,17 +154,19 @@ const NextOfKin = ({ data }) => {
 
   useEffect(() => {
 
-    const names = data.fullName.split(' ');
+    if(data) {
+      const names = data.fullName?.split(' ');
 
-    setNextOfKin({
-      ...nextOfKin,
-      firstName: names[0],
-      lastName: names[names.length - 1],
-      relationship: data.relationship,
-      phoneNumber: data.phoneNumber,
-      residentialAddress: data.residentialAddress
-    })
-  }, [])
+      setNextOfKin({
+        ...nextOfKin,
+        firstName: names[0],
+        lastName: names[names.length - 1],
+        relationship: data.relationship,
+        phoneNumber: data.phoneNumber,
+        residentialAddress: data.residentialAddress
+      })
+    }
+  }, [data])
 
   return (
     <>
@@ -239,15 +243,17 @@ const Bank = ({ data }) => {
   });
 
   useEffect(() => {
-    console.log(data);
-    setDisburseBank({
-      ...disburseBank,
-      bankName: _.startCase(data.bankName),
-      accountType: _.capitalize(data.accountType),
-      accountNumber: data.accountNumber,
-      accountName: data.accountName
-    })
-  }, [])
+    if(data) {
+      console.log(data);
+      setDisburseBank({
+        ...disburseBank,
+        bankName: _.startCase(data.bankName),
+        accountType: _.capitalize(data.accountType),
+        accountNumber: data.accountNumber,
+        accountName: data.accountName
+      })
+    }
+  }, [data])
 
   return (
     <>
@@ -421,6 +427,12 @@ const ClientLoan = ({ userId }) => {
     setModalOpen(false);
   }
 
+  const { state: { currentLoanId, loans },  } = useContext(LoanContext);
+
+  useEffect(() => {
+    
+  }, [])
+
   const startApply = () => {
     setModalOpen(true);
   }
@@ -474,15 +486,21 @@ const ClientDetails = () => {
   const location = useLocation();
   const { clientId } = useParams();
 
-  const { state: { userDetails }, getClientDetails } = useContext(UserContext);
+  const { 
+    state: { userDetails, detailStatus }, 
+    getClientDetails,
+    clearErrors
+  } = useContext(UserContext);
 
   useEffect(() => {
     getClientDetails(clientId);
+
+    return () => {
+      console.log('cleanup')
+      clearErrors();
+    }
   }, [])
 
-  useEffect(() => {
-    console.log(userDetails);
-  }, [userDetails]);
 
   const [detailSection, setDetailSection] = useState('biodata');
 
@@ -516,13 +534,13 @@ const ClientDetails = () => {
   return (
     <Dashboard sidebarRoutes={salesRoute} location={location}>
       <NavTabs navs={navArray} setActive={setActiveTab} currentTab={detailSection} />
-      { userDetails ? 
+      { userDetails || !detailStatus  ? 
         <div className={detailSection !== "loans" && styles.detailFields}>
-          { detailSection === "biodata" && <Biodata data={{...userDetails.bioData, ...userDetails.residence}} /> }
-          { detailSection === "kin" && <NextOfKin data={{ ...userDetails.nextOfKin }} /> }
-          { detailSection === "bank" && <Bank data={{ ...userDetails.bank }} /> }
+          { detailSection === "biodata" && <Biodata data={userDetails && {...userDetails.bioData, ...userDetails.residence}} /> }
+          { detailSection === "kin" && <NextOfKin data={userDetails && { ...userDetails.nextOfKin }} /> }
+          { detailSection === "bank" && <Bank data={userDetails && { ...userDetails.bank }} /> }
           { detailSection === "employ" && <Employer data={userDetails.employer && { ...userDetails.employer }} /> }
-          { detailSection === "loans" && <ClientLoan userId={userDetails.clientId} /> }
+          { detailSection === "loans" && <ClientLoan userId={userDetails && userDetails.clientId} /> }
         </div> :
         <Loader />
       }

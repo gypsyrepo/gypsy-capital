@@ -15,6 +15,8 @@ const userReducer = (state, action) => {
       return { ...state, setupStage: action.payload }
     case 'set_client_list':
       return { ...state, clients: action.payload }
+    case 'set_details_status':
+      return { ...state, detailStatus: action.payload }
     default:
       return state;
   }
@@ -129,6 +131,8 @@ const updateIdentityInfo = dispatch => async(userId, updateData, inModal) => {
 }
 
 const getClientDetails = dispatch => async(userId) => {
+  console.log('working')
+  dispatch({ type: 'set_user_details', payload: null });
   try {
     const token = resolveToken();
     const response = await gypsy.get(`/client/details/${userId}`, {
@@ -138,22 +142,24 @@ const getClientDetails = dispatch => async(userId) => {
     });
     console.log(response.data.data)
     dispatch({ type: 'set_user_details', payload: response.data.data });
-    console.log(response.data);
+    // console.log(response.data);
   } catch(err) {
     if(err.response) {
-      console.log(err.response)
-      const { error } = err.response.data
-      console.log(error)
-      // if()
+      // console.log(err.response)
+      const errorMessage = err.response.data.error || err.response.data.message
+      if(errorMessage === "Client does not exist. Or ID specified is not for a client customer") {
+        dispatch({ type: "set_details_status", payload: false });
+      }
       dispatch({
-        type: 'set_error',
-        payload: err.response.error
-      })
+        type: "set_error",
+        payload: errorMessage
+      });
     }
   }
 }
 
 const getClientList = dispatch => async() => {
+  dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
     const response = await gypsy.get('/clients', {
@@ -161,8 +167,9 @@ const getClientList = dispatch => async() => {
         "Authorization": `Bearer ${token}`
       }
     });
-    console.log(response.data);
+    // console.log(response.data);
     dispatch({ type: "set_client_list", payload: response.data.users });
+    dispatch({ type: "set_loading", payload: false });
   } catch(err) {
     if(err.response) {
       console.log(err.response.data);
@@ -172,6 +179,7 @@ const getClientList = dispatch => async() => {
         payload: errorMessage
       });
     }
+    dispatch({ type: "set_loading", payload: false });
   }
 }
 
@@ -240,5 +248,5 @@ const clearErrors = dispatch => () => {
 export const { Context, Provider } = createDataContext(
   userReducer,
   { updatePersonalInfo, verifyBvn, clearErrors, getClientDetails, updateIdentityInfo, resetPassword, createNewPassword, getClientList },
-  { loading: false, error: null, userDetails: null, setupStage: null, clients: [] }
+  { loading: false, error: null, userDetails: null, setupStage: null, clients: [], detailStatus: true }
 )

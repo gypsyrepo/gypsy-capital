@@ -11,6 +11,8 @@ import ModalForm from '../../components/ModalForm/ModalForm';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { TiCancelOutline } from 'react-icons/ti';
+import _ from 'lodash';
+import Loader from '../../components/Loader/Loader';
 
 
 const ClientListPage = () => {
@@ -22,10 +24,11 @@ const ClientListPage = () => {
   const [postsPerPage, setPostsPerPage] = useState(5);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { state: { clients }, getClientList } = useContext(UserContext);
+  const { state: { clients, loading }, getClientList, clearErrors } = useContext(UserContext);
   const { state: { user } } = useContext(AuthContext);
 
   useEffect(() => {
+    clearErrors();
     getClientList();
   }, []);
 
@@ -37,7 +40,7 @@ const ClientListPage = () => {
     }
   }, [clients]);
 
-  console.log(salesClients);
+  // console.log(salesClients);
 
   const { 
     currentList, 
@@ -52,6 +55,7 @@ const ClientListPage = () => {
   }
 
   const closeModal = () => {
+    getClientList();
     setModalOpen(false);
   }
 
@@ -72,7 +76,7 @@ const ClientListPage = () => {
           Onboard New Client
         </Button>
       </div>
-      <div className={styles.overview}>
+      { !loading ? <div className={styles.overview}>
         <div className={styles.overviewBox}>
           <h3>Clients Overview</h3>
           <Table className={styles.table}>
@@ -88,7 +92,7 @@ const ClientListPage = () => {
             { currentList && currentList.length > 0 ? <tbody>
               { currentList.map((client, idx) => (
                 <tr>
-                  <td>{client.firstName} {client.lastName}</td>
+                  <td>{_.capitalize(client.firstName)} {_.capitalize(client.lastName)}</td>
                   <td className={styles.loanId}>
                     <Link to={`/sales-agent/client/${client._id}`}>{client._id.substr(0,6)}</Link>
                   </td>
@@ -121,7 +125,7 @@ const ClientListPage = () => {
             </Pagination>
           </div> : null }
         </div>
-      </div>
+      </div> : <Loader /> }
       <ModalForm openState={modalOpen} closeHandler={closeModal} />
     </Dashboard>
   )

@@ -6,13 +6,12 @@ import FileUploadButton from '../FileUploadButton/FileUploadButton';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import Button from '../Button/Button';
 import { validateInput } from '../../utils/validateInput';
-import axios from 'axios';
 import { nigeriaStates } from '../../utils/nigeriaStates';
+import { lgaList } from '../../utils/mappedLgas';
 import { ToastContainer, toast } from 'react-toastify';
 import { Context as LoanContext } from '../../context/LoanContext';
-import { Context as AuthContext } from '../../context/AuthContext';
 import BeatLoader from 'react-spinners/BeatLoader';
-
+import _ from 'lodash';
 
 
 const LoanContactForm = ({ submitContact }) => {
@@ -41,14 +40,7 @@ const LoanContactForm = ({ submitContact }) => {
 
   useEffect(() => {
     if(contactAddress.state.length > 0) {
-      const getLga = async() => {
-        setLgaLoading(true);
-        const response = await axios.get(`https://locationsng-api.herokuapp.com/api/v1/states/${contactAddress.state}/lgas`)
-        setLgaOptions(response.data);
-        setLgaLoading(false);
-      };
-  
-      getLga();
+      setLgaOptions(lgaList[_.capitalize(contactAddress.state)])
     }
   }, [contactAddress.state])
 

@@ -361,15 +361,17 @@ const ModalForm = ({ openState, closeHandler }) => {
     updateIdentityInfo(user_id, data, true);
   }
 
-  useEffect(() => {
-    console.log(currentAddedUser)
-  }, [currentAddedUser]);
 
   useEffect(() => {
     if(error) {
       toast.error(error);
       clearErrors();
     }
+
+    return () => {
+      clearErrors();
+    }
+
   }, [error])
 
   useEffect(() => {
@@ -377,6 +379,11 @@ const ModalForm = ({ openState, closeHandler }) => {
       toast.error(userError);
       clearErr();
     }
+
+    return () => {
+      clearErr();
+    }
+
   }, [userError])
 
   useEffect(() => {
@@ -408,6 +415,7 @@ const ModalForm = ({ openState, closeHandler }) => {
         size={ stage === 8 ? "sm" : "lg" }
         onHide={() => {
           // setRegisterData(emptyState);
+          setStage(0);
           closeHandler();
         }}
       > 

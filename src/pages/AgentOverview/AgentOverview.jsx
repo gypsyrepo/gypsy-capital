@@ -27,12 +27,7 @@ const AgentOverview = () => {
 
   useEffect(() => {
     retrieveClientLoans()
-  }, [])
-  useEffect(() => {
-    if(loans) {
-      console.log(loans);
-    }
-  }, [loans])
+  }, []);
 
   return (
     <Dashboard sidebarRoutes={salesRoute} location={location}>

@@ -71,6 +71,13 @@ const loanApply = dispatch => async(applyData, userId, inModal) => {
   }
 }
 
+const resetApplyStage = dispatch => () => {
+  dispatch({
+    type: "set_application_stage",
+    payload: null
+  });
+}
+
 
 const addAddressForLoan = dispatch => async(addressData, loanId, inModal) => {
   dispatch({ type: "set_loading", payload: true });
@@ -172,7 +179,7 @@ const retrieveClientLoans = dispatch => async() => {
         "Authorization": `Bearer ${token}`
       }
     });
-    console.log(response.data.data)
+    // console.log(response.data.data)
     dispatch({
       type: 'set_loan_list',
       payload: response.data.data
@@ -210,6 +217,6 @@ const clearCompleteState = dispatch => () => {
 
 export const { Context, Provider } = createDataContext(
   loanReducer,
-  { loanApply, addAddressForLoan, addWorkInfoForLoan, clearError, retrieveClientLoans, addBankInfoForLoan, clearCompleteState },
+  { loanApply, addAddressForLoan, addWorkInfoForLoan, clearError, retrieveClientLoans, addBankInfoForLoan, clearCompleteState, resetApplyStage },
   { loading: false, error: null, loans: [], loanDetails: null, loanApplicationStage: null, currentLoanId: null, incomplete: false }
 )

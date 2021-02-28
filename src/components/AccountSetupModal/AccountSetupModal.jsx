@@ -13,6 +13,7 @@ import { FaCloudUploadAlt } from 'react-icons/fa';
 import { toast, ToastContainer } from 'react-toastify';
 import Loader from '../Loader/Loader';
 import { FaCheckCircle } from 'react-icons/fa';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 
 export const VerifyBvn = ({ submit }) => {
@@ -489,7 +490,7 @@ export const BankInfo = ({ submit }) => {
   });
 
   const { 
-    state: { bankList, userBankDetails }, 
+    state: { bankList, userBankDetails, bankLoading }, 
     getBankList,
     verifyBankInfo
   } = useContext(BankContext);
@@ -583,7 +584,7 @@ export const BankInfo = ({ submit }) => {
               />
             </Col>
             <Col>
-              <InputField 
+              { !bankLoading ? <InputField 
                 label="Account Name"
                 type="text"
                 nameAttr="accountName"
@@ -593,7 +594,11 @@ export const BankInfo = ({ submit }) => {
                   setBankInfo({ ...bankInfo, accountName: val})
                 }}
                 error={bankInfoErrors.accountName && bankInfoErrors.accountName}
-              />
+              /> : 
+              <div className={styles.loaderWrapper}>
+                <BeatLoader color="#741763" size={10} />
+              </div>
+              }
             </Col>
           </Row>
         </div>

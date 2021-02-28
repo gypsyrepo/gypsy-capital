@@ -14,7 +14,7 @@ import _ from 'lodash';
 
 const Dashboard = ({ children, sidebarRoutes, location }) => {
 
-  console.log(location)
+  // console.log(location)
 
   const { state: { user }, logout } = useContext(AuthContext);
   const signout = () => {

@@ -8,9 +8,9 @@ import Button from '../Button/Button';
 import { validateInput } from '../../utils/validateInput';
 import { workSector, nigeriaStates, workIndustries } from '../../utils/nigeriaStates';
 import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios';
 import { Context as LoanContext } from '../../context/LoanContext';
-import BeatLoader from 'react-spinners/BeatLoader';
+import { lgaList } from '../../utils/mappedLgas';
+import _ from 'lodash';
 
 
 const EmployerInfoForm = ({ submitEmployerInfo }) => {
@@ -53,18 +53,10 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
   });
 
   const [lgaOptions, setLgaOptions] = useState([]);
-  const [lgaLoading, setLgaLoading] = useState(false);
 
   useEffect(() => {
     if(officeAddress.state.length > 0) {
-      const getLga = async() => {
-        setLgaLoading(true);
-        const response = await axios.get(`https://locationsng-api.herokuapp.com/api/v1/states/${officeAddress.state}/lgas`)
-        setLgaOptions(response.data);
-        setLgaLoading(false);
-      };
-  
-      getLga();
+      setLgaOptions(lgaList[_.capitalize(officeAddress.state)]);
     }
   }, [officeAddress.state])
 
@@ -248,7 +240,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
           />
         </Col>
         <Col>
-          { !lgaLoading ? <InputField 
+          <InputField 
             type="select"
             label="Local Govt Area"
             nameAttr="officeLga"
@@ -259,11 +251,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
               setOfficeAddress({ ...officeAddress, lga: val })
             }}
             error={officeAddressErrors.lga && officeAddressErrors.lga}
-          /> : 
-            <div className={styles.loaderWrapper}>
-              <BeatLoader color="#741763" size={10} />
-            </div>
-          }
+          />
         </Col>
       </Row>
       <Button 
