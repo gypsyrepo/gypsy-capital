@@ -17,6 +17,7 @@ import Loader from '../../components/Loader/Loader';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { Context as LoanContext } from '../../context/LoanContext';
 import { Context as UserContext } from '../../context/UserContext';
+import _ from "lodash";
 
 
 const AgentOverview = () => {
@@ -47,7 +48,7 @@ const AgentOverview = () => {
     return loans.slice(0, 5);
   }, [loans]);
 
-  // console.log(latestLoans, 'totalDisbursed');
+  console.log(recentLoans, 'totalDisbursed');
 
   return (
     <Dashboard sidebarRoutes={salesRoute} location={location}>
@@ -113,14 +114,16 @@ const AgentOverview = () => {
             { recentLoans && recentLoans.length > 0 ? <tbody>
               { recentLoans.map((loan, idx) => (
                 <tr key={idx}>
-                  <td>{'Placeholder'}</td>
+                  <td>
+                    {`${_.capitalize(loan.clientInfo[0].firstName)} ${_.capitalize(loan.clientInfo[0].lastName)}`}
+                  </td>
                   <td className={styles.loanId}>
-                    <Link to="/sales-agent/loan/general">
+                    <Link to={`/sales-agent/loan/${loan._id}`}>
                       {loan._id.slice(0, 6)}
                     </Link>
                   </td>
                   <td>{`N ${numberWithCommas(loan.amount)}`}</td>
-                  <td>{loan.status}</td>
+                  <td>{_.capitalize(loan.status)}</td>
                   <td>{loan.paymentPeriod}</td>
                   <td>{`N ${numberWithCommas(loan.monthlyRepayment)}`}</td>
                 </tr>

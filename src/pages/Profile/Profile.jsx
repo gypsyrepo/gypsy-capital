@@ -48,9 +48,9 @@ const Profile = () => {
     getClientDetails(user.user_id);
   }, [])
 
-  // useEffect(() => {
-  //   console.log(userDetails);
-  // }, [userDetails])
+  useEffect(() => {
+    console.log(userDetails);
+  }, [userDetails])
 
   useEffect(() => {
     if(userDetails) {

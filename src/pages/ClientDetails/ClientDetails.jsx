@@ -1,16 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 import styles from './ClientDetails.module.scss';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import { routes } from '../../routes/sidebarRoutes';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, Link } from 'react-router-dom';
 import InputField from '../../components/InputField/InputField';
-import { Row, Col, Table } from 'react-bootstrap';
+import { Row, Col, Table, Pagination } from 'react-bootstrap';
 import NavTabs from '../../components/NavTabs/NavTabs';
 import Button from '../../components/Button/Button';
 import LoanModal from '../../components/LoanModal/LoanModal';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as LoanContext } from '../../context/LoanContext';
 import Loader from '../../components/Loader/Loader';
+import usePagination from '../../hooks/usePagination';
+import { numberWithCommas } from '../../utils/nigeriaStates';
+import { TiCancelOutline } from 'react-icons/ti';
 import _ from 'lodash';
 
 
@@ -423,15 +426,29 @@ const Employer = () => {
 const ClientLoan = ({ userId }) => {
 
   const [modalOpen, setModalOpen] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(5);
+
   const closeModal = () => {
     setModalOpen(false);
   }
 
-  const { state: { currentLoanId, loans },  } = useContext(LoanContext);
+  const { state: { loans }, retrieveClientLoans } = useContext(LoanContext);
 
   useEffect(() => {
-    
-  }, [])
+    retrieveClientLoans();
+  }, []);
+
+  const clientLoans = useMemo(() => {
+    return loans.filter((loan) => loan.userId === userId)
+  }, [loans, userId]);
+
+  const { 
+    currentList, 
+    items, 
+    goToNextPage, 
+    goToPrevPage 
+  } = usePagination(currentPage, postsPerPage, clientLoans, setCurrentPage, styles)
 
   const startApply = () => {
     setModalOpen(true);
@@ -461,18 +478,47 @@ const ClientLoan = ({ userId }) => {
               <th>Balance</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>654780</td>
-              <td>N35,600</td>
-              <td>3 Months</td>
-              <td>Active</td>
-              <td>Salary</td>
-              <td>N145,000</td>
-              <td>N125,000</td>
-            </tr>
-          </tbody>
+          { currentList && currentList.length > 0 ? <tbody>
+            { currentList && currentList.map((loan) => {
+              return (
+                <tr>
+                  <td className={styles.loanId}>
+                    <Link to={`/sales-agent/loan/${loan._id}`}>
+                      {loan._id.slice(0, 6)}
+                    </Link>
+                  </td>
+                  <td>{`N${numberWithCommas(loan.monthlyRepayment)}`}</td>
+                  <td>{loan.paymentPeriod}</td>
+                  <td>{_.capitalize(loan.status)}</td>
+                  <td>Salary</td>
+                  <td>{`N${numberWithCommas(loan.amount)}`}</td>
+                  <td>_____</td>
+                </tr>
+              )
+            })}
+          </tbody> : null }
         </Table>
+        { currentList && currentList.length === 0 ? <div className={styles.nullList}>
+            <TiCancelOutline size="6em" color="rgba(116, 23, 99, 0.6)" />
+          </div> : null }
+        { currentList && currentList.length > 0 ? <div className={styles.tableFooter}>
+          <div className={styles.rowsInput}>
+            <p>Rows per page: </p>
+            <select onChange={(e) => setPostsPerPage(Number(e.currentTarget.value))}>
+              <option value={5} selected>5</option>
+              <option value={10}>10</option>
+              <option value={15}>15</option>
+              <option value={20}>20</option>
+              <option value={10}>25</option>
+              <option value={30}>30</option>
+            </select>
+          </div>
+          <Pagination className={styles.pagination}>
+            <Pagination.Prev onClick={goToPrevPage}/>
+            {items}
+            <Pagination.Next onClick={goToNextPage} />
+          </Pagination>
+        </div> : null }
       </div>
       <LoanModal userId={userId} openState={modalOpen} closeHandler={closeModal} />
     </div>

@@ -94,10 +94,39 @@ const BasicInfo = ({ data }) => {
 }
 
 
-const LoanStatus = () => {
+const LoanStatus = ({ data }) => {
+
+  const[loanStatus, setLoanStatus] = useState({
+    status: '',
+    processorDecision: '',
+    processorDecReason: '',
+    processorInCharge: '',
+    processorDecTime: '',
+    adminDecision: '',
+    adminDecReason: '',
+    adminInCharge: '',
+    adminDecTime: ''
+  })
+
+  useEffect(() => {
+    if(data) {
+      setLoanStatus({
+        status: _.capitalize(data.status),
+        processorDecision: data.processorDecision || 'Pending',
+        processorDecReason: data.processorDecisionReason || '_____',
+        processorInCharge: data.processorOfficerInCharge || 'None',
+        processorDecTime: data.processorDecisionTime || '_____',
+        adminDecision: data.adminDecision || "Pending",
+        adminDecReason: data.adminDecisionReason || '_____',
+        adminInCharge: data.adminOfficerInCharge || 'None',
+        adminDecTime: data.adminDecisionTime || "______"
+      })
+    }
+  }, [data]);
+
   return (
     <div className={styles.status}>
-      <p>Status: Active</p>
+      <p>Status: {loanStatus.status}</p>
       <div className={styles.approvalCard}>
         <h4>Level 1 Approval</h4>
         <Table>
@@ -111,10 +140,10 @@ const LoanStatus = () => {
           </thead>
           <tbody>
             <tr>
-              <td>Approved</td>
-              <td>No pending loan, great credit history</td>
-              <td>Mrs Babatunde <span>babatundeola@gypsycapital.com</span></td>
-              <td>12/22/2020 - 10.50am</td>
+              <td>{loanStatus.processorDecision}</td>
+              <td>{loanStatus.processorDecReason}</td>
+              <td>{loanStatus.processorInCharge}</td>
+              <td>{loanStatus.processorDecTime}</td>
             </tr>
           </tbody>
         </Table>
@@ -132,10 +161,10 @@ const LoanStatus = () => {
           </thead>
           <tbody>
             <tr>
-              <td>Approved & Disbursed</td>
-              <td>No pending loan, great credit history</td>
-              <td>Mr Moses <span>mosesemma@gypsycapital.com</span></td>
-              <td>12/23/2020 - 9.00am</td>
+              <td>{loanStatus.adminDecision}</td>
+              <td>{loanStatus.adminDecReason}</td>
+              <td>{loanStatus.adminInCharge}</td>
+              <td>{loanStatus.adminDecTime}</td>
             </tr>
           </tbody>
         </Table>
@@ -207,8 +236,6 @@ const LoanDetail = () => {
     retrieveLoan(loanId);
   }, []);
 
-  console.log(loanDetails, 'this is it');
-
   const navArray = [
     {
       title: "Basic Info",
@@ -240,7 +267,13 @@ const LoanDetail = () => {
             } : null } 
           /> 
         }
-        { visibleSection === "status" && <LoanStatus /> }
+        { visibleSection === "status" && 
+          <LoanStatus 
+            data={ loanDetails ? {
+              ...loanDetails.loan
+            } : null }
+          /> 
+        }
         { visibleSection === "repayment" && <RepaymentSchedule /> }
       </div> : <Loader /> } 
     </Dashboard>

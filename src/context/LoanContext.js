@@ -202,6 +202,7 @@ const retrieveClientLoans = dispatch => async() => {
 
 
 const retrieveLoan = dispatch => async(loanId) => {
+  console.log('works');
   dispatch({ type: "set_loading", payload: true});
   try {
     const token = resolveToken();
