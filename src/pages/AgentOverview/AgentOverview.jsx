@@ -1,19 +1,22 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { useLocation, Link, useHistory } from 'react-router-dom';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import { routes } from '../../routes/sidebarRoutes';
 import styles from './AgentOverview.module.scss';
 import moment from 'moment';
 import { AiOutlineCalendar } from 'react-icons/ai';
+import { TiCancelOutline } from 'react-icons/ti';
 import ClientStat from '../../assets/salesDashboard/clientstat.png';
 import DisburseStat from '../../assets/salesDashboard/loanstat.png';
 import LoanStat from '../../assets/salesDashboard/loanchange.png';
 import { Row, Col, Table } from 'react-bootstrap';
 import Button from '../../components/Button/Button';
-import { recentLoans } from '../../utils/dummyData';
+import { numberWithCommas } from '../../utils/nigeriaStates';
 import StatBox from '../../components/StatBox/StatBox';
+import Loader from '../../components/Loader/Loader';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { Context as LoanContext } from '../../context/LoanContext';
+import { Context as UserContext } from '../../context/UserContext';
 
 
 const AgentOverview = () => {
@@ -23,11 +26,28 @@ const AgentOverview = () => {
   const salesRoute = routes[1];
 
   const { state: { user } } = useContext(AuthContext);
-  const { state: { loans }, retrieveClientLoans } = useContext(LoanContext);
+  const { state: { loans, loading: listLoading }, retrieveClientLoans } = useContext(LoanContext);
+  const { state: { clientsForRole, loading }, getClientListForRole } = useContext(UserContext);
 
   useEffect(() => {
-    retrieveClientLoans()
+    getClientListForRole();
+    retrieveClientLoans();
   }, []);
+
+  const totalDisbursedLoans = useMemo(() => {
+    return loans.filter((loan) => loan.disbustmentStatus.toLowerCase() === "active")
+      .reduce((acc, loan) => (loan.amount + acc), 0)
+  }, [loans]);
+
+  const noOfActiveLoans = useMemo(() => {
+    return loans.filter((loan) => loan.status.toLowerCase() === "active").length; 
+  }, [loans]);
+
+  const recentLoans = useMemo(() => {
+    return loans.slice(0, 5);
+  }, [loans]);
+
+  // console.log(latestLoans, 'totalDisbursed');
 
   return (
     <Dashboard sidebarRoutes={salesRoute} location={location}>
@@ -41,16 +61,28 @@ const AgentOverview = () => {
           Last 7 days
         </button>
       </div>
-      <div className={styles.stats}>
+      { !loading && !listLoading ? <><div className={styles.stats}>
         <Row>
           <Col>
-            <StatBox icon={ClientStat} title="Total Clients" statData="25" />
+            <StatBox 
+              icon={ClientStat} 
+              title="Total Clients" 
+              statData={clientsForRole.length} 
+            />
           </Col>
           <Col>
-            <StatBox icon={DisburseStat} title="Total Disbursed Loans" statData="1.21M" />
+            <StatBox 
+              icon={DisburseStat} 
+              title="Total Disbursed Loans" 
+              statData={totalDisbursedLoans} 
+            />
           </Col>
           <Col>
-            <StatBox icon={LoanStat} title="Total Active Loans" statData="20" />
+            <StatBox 
+              icon={LoanStat} 
+              title="Total Active Loans" 
+              statData={noOfActiveLoans} 
+            />
           </Col>
         </Row>
       </div>
@@ -78,25 +110,29 @@ const AgentOverview = () => {
                 <th>Monthly Repayment</th>
               </tr>
             </thead>
-            <tbody>
+            { recentLoans && recentLoans.length > 0 ? <tbody>
               { recentLoans.map((loan, idx) => (
                 <tr key={idx}>
-                  <td>{loan.clientName}</td>
+                  <td>{'Placeholder'}</td>
                   <td className={styles.loanId}>
                     <Link to="/sales-agent/loan/general">
-                      {loan.loanId}
+                      {loan._id.slice(0, 6)}
                     </Link>
                   </td>
-                  <td>{loan.loanAmt}</td>
+                  <td>{`N ${numberWithCommas(loan.amount)}`}</td>
                   <td>{loan.status}</td>
-                  <td>{loan.tenure}</td>
-                  <td>{loan.monthlyRepayment}</td>
+                  <td>{loan.paymentPeriod}</td>
+                  <td>{`N ${numberWithCommas(loan.monthlyRepayment)}`}</td>
                 </tr>
               ))}
-            </tbody>
+            </tbody> : null }
           </Table>
+          { recentLoans && recentLoans.length === 0 ? <div className={styles.nullList}>
+            <TiCancelOutline size="6em" color="rgba(116, 23, 99, 0.6)" />
+          </div> : null }
         </div>
       </div>
+      </>: <Loader /> }
     </Dashboard>
   )
 }

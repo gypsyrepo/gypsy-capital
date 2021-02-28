@@ -17,6 +17,8 @@ const userReducer = (state, action) => {
       return { ...state, clients: action.payload }
     case 'set_details_status':
       return { ...state, detailStatus: action.payload }
+    case 'set_clients_for_role':
+      return { ...state, clientsForRole: action.payload }
     default:
       return state;
   }
@@ -131,8 +133,6 @@ const updateIdentityInfo = dispatch => async(userId, updateData, inModal) => {
 }
 
 const getClientDetails = dispatch => async(userId) => {
-  console.log('working')
-  dispatch({ type: 'set_user_details', payload: null });
   try {
     const token = resolveToken();
     const response = await gypsy.get(`/client/details/${userId}`, {
@@ -180,6 +180,31 @@ const getClientList = dispatch => async() => {
       });
     }
     dispatch({ type: "set_loading", payload: false });
+  }
+}
+
+const getClientListForRole = dispatch => async() => {
+  dispatch({ type: "set_loading", payload: true });
+  try {
+    const token = resolveToken();
+    const response = await gypsy.get('/clients/list', {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    // console.log(response.data.data);
+    dispatch({ type: "set_clients_for_role", payload: response.data.data });
+    dispatch({ type: "set_loading", payload: false });
+  } catch(err) {
+    if(err.response) {
+      console.log(err.response.data);
+      const errorMessage = err.response.data.error || err.response.data.message
+      dispatch({
+        type: 'set_error',
+        payload: errorMessage
+      });
+      dispatch({ type: "set_loading", payload: false });
+    }
   }
 }
 
@@ -247,6 +272,6 @@ const clearErrors = dispatch => () => {
 
 export const { Context, Provider } = createDataContext(
   userReducer,
-  { updatePersonalInfo, verifyBvn, clearErrors, getClientDetails, updateIdentityInfo, resetPassword, createNewPassword, getClientList },
-  { loading: false, error: null, userDetails: null, setupStage: null, clients: [], detailStatus: true }
+  { updatePersonalInfo, verifyBvn, clearErrors, getClientDetails, updateIdentityInfo, resetPassword, createNewPassword, getClientList, getClientListForRole },
+  { loading: false, error: null, userDetails: null, setupStage: null, clients: [], detailStatus: true, clientsForRole: [] }
 )

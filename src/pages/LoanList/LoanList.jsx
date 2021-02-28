@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useContext, useEffect } from 'react';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import styles from './LoanList.module.scss';
 import { useLocation, Link } from 'react-router-dom';
@@ -6,11 +6,21 @@ import { routes } from '../../routes/sidebarRoutes';
 import InputField from '../../components/InputField/InputField';
 import moment from 'moment';
 import { Table, Pagination } from 'react-bootstrap';
-import { loanList } from '../../utils/dummyData';
+import { numberWithCommas } from '../../utils/nigeriaStates';
 import usePagination from '../../hooks/usePagination';
+import { Context as LoanContext } from '../../context/LoanContext';
+import _ from 'lodash';
 
 
 const LoanList = () => {
+
+  const { state: { loans }, retrieveClientLoans } = useContext(LoanContext);
+
+  useEffect(() => {
+    retrieveClientLoans();
+  }, []);
+
+  // console.log(loans);
 
   const location = useLocation();
   const salesRoutes = routes[1];
@@ -24,7 +34,7 @@ const LoanList = () => {
      items,
      goToPrevPage,
      goToNextPage
-   } = usePagination(currentPage, postsPerPage, loanList, setCurrentPage, styles);
+   } = usePagination(currentPage, postsPerPage, loans, setCurrentPage, styles);
 
   return (
     <Dashboard sidebarRoutes={salesRoutes} location={location}>
@@ -64,16 +74,16 @@ const LoanList = () => {
               { currentList.map((loan, idx) => (
                 <tr>
                   <td className={styles.loanId}>
-                    <Link to="/sales-agent/loan/general">
-                      {loan.loanId}
+                    <Link to={`/sales-agent/loan/${loan._id}`}>
+                      {loan._id.slice(0,6)}
                     </Link>
                   </td>
-                  <td>{loan.monthlyRepayment}</td>
-                  <td>{loan.tenure}</td>
-                  <td>{loan.status}</td>
-                  <td>{loan.repaymentSource}</td>
-                  <td>{loan.loanAmt}</td>
-                  <td>{loan.balance}</td>
+                  <td>{`N ${numberWithCommas(loan.monthlyRepayment)}`}</td>
+                  <td>{loan.paymentPeriod}</td>
+                  <td>{_.capitalize(loan.status)}</td>
+                  <td>{'Salary'}</td>
+                  <td>{`N ${numberWithCommas(loan.amount)}`}</td>
+                  <td>______</td>
                 </tr>
               ))}
             </tbody>

@@ -1,47 +1,84 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './LoanDetail.module.scss';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { routes } from '../../routes/sidebarRoutes';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import NavTabs from '../../components/NavTabs/NavTabs';
 import { Row, Col, Table } from 'react-bootstrap';
+import { Context as LoanContext } from '../../context/LoanContext';
+import Loader from '../../components/Loader/Loader';
+import { numberWithCommas } from '../../utils/nigeriaStates';
+import moment from 'moment';
+import _ from 'lodash';
 
 
-const BasicInfo = () => {
+const BasicInfo = ({ data }) => {
+
+  const [basicInfo, setBasicInfo] = useState({
+    fullName: '',
+    clientID: '',
+    loanAmount: '',
+    loanID: '',
+    loanTenure: '',
+    monthlyRepayment: '',
+    applicationDate: '',
+    monthlySalary: ''
+  });
+
+  useEffect(() => {
+    if(data) {
+      setBasicInfo({
+        ...basicInfo,
+        fullName: `${_.capitalize(data.client.firstName)} ${_.capitalize(data.client.lastName)}`,
+        clientID: data.userId,
+        loanAmount: `N${numberWithCommas(data.amount)}`,
+        loanID: `#${data._id}`,
+        loanTenure: data.paymentPeriod,
+        monthlyRepayment: `N${numberWithCommas(data.monthlyRepayment)}`,
+        applicationDate: moment(data.createdAt).format('lll'),
+        monthlySalary: `N${numberWithCommas(data.monthlySalary)}`
+      })
+    }
+  }, [data])
+
+  if(!data) {
+    return <Loader />
+  }
+
   return (
     <div className={styles.basicInfo}>
       <Row className="mb-5">
         <Col>
           <h6>Client Name</h6>
-          <h4>Anthony John</h4>
+          <h4>{basicInfo.fullName}</h4>
         </Col>
         <Col>
           <h6>Client ID</h6>
-          <h4>478901</h4>
+          <h4>{basicInfo.clientID.slice(0,6)}</h4>
         </Col>
         <Col>
           <h6>Loan Amount</h6>
-          <h4>N145,000</h4>
+          <h4>{basicInfo.loanAmount}</h4>
         </Col>
       </Row>
       <Row className="mb-5">
         <Col>
           <h6>Loan ID</h6>
-          <h4>#558612</h4>
+          <h4>{basicInfo.loanID.slice(0,6)}</h4>
         </Col>
         <Col>
           <h6>Tenure</h6>
-          <h4>3 Months</h4>
+          <h4>{basicInfo.loanTenure}</h4>
         </Col>
         <Col>
           <h6>Monthly Repayment</h6>
-          <h4>N35,600</h4>
+          <h4>{basicInfo.monthlyRepayment}</h4>
         </Col>
       </Row>
       <Row className="mb-5">
         <Col>
           <h6>Application Date</h6>
-          <h4>12/21/2020 - 11:59am</h4>
+          <h4>{basicInfo.applicationDate}</h4>
         </Col>
         <Col>
           <h6>Repayment Source</h6>
@@ -49,7 +86,7 @@ const BasicInfo = () => {
         </Col>
         <Col>
           <h6>Monthly Salary</h6>
-          <h4>N350,000</h4>
+          <h4>{basicInfo.monthlySalary}</h4>
         </Col>
       </Row>
     </div>
@@ -162,6 +199,15 @@ const LoanDetail = () => {
 
   const salesRoute = routes[1];
   const location = useLocation();
+  const { loanId } = useParams();
+
+  const { state: { loanDetails }, retrieveLoan } = useContext(LoanContext);
+
+  useEffect(() => {
+    retrieveLoan(loanId);
+  }, []);
+
+  console.log(loanDetails, 'this is it');
 
   const navArray = [
     {
@@ -185,11 +231,18 @@ const LoanDetail = () => {
   return (
     <Dashboard sidebarRoutes={salesRoute} location={location}>
       <NavTabs navs={navArray} setActive={setActiveTab} currentTab={visibleSection} />
-      <div className={styles.detailFields}>
-        { visibleSection === "basic" && <BasicInfo /> }
+      { loanDetails ? <div className={styles.detailFields}>
+        { visibleSection === "basic" && 
+          <BasicInfo 
+            data={ loanDetails ? { 
+              client: {...loanDetails.client[0].bioData},
+              ...loanDetails.loan
+            } : null } 
+          /> 
+        }
         { visibleSection === "status" && <LoanStatus /> }
         { visibleSection === "repayment" && <RepaymentSchedule /> }
-      </div>  
+      </div> : <Loader /> } 
     </Dashboard>
   )
 }

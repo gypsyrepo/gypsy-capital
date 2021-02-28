@@ -18,6 +18,8 @@ const loanReducer = (state, action) => {
       return { ...state, currentLoanId: action.payload }
     case 'set_incomplete_state':
       return { ...state, incomplete: action.payload }
+    case 'set_loan_details':
+      return { ...state, loanDetails: action.payload }
     default:
       return state; 
   }
@@ -179,11 +181,37 @@ const retrieveClientLoans = dispatch => async() => {
         "Authorization": `Bearer ${token}`
       }
     });
-    // console.log(response.data.data)
+    //  
     dispatch({
       type: 'set_loan_list',
       payload: response.data.data
     })
+    dispatch({ type: "set_loading", payload: false });
+  } catch(err) {
+    if(err.response) {
+      console.log(err.response.data);
+      const errorMessage = err.response.data.error || err.response.data.message
+      dispatch({
+        type: "set_error",
+        payload: errorMessage
+      });
+      dispatch({ type: "set_loading", payload: false });
+    }
+  }
+}
+
+
+const retrieveLoan = dispatch => async(loanId) => {
+  dispatch({ type: "set_loading", payload: true});
+  try {
+    const token = resolveToken();
+    const response = await gypsy.get(`/client/loan/view/${loanId}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    console.log(response.data.data);
+    dispatch({ type: "set_loan_details", payload: response.data.data });
     dispatch({ type: "set_loading", payload: false });
   } catch(err) {
     if(err.response) {
@@ -217,6 +245,6 @@ const clearCompleteState = dispatch => () => {
 
 export const { Context, Provider } = createDataContext(
   loanReducer,
-  { loanApply, addAddressForLoan, addWorkInfoForLoan, clearError, retrieveClientLoans, addBankInfoForLoan, clearCompleteState, resetApplyStage },
+  { loanApply, addAddressForLoan, addWorkInfoForLoan, clearError, retrieveClientLoans, addBankInfoForLoan, clearCompleteState, resetApplyStage, retrieveLoan },
   { loading: false, error: null, loans: [], loanDetails: null, loanApplicationStage: null, currentLoanId: null, incomplete: false }
 )

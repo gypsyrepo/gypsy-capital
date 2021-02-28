@@ -48,6 +48,10 @@ const Profile = () => {
     getClientDetails(user.user_id);
   }, [])
 
+  // useEffect(() => {
+  //   console.log(userDetails);
+  // }, [userDetails])
+
   useEffect(() => {
     if(userDetails) {
       const { bioData, identity, bank } = userDetails;

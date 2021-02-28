@@ -286,3 +286,7 @@ export const faqContent = [
 export const limitFaqContent = (limit) => {
   return faqContent.slice(0, limit);
 }
+
+export const numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
