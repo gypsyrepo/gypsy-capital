@@ -186,7 +186,7 @@ const LoanStatus = ({ data }) => {
   )
 }
 
-const RepaymentSchedule = ({ data }) => {
+export const RepaymentSchedule = ({ data }) => {
 
   const [repaymentArr, setRepaymentArr] = useState(null);
 
