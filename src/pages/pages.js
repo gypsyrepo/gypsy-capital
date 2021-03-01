@@ -24,6 +24,8 @@ import ProcessorLoans from './ProcessorLoans/ProcessorLoans';
 import ForgotPassword from './ForgotPassword/ForgotPassword';
 import ResetPassword from './ResetPassword/ResetPassword';
 import ResetSuccess from './ResetSuccess/ResetSuccess';
+import ProcessorClientDetails from './ProcessorClientDetails/ProcessorClientDetails';
+import ProcessorLoanDetails from './ProcessorLoanDetails/ProcessorLoanDetails';
 
 
 export {
@@ -52,5 +54,7 @@ export {
   ProcessorLoans,
   ForgotPassword,
   ResetPassword,
-  ResetSuccess
+  ResetSuccess,
+  ProcessorClientDetails,
+  ProcessorLoanDetails
 }

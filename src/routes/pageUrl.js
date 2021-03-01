@@ -26,6 +26,8 @@ const PROCESSORS_LOANS_PAGE = '/processor/loans';
 const FORGOT_PASSWORD_PAGE = '/password/email';
 const RESET_PASSWORD_PAGE = '/password/reset';
 const RESET_SUCCESS_PAGE = '/password/reset-success';
+const PROCESSORS_CLIENT_DETAILS = '/processor/client/:clientId';
+const PROCESSORS_LOAN_DETAILS = '/processor/loan/:loanId';
 
 const pageUrl = {
     HOMEPAGE,
@@ -55,7 +57,9 @@ const pageUrl = {
     PROCESSORS_LOANS_PAGE,
     FORGOT_PASSWORD_PAGE,
     RESET_PASSWORD_PAGE,
-    RESET_SUCCESS_PAGE
+    RESET_SUCCESS_PAGE,
+    PROCESSORS_CLIENT_DETAILS,
+    PROCESSORS_LOAN_DETAILS
 }
 
 export default pageUrl;

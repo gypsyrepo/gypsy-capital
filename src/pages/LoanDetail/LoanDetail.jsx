@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 import styles from './LoanDetail.module.scss';
 import { useLocation, useParams, Link } from 'react-router-dom';
 import { routes } from '../../routes/sidebarRoutes';
@@ -6,13 +6,14 @@ import Dashboard from '../../components/Dashboard/Dashboard';
 import NavTabs from '../../components/NavTabs/NavTabs';
 import { Row, Col, Table } from 'react-bootstrap';
 import { Context as LoanContext } from '../../context/LoanContext';
+import { Context as AuthContext } from '../../context/AuthContext';
 import Loader from '../../components/Loader/Loader';
 import { numberWithCommas } from '../../utils/nigeriaStates';
 import moment from 'moment';
 import _ from 'lodash';
 
 
-const BasicInfo = ({ data }) => {
+export const BasicInfo = ({ data, userRole }) => {
 
   const [basicInfo, setBasicInfo] = useState({
     fullName: '',
@@ -41,6 +42,14 @@ const BasicInfo = ({ data }) => {
     }
   }, [data])
 
+  const detailRoutePrefix = useMemo(() => {
+    if(userRole === "sales") {
+      return "sales-agent"
+    } else {
+      return userRole
+    }
+  }, [userRole])
+
   if(!data) {
     return <Loader />
   }
@@ -55,7 +64,7 @@ const BasicInfo = ({ data }) => {
         <Col>
           <h6>Client ID</h6>
           <h4>
-            <Link to={`/sales-agent/client/${basicInfo.clientID}`}>
+            <Link to={`/${detailRoutePrefix}/client/${basicInfo.clientID}`}>
               {basicInfo.clientID.slice(0,6)}
             </Link>
           </h4>
@@ -262,6 +271,7 @@ const LoanDetail = () => {
   const { loanId } = useParams();
 
   const { state: { loanDetails }, retrieveLoan } = useContext(LoanContext);
+  const { state: { user } } = useContext(AuthContext);
 
   useEffect(() => {
     retrieveLoan(loanId);
@@ -296,6 +306,7 @@ const LoanDetail = () => {
               client: {...loanDetails.client[0].bioData},
               ...loanDetails.loan
             } : null } 
+            userRole={user.role}
           /> 
         }
         { visibleSection === "status" && 

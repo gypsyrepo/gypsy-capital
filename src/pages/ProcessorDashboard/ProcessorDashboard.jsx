@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import styles from './ProcessorDashboard.module.scss';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import { routes } from '../../routes/sidebarRoutes';
@@ -14,7 +14,13 @@ import TotalStat from '../../assets/salesDashboard/total.png';
 import { Row, Col, Table } from 'react-bootstrap';
 import StatBox from '../../components/StatBox/StatBox';
 import Button from '../../components/Button/Button';
-import { recentLoans } from '../../utils/dummyData';
+import { numberWithCommas } from '../../utils/nigeriaStates';
+import { Context as UserContext } from '../../context/UserContext';
+import { Context as AuthContext } from '../../context/AuthContext';
+import { Context as LoanContext } from '../../context/LoanContext';
+import { TiCancelOutline } from 'react-icons/ti';
+import _ from 'lodash';
+import Loader from '../../components/Loader/Loader';
 
 
 const ProcessorDashboard = () => {
@@ -23,11 +29,41 @@ const ProcessorDashboard = () => {
   const processorRoute = routes[2];
   const history = useHistory();
 
+  const { state: { user } } = useContext(AuthContext);
+  const { state: { clientsForRole, loading }, getClientListForRole } = useContext(UserContext);
+  const { state: { loans, loading: listLoading }, retrieveClientLoans } = useContext(LoanContext);
+
+  useEffect(() => {
+    getClientListForRole();
+    retrieveClientLoans();
+  }, [])
+
+  useEffect(() => {
+    console.log(clientsForRole);
+  }, [clientsForRole]);
+
+  const totalDisbursedLoans = useMemo(() => {
+    return loans.filter((loan) => loan.disbustmentStatus.toLowerCase() === "active")
+      .reduce((acc, loan) => (loan.amount + acc), 0)
+  }, [loans]);
+
+  const noOfActiveLoans = useMemo(() => {
+    return loans.filter((loan) => loan.status.toLowerCase() === "active").length; 
+  }, [loans]);
+
+  const noOfPendingLoans = useMemo(() => {
+    return loans.filter((loan) => loan.status.toLowerCase() === "pending").length; 
+  }, [loans]);
+
+  const recentLoans = useMemo(() => {
+    return loans.slice(0, 5);
+  }, [loans]);
+
   return (
     <Dashboard sidebarRoutes={processorRoute} location={location}>
       <div className={styles.welcomeGroup}>
         <div>
-          <h2>Hey, Moses</h2>
+          <h2>Hey, {user.firstName}</h2>
           <p className={styles.currentDate}>Today is {moment().format('dddd Do[,] MMMM')}.</p>
         </div>
         <button>
@@ -35,16 +71,16 @@ const ProcessorDashboard = () => {
           Last 7 days
         </button>
       </div>
-      <div className={styles.stats}>
+      { !loading && !listLoading ? <><div className={styles.stats}>
         <Row>
           <Col>
-            <StatBox icon={ClientStat} title="Total Clients" statData="25" />
+            <StatBox icon={ClientStat} title="Total Clients" statData={clientsForRole.length} />
           </Col>
           <Col>
-            <StatBox icon={DisburseStat} title="Total Disbursed Loans" statData="5.2" />
+            <StatBox icon={DisburseStat} title="Total Disbursed Loans" statData={totalDisbursedLoans} />
           </Col>
           <Col>
-            <StatBox icon={LoanStat} title="Total Active Loans" statData="200" />
+            <StatBox icon={LoanStat} title="Total Active Loans" statData={noOfActiveLoans} />
           </Col>
         </Row>
         <Row className="mt-4">
@@ -52,10 +88,10 @@ const ProcessorDashboard = () => {
             <StatBox icon={RepaymentStat} title="Total Repayment Received" statData="3.75M" />
           </Col>
           <Col>
-            <StatBox icon={TotalStat} title="Total Loans" statData="250" />
+            <StatBox icon={TotalStat} title="Total Loans" statData={loans.length} />
           </Col>
           <Col>
-            <StatBox icon={PendingStat} title="Total Pending Loans" statData="25" />
+            <StatBox icon={PendingStat} title="Total Pending Loans" statData={noOfPendingLoans} />
           </Col>
         </Row>
       </div>
@@ -83,25 +119,31 @@ const ProcessorDashboard = () => {
                 <th>Monthly Repayment</th>
               </tr>
             </thead>
-            <tbody>
+            { recentLoans && recentLoans.length > 0 ? <tbody>
               { recentLoans.map((loan, idx) => (
                 <tr key={idx}>
-                  <td>{loan.clientName}</td>
+                  <td>
+                    {`${_.capitalize(loan.clientInfo[0].firstName)} ${_.capitalize(loan.clientInfo[0].lastName)}`}
+                  </td>
                   <td className={styles.loanId}>
-                    <Link to="/sales-agent/loan/general">
-                      {loan.loanId}
+                    <Link to={`/sales-agent/loan/${loan._id}`}>
+                      {loan._id.slice(0, 6)}
                     </Link>
                   </td>
-                  <td>{loan.loanAmt}</td>
-                  <td>{loan.status}</td>
-                  <td>{loan.tenure}</td>
-                  <td>{loan.monthlyRepayment}</td>
+                  <td>{`N ${numberWithCommas(loan.amount)}`}</td>
+                  <td>{_.capitalize(loan.status)}</td>
+                  <td>{loan.paymentPeriod}</td>
+                  <td>{`N ${numberWithCommas(loan.monthlyRepayment)}`}</td>
                 </tr>
               ))}
-            </tbody>
+            </tbody> : null }
           </Table>
+          { recentLoans && recentLoans.length === 0 ? <div className={styles.nullList}>
+            <TiCancelOutline size="6em" color="rgba(116, 23, 99, 0.6)" />
+          </div> : null }
         </div>
       </div>
+      </> : <Loader /> }
     </Dashboard>
   )
 }

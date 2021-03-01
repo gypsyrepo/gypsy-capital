@@ -74,13 +74,13 @@ const processorRoutes = [
   {
     label: "Clients",
     link: pageUrl.PROCESSORS_CLIENTS_PAGE,
-    rootLink: pageUrl.PROCESSORS_CLIENTS_PAGE,
+    rootLink: '/processor/client',
     icon: FaUser
   },
   {
     label: "Loans",
     link: pageUrl.PROCESSORS_LOANS_PAGE,
-    rootLink: pageUrl.PROCESSORS_LOANS_PAGE,
+    rootLink: '/processor/loan',
     icon: GiMoneyStack
   }, 
   {

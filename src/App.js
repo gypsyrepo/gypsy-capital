@@ -27,7 +27,9 @@ import {
   ProcessorLoans,
   ForgotPassword,
   ResetPassword,
-  ResetSuccess
+  ResetSuccess,
+  ProcessorClientDetails,
+  ProcessorLoanDetails
 } from './pages/pages';
 import { Provider as AuthProvider } from './context/AuthContext';
 import { Provider as UserProvider } from './context/UserContext';
@@ -68,7 +70,9 @@ const RouteManager = () =>  {
           <ProtectedRoute path={pageUrl.SUPPORT_PAGE} component={Support} />
           <ProtectedRoute path={pageUrl.PROCESSORS_DASHBOARD} component={ProcessorDashboard} />
           <ProtectedRoute path={pageUrl.PROCESSORS_CLIENTS_PAGE} component={ProcessorClients} />
+          <ProtectedRoute path={pageUrl.PROCESSORS_CLIENT_DETAILS} component={ProcessorClientDetails} />
           <ProtectedRoute path={pageUrl.PROCESSORS_LOANS_PAGE} component={ProcessorLoans} />
+          <ProtectedRoute path={pageUrl.PROCESSORS_LOAN_DETAILS} component={ProcessorLoanDetails} />
         </Switch>
       </Router>
     </div>

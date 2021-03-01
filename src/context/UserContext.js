@@ -133,6 +133,7 @@ const updateIdentityInfo = dispatch => async(userId, updateData, inModal) => {
 }
 
 const getClientDetails = dispatch => async(userId) => {
+  dispatch({ type: 'set_loading', payload: true });
   try {
     const token = resolveToken();
     const response = await gypsy.get(`/client/details/${userId}`, {
@@ -142,18 +143,20 @@ const getClientDetails = dispatch => async(userId) => {
     });
     console.log(response.data.data)
     dispatch({ type: 'set_user_details', payload: response.data.data });
+    dispatch({ type: 'set_loading', payload: false });
     // console.log(response.data);
   } catch(err) {
     if(err.response) {
-      // console.log(err.response)
+      console.log(err.response)
       const errorMessage = err.response.data.error || err.response.data.message
-      if(errorMessage === "Client does not exist. Or ID specified is not for a client customer") {
-        dispatch({ type: "set_details_status", payload: false });
+      if(errorMessage === "Client has not fully setup their account") {
+        dispatch({ type: "set_user_details", payload: null });
       }
       dispatch({
         type: "set_error",
         payload: errorMessage
       });
+      dispatch({ type: 'set_loading', payload: false });
     }
   }
 }

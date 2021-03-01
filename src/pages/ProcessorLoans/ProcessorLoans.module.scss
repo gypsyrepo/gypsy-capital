@@ -1,0 +1,20 @@
+:root {
+    --fontColorOne:  #212121;
+    --fontFamilyOne: 'Source Sans Pro';
+    --fontFamilyTwo: 'Kanit';
+    --backgroundOne: ' #F5F5F5';
+}
+
+.welcomeGroup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h2 {
+        font-weight: 700;
+    }
+    p {
+        font-family: var(--fontFamilyOne);
+        font-size: 1.05rem;
+        margin-bottom: 0;
+    }
+}

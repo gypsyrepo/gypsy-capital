@@ -17,7 +17,7 @@ import { TiCancelOutline } from 'react-icons/ti';
 import _ from 'lodash';
 
 
-const Biodata = ({ data }) => {
+export const Biodata = ({ data }) => {
 
   const [biodata, setBiodata] = useState({
     firstName: "",
@@ -145,7 +145,7 @@ const Biodata = ({ data }) => {
 }
 
 
-const NextOfKin = ({ data }) => {
+export const NextOfKin = ({ data }) => {
 
   const [nextOfKin, setNextOfKin] = useState({
     firstName: "",
@@ -229,7 +229,7 @@ const NextOfKin = ({ data }) => {
 }
 
 
-const Bank = ({ data }) => {
+export const Bank = ({ data }) => {
 
   const [disburseBank, setDisburseBank] = useState({
     bankName: "",
@@ -269,6 +269,7 @@ const Bank = ({ data }) => {
               label="Bank Name"
               nameAttr="bankName"
               value={disburseBank.bankName}
+              disable={true}
             />
           </Col>
           <Col>
@@ -277,6 +278,7 @@ const Bank = ({ data }) => {
               label="Account Type"
               nameAttr="accountType"
               value={disburseBank.accountType}
+              disable={true}
             />
           </Col>
         </Row>
@@ -287,6 +289,7 @@ const Bank = ({ data }) => {
               label="Account Number"
               nameAttr="accountNumber"
               value={disburseBank.accountNumber}
+              disable={true}
             />
           </Col>
           <Col>
@@ -295,6 +298,7 @@ const Bank = ({ data }) => {
               label="Account Name"
               nameAttr="accountName"
               value={disburseBank.accountName}
+              disable={true}
             />
           </Col>
         </Row>
@@ -307,6 +311,7 @@ const Bank = ({ data }) => {
               type="text"
               label="Bank Name"
               nameAttr="salaryBank"
+              disable={true}
             />
           </Col>
           <Col>
@@ -314,6 +319,7 @@ const Bank = ({ data }) => {
               type="text"
               label="Account Type"
               nameAttr="salaryAcctType"
+              disable={true}
             />
           </Col>
         </Row>
@@ -323,6 +329,7 @@ const Bank = ({ data }) => {
               type="text"
               label="Account Number"
               nameAttr="salaryAcctNum"
+              disable={true}
             />
           </Col>
           <Col>
@@ -330,6 +337,7 @@ const Bank = ({ data }) => {
               type="text"
               label="Account Name"
               nameAttr="salaryAcctName"
+              disable={true}
             />
           </Col>
         </Row>
@@ -339,7 +347,7 @@ const Bank = ({ data }) => {
 }
 
 
-const Employer = () => {
+export const Employer = () => {
   return (
     <>
       <Row className="mb-4">
@@ -423,7 +431,7 @@ const Employer = () => {
 }
 
 
-const ClientLoan = ({ userId }) => {
+export const ClientLoan = ({ userId, canApply }) => {
 
   const [modalOpen, setModalOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1);
@@ -456,7 +464,7 @@ const ClientLoan = ({ userId }) => {
 
   return (
     <div className={styles.loanTable}>
-      <Button
+      { canApply && <Button
         size="sm" 
         clicked={startApply}
         bgColor="#741763" 
@@ -464,7 +472,7 @@ const ClientLoan = ({ userId }) => {
         className={styles.btn}
       >
         Apply for a Loan
-      </Button>
+      </Button>}
       <div className={styles.tableCard}>
         <Table className={styles.table}>
           <thead>
@@ -586,7 +594,7 @@ const ClientDetails = () => {
           { detailSection === "kin" && <NextOfKin data={userDetails && { ...userDetails.nextOfKin }} /> }
           { detailSection === "bank" && <Bank data={userDetails && { ...userDetails.bank }} /> }
           { detailSection === "employ" && <Employer data={userDetails.employer && { ...userDetails.employer }} /> }
-          { detailSection === "loans" && <ClientLoan userId={userDetails && userDetails.clientId} /> }
+          { detailSection === "loans" && <ClientLoan userId={userDetails && userDetails.clientId} canApply={true} /> }
         </div> :
         <Loader />
       }
