@@ -126,7 +126,7 @@ const ProcessorDashboard = () => {
                     {`${_.capitalize(loan.clientInfo[0].firstName)} ${_.capitalize(loan.clientInfo[0].lastName)}`}
                   </td>
                   <td className={styles.loanId}>
-                    <Link to={`/sales-agent/loan/${loan._id}`}>
+                    <Link to={`/processor/loan/${loan._id}`}>
                       {loan._id.slice(0, 6)}
                     </Link>
                   </td>

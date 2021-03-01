@@ -74,6 +74,14 @@ const DecisionApproval = () => {
 }
 
 
+const ApiServices = () => {
+  return (
+    <>
+    </>
+  )
+}
+
+
 const ProcessorLoanDetails = () => {
 
   const location = useLocation();
@@ -131,6 +139,10 @@ const ProcessorLoanDetails = () => {
         }
         { visibleSection === "decision" ?
           <DecisionApproval /> :
+          null
+        }
+        { visibleSection === "api" ? 
+          <ApiServices /> :
           null
         }
       </div>
