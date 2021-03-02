@@ -1,0 +1,157 @@
+:root {
+    --fontColorOne:  #212121;
+    --fontFamilyOne: 'Source Sans Pro';
+    --fontFamilyTwo: 'Kanit';
+    --backgroundOne: ' #F5F5F5';
+}
+
+.formWrapper{
+    width: 100%;
+    height: 400px;
+    overflow: scroll;
+    .formHeader {
+        padding: 25px 40px;
+        height: 180px;
+        background-color: #741763;
+        text-align: center;
+        img {
+            width: 140px;
+            margin: 0 auto;
+        }
+        hr {
+            border: 1px solid #fff;
+        }
+        .approvedDate {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+            font-size: 1.1rem;
+            font-family: var(--fontFamilyOne);
+            p {
+                margin-bottom: 0;
+                font-weight: 600;
+            }
+            .dateGroup {
+                p {
+                    margin-bottom: 0;
+                    margin-right: 10px;
+                    font-weight: 600;
+                }
+                input {
+                    padding: 5px 20px;
+                    border-radius: 2px;
+                    border: 1px solid #fff;
+                    width: 170px;
+                    &:active {
+                        outline: none;
+                    }
+                    &:focus {
+                        outline: none;
+                    }
+                }
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+    .formBody {
+        background-color: #E5E5E5;
+        padding: 30px 40px; 
+        font-family: var(--fontFamilyOne);
+        font-size: 1.1rem;
+        .addressGroup {
+            .greet {
+                p {
+                    margin-bottom: 0;
+                    margin-right: 10px;
+                }
+                display: flex;
+                margin-bottom: 18px;
+                align-items: center;
+                input {
+                    padding: 5px 20px;
+                    border-radius: 2px;
+                    border: .5px solid #741763;
+                    width: 220px;
+                    &:active {
+                        outline: none;
+                    }
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
+            input {
+                padding: 5px 20px;
+                border-radius: 2px;
+                border: .5px solid #741763;
+                width: 350px;
+                &:active {
+                    outline: none;
+                }
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+        .mainContent {
+            margin-top: 60px;
+            .letterHead {
+                text-align: center;
+                font-family: var(--fontFamilyOne);
+                font-size: 1.4rem;
+                font-weight: 600;
+                display: block;
+            }
+            p {
+                display: inline;
+                font-size: 1.15rem;
+                line-height: 1.8rem;
+            }
+            input {
+                display: inline;
+                padding: 5px 20px;
+                border-radius: 2px;
+                border: .5px solid #741763;
+                width: 350px;
+                &:active {
+                    outline: none;
+                }
+                &:focus {
+                    outline: none;
+                }
+                margin-top: 5px;
+            }
+            .loanData {
+                margin-top: 35px;
+                p {
+                    font-weight: 600;
+                    margin-bottom: 0;
+                }
+            }
+            .terms {
+                .title {
+                    font-weight: 600;
+                    font-size: 1.5rem;
+                    margin-top: 60px;
+                    margin-bottom: 25px;
+                    display: block;
+                }
+                p {
+                    display: block;
+                }
+                ol {
+                    margin-top: 15px;
+                    li {
+                        margin-bottom: 15px;
+                    }
+                }
+            }
+            hr {
+                border: 1px solid #000;
+                margin-top: 60px;
+            }
+        }
+    }
+}

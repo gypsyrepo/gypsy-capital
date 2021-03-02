@@ -10,6 +10,9 @@ import { Context as AuthContext } from '../../context/AuthContext';
 import InputField from '../../components/InputField/InputField';
 import Button from '../../components/Button/Button';
 import { Row, Col, Table } from 'react-bootstrap';
+import OfferLetterPdf from '../../components/OfferLetter/OfferLetter';
+import { PDFViewer } from '@react-pdf/renderer';
+import OfferLetterForm from '../../components/OfferLetter/OfferLetterForm';
 
 
 const DecisionApproval = () => {
@@ -269,6 +272,11 @@ const ProcessorLoanDetails = () => {
               payments: loanDetails.payments
             } : null }
           /> : 
+          null
+        }
+        { visibleSection === "offer" ? 
+          // <PDFViewer width="100%" height={500}><OfferLetterPdf /></PDFViewer> 
+          <OfferLetterForm />:
           null
         }
       </div>
