@@ -19,7 +19,7 @@ import CirclePattern from '../../assets/patternCircle.png';
 import InputField from '../../components/InputField/InputField';
 import FaqSection from '../../components/FaqSection/FaqSection';
 import Footer from '../../components/Footer/Footer';
-import { useRouteMatch, Link, useHistory } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 
 
 const HomePage = () => {
@@ -97,23 +97,23 @@ const HomePage = () => {
       </div>
       <div className={styles.featureSection}>
         <Row className={styles.container}>
-          <Col>
+          <Col sm={12} md={4} className="mb-4">
             <div className={styles.featureBox}>
-              <FaStopwatch size="3.5em" color="#741763" />
+              <FaStopwatch className={styles.featureIcon} color="#741763" />
               <h2>Fast</h2>
               <p>Funding in as soon as 24 hours</p>
             </div>
           </Col>
-          <Col>
+          <Col sm={12} md={4} className="mb-4">
             <div className={styles.featureBox}>
-              <FaFileAlt size="3.5em" color="#741763" />
+              <FaFileAlt className={styles.featureIcon} color="#741763" />
               <h2>Simple</h2>
               <p>Short & Quick Application</p>
             </div>
           </Col>
-          <Col>
+          <Col sm={12} md={4} className="mb-4">
             <div className={styles.featureBox}>
-              <FaMoneyBillWaveAlt size="3.5em" color="#741763" />
+              <FaMoneyBillWaveAlt className={styles.featureIcon} color="#741763" />
               <h2>Funding</h2>
               <p>Up to 200% of your avg monthly salary</p>
             </div>
@@ -122,7 +122,7 @@ const HomePage = () => {
       </div>
       <div className={styles.aboutSection}>
         <Row className={styles.container}>
-          <Col>
+          <Col sm={12} md={6} className="mb-5">
             <h5>About Gypsy Capital</h5>
             <h2>Creating impactful value-driven financial services in Nigeria.</h2>
             <p>Gypsy Capital is a financial solutions service company, with a sole commitment to helping individuals achieve personal goals through financial intermediation.</p>
@@ -134,7 +134,7 @@ const HomePage = () => {
               Learn More
             </button>
           </Col>
-          <Col className={styles.imageGroup}>
+          <Col sm={12} md={6} className={styles.imageGroup}>
             <div className={styles.imageContainer}>
               <img src={AboutImg} alt="About Gypsy" />
               <div className={styles.rect}></div>
@@ -147,7 +147,7 @@ const HomePage = () => {
           <h5>Our Products</h5>
           <h2>Creating impactful value-driven financial services in Nigeria.</h2>
           <Row>
-            <Col>
+            <Col sm={12} lg={6} className="mb-5">
               <div className={styles.productBox} style={{borderBottom: "4px solid #1F8DE8"}}>
                 <div className={styles.iconWrapper}>
                   <img src={Credit} alt="Consumer Credit" className={styles.credit} />
@@ -156,7 +156,7 @@ const HomePage = () => {
                 <p>Access convenient personal and lifestyle loans. We are committed to providing consumer loan services, with efficiency and convenience at the forefront of all we do while ensuring best practices.</p>
               </div>
             </Col>
-            <Col>
+            <Col sm={12} lg={6}>
               <div className={styles.productBox} style={{borderBottom: "4px solid #841FE8"}}>
                 <div className={styles.iconWrapper}>
                   <img src={Notes} alt="Gypsy Notes" className={styles.notes} />
@@ -167,7 +167,7 @@ const HomePage = () => {
             </Col>
           </Row>
           <Row className="mt-5">
-            <Col>
+            <Col sm={12} lg={6} className="mb-5">
               <div className={styles.productBox} style={{borderBottom: "4px solid #FF5800"}}>
                 <div className={styles.iconWrapper}>
                   <img src={Advisory} alt="Financial Advisory" className={styles.advisory} />
@@ -176,7 +176,7 @@ const HomePage = () => {
                 <p>We provide expert financial advisory and wealth management services to individual lifestyle needs. With a diverse range of industry experts, global knowledge and insight we achieve ranging clientele needs.</p>
               </div>
             </Col>
-            <Col>
+            <Col sm={12} lg={6} className="mb-5">
               <div className={styles.productBox} style={{borderBottom: "4px solid #015514"}}>
                 <div className={styles.iconWrapper}>
                   <img src={Alternative} alt="Alternative Investment" className={styles.alternative} />
@@ -194,7 +194,7 @@ const HomePage = () => {
           <div className={styles.styledBox}>
             <Row>
               <Col className={styles.access}>
-                <h2>Access Up to ₦500,000 Within 24 Hours</h2>
+                <h2>Access Up to ₦2,000,000 Within 24 Hours</h2>
               </Col>
               <Col>
                 <input 
@@ -204,7 +204,9 @@ const HomePage = () => {
                   value={loanRequest}
                   onChange={(e) => setLoanRequest(e.currentTarget.value)}
                 />
-                <button>
+                <button
+                  onClick={() => history.push({ pathname: '/loan-calculator', state: { loanAmount: loanRequest }})}
+                >
                   Apply Now
                 </button>
               </Col>

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import styles from './NavBar.module.scss';
 import Logo from '../../assets/logo.png';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import pageUrl from '../../routes/pageUrl';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { RiCloseFill } from 'react-icons/ri';
 
-const NavBar = ({ history, location }) => {
+const NavBar = () => {
+
+  const location = useLocation();
+  const history = useHistory();
 
   const [menuOpen, setMenuOpen] = useState(false);
 

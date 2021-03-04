@@ -64,7 +64,7 @@ const SignIn = () => {
   return (
     <div className={styles.container}>
       <ToastContainer position="top-center" />
-      <img src={Logo} alt="Gypsy Logo" />
+      <Link to={pageUrl.HOMEPAGE}><img src={Logo} alt="Gypsy Logo" /></Link>
       <h1>Login to your account</h1>
       <div className={styles.loginBox}>
         <Row>

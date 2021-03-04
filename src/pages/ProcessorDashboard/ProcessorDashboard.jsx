@@ -59,6 +59,8 @@ const ProcessorDashboard = () => {
     return loans.slice(0, 5);
   }, [loans]);
 
+  console.log(recentLoans)
+
   return (
     <Dashboard sidebarRoutes={processorRoute} location={location}>
       <div className={styles.welcomeGroup}>
@@ -123,7 +125,7 @@ const ProcessorDashboard = () => {
               { recentLoans.map((loan, idx) => (
                 <tr key={idx}>
                   <td>
-                    {`${_.capitalize(loan.clientInfo[0].firstName)} ${_.capitalize(loan.clientInfo[0].lastName)}`}
+                    {`${_.capitalize(loan.clientInfo[0]?.firstName)} ${_.capitalize(loan.clientInfo[0]?.lastName)}`}
                   </td>
                   <td className={styles.loanId}>
                     <Link to={`/processor/loan/${loan._id}`}>

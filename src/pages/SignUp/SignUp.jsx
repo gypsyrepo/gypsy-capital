@@ -114,7 +114,7 @@ const SignUp = () => {
 
   return (
     <div className={styles.container}>
-      <img src={Logo} alt="Gypsy Logo" />
+      <Link to={pageUrl.HOMEPAGE}><img src={Logo} alt="Gypsy Logo" /></Link>
       <h1>Create your account</h1>
       <p className={styles.subtitle}>Hey there, let's setup your Gypsy Capital account</p>
       <div className={styles.registerBox}>
