@@ -136,7 +136,7 @@ const LoanCalculatorForm = ({ delegateApply }) => {
             error={loanCalcDataErrors.loanAmount && loanCalcDataErrors.loanAmount}
           />
           <p className={styles.inputHint}>
-            <span>min amt:</span> #50,000; <span>max amt:</span> #500,000
+            <span>min amt:</span> #100,000; <span>max amt:</span> #2,000,000
           </p>
         </Col>
         <Col>
