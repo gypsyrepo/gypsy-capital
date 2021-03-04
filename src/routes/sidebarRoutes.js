@@ -91,9 +91,37 @@ const processorRoutes = [
   }
 ]
 
+const authorizerRoutes = [
+  {
+    label: "Dashboard",
+    link: pageUrl.AUTHORIZER_OVERVIEW,
+    rootLink: pageUrl.AUTHORIZER_OVERVIEW,
+    icon: FiLayers
+  },
+  {
+    label: "Clients",
+    link: pageUrl.AUTHORIZER_CLIENTS,
+    rootLink: '/authorizer/client',
+    icon: FaUser
+  },
+  {
+    label: "Loans",
+    link: pageUrl.AUTHORIZER_LOANS,
+    rootLink: '/authorizer/loan',
+    icon: GiMoneyStack
+  }, 
+  {
+    label: "Support",
+    link: pageUrl.SUPPORT_PAGE,
+    rootLink: pageUrl.SUPPORT_PAGE,
+    icon: BiSupport
+  }
+]
+
 
 export const routes = [
   clientRoutes,
   salesRoutes,
-  processorRoutes
+  processorRoutes,
+  authorizerRoutes
 ]

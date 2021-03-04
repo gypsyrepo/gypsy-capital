@@ -1,7 +1,7 @@
 import React from 'react';
 import MonoConnect from '@mono.co/connect.js';
 
-export default function App() {
+function MonoLink() {
   const monoConnect = React.useMemo(() => {
     const monoInstance = new MonoConnect({
       onClose: () => console.log('Widget closed'),

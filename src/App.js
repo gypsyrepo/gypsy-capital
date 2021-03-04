@@ -29,7 +29,12 @@ import {
   ResetPassword,
   ResetSuccess,
   ProcessorClientDetails,
-  ProcessorLoanDetails
+  ProcessorLoanDetails,
+  AuthorizerOverview,
+  AuthorizerLoans,
+  AuthorizerClients,
+  AuthorizerClientDetails,
+  AuthorizerLoanDetails
 } from './pages/pages';
 import { Provider as AuthProvider } from './context/AuthContext';
 import { Provider as UserProvider } from './context/UserContext';
@@ -73,6 +78,11 @@ const RouteManager = () =>  {
           <ProtectedRoute path={pageUrl.PROCESSORS_CLIENT_DETAILS} component={ProcessorClientDetails} />
           <ProtectedRoute path={pageUrl.PROCESSORS_LOANS_PAGE} component={ProcessorLoans} />
           <ProtectedRoute path={pageUrl.PROCESSORS_LOAN_DETAILS} component={ProcessorLoanDetails} />
+          <ProtectedRoute path={pageUrl.AUTHORIZER_OVERVIEW} component={AuthorizerOverview} />
+          <ProtectedRoute path={pageUrl.AUTHORIZER_LOANS} component={AuthorizerLoans} />
+          <ProtectedRoute path={pageUrl.AUTHORIZER_CLIENTS} component={AuthorizerClients} />
+          <ProtectedRoute path={pageUrl.AUTHORIZER_CLIENT_DETAILS} component={AuthorizerClientDetails} />
+          <ProtectedRoute path={pageUrl.AUTHORIZER_LOAN_DETAILS} component={AuthorizerLoanDetails} />
         </Switch>
       </Router>
     </div>

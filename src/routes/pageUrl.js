@@ -28,6 +28,11 @@ const RESET_PASSWORD_PAGE = '/password/reset';
 const RESET_SUCCESS_PAGE = '/password/reset-success';
 const PROCESSORS_CLIENT_DETAILS = '/processor/client/:clientId';
 const PROCESSORS_LOAN_DETAILS = '/processor/loan/:loanId';
+const AUTHORIZER_OVERVIEW = '/authorizer/overview';
+const AUTHORIZER_LOANS = '/authorizer/loans';
+const AUTHORIZER_CLIENTS = '/authorizer/clients';
+const AUTHORIZER_CLIENT_DETAILS = '/authorizer/client/:clientId';
+const AUTHORIZER_LOAN_DETAILS = '/authorizer/loan/:loanId';
 
 const pageUrl = {
     HOMEPAGE,
@@ -59,7 +64,12 @@ const pageUrl = {
     RESET_PASSWORD_PAGE,
     RESET_SUCCESS_PAGE,
     PROCESSORS_CLIENT_DETAILS,
-    PROCESSORS_LOAN_DETAILS
+    PROCESSORS_LOAN_DETAILS,
+    AUTHORIZER_OVERVIEW,
+    AUTHORIZER_LOANS,
+    AUTHORIZER_CLIENTS,
+    AUTHORIZER_CLIENT_DETAILS,
+    AUTHORIZER_LOAN_DETAILS
 }
 
 export default pageUrl;

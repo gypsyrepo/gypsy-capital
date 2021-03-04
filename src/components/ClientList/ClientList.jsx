@@ -9,7 +9,7 @@ import _ from 'lodash';
 
 
 
-const ClientList = ({ clientList }) => {
+const ClientList = ({ clientList, role }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
@@ -47,7 +47,7 @@ const ClientList = ({ clientList }) => {
                 <tr>
                   <td>{`${_.capitalize(client.firstName)} ${_.capitalize(client.lastName)}`}</td>
                   <td className={styles.loanId}>
-                    <Link to={`/processor/client/${client._id}`}>{client._id.slice(0,6)}</Link>
+                    <Link to={`/${role}/client/${client._id}`}>{client._id.slice(0,6)}</Link>
                   </td>
                   <td>{client.phoneNumber.replace('234', '0')}</td>
                   <td>{client.bvn}</td>

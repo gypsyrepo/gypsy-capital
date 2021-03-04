@@ -431,7 +431,7 @@ export const Employer = () => {
 }
 
 
-export const ClientLoan = ({ userId, canApply }) => {
+export const ClientLoan = ({ userId, canApply, userRole }) => {
 
   const [modalOpen, setModalOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1);
@@ -491,7 +491,7 @@ export const ClientLoan = ({ userId, canApply }) => {
               return (
                 <tr>
                   <td className={styles.loanId}>
-                    <Link to={`/sales-agent/loan/${loan._id}`}>
+                    <Link to={`/${userRole}/loan/${loan._id}`}>
                       {loan._id.slice(0, 6)}
                     </Link>
                   </td>

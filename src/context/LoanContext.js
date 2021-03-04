@@ -2,6 +2,7 @@ import createDataContext from './createDataContext';
 import gypsy from '../api/gypsy-web';
 import resolveToken from '../utils/resolveToken';
 import history from '../utils/history';
+import _ from 'lodash';
 
 
 const loanReducer = (state, action) => {
@@ -184,7 +185,7 @@ const retrieveClientLoans = dispatch => async() => {
     //  
     dispatch({
       type: 'set_loan_list',
-      payload: response.data.data
+      payload: _.reverse(response.data.data)
     })
     dispatch({ type: "set_loading", payload: false });
   } catch(err) {

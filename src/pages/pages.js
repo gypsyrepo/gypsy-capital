@@ -26,6 +26,11 @@ import ResetPassword from './ResetPassword/ResetPassword';
 import ResetSuccess from './ResetSuccess/ResetSuccess';
 import ProcessorClientDetails from './ProcessorClientDetails/ProcessorClientDetails';
 import ProcessorLoanDetails from './ProcessorLoanDetails/ProcessorLoanDetails';
+import AuthorizerOverview from './AuthorizerOverview/AuthorizerOverview';
+import AuthorizerLoans from './AuthorizerLoans/AuthorizerLoans';
+import AuthorizerClients from './AuthorizerClients/AuthorizerClients';
+import AuthorizerClientDetails from './AuthorizerClientDetails/AuthorizerClientDetails';
+import AuthorizerLoanDetails from './AuthorizerLoanDetails/AuthorizerLoanDetails';
 
 
 export {
@@ -56,5 +61,10 @@ export {
   ResetPassword,
   ResetSuccess,
   ProcessorClientDetails,
-  ProcessorLoanDetails
+  ProcessorLoanDetails,
+  AuthorizerOverview,
+  AuthorizerLoans,
+  AuthorizerClients,
+  AuthorizerClientDetails,
+  AuthorizerLoanDetails
 }

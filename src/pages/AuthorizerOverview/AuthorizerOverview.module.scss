@@ -1,0 +1,74 @@
+:root {
+    --fontColorOne:  #212121;
+    --fontFamilyOne: 'Source Sans Pro';
+    --fontFamilyTwo: 'Kanit';
+    --backgroundOne: ' #F5F5F5';
+}
+
+.welcomeGroup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h2 {
+        font-weight: 700;
+    }
+    p {
+        font-family: var(--fontFamilyOne);
+        font-size: 1.05rem;
+    }
+    button {
+        background-color: #F6F6F6;
+        border: 1px solid #BDBDBD;
+        border-radius: 5px;
+        padding: 10px 24px;
+        font-family: var(--fontFamilyOne);
+        font-size: 1.2rem;
+        &:focus {
+            outline: none;
+        }
+        .icon {
+            font-size: 1.5rem;
+            margin-right: 20px;
+            color: #741763;
+        }
+    }
+}
+
+.stats {
+    margin-top: 70px;
+}
+
+.recentLoans {
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        h3 {
+            font-size: 1.5rem;
+            font-family: var(--fontFamilyOne);
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+    }
+    margin-top: 70px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 8px 15px 30px #0000001A;
+    padding: 18px 28px;
+    .table {
+        margin-top: 45px;
+        thead {
+            background-color: #741763;
+            color: #fff;
+        }
+        .loanId {
+            color: #0075D7;
+            font-weight: 600;
+        }
+    }
+    .nullList {
+        text-align: center;
+        width: 100%;
+        padding: 20px 0;
+    }
+}

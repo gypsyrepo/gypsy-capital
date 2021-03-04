@@ -30,7 +30,7 @@ const DocCard = ({ docTitle }) => {
   )
 }
 
-const DocTab = () => {
+export const DocTab = () => {
   return (
     <>
       <Row>

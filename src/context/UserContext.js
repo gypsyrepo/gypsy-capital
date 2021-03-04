@@ -2,6 +2,8 @@ import createDataContext from './createDataContext';
 import gypsy from '../api/gypsy-web';
 import resolveToken from '../utils/resolveToken';
 import history from '../utils/history';
+import _ from 'lodash';
+
 
 const userReducer = (state, action) => {
   switch(action.type) {
@@ -196,7 +198,7 @@ const getClientListForRole = dispatch => async() => {
       }
     });
     // console.log(response.data.data);
-    dispatch({ type: "set_clients_for_role", payload: response.data.data });
+    dispatch({ type: "set_clients_for_role", payload: _.reverse(response.data.data) });
     dispatch({ type: "set_loading", payload: false });
   } catch(err) {
     if(err.response) {
