@@ -193,10 +193,10 @@ const HomePage = () => {
         <div className={styles.container}>
           <div className={styles.styledBox}>
             <Row>
-              <Col className={styles.access}>
+              <Col sm={12} lg={6} className={styles.access}>
                 <h2>Access Up to ₦2,000,000 Within 24 Hours</h2>
               </Col>
-              <Col>
+              <Col sm={12} lg={6}>
                 <input 
                   type="text"
                   name="loanRequest"

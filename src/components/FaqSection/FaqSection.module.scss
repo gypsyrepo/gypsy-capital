@@ -1,5 +1,5 @@
 .faqSection {
-    padding: 80px 100px;
+    padding: 40px 30px;
     background-color: #f4e7f2;
     position: relative;
     z-index: 4;
@@ -10,7 +10,7 @@
             text-align: center;
             font-weight: 600;
             color: #741763;
-            font-size: 1.85rem;
+            font-size: 1.5rem;
             margin-bottom: 60px;
         }
         .cardBody {
@@ -47,6 +47,7 @@
 .customAccordionHeader {
     .icon {
         margin-right: 40px;
+        display: none;
     }
     display: flex;
     justify-content: flex-start;
@@ -56,4 +57,69 @@
     font-weight: 600;
     padding: 10px 10px;
     cursor: pointer;
+}
+
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .faqSection {
+        padding: 80px 100px;
+        background-color: #f4e7f2;
+        position: relative;
+        z-index: 4;
+        .container {
+            margin: 0 auto;
+            max-width: 1200px;
+            h2 {
+                text-align: center;
+                font-weight: 600;
+                color: #741763;
+                font-size: 1.85rem;
+                margin-bottom: 60px;
+            }
+            .cardBody {
+                font-size: 1.2rem;
+            }
+            .accordionTab {
+                margin-bottom: 20px;
+                box-shadow: 15px 20px 35px #00000017;
+            }
+            button {
+                display: block;
+                margin: 0 auto;
+                margin-top: 60px;
+                font-size: 1.1rem;
+                font-family: 'Source Sans Pro', sans-serif;
+                font-weight: 600;
+                padding: 10px 60px;
+                border-radius: 12px;
+                border: 2px solid #741763;
+                background-color: rgba(0,0,0,0);
+                color: #741763;
+                transition: .5s;
+                &:hover {
+                    background-color: #741763;
+                    color: #fff;
+                }
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+    }    
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
 }
