@@ -63,6 +63,31 @@
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
     .faqSection {
+        padding: 40px 30px;
+        .container {
+            .cardBody {
+                font-size: 1.1rem;
+            }
+            button {
+                display: block;
+                margin: 0 auto;
+                margin-top: 60px;
+                font-size: 1.1rem;
+            }
+        }
+    } 
+    .customAccordionHeader {
+        .icon {
+            margin-right: 40px;
+            display: block;
+        }
+        font-size: 1.2rem;
+    }   
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .faqSection {
         padding: 80px 100px;
         background-color: #f4e7f2;
         position: relative;
@@ -107,11 +132,6 @@
             }
         }
     }    
-}
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
