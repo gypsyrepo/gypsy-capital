@@ -65,7 +65,7 @@ const NavBar = () => {
           className={styles.closeIcon} 
           onClick={() => setMenuOpen(false)}
         />
-        <Link style={{opacity: menuOpen ? 1 : 0}} to={pageUrl.PRODUCTS_PAGE}>Our Products</Link>
+        <Link style={{opacity: menuOpen ? 1 : 0}} to={`/products/consumer-credit`}>Our Products</Link>
         <Link style={{opacity: menuOpen ? 1 : 0}} to={pageUrl.ABOUT_US_PAGE}>About Us</Link>
         <Link style={{opacity: menuOpen ? 1 : 0}} to={pageUrl.CONTACT_PAGE}>Contact Us</Link>
         <Link style={{opacity: menuOpen ? 1 : 0}} to={pageUrl.SIGNIN_PAGE}>Log In</Link>

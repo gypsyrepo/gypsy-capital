@@ -13,6 +13,10 @@
                 text-decoration: none;
             }
         }
+        .customCol {
+            padding-left: 7px;
+            padding-right: 7px;
+        }
         .menuBox {
             background-color: #E2E2E2;
             border-radius: 14px;
@@ -51,7 +55,7 @@
 }
 
 .ctaBanner {
-    padding: 30px 40px;
+    padding: 40px 20px;
     background-color: #F5F5F5;
     .container {
         .bannerBox {
@@ -65,7 +69,7 @@
             align-items: center;
             h2 {
                 color: #fff;
-                font-size: 2.5rem;
+                font-size: 2.3rem;
                 font-weight: 600;
             }
             p {
@@ -193,7 +197,7 @@
             justify-content: center;
             align-items: flex-end;
             img {
-                width: 80px;
+                width: 70px;
             }
         }
          h3 {
@@ -210,21 +214,19 @@
 }
 
 .howItWorks {
-    padding: 80px 100px;
-    background-color: #f5f5f5;
+    padding: 40px;
     .container {
-        max-width: 1200px;
         .detailed {
             min-height: 500px;
             background-color: #E2E2E2;
             border-radius: 30px;
-            padding: 60px 100px 60px 60px;
+            padding: 40px 30px;
             h2 {
-                font-size: 2.3rem;
+                font-size: 2rem;
                 margin-bottom: 35px;
             }
             p {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
                 font-family: 'Source Sans Pro', sans-serif;
             }
             .textBtn {
@@ -243,17 +245,18 @@
             }
         }
         .steps {
-            height: 400px;
+            // height: 400px;
             background-color:#FFFFFF;
             border-radius: 30px;
             margin: auto 0;
-            margin-left: -80px;
+            margin-top: 40px;
+            // margin-left: -80px;
             box-shadow: 15px 20px 35px #00000017;
-            padding: 40px 60px;
+            padding: 25px 40px;
             h3 {
                 margin-bottom: 40px;
                 font-family: 'Source Sans Pro', sans-serif;
-                // font-size: 1.2rem;
+                font-size: 1.7rem;
                 font-weight: 600;
             }
             .stepGroup {
@@ -262,30 +265,33 @@
                 margin-bottom: 30px;
                 .icon {
                     display: block;
-                    min-width: 48px;
+                    min-width: 1.8rem;
                     margin-right: 20px;
-                    font-size: 48px;
+                    font-size: 1.8rem;
                 }
                 p {
                     margin-bottom: 0;
-                    font-size: 1.3rem;
+                    font-size: 1.2rem;
                     font-family: 'Source Sans Pro', sans-serif;
                     font-weight: 600;
                 }
             }
         }
         .imageCopy {
-            height: 450px;
-            background-color:#FFFFFF;
             border-radius: 30px;
-            margin: auto 0;
-            margin-left: -80px;
+            max-width: 90% !important;
+            width: 90%;
+            background-color: rgba(255, 255, 255, 0);
+            // margin-left: -80px;
             box-shadow: 15px 20px 35px #00000017;
+            margin: 0 auto;
+            margin-top: -20px;
             padding: 0;
             img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
+                margin: 0 auto;
                 // object-position: top;
                 border-radius: 30px;
             }
@@ -294,27 +300,26 @@
 }
 
 .subscribeEmail {
-    padding: 60px 100px;
+    padding: 40px;
     text-align: center;
     background-color: #f4e7f2;
     .container {
-        max-width: 1200px;
         h2 {
-            width: 60%;
+            width: 100%;
             margin: 0 auto;
             font-weight: 700;
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             color: #741763;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
         .emailInput {
-            width: 70%;
+            width: 100%;
             margin: 0 auto;
             position: relative;
             input {
                 width: 100%;
-                padding: 25px 50px;
-                border-radius: 15px;
+                padding: 15px 25px;
+                border-radius: 7px;
                 border: none;
                 box-shadow: 5px 10px 20px #00000017;
                 font-size: 1.1rem;
@@ -327,15 +332,14 @@
                 font-size: 1.1rem;
                 font-family: 'Source Sans Pro', sans-serif;
                 background-color: #A02089;
-                border-radius: 10px;
+                border-radius: 7px;
                 color: #fff;
                 text-transform: uppercase;
                 font-weight: 700;
-                padding: 13px 35px;
+                padding: 12px 20px;
                 border: 1px solid #A02089;
-                position: absolute;
-                right: 10px;
-                top: 10.5px;
+                width: 100%;
+                margin-top: 20px;
             }
         }
     }

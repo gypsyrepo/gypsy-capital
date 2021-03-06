@@ -74,7 +74,7 @@ const HowItWorks = ({
     <div className={styles.howItWorks}>
       <div className={styles.container}>
         <Row>
-          <Col sm={7} className={styles.detailed}>
+          <Col xs={12} md={7} className={styles.detailed}>
             <h2>{mainTitle}</h2>
             {children}
             { btnType === "normal" && <Button
@@ -88,7 +88,7 @@ const HowItWorks = ({
               <button className={styles.textBtn}>Be the first to know when we launch</button>
             }
           </Col>
-          <Col sm={5} className={imageCopy ? styles.imageCopy : styles.steps}>
+          <Col xs={12} md={5} className={imageCopy ? styles.imageCopy : styles.steps}>
             { !imageCopy && <>
               <h3>{minorTitle}</h3>
               { steps.map((step, index) => (
@@ -125,7 +125,7 @@ const EmailSubscription = ({ title }) => {
           />
           <button>
             Subscribe
-            <RiSendPlaneFill size="1.2em" className="ml-3" />
+            <RiSendPlaneFill size="1.2em" className="ml-2" />
           </button>
         </div>
       </div>
@@ -169,7 +169,7 @@ const Products = () => {
     <div className={styles.productsMenu}>
       <div className={styles.container}>
         <Row>
-          <Col sm={3} lg={3} xs={3}>
+          <Col className={styles.customCol} sm={3} lg={3} xs={3}>
             <MenuBox 
               icon={Credit} 
               menuTitle="Consumer Credit" 
@@ -177,7 +177,7 @@ const Products = () => {
               linkPath={location.pathname}
             />
           </Col>
-          <Col sm={3} lg={3} xs={3}>
+          <Col className={styles.customCol} sm={3} lg={3} xs={3}>
             <MenuBox 
               icon={Notes} 
               menuTitle="Gypsy Notes" 
@@ -185,7 +185,7 @@ const Products = () => {
               linkPath={location.pathname}
             />
           </Col>
-          <Col sm={3} lg={3} xs={3}>
+          <Col className={styles.customCol} sm={3} lg={3} xs={3}>
             <MenuBox 
               icon={Advisory} 
               menuTitle="Financial Advisory" 
@@ -193,7 +193,7 @@ const Products = () => {
               linkPath={location.pathname}
             />
           </Col>
-          <Col sm={3} lg={3} xs={3}>
+          <Col className={styles.customCol} sm={3} lg={3} xs={3}>
             <MenuBox 
               icon={Alternative} 
               menuTitle="Alternative Investment" 
@@ -215,28 +215,28 @@ const Products = () => {
         <div className={styles.features}>
           <div className={styles.container}>
             <Row>
-              <Col sm={12} md={3}>
+              <Col sm={12} md={3} className="mb-4">
                 <div className={styles.iconWrapper}>
                   <img src={Funding} alt="Fast funding" />
                 </div>
                 <h3>Funding Capacity</h3>
                 <p>Up to ₦500,000</p>
               </Col>
-              <Col sm={12} md={3}>
+              <Col sm={12} md={3} className="mb-4">
                 <div className={styles.iconWrapper}>
                   <img src={Accept} alt="terms" />
                 </div>
                 <h3>Term</h3>
                 <p>Up to 6 months</p>
               </Col>
-              <Col sm={12} md={3}>
+              <Col sm={12} md={3} className="mb-4">
                 <div className={styles.iconWrapper}>
                   <img src={Calendar} alt="schedule" />
                 </div>
                 <h3>Payment Schedule</h3>
                 <p>Monthly</p>
               </Col>
-              <Col sm={12} md={3}>
+              <Col sm={12} md={3} className="mb-4">
                 <div className={styles.iconWrapper}>
                   <img src={Time} alt="speed" />
                 </div>
