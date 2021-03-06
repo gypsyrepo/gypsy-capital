@@ -262,6 +262,7 @@
             box-shadow: 15px 20px 35px #00000017;
             border-radius: 14px 14px 0px 0px;
             padding: 20px 30px;
+            height: 100%;
             .iconWrapper {
                 height: 60px;
                 display: flex;
@@ -628,6 +629,7 @@
                 font-size: 1.85rem;
             }
             .productBox {
+                height: 100%;
                 h3 {
                     font-size: 1.6rem;
                 }
