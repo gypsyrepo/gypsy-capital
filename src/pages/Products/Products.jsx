@@ -51,7 +51,7 @@ const ProductBanner = ({ productTitle, btnType, copy, btnText }) => {
           <div className={styles.fifthCircle}></div>
           <div className={styles.sixthCircle}></div>
           <div className={styles.downIcon}>
-            <FaAngleDown size="3em" />
+            <FaAngleDown className={styles.icon} />
           </div>
         </div>
       </div>
@@ -169,7 +169,7 @@ const Products = () => {
     <div className={styles.productsMenu}>
       <div className={styles.container}>
         <Row>
-          <Col>
+          <Col sm={3} lg={3} xs={3}>
             <MenuBox 
               icon={Credit} 
               menuTitle="Consumer Credit" 
@@ -177,7 +177,7 @@ const Products = () => {
               linkPath={location.pathname}
             />
           </Col>
-          <Col>
+          <Col sm={3} lg={3} xs={3}>
             <MenuBox 
               icon={Notes} 
               menuTitle="Gypsy Notes" 
@@ -185,7 +185,7 @@ const Products = () => {
               linkPath={location.pathname}
             />
           </Col>
-          <Col>
+          <Col sm={3} lg={3} xs={3}>
             <MenuBox 
               icon={Advisory} 
               menuTitle="Financial Advisory" 
@@ -193,7 +193,7 @@ const Products = () => {
               linkPath={location.pathname}
             />
           </Col>
-          <Col>
+          <Col sm={3} lg={3} xs={3}>
             <MenuBox 
               icon={Alternative} 
               menuTitle="Alternative Investment" 
@@ -215,28 +215,28 @@ const Products = () => {
         <div className={styles.features}>
           <div className={styles.container}>
             <Row>
-              <Col>
+              <Col sm={12} md={3}>
                 <div className={styles.iconWrapper}>
                   <img src={Funding} alt="Fast funding" />
                 </div>
                 <h3>Funding Capacity</h3>
                 <p>Up to ₦500,000</p>
               </Col>
-              <Col>
+              <Col sm={12} md={3}>
                 <div className={styles.iconWrapper}>
                   <img src={Accept} alt="terms" />
                 </div>
                 <h3>Term</h3>
                 <p>Up to 6 months</p>
               </Col>
-              <Col>
+              <Col sm={12} md={3}>
                 <div className={styles.iconWrapper}>
                   <img src={Calendar} alt="schedule" />
                 </div>
                 <h3>Payment Schedule</h3>
                 <p>Monthly</p>
               </Col>
-              <Col>
+              <Col sm={12} md={3}>
                 <div className={styles.iconWrapper}>
                   <img src={Time} alt="speed" />
                 </div>

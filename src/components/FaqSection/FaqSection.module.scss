@@ -88,6 +88,22 @@
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
     .faqSection {
+        padding: 50px 50px;
+        .container {
+            h2 {
+                text-align: center;
+                font-weight: 600;
+                color: #741763;
+                font-size: 1.85rem;
+                margin-bottom: 60px;
+            }
+        }
+    }    
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .faqSection {
         padding: 80px 100px;
         background-color: #f4e7f2;
         position: relative;
@@ -132,11 +148,6 @@
             }
         }
     }    
-}
-
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
