@@ -262,7 +262,6 @@
             box-shadow: 15px 20px 35px #00000017;
             border-radius: 14px 14px 0px 0px;
             padding: 20px 30px;
-            height: 360px;
             .iconWrapper {
                 height: 60px;
                 display: flex;
@@ -776,8 +775,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            text-align: left;
             h1 {
                 font-size: 3.5rem;
+                text-align: left;
                 font-weight: 700;
                 width: 85%;
                 color: #A02089;
@@ -787,6 +788,8 @@
             h3 {
                 width: 60%;
                 font-size: 1.3rem;
+                text-align: left;
+                margin: 0;
                 font-weight: 600;
                 font-family: 'Kanit', sans-serif;
                 color: #2F2F2F;
@@ -797,6 +800,7 @@
                 width: 300px;
                 text-align: center;
                 border: 1px solid #A02089;
+                margin: 0;
                 margin-top: 25px;
                 font-family: 'Source Sans Pro', sans-serif;
                 display: block;
@@ -813,6 +817,7 @@
                 background-color: #A02089;
                 color: #fff;
                 border: 1px solid #A02089;
+                margin: 0;
                 margin-top: 15px;
                 font-size: 1.15rem;
                 font-weight: 600;
@@ -901,6 +906,7 @@
     .aboutSection {
         padding: 80px 100px;
         background-color: #f4e7f2;
+        text-align: left;
         .container {
             margin: 0 auto;
             max-width: 1200px;
@@ -961,6 +967,7 @@
                     img {
                         position: relative;
                         z-index: 3;
+                        width: 350px;
                     }
                     .rect {
                         background-color: #841FE8;
@@ -1135,6 +1142,7 @@
                     font-weight: 600;
                     width: 90%;
                     margin-bottom: 0;
+                    text-align: left;
                 }
                 input {
                     display: block;
