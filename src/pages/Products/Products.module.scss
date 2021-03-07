@@ -116,13 +116,13 @@
                 left: 170px;
             }
             .thirdCircle {
-                width: 120px;
-                height: 120px;
+                width: 70px;
+                height: 70px;
                 background-color: #F5F5F545;
                 border-radius: 100%;
                 position: absolute;
-                right: -70px;
-                bottom: -50px;
+                right: -20px;
+                bottom: -30px;
             }
             .fourthCircle {
                 width: 150px;
@@ -351,6 +351,719 @@
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
+    .productsMenu {
+        padding: 40px 30px;
+        .container {
+            .menuBox {
+                padding: 30px;
+                height: 100%;
+            }
+            .activeMenu {
+                padding: 30px;
+                height: 100%;
+            }
+            h3 {
+                font-size: 1.35rem;
+                font-weight: 600;
+                font-family: 'Kanit', sans-serif;
+                margin-top: 25px;
+            }
+            .iconWrapper {
+                height: 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .credit {
+                    width: 40px;
+                }
+                .notes {
+                    width: 25px;
+                }
+            }
+        }
+    }
+    
+    .ctaBanner {
+        padding: 40px 30px;
+        .container {
+            .bannerBox {
+
+                h2 {
+                    color: #fff;
+                    font-size: 2.8rem;
+                    font-weight: 600;
+                }
+                p {
+                    font-size: 1.3rem;
+                    font-family: 'Source Sans Pro', sans-serif;
+                    color: #f5f5f5;
+                    margin-top: 20px;
+                }
+                .circleOutlineOne {
+                    width: 160px;
+                    height: 160px;
+                    border-radius: 100%;
+                    border: 9px solid #F5F5F591;
+                    position: absolute;
+                    bottom: -50px;
+                    left: -50px;
+                }
+                .circleOutlineTwo {
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 100%;
+                    border: 9px solid #F5F5F591;
+                    position: absolute;
+                    bottom: -50px;
+                    left: -50px;
+                }
+                .firstCircle {
+                    width: 85px;
+                    height: 85px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    top: 30px;
+                    left: 180px;
+                }
+                .secondCircle {
+                    width: 30px;
+                    height: 30px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    top: 20px;
+                    left: 200px;
+                }
+                .thirdCircle {
+                    width: 100px;
+                    height: 100px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    right: -30px;
+                    bottom: -40px;
+                }
+                .fourthCircle {
+                    width: 150px;
+                    height: 150px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    top: -90px;
+                    right: 200px;
+                }
+                .fifthCircle {
+                    width: 60px;
+                    height: 60px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    bottom: 100px;
+                    right: 41%;
+                }
+                .sixthCircle {
+                    width: 30px;
+                    height: 30px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    top: 200px;
+                    right: 21%;
+                    display: none;
+                }
+                .downIcon {
+                    width: 60px;
+                    height: 60px;
+                    bottom: -30px;
+                }
+            }
+        }
+    }
+    
+    .features {
+        padding: 50px 30px 40px;
+        .container{
+            .iconWrapper {
+                height: 100px;
+                img {
+                    width: 90px;
+                }
+            }
+             h3 {
+                 font-size: 1.45rem;
+             }
+             p {
+                 font-size: 1.3rem;
+                 font-family: 'Source Sans Pro', sans-serif;
+             }
+        }
+    }
+    
+    .howItWorks {
+        padding: 40px 30px;
+        .container {
+            .detailed {
+                h2 {
+                    font-size: 2.3rem;
+                    margin-bottom: 35px;
+                }
+                p {
+                    font-size: 1.1rem;
+                    font-family: 'Source Sans Pro', sans-serif;
+                }
+            }
+            .steps {
+                margin-top: -60px;
+                padding: 40px;
+                h3 {
+                    font-size: 2rem;
+                }
+                .stepGroup {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 30px;
+                    .icon {
+                        display: block;
+                        min-width: 36px;
+                        margin-right: 15px;
+                        font-size: 36px;
+                    }
+                    p {
+                        margin-bottom: 0;
+                        font-size: 1.55rem;
+                        font-family: 'Source Sans Pro', sans-serif;
+                        font-weight: 600;
+                    }
+                }
+            }
+            .imageCopy {
+                // height: 450px;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    // object-position: top;
+                    border-radius: 30px;
+                }
+            }
+        }
+    }
+    
+    .subscribeEmail {
+        padding: 50px 30px;
+        .container {
+            h2 {
+                font-size: 2.2rem;
+            }
+            .emailInput {
+                width: 100%;
+                input {
+                    width: 100%;
+                    padding: 18px 30px;
+                    border-radius: 7px;
+                }
+                button {
+                    border-radius: 7px;
+                    padding: 10px 30px;
+                    position: absolute;
+                    right: 10px;
+                    top: 7px;
+                    width: fit-content;
+                    margin-top: 0;
+                }
+            }
+        }
+    }    
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .productsMenu {
+        padding: 40px 30px;
+        .container {
+            .menuBox {
+                padding: 20px;
+                height: 200px;
+                cursor: pointer;
+            }
+            .activeMenu {
+                padding: 20px;
+                height: 200px;
+            }
+            h3 {
+                display: block;
+            }
+            .iconWrapper {
+                height: 70px;
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                .credit {
+                    width: 50px;
+                }
+                .notes {
+                    width: 30px;
+                }
+            }
+        }
+    }
+    
+    .ctaBanner {
+        padding: 30px 30px;
+        .container {
+            .bannerBox {
+                height: 360px;
+                h2 {
+                    color: #fff;
+                    font-size: 3rem;
+                    font-weight: 600;
+                }
+                p {
+                    font-size: 1.3rem;
+                    font-family: 'Source Sans Pro', sans-serif;
+                    color: #f5f5f5;
+                    margin-top: 20px;
+                }
+                .circleOutlineOne {
+                    width: 270px;
+                    height: 270px;
+                    border-radius: 100%;
+                    border: 9px solid #F5F5F591;
+                    position: absolute;
+                    bottom: -100px;
+                    left: -100px;
+                }
+                .circleOutlineTwo {
+                    width: 140px;
+                    height: 140px;
+                    border-radius: 100%;
+                    border: 9px solid #F5F5F591;
+                    position: absolute;
+                    bottom: -50px;
+                    left: -50px;
+                }
+                .firstCircle {
+                    width: 85px;
+                    height: 85px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    top: 30px;
+                    left: 180px;
+                }
+                .secondCircle {
+                    width: 30px;
+                    height: 30px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    top: 30px;
+                    left: 170px;
+                }
+                .thirdCircle {
+                    width: 140px;
+                    height: 140px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    right: -50px;
+                    bottom: -50px;
+                }
+                .fourthCircle {
+                    width: 200px;
+                    height: 200px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    top: -140px;
+                    right: 140px;
+                }
+                .fifthCircle {
+                    width: 60px;
+                    height: 60px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    bottom: 100px;
+                    right: 41%;
+                }
+                .sixthCircle {
+                    width: 30px;
+                    height: 30px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    top: 200px;
+                    right: 21%;
+                }
+                .downIcon {
+                    width: 70px;
+                    height: 70px;
+                    bottom: -35px;
+                }
+                .customBtn {
+                    z-index: 5;
+                    position: relative;
+                }
+            }
+        }
+    }
+    
+    .features {
+        padding: 50px 30px;
+        .container{
+            .iconWrapper {
+                height: 100px;
+                img {
+                    width: 80px;
+                }
+            }
+             h3 {
+                 font-size: 1.35rem;
+             }
+             p {
+                 font-size: 1.2rem;
+             }
+        }
+    }
+    
+    .howItWorks {
+        padding: 40px 30px;
+        .container {
+            .detailed {
+                min-height: 450px;
+                padding: 40px 50px 40px 40px;
+                h2 {
+                    font-size: 2.3rem;
+                    margin-bottom: 35px;
+                }
+                p {
+                    font-size: 1.1rem;
+                }
+                .textBtn {
+                    background-color: rgba(0,0,0,0);
+                    display: block;
+                    margin-top: 40px;
+                    border: none;
+                    color:#741763;
+                    font-size: 1.2rem;
+                    font-family: 'Source Sans Pro', sans-serif;
+                    font-weight: 600;
+                    text-decoration: underline;
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
+            .steps {
+                height: 400px;
+                margin: auto 0;
+                margin-left: -25px;
+                padding: 30px 30px;
+                h3 {
+                    margin-bottom: 40px;
+                    font-size: 2rem;
+                }
+                .stepGroup {
+                    .icon {
+                        display: block;
+                        min-width: 30px;
+                        margin-right: 20px;
+                        font-size: 30px;
+                    }
+                    p {
+                        margin-bottom: 0;
+                        font-size: 1.3rem;
+                        font-family: 'Source Sans Pro', sans-serif;
+                        font-weight: 600;
+                    }
+                }
+            }
+            .imageCopy {
+                height: 450px;
+                margin: auto 0;
+                margin-left: -25px;
+                padding: 0;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    // object-position: top;
+                    border-radius: 30px;
+                }
+            }
+        }
+    }
+    
+    .subscribeEmail {
+        padding: 40px 30px;
+        .container {
+            h2 {
+                width: 70%;
+                margin: 0 auto;
+                font-size: 2.2rem;
+                margin-bottom: 50px;
+            }
+            .emailInput {
+                width: 85%;
+                input {
+                    width: 100%;
+                    padding: 18px 40px;
+                    border-radius: 7px;
+                }
+                button {
+                    border-radius: 7px;
+                    padding: 10px 24px;
+                    border: 1px solid #A02089;
+                    position: absolute;
+                    right: 10px;
+                    top: 8px;
+                }
+            }
+        }
+    }    
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .productsMenu {
+        padding: 100px 100px;
+        .container {
+            max-width: 1200px;
+            margin-top: 120px;
+            .menuBox {
+                padding: 40px 30px;
+                height: 220px;
+            }
+            .activeMenu {
+                padding: 40px 30px;
+                height: 220px;
+            }
+        }
+    }
+    
+    .ctaBanner {
+        padding: 20px 100px;
+        background-color: #F5F5F5;
+        .container {
+            max-width: 1200px;
+            .bannerBox {
+                height: 380px;
+                border-radius: 35px;
+                h2 {
+                    color: #fff;
+                    font-size: 3.3rem;
+                    font-weight: 600;
+                }
+                p {
+                    font-size: 1.3rem;
+                }
+                .circleOutlineOne {
+                    width: 300px;
+                    height: 300px;
+                    border-radius: 100%;
+                    border: 9px solid #F5F5F591;
+                    position: absolute;
+                    bottom: -100px;
+                    left: -100px;
+                }
+                .circleOutlineTwo {
+                    width: 170px;
+                    height: 170px;
+                    border-radius: 100%;
+                    border: 9px solid #F5F5F591;
+                    position: absolute;
+                    bottom: -50px;
+                    left: -50px;
+                }
+                .firstCircle {
+                    width: 85px;
+                    height: 85px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    top: 30px;
+                    left: 180px;
+                }
+                .secondCircle {
+                    width: 30px;
+                    height: 30px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    top: 30px;
+                    left: 170px;
+                }
+                .thirdCircle {
+                    width: 160px;
+                    height: 160px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    right: -50px;
+                    bottom: -50px;
+                }
+                .fourthCircle {
+                    width: 200px;
+                    height: 200px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    top: -120px;
+                    right: 200px;
+                }
+                .fifthCircle {
+                    width: 60px;
+                    height: 60px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    bottom: 100px;
+                    right: 41%;
+                }
+                .sixthCircle {
+                    width: 30px;
+                    height: 30px;
+                    background-color: #F5F5F545;
+                    border-radius: 100%;
+                    position: absolute;
+                    top: 200px;
+                    right: 21%;
+                }
+            }
+        }
+    }
+    
+    .features {
+        padding: 120px 100px 40px;
+        .container{
+            max-width: 1200px;
+             h3 {
+                 font-size: 1.35rem;
+             }
+             p {
+                 font-size: 1.1rem;
+             }
+        }
+    }
+    
+    .howItWorks {
+        padding: 80px 100px;
+        background-color: #f5f5f5;
+        .container {
+            max-width: 1200px;
+            .detailed {
+                min-height: 500px;
+                background-color: #E2E2E2;
+                border-radius: 30px;
+                padding: 60px 80px 60px 60px;
+                h2 {
+                    font-size: 2.3rem;
+                    margin-bottom: 35px;
+                }
+                p {
+                    font-size: 1.1rem;
+                    font-family: 'Source Sans Pro', sans-serif;
+                }
+            }
+            .steps {
+                height: 100%;
+                margin: auto 0;
+                margin-left: -50px;
+                padding: 40px 30px;
+                h3 {
+                    margin-bottom: 40px;
+                    font-family: 'Source Sans Pro', sans-serif;
+                    // font-size: 1.2rem;
+                    font-weight: 600;
+                }
+                .stepGroup {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 30px;
+                    .icon {
+                        min-width: 30px;
+                        font-size: 30px;
+                    }
+                    p {
+                        margin-bottom: 0;
+                        font-size: 1.3rem;
+                        font-family: 'Source Sans Pro', sans-serif;
+                        font-weight: 600;
+                    }
+                }
+            }
+            .imageCopy {
+                height: 450px;
+                background-color:#FFFFFF;
+                border-radius: 30px;
+                margin: auto 0;
+                margin-left: -80px;
+                box-shadow: 15px 20px 35px #00000017;
+                padding: 0;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    // object-position: top;
+                    border-radius: 30px;
+                }
+            }
+        }
+    }
+    
+    .subscribeEmail {
+        padding: 60px 100px;
+        text-align: center;
+        background-color: #f4e7f2;
+        .container {
+            max-width: 1200px;
+            h2 {
+                width: 60%;
+                margin: 0 auto;
+                font-weight: 700;
+                font-size: 2.5rem;
+                color: #741763;
+                margin-bottom: 50px;
+            }
+            .emailInput {
+                width: 70%;
+                margin: 0 auto;
+                position: relative;
+                input {
+                    width: 100%;
+                    padding: 25px 50px;
+                    border-radius: 15px;
+                    border: none;
+                    box-shadow: 5px 10px 20px #00000017;
+                    font-size: 1.1rem;
+                    font-family: 'Source Sans Pro', sans-serif;
+                    &:focus {
+                        outline: none;
+                    }
+                }
+                button {
+                    font-size: 1.1rem;
+                    font-family: 'Source Sans Pro', sans-serif;
+                    background-color: #A02089;
+                    border-radius: 10px;
+                    color: #fff;
+                    text-transform: uppercase;
+                    font-weight: 700;
+                    padding: 13px 35px;
+                    border: 1px solid #A02089;
+                    position: absolute;
+                    right: 10px;
+                    top: 10.5px;
+                }
+            }
+        }
+    }       
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
     .productsMenu {
         background-color: #F5F5F5;
         padding: 100px 100px;
@@ -688,19 +1401,4 @@
             }
         }
     }    
-}
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-  
-}
-
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-  
-}
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-
 }
