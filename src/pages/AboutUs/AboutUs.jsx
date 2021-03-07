@@ -31,12 +31,15 @@ const TeamDisplay = ({ memberImg, name, title, fbLink, twitterLink, linkedIn, ch
   return (
     <>
       <Row className={styles.row}>
-        <Col md={4} className={styles.firstCol}>
+        <Col xs={12} sm={12} md={4} className={styles.firstCol}>
           <div className={styles.imageContainer}>
             <img src={memberImg} alt={title} />
             <div className={styles.nameTag}>
               <h5>{name}</h5>
               <p>{title}</p>
+            </div>
+            <div className={styles.mobileBio}>
+              <p>{children}</p>
             </div>
             <div className={styles.socialIcons}>
               <a href="">
@@ -51,7 +54,7 @@ const TeamDisplay = ({ memberImg, name, title, fbLink, twitterLink, linkedIn, ch
             </div>
           </div>
         </Col>
-        <Col md={8} className={styles.secondCol}>
+        <Col xs={12} sm={12} md={8} className={styles.secondCol}>
           <div className={styles.bio}>
             <p>{children}</p>
           </div>
@@ -77,7 +80,7 @@ const AboutUs = ({ history }) => {
       <div className={styles.moreInfo}>
         <div className={styles.container}>
           <Row>
-            <Col className={styles.copyCol}>
+            <Col xs={12} sm={12} md={6} lg={6} className={[styles.copyCol, 'mb-4'].join(' ')}>
               <div>
                 <h4>About Gypsy Capital</h4>
                 <h2>We are a dynamic team of creative people with innovative mind</h2>
@@ -85,7 +88,7 @@ const AboutUs = ({ history }) => {
                 <p>“No matter what your personal goals may be, at Gypsy, we are invested in you, if you have the credible financial data.”</p>
               </div>
             </Col>
-            <Col>
+            <Col xs={12} sm={12} md={6} lg={6}>
               <div className={styles.box}>
                 <img src={Illustration} alt="A dynamic team" />
               </div>
@@ -96,7 +99,7 @@ const AboutUs = ({ history }) => {
       <div className={styles.companyValues}>
         <div className={styles.container}>
           <Row>
-            <Col>
+            <Col sm={12} md={4} className="mb-5">
               <ValueBox
                 title="Vision"
                 borderColor="#1F8DE8"
@@ -105,7 +108,7 @@ const AboutUs = ({ history }) => {
                 To grow into a long term successful global financial services and investment firm, delivering exceptional value to the market we serve.
               </ValueBox>
             </Col>
-            <Col>
+            <Col sm={12} md={4} className="mb-5">
               <ValueBox
                 title="Mission"
                 icon={Mission}
@@ -114,7 +117,7 @@ const AboutUs = ({ history }) => {
                 To grow into a long term successful global financial services and investment firm, delivering exceptional value to the market we serve.
               </ValueBox>
             </Col>
-            <Col>
+            <Col sm={12} md={4} className="mb-5">
               <ValueBox
                 title="Focus"
                 icon={Focus}
