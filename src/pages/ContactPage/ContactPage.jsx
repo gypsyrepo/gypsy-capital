@@ -44,11 +44,11 @@ const ContactPage = ({ history }) => {
       <div className={styles.contactSection}>
         <div className={styles.container}>
           <Row>
-            <Col md={7}>
+            <Col sm={12} md={7} className="mb-5 mb-md-0">
               <div className={styles.contactForm}>
                 <h3>Send Us A Message</h3>
-                <Row className="mb-4">
-                  <Col>
+                <Row className="mb-0 mb-md-4">
+                  <Col sm={12} md={6} className="mb-3 mb-md-0">
                     <InputField 
                       type="text"
                       placeholder="Name"
@@ -57,7 +57,7 @@ const ContactPage = ({ history }) => {
                       changed={(val) => setFormData({ ...formData, name: val })}
                     />
                   </Col>
-                  <Col>
+                  <Col sm={12} md={6} className="mb-3 mb-md-0">
                     <InputField 
                       type="email"
                       placeholder="Email"
@@ -67,8 +67,8 @@ const ContactPage = ({ history }) => {
                     />
                   </Col>
                 </Row>
-                <Row className="mb-4">
-                  <Col>
+                <Row className="mb-0 mb-md-4">
+                  <Col className="mb-3 mb-md-0">
                     <InputField 
                       type="text"
                       placeholder="Subject"
@@ -78,8 +78,8 @@ const ContactPage = ({ history }) => {
                     />
                   </Col>
                 </Row>
-                <Row className="mb-4">
-                  <Col>
+                <Row className="mb-0 mb-md-4">
+                  <Col className="mb-3 mb-md-0">
                     <InputField 
                       type="textarea"
                       placeholder="Message"
@@ -94,23 +94,23 @@ const ContactPage = ({ history }) => {
                 </button>
               </div>
             </Col>
-            <Col md={5}>
+            <Col sm={12} md={5} className="mb-5 mb-md-0">
               <div className={styles.addressBox}>
                 <h3>Get In Touch</h3>
                 <div className={styles.addressGroup}>
-                  <HiLocationMarker className={styles.icon} size="4em" />
+                  <HiLocationMarker className={[styles.icon, styles.locator].join(' ')} size="3.5em" />
                   <p>Landmark Towers, 5B Water Corporation Rd,Oniru Rd, Victoria Island 101241, Lagos</p>
                 </div>
                 <div className={styles.addressGroup}>
-                  <HiMail className={styles.icon} size="1.8em" />
+                  <HiMail className={[styles.icon, styles.others].join(' ')} size="1.8em" />
                   <p>hello@gypsycapital.com</p>
                 </div>
                 <div className={styles.addressGroup}>
-                  <HiPhone className={styles.icon} size="1.8em" />
+                  <HiPhone className={[styles.icon, styles.others].join(' ')} size="1.8em" />
                   <p>+234 809 9907 888</p>
                 </div>
                 <div className={styles.addressGroup}>
-                  <IoLogoWhatsapp className={styles.icon} size="1.8em" />
+                  <IoLogoWhatsapp className={[styles.icon, styles.others].join(' ')} size="1.8em" />
                   <p>+234 809 9907 888</p>
                 </div>
               </div>

@@ -12,7 +12,7 @@ import CEO from '../../assets/ceo.png';
 import Partner from '../../assets/partner.png';
 import Director1 from '../../assets/director.png';
 import Director2 from '../../assets/director-2.png';
-import { useRouteMatch, Link } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 
 
 const ValueBox = ({ title, children, icon, borderColor }) => {
@@ -31,7 +31,7 @@ const TeamDisplay = ({ memberImg, name, title, fbLink, twitterLink, linkedIn, ch
   return (
     <>
       <Row className={styles.row}>
-        <Col xs={12} sm={12} md={4} className={styles.firstCol}>
+        <Col xs={12} sm={12} md={5} lg={4} className={styles.firstCol}>
           <div className={styles.imageContainer}>
             <img src={memberImg} alt={title} />
             <div className={styles.nameTag}>
@@ -54,7 +54,7 @@ const TeamDisplay = ({ memberImg, name, title, fbLink, twitterLink, linkedIn, ch
             </div>
           </div>
         </Col>
-        <Col xs={12} sm={12} md={8} className={styles.secondCol}>
+        <Col xs={12} sm={12} md={7} lg={8} className={styles.secondCol}>
           <div className={styles.bio}>
             <p>{children}</p>
           </div>
@@ -79,7 +79,7 @@ const AboutUs = ({ history }) => {
       </div>
       <div className={styles.moreInfo}>
         <div className={styles.container}>
-          <Row>
+          <Row className="align-items-center">
             <Col xs={12} sm={12} md={6} lg={6} className={[styles.copyCol, 'mb-4'].join(' ')}>
               <div>
                 <h4>About Gypsy Capital</h4>
