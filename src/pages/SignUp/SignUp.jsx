@@ -120,7 +120,7 @@ const SignUp = () => {
       <div className={styles.registerBox}>
         <ToastContainer position="top-center" />
         <Row>
-          <Col>
+          <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField type="text" 
               nameAttr="firstName" 
               label="First Name" 
@@ -132,7 +132,7 @@ const SignUp = () => {
               error={validationErrors.firstName && validationErrors.firstName}
             />
           </Col>
-          <Col>
+          <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField type="text" 
               nameAttr="lastName" 
               label="Last Name" 
@@ -145,8 +145,8 @@ const SignUp = () => {
             />
           </Col>
         </Row>
-        <Row className="mt-4">
-          <Col>
+        <Row className="mt-0 mt-md-4">
+          <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField type="email" 
               nameAttr="email" 
               label="Email" 
@@ -158,7 +158,7 @@ const SignUp = () => {
               error={validationErrors.email && validationErrors.email}
             />
           </Col>
-          <Col>
+          <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField type="phone" 
               nameAttr="mobileNo" 
               label="Mobile Number" 
@@ -171,8 +171,8 @@ const SignUp = () => {
             />
           </Col>
         </Row>
-        <Row className="mt-4">
-          <Col>
+        <Row className="mt-0 mt-md-4">
+          <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField type="password" 
               nameAttr="password" 
               label="Password" 
@@ -184,7 +184,7 @@ const SignUp = () => {
               error={validationErrors.password && validationErrors.password}
             />
           </Col>
-          <Col>
+          <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField type="password" 
               nameAttr="confirmPassword" 
               label="Confirm Password" 
@@ -197,8 +197,8 @@ const SignUp = () => {
             />
           </Col>
         </Row>
-        <Row className="mt-4">
-          <Col>
+        <Row className="mt-0 mt-md-4">
+          <Col className="mb-4 mb-md-0">
             <InputField type="select" 
               label="How did you hear about us?" 
               options={referralOptions} 

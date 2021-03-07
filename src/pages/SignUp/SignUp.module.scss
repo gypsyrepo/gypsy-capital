@@ -2,28 +2,31 @@
     background-color: #F5F5F5;
     margin: 0 auto;
     text-align: center;
-    padding-top: 40px;
-    padding-bottom: 90px;
+    padding: 40px 20px 50px;
+    img {
+        width: 170px;
+    }
     h1 {
-        font-size: 36px;
+        font-size: 1.75rem;
+        margin-top: 20px;
         font-weight: 700;
         color: #741763;
     }
     .subtitle {
         font-family: 'Source Sans Pro', sans-serif;
-        font-size: 22px;
+        font-size: 1.3rem;
     }
 }
 
 .registerBox {
-    width: 55%;
+    width: 100%;
     background-color: #FFFFFF;
     box-shadow: 8px 15px 30px #0000001A;
     border-radius: 15px;
     margin: 0 auto;
     margin-top: 50px;
     // margin-bottom: 90px;
-    padding: 60px 80px 40px;
+    padding: 30px 35px 20px;
     .authLink {
         font-family: 'Source Sans Pro', sans-serif;
         font-size: 1.05rem;
@@ -41,4 +44,103 @@
             color: #741763;
         }
     }
+}
+
+
+@media only screen and (min-width: 600px) {
+    .container {
+        padding: 40px 20px 50px;
+        img {
+            width: 200px
+        }
+        h1 {
+            font-size: 2.25rem;
+        }
+        .subtitle {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 22px;
+        }
+    }
+    
+    .registerBox {
+        width: 550px;
+        background-color: #FFFFFF;
+        box-shadow: 8px 15px 30px #0000001A;
+        border-radius: 15px;
+        margin: 0 auto;
+        margin-top: 50px;
+        // margin-bottom: 90px;
+        padding: 30px 35px 20px;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .container {
+        padding: 40px 20px 50px;
+        img {
+            width: 200px
+        }
+        h1 {
+            font-size: 2.25rem;
+        }
+        .subtitle {
+            font-size: 22px;
+        }
+    }
+    
+    .registerBox {
+        width: 550px;
+        padding: 30px 35px 20px;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .container {
+        padding: 40px 20px 50px;
+        img {
+            width: 200px
+        }
+        h1 {
+            font-size: 2.25rem;
+        }
+        .subtitle {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 22px;
+        }
+    }
+    
+    .registerBox {
+        width: 55%;
+        background-color: #FFFFFF;
+        box-shadow: 8px 15px 30px #0000001A;
+        border-radius: 15px;
+        margin: 0 auto;
+        margin-top: 50px;
+        // margin-bottom: 90px;
+        padding: 60px 80px 40px;
+        .authLink {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 1.05rem;
+            a {
+                font-weight: 700;
+                color: #741763;
+            }
+        }
+        .legalLink {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 1rem;
+            margin-top: 75px;
+            a {
+                font-weight: 600;
+                color: #741763;
+            }
+        }
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
 }
