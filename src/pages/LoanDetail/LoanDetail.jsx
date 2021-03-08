@@ -303,7 +303,7 @@ const LoanDetail = () => {
         { visibleSection === "basic" && 
           <BasicInfo 
             data={ loanDetails ? { 
-              client: {...loanDetails.client[0].bioData},
+              client: {...loanDetails.client[0]?.bioData},
               ...loanDetails.loan
             } : null } 
             userRole={user.role}

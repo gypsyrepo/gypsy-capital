@@ -224,6 +224,19 @@ const ProfileView = () => {
                   <p>Add Card</p>
                 </div>
               </div> }
+              { visiblePaymentSection === "bank" && <div className={styles.addCard}>
+                <div className={styles.cardInner}>
+                  <Button
+                    className="mt-5" 
+                    fullWidth  
+                    bgColor="#741763" 
+                    size="lg" 
+                    color="#EBEBEB"
+                  >
+                    Link Financial Institution
+                  </Button>
+                </div>
+              </div> }
             </div>
           </div>
         }

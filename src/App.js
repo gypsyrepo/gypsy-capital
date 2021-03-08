@@ -14,7 +14,6 @@ import {
   AboutUs, 
   ContactPage,
   LoanCalculator,
-  MonoWidget, 
   Faqs,
   AgentOverview,
   ClientListPage,
@@ -57,7 +56,6 @@ const RouteManager = () =>  {
           <Route exact path={pageUrl.VERIFY_OTP_PAGE}><OtpVerify /></Route>
           <Route exact path={pageUrl.ABOUT_US_PAGE}><AboutUs /></Route>
           <Route exact path={pageUrl.CONTACT_PAGE}><ContactPage /></Route>
-          <Route exact path={pageUrl.MONO_WIDGET_PAGE}><MonoWidget /></Route>
           <Route exact path={pageUrl.LOAN_CALCULATOR_PAGE}><LoanCalculator /></Route>
           <Route exact path={pageUrl.FAQ_PAGE}><Faqs /></Route>
           <Route exact path={pageUrl.FORGOT_PASSWORD_PAGE}><ForgotPassword /></Route>

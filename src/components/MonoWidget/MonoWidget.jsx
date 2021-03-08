@@ -16,10 +16,20 @@ export default function Mono() {
   }, [])
 
   return (
-    <div style={{height: '100vh'}}>
-      <button style={{display: 'block', margin: 'auto', marginTop: '45vh', padding: '20px 55px'}} onClick={() => monoConnect.open()}>
-        Link Your Financial Account
-      </button>
-    </div>
+    // <div style={{height: '100vh'}}>
+    //   <button style={{display: 'block', margin: 'auto', marginTop: '45vh', padding: '20px 55px'}} onClick={() => monoConnect.open()}>
+    //     Link Your Financial Account
+    //   </button>
+    // </div>
+    <Button
+      className="mt-5" 
+      fullWidth  
+      bgColor="#741763" 
+      size="lg" 
+      color="#EBEBEB"
+      cli
+    >
+      Link Your Financial Account
+    </Button>
   )
 }
