@@ -50,7 +50,11 @@ const LoanCalculator = () => {
                 label="How much do you need?"
                 nameAttr="loanAmt"
                 value={loanData.proposedAmount}
-                changed={(val) => setLoanData({ ...loanData, proposedAmount: val})}
+                changed={(val) => {
+                  setLoanData({ ...loanData, proposedAmount: val});
+                  setInputError({ ...inputErrors, proposedAmount: null })
+                }}
+                error={inputErrors.proposedAmount && inputErrors.proposedAmount}
               />
             </Col>
           </Row>
@@ -62,7 +66,11 @@ const LoanCalculator = () => {
                 nameAttr="proposedDuration"
                 options={[1, 2, 3]}
                 value={loanData.proposedDuration}
-                changed={(val) => setLoanData({ ...loanData, proposedDuration: val})}
+                changed={(val) => {
+                  setLoanData({ ...loanData, proposedDuration: val});
+                  setInputError({ ...inputErrors, proposedDuration: null })
+                }}
+                error={inputErrors.proposedDuration && inputErrors.proposedDuration}
               />
             </Col>
           </Row>
@@ -73,7 +81,11 @@ const LoanCalculator = () => {
                 label="What is your monthly income?"
                 nameAttr="monthlyIncome"
                 value={loanData.monthlyIncome}
-                changed={(val) => setLoanData({ ...loanData, monthlyIncome: val})}
+                changed={(val) => {
+                  setLoanData({ ...loanData, monthlyIncome: val});
+                  setInputError({ ...inputErrors, monthlyIncome: null })
+                }}
+                error={inputErrors.monthlyIncome && inputErrors.monthlyIncome}
               />
             </Col>
           </Row>
@@ -85,7 +97,11 @@ const LoanCalculator = () => {
                 options={['Self-Employed', 'Unemployed', 'Employed']}
                 nameAttr="employStatus"
                 value={loanData.employmentStatus}
-                changed={(val) => setLoanData({ ...loanData, employmentStatus: val})}
+                changed={(val) => {
+                  setLoanData({ ...loanData, employmentStatus: val});
+                  setInputError({ ...inputErrors, employmentStatus: null })
+                }}
+                error={inputErrors.employmentStatus && inputErrors.employmentStatus}
               />
             </Col>
           </Row>
@@ -96,7 +112,11 @@ const LoanCalculator = () => {
                 label="Estimated monthly repayment"
                 nameAttr="proposedRepayment"
                 value={loanData.proposedMonthyRepayment}
-                changed={(val) => setLoanData({ ...loanData, proposedMonthyRepayment: val})}
+                changed={(val) => {
+                  setLoanData({ ...loanData, proposedMonthyRepayment: val});
+                  setInputError({ ...inputErrors, proposedMonthyRepayment: null })
+                }}
+                error={inputErrors.proposedMonthyRepayment && inputErrors.proposedMonthyRepayment }
               />
             </Col>
           </Row>

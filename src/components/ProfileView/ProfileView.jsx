@@ -7,6 +7,7 @@ import { BiCreditCard, BiPlus } from 'react-icons/bi';
 import { RiBankFill } from 'react-icons/ri';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { Context as UserContext } from '../../context/UserContext';
+import MonoWidget from '../../components/MonoWidget/MonoWidget';
 
 
 const ProfileView = () => {
@@ -224,17 +225,10 @@ const ProfileView = () => {
                   <p>Add Card</p>
                 </div>
               </div> }
-              { visiblePaymentSection === "bank" && <div className={styles.addCard}>
-                <div className={styles.cardInner}>
-                  <Button
-                    className="mt-5" 
-                    fullWidth  
-                    bgColor="#741763" 
-                    size="lg" 
-                    color="#EBEBEB"
-                  >
-                    Link Financial Institution
-                  </Button>
+              { visiblePaymentSection === "bank" && <div className={styles.monoLink}>
+                <div>
+                  <h4>To completely setup your account, you need to link your bank</h4>
+                  <MonoWidget />
                 </div>
               </div> }
             </div>
