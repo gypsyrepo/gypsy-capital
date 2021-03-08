@@ -77,127 +77,92 @@ const DecisionApproval = () => {
 }
 
 
-const ApiServices = () => {
+const RepaySetup = () => {
 
-  const [visible, setVisible] = useState('flutter');
+  const [repayData, setRepayData] = useState({
+
+  });
 
   return (
-    <div className={styles.apiBox}>
-      <div className={styles.header}>
-        <div 
-          className={[styles.menuWrapper, visible === 'flutter' && styles.activeLeftMenu].join(' ')}
-          onClick={() => setVisible('flutter')}
-        >
-          <h5>Flutterwave</h5>
-        </div>
-        <div 
-          className={[styles.menuWrapper, visible === 'mono' && styles.activeMidMenu].join(' ')} 
-          style={{borderLeft: '1px solid #741763', borderRight: '1px solid #741763'}}
-          onClick={() => setVisible('mono')}
-        >
-          <h5>Mono</h5>
-        </div>
-        <div 
-          className={[styles.menuWrapper, visible === 'remita' && styles.activeRightMenu].join(' ')}
-          onClick={() => setVisible('remita')}
-        >
-          <h5>Remita</h5>
-        </div>
-      </div>
-      <div className={styles.body}>
-        { visible === "flutter" && 
-          <Button
-            className="mt-4" 
-            // clicked={updateContactInfo} 
-            bgColor="#741763" 
-            size="lg" 
-            color="#EBEBEB"
-            // disabled={loading}
-            // loading={loading}
-          >
-            Create payment plan
-          </Button>
-        }
-        { visible === "mono" && 
-          <Row>
-            <Col>
-              <Button
-                className="mt-4" 
-                fullWidth 
-                // clicked={updateContactInfo} 
-                bgColor="#741763" 
-                size="sm" 
-                color="#EBEBEB"
-                // disabled={loading}
-                // loading={loading}
-              >
-                Get Account Statement
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="mt-4" 
-                fullWidth 
-                // clicked={updateContactInfo} 
-                bgColor="#741763" 
-                size="sm" 
-                color="#EBEBEB"
-                // disabled={loading}
-                // loading={loading}
-              >
-                Get Transaction History
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="mt-4" 
-                fullWidth 
-                // clicked={updateContactInfo} 
-                bgColor="#741763" 
-                size="sm" 
-                color="#EBEBEB"
-                // disabled={loading}
-                // loading={loading}
-              >
-                Get Account<br/> Info
-              </Button>
-            </Col>
-          </Row>
-        }
-        { visible === "remita" && 
-          <div className={styles.tableCard}>
-            <h3>Mandate Status</h3>
-            <Table striped>
-              <thead>
-                <tr>
-                  <th>Status</th>
-                  <th>Activation Date</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Inactive</td>
-                  <td>Null</td>
-                  <td>27/04/2021</td>
-                  <td>27/08/2021</td>
-                </tr>
-              </tbody>
-            </Table>
-            <Button
-              className="mt-4" 
-              // clicked={updateContactInfo} 
-              bgColor="#741763" 
-              size="lg" 
-              color="#EBEBEB"
-            >
-              Setup Mandate
-            </Button>
-          </div>
-        }
-      </div>
-    </div>
+    <>
+      <Row className="mb-4">
+        <Col>
+          <InputField 
+            type="select"
+            label="Repayment API"
+            nameAttr="repayApi"
+            options={["Paystack", "Remita"]}
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4">
+        <Col>
+          <InputField 
+            type="text"
+            label="Total Repayment"
+            nameAttr="totalRepay"
+          />
+        </Col>
+        <Col>
+          <InputField 
+            type="text"
+            label="Tenure"
+            nameAttr="tenure"
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4">
+        <Col>
+          <InputField 
+            type="text"
+            label="Pay day"
+            nameAttr="payday"
+          />
+        </Col>
+        <Col>
+          <InputField 
+            type="text"
+            label="Repayment Start Date"
+            nameAttr="startDate"
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4">
+        <Col>
+          <InputField 
+            type="text"
+            label="Bank Name"
+            nameAttr="bankName"
+          />
+        </Col>
+        <Col>
+          <InputField 
+            type="text"
+            label="Account Number"
+            nameAttr="accountNumber"
+          />
+        </Col>
+      </Row>
+      <Button
+        className="mt-4" 
+        fullWidth 
+        // clicked={updateContactInfo} 
+        bgColor="#741763" 
+        size="lg" 
+        color="#EBEBEB"
+        // disabled={loading}
+        // loading={loading}
+      >
+        Continue
+      </Button>
+    </>
+  )
+}
+
+
+const MonoTab = () => {
+  return (
+    <></>
   )
 }
 
@@ -220,8 +185,8 @@ const ProcessorLoanDetails = () => {
       shortlink: "decision"
     },
     {
-      title: "API Services",
-      shortlink: "api"
+      title: "Repayment Setup",
+      shortlink: "setup"
     },
     {
       title: "Repayment Schedule",
@@ -230,6 +195,10 @@ const ProcessorLoanDetails = () => {
     {
       title: "Offer Letter",
       shortlink: "offer"
+    },
+    { 
+      title: "Mono",
+      shortlink: "mono"
     }
   ]
 
@@ -261,8 +230,8 @@ const ProcessorLoanDetails = () => {
           <DecisionApproval /> :
           null
         }
-        { visibleSection === "api" ? 
-          <ApiServices /> :
+        { visibleSection === "setup" ? 
+          <RepaySetup /> :
           null
         }
         { visibleSection === "repay" ? 
@@ -277,6 +246,10 @@ const ProcessorLoanDetails = () => {
         { visibleSection === "offer" ? 
           // <PDFViewer width="100%" height={500}><OfferLetterPdf /></PDFViewer> 
           <OfferLetterForm />:
+          null
+        }
+        { visibleSection === "mono" ? 
+          <MonoTab /> :
           null
         }
       </div>
