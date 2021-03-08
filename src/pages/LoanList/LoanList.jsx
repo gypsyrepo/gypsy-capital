@@ -22,7 +22,7 @@ const LoanList = () => {
     retrieveClientLoans();
   }, []);
 
-  // console.log(loans);
+  console.log(loans);
 
   const location = useLocation();
   const salesRoutes = routes[1];
@@ -69,6 +69,7 @@ const LoanList = () => {
                 <th>Status</th>
                 <th>Repayment Source</th>
                 <th>Loan Amount</th>
+                <th>DTI</th>
                 <th>Balance</th>
               </tr>
             </thead>
@@ -85,6 +86,7 @@ const LoanList = () => {
                   <td>{_.capitalize(loan.status)}</td>
                   <td>{'Salary'}</td>
                   <td>{`N ${numberWithCommas(loan.amount)}`}</td>
+                  <td>{`${loan?.DTI}%`}</td>
                   <td>______</td>
                 </tr>
               ))}

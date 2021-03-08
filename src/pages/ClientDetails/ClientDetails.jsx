@@ -15,26 +15,13 @@ import Loader from '../../components/Loader/Loader';
 import usePagination from '../../hooks/usePagination';
 import { numberWithCommas } from '../../utils/nigeriaStates';
 import { TiCancelOutline } from 'react-icons/ti';
+import useLoanDetails from '../../hooks/useLoanDetails';
 import _ from 'lodash';
 
 
 export const Biodata = ({ data, userId }) => {
 
-  const { state: { loans, loanDetails }, retrieveClientLoans, retrieveLoan } = useContext(LoanContext);
-
-  useEffect(() => {
-    retrieveClientLoans();
-  }, []);
-
-
-  const userLoans = useMemo(() => {
-    return loans.filter(loan => loan.clientInfo[0]?._id === userId)
-  }, [loans]);
-
-  useEffect(() => {
-    retrieveLoan(userLoans[0]?._id)
-  }, [userLoans])
-
+  const [ loanDeets ] = useLoanDetails(userId);
 
   const [biodata, setBiodata] = useState({
     firstName: "",
@@ -67,10 +54,10 @@ export const Biodata = ({ data, userId }) => {
   }, [data]);
 
   useEffect(() => {
-    if(loanDetails) {
-      setResidentialStatus(_.capitalize(loanDetails?.residence[0]?.residentialStatus))
+    if(loanDeets) {
+      setResidentialStatus(_.capitalize(loanDeets?.residence[0]?.residentialStatus))
     }
-  }, [loanDetails])
+  }, [loanDeets])
 
   return (
     <>
@@ -270,20 +257,7 @@ export const Bank = ({ data, userId }) => {
     accountName: ""
   });
 
-  const { state: { loans, loanDetails }, retrieveClientLoans, retrieveLoan } = useContext(LoanContext);
-
-  useEffect(() => {
-    retrieveClientLoans();
-  }, []);
-
-
-  const userLoans = useMemo(() => {
-    return loans.filter(loan => loan.clientInfo[0]?._id === userId)
-  }, [loans]);
-
-  useEffect(() => {
-    retrieveLoan(userLoans[0]?._id)
-  }, [userLoans])
+  const [ loanDeets ] = useLoanDetails(userId);
 
   useEffect(() => {
     if(data) {
@@ -299,16 +273,16 @@ export const Bank = ({ data, userId }) => {
   }, [data])
 
   useEffect(() => {
-    if(loanDetails) {
+    if(loanDeets) {
       setSalaryBank({
         ...salaryBank,
-        bankName: _.startCase(loanDetails?.bank[0]?.bank),
-        accountType: _.capitalize(loanDetails?.bank[0]?.accountType),
-        accountNumber: loanDetails?.bank[0]?.accountNumber,
-        accountName: loanDetails?.bank[0]?.accountName
+        bankName: _.startCase(loanDeets?.bank[0]?.bank),
+        accountType: _.capitalize(loanDeets?.bank[0]?.accountType),
+        accountNumber: loanDeets?.bank[0]?.accountNumber,
+        accountName: loanDeets?.bank[0]?.accountName
       })
     }
-  }, [loanDetails])
+  }, [loanDeets])
 
   return (
     <>
@@ -420,40 +394,27 @@ export const Employer = ({ userId }) => {
     lga: ''
   })
 
-  const { state: { loans, loanDetails }, retrieveClientLoans, retrieveLoan } = useContext(LoanContext);
+  const [ loanDeets ] = useLoanDetails(userId)
 
   useEffect(() => {
-    retrieveClientLoans();
-  }, []);
-
-
-  const userLoans = useMemo(() => {
-    return loans.filter(loan => loan.clientInfo[0]?._id === userId)
-  }, [loans]);
-
-  useEffect(() => {
-    retrieveLoan(userLoans[0]?._id)
-  }, [userLoans])
-
-  useEffect(() => {
-    if(loanDetails) {
+    if(loanDeets) {
       setEmployerInfo({
         ...employerInfo,
-        employerName: loanDetails?.employment[0]?.employerName,
-        employmentDate: loanDetails?.employment[0]?.resumptionDate,
-        employmentSector: _.capitalize(loanDetails?.employment[0]?.sector),
-        employmentType: _.capitalize(loanDetails?.employment[0]?.employmentType),
-        officialEmail: loanDetails?.employment[0]?.officialEmail
+        employerName: loanDeets?.employment[0]?.employerName,
+        employmentDate: loanDeets?.employment[0]?.resumptionDate,
+        employmentSector: _.capitalize(loanDeets?.employment[0]?.sector),
+        employmentType: _.capitalize(loanDeets?.employment[0]?.employmentType),
+        officialEmail: loanDeets?.employment[0]?.officialEmail
       })
       setOfficeAddress({
         ...OfficeAddress,
-        street: loanDetails?.employment[0]?.street,
-        city: loanDetails?.employment[0]?.city,
-        state: _.capitalize(loanDetails?.employment[0]?.state),
-        lga: _.capitalize(loanDetails?.employment[0]?.city),
+        street: loanDeets?.employment[0]?.street,
+        city: loanDeets?.employment[0]?.city,
+        state: _.capitalize(loanDeets?.employment[0]?.state),
+        lga: _.capitalize(loanDeets?.employment[0]?.city),
       })
     }
-  }, [loanDetails])
+  }, [loanDeets])
 
   return (
     <>
