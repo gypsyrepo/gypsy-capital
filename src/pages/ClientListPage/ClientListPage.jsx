@@ -40,7 +40,7 @@ const ClientListPage = () => {
     }
   }, [clientsForRole]);
 
-  // console.log(salesClients);
+  console.log(salesClients);
 
   const { 
     currentList, 
@@ -97,7 +97,7 @@ const ClientListPage = () => {
                     <Link to={`/sales-agent/client/${client._id}`}>{client._id.substr(0,6)}</Link>
                   </td>
                   <td>{client.phoneNumber.replace('234', '0')}</td>
-                  <td>{client.bvn}</td>
+                  <td>{client.more_info[0]?.bioData?.BVN}</td>
                   <td>{moment(client.createdAt).format('lll')}</td>
                 </tr>
               ))}
