@@ -8,7 +8,8 @@ export default function Mono() {
       onClose: () => console.log('Widget closed'),
       onLoad: () => console.log('Widget loaded successfully'),
       onSuccess: ({ code }) => console.log(`Linked successfully: ${code}`),
-      key: "test_pk_4f5soJVmo31hCbKePbfo",
+      // key: "test_pk_4f5soJVmo31hCbKePbfo",
+      key: "live_pk_PvDfizVtAJPsoplNU8r2"
     })
 
     monoInstance.setup()

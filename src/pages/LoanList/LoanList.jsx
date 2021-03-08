@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import styles from './LoanList.module.scss';
 import { useLocation, Link } from 'react-router-dom';
@@ -10,11 +10,13 @@ import { numberWithCommas } from '../../utils/nigeriaStates';
 import usePagination from '../../hooks/usePagination';
 import { Context as LoanContext } from '../../context/LoanContext';
 import _ from 'lodash';
+import Loader from '../../components/Loader/Loader';
+import { TiCancelOutline } from 'react-icons/ti';
 
 
 const LoanList = () => {
 
-  const { state: { loans }, retrieveClientLoans } = useContext(LoanContext);
+  const { state: { loans, loading }, retrieveClientLoans } = useContext(LoanContext);
 
   useEffect(() => {
     retrieveClientLoans();
@@ -57,7 +59,7 @@ const LoanList = () => {
             />
           </div>
         </div>
-        <div className={styles.cardTable}>
+        { !loading ? <div className={styles.cardTable}>
           <Table>
             <thead>
               <tr>
@@ -70,7 +72,7 @@ const LoanList = () => {
                 <th>Balance</th>
               </tr>
             </thead>
-            <tbody>
+            { currentList && currentList.length > 0 ? <tbody>
               { currentList.map((loan, idx) => (
                 <tr>
                   <td className={styles.loanId}>
@@ -86,9 +88,12 @@ const LoanList = () => {
                   <td>______</td>
                 </tr>
               ))}
-            </tbody>
+            </tbody> : null }
           </Table>
-          <div className={styles.tableFooter}>
+          { currentList && currentList.length === 0 ? <div className={styles.nullList}>
+            <TiCancelOutline size="6em" color="rgba(116, 23, 99, 0.6)" />
+          </div> : null }
+          { currentList && currentList.length > 0 ? <div className={styles.tableFooter}>
             <div className={styles.rowsInput}>
               <p>Rows per page: </p>
               <select onChange={(e) => setPostsPerPage(Number(e.currentTarget.value))}>
@@ -105,8 +110,8 @@ const LoanList = () => {
               {items}
               <Pagination.Next onClick={goToNextPage} />
             </Pagination>
-          </div>
-        </div>
+          </div> : null }
+        </div> : <Loader /> }
       </div>
     </Dashboard>
   )

@@ -3,16 +3,40 @@ import styles from './LoanCalculatorForm.module.scss';
 import InputField from '../InputField/InputField';
 import Button from '../Button/Button';
 import { Row, Col } from 'react-bootstrap';
+import Slider from 'react-rangeslider';
 import { validateInput } from '../../utils/validateInput';
 import { ToastContainer, toast } from 'react-toastify';
 import { Context as LoanContext } from '../../context/LoanContext';
 import { Context as AuthContext } from '../../context/AuthContext';
+import 'react-rangeslider/lib/index.css'
+
+
+const DtiRangeSlider = ({ dtiVal, setVal }) => {
+
+  const handleChange = (val) => {
+    setVal(val)
+  }
+
+  return (  
+    <div>
+      <p>DTI: {`${dtiVal}%`}</p>
+      <Slider 
+        min={33}
+        max={50}
+        value={dtiVal}
+        onChange={handleChange}
+      />
+    </div>
+  )
+}
 
 
 const LoanCalculatorForm = ({ delegateApply }) => {
 
   const { state: { loading }, loanApply } = useContext(LoanContext);
+  const { state: { user } } = useContext(AuthContext);
 
+  // const [dti, setDti] = useState(33);
   const [daysOfMonth, setDaysOfMonth] = useState([]);
   const [limitError, setLimitError] = useState(null);
   const [loanCalcData, setLoanCalcData] = useState({
@@ -21,7 +45,8 @@ const LoanCalculatorForm = ({ delegateApply }) => {
     loanAmount: "",
     installmentPeriod: "",
     loanPurpose: "",
-    estimatedMonthlyPayment: ""
+    estimatedMonthlyPayment: "",
+    dti: 33
   });
 
   const [loanCalcDataErrors, setLoanCalcDataErrors] = useState({
@@ -58,15 +83,16 @@ const LoanCalculatorForm = ({ delegateApply }) => {
       //   initRate = toRepay;
       // }
       const monthlyRepay = toRepay / tenor;
-      console.log(monthlyRepay)
-      if(monthlyRepay > (0.333 * Number(monthlySalary))) {
+      const percentDti = (loanCalcData.dti / 100).toFixed(3);
+      console.log(percentDti);
+      if(monthlyRepay > (percentDti * Number(monthlySalary))) {
         setLimitError('You are not eligible for this amount, kindly enter a lower loan amount');
       } else {
         setLimitError(null)
       }
       setLoanCalcData({ ...loanCalcData, estimatedMonthlyPayment: Math.floor(monthlyRepay) })
     }
-  }, [monthlySalary, loanAmount, installmentPeriod])
+  }, [monthlySalary, loanAmount, installmentPeriod, loanCalcData.dti])
 
   const submitLoanCalcData = () => {
     console.log('works');
@@ -79,7 +105,8 @@ const LoanCalculatorForm = ({ delegateApply }) => {
         amount: loanAmount,
         paymentPeriod: installmentPeriod,
         loanPurpose,
-        monthlyRepayment: loanCalcData.estimatedMonthlyPayment
+        monthlyRepayment: loanCalcData.estimatedMonthlyPayment,
+        DTI: loanCalcData.dti
       }
       console.log(applyData);
       limitError ? toast.error(limitError) : delegateApply(applyData);
@@ -154,6 +181,14 @@ const LoanCalculatorForm = ({ delegateApply }) => {
           />
         </Col>
       </Row>
+      {user?.role === "sales" && <Row className="mb-4">
+        <Col>
+          <DtiRangeSlider 
+            dtiVal={loanCalcData.dti} 
+            setVal={(val) => setLoanCalcData({...loanCalcData, dti: val })} 
+            />
+        </Col>
+      </Row>}
       <Row className="mb-4">
         <Col>
           <InputField 

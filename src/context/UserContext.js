@@ -172,7 +172,7 @@ const getClientList = dispatch => async() => {
         "Authorization": `Bearer ${token}`
       }
     });
-    // console.log(response.data);
+    console.log(response.data);
     dispatch({ type: "set_client_list", payload: response.data.users });
     dispatch({ type: "set_loading", payload: false });
   } catch(err) {
