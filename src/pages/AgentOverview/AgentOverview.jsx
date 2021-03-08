@@ -115,7 +115,7 @@ const AgentOverview = () => {
               { recentLoans.map((loan, idx) => (
                 <tr key={idx}>
                   <td>
-                    {`${_.capitalize(loan.clientInfo[0].firstName)} ${_.capitalize(loan.clientInfo[0].lastName)}`}
+                    {`${_.capitalize(loan.clientInfo[0]?.firstName)} ${_.capitalize(loan.clientInfo[0]?.lastName)}`}
                   </td>
                   <td className={styles.loanId}>
                     <Link to={`/sales-agent/loan/${loan._id}`}>

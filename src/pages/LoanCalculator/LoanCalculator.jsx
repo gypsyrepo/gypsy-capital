@@ -17,6 +17,14 @@ const LoanCalculator = () => {
     proposedMonthyRepayment: '',
   })
 
+  const [inputErrors, setInputError] = useState({
+    proposedAmount: null,
+    proposedDuration: null,
+    monthlyIncome: null,
+    employmentStatus: null,
+    proposedMonthyRepayment: null
+  })
+
   const location = useLocation();
   const history = useHistory();
   const { url } = useRouteMatch();

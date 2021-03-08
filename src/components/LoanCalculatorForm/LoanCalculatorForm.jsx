@@ -143,7 +143,7 @@ const LoanCalculatorForm = ({ delegateApply }) => {
           <InputField 
             label="Installment Period"
             type="select"
-            options={['1 Month', '2 Months', '3 Months']}
+            options={['1 Month', '2 Months', '3 Months', '4 Months', '5 Months', '6 Months']}
             nameAttr="installmentCycle"
             value={loanCalcData.installmentPeriod}
             changed={(val) => {
