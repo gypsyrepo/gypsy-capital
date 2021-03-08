@@ -24,21 +24,21 @@ const ClientListPage = () => {
   const [postsPerPage, setPostsPerPage] = useState(5);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { state: { clients, loading }, getClientList, clearErrors } = useContext(UserContext);
+  const { state: { clientsForRole, loading }, getClientListForRole, clearErrors } = useContext(UserContext);
   const { state: { user } } = useContext(AuthContext);
 
   useEffect(() => {
     clearErrors();
-    getClientList();
+    getClientListForRole();
   }, []);
 
   const salesClients = useMemo(() => {
-    if(clients && clients.length > 0) {
-      return clients.filter(client => client.addedBy === user.user_id )
+    if(clientsForRole && clientsForRole.length > 0) {
+      return clientsForRole.filter(client => client.addedBy === user.user_id )
     } else {
       return []
     }
-  }, [clients]);
+  }, [clientsForRole]);
 
   // console.log(salesClients);
 
@@ -55,7 +55,7 @@ const ClientListPage = () => {
   }
 
   const closeModal = () => {
-    getClientList();
+    getClientListForRole();
     setModalOpen(false);
   }
 
