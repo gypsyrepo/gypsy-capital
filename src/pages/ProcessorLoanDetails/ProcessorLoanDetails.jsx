@@ -162,7 +162,58 @@ const RepaySetup = () => {
 
 const MonoTab = () => {
   return (
-    <></>
+    <>
+      <div className={styles.monoContainer}>
+        <Row>
+          <Col>
+            <Button
+              className="mt-4" 
+              fullwidth
+              // clicked={updateContactInfo} 
+              bgColor="#741763" 
+              size="lg" 
+              color="#EBEBEB"
+              // disabled={loading}
+              // loading={loading}
+            >
+              Get Account Statement
+            </Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Button
+              className="mt-4" 
+              fullwidth
+              // clicked={updateContactInfo} 
+              bgColor="#741763" 
+              size="lg" 
+              color="#EBEBEB"
+              // disabled={loading}
+              // loading={loading}
+            >
+              Get Transaction History
+            </Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Button
+              className="mt-4" 
+              fullwidth
+              // clicked={updateContactInfo} 
+              bgColor="#741763" 
+              size="lg" 
+              color="#EBEBEB"
+              // disabled={loading}
+              // loading={loading}
+            >
+              Get Account Info
+            </Button>
+          </Col>
+        </Row>
+      </div>
+    </>
   )
 }
 
