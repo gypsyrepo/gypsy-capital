@@ -40,7 +40,7 @@ export const BasicInfo = ({ data, userRole }) => {
         monthlyRepayment: `N${numberWithCommas(data.monthlyRepayment)}`,
         applicationDate: moment(data.createdAt).format('lll'),
         monthlySalary: `N${numberWithCommas(data.monthlySalary)}`,
-        dti: `${data.DTI}%`
+        dti: `${data?.DTI || '33'}%`
       })
     }
   }, [data])

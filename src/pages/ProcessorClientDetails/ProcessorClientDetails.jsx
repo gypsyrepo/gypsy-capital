@@ -108,6 +108,7 @@ const ProcessorClientDetails = () => {
           { detailSection === "biodata" && 
             <Biodata 
               data={userDetails && {...userDetails.bioData, ...userDetails.residence}}
+              userId={userDetails?.clientId}
             /> 
           }
           { detailSection === "kin" && 
