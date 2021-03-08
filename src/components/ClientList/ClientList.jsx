@@ -21,6 +21,8 @@ const ClientList = ({ clientList, role }) => {
     goToPrevPage 
   } = usePagination(currentPage, postsPerPage, clientList, setCurrentPage, styles);
 
+  // console.log(currentList)
+
   return (
     <>
       <div className={styles.welcomeGroup}>
@@ -50,7 +52,7 @@ const ClientList = ({ clientList, role }) => {
                     <Link to={`/${role}/client/${client._id}`}>{client._id.slice(0,6)}</Link>
                   </td>
                   <td>{client.phoneNumber.replace('234', '0')}</td>
-                  <td>{client.bvn}</td>
+                  <td>{client?.more_info[0]?.bioData?.BVN || '-----'}</td>
                   <td>{moment(client.createdAt).format('lll')}</td>
                 </tr>
               ))}

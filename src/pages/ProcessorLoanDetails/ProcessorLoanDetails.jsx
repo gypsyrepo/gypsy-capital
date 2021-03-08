@@ -251,8 +251,8 @@ const ProcessorLoanDetails = () => {
         { visibleSection === "basic" ? 
           <BasicInfo 
             data={loanDetails ? { 
-              client: {...loanDetails.client[0].bioData},
-              ...loanDetails.loan
+              client: {...loanDetails?.client[0]?.bioData},
+              ...loanDetails?.loan
             } : null }
             userRole={user.role}
           /> : null 
@@ -268,8 +268,8 @@ const ProcessorLoanDetails = () => {
         { visibleSection === "repay" ? 
           <RepaymentSchedule 
             data={ loanDetails ? {
-              ...loanDetails.loan,
-              payments: loanDetails.payments
+              ...loanDetails?.loan,
+              payments: loanDetails?.payments
             } : null }
           /> : 
           null

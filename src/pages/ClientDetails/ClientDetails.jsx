@@ -10,14 +10,18 @@ import Button from '../../components/Button/Button';
 import LoanModal from '../../components/LoanModal/LoanModal';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as LoanContext } from '../../context/LoanContext';
+import { Context as AuthContext } from '../../context/AuthContext';
 import Loader from '../../components/Loader/Loader';
 import usePagination from '../../hooks/usePagination';
 import { numberWithCommas } from '../../utils/nigeriaStates';
 import { TiCancelOutline } from 'react-icons/ti';
+import useLoanDetails from '../../hooks/useLoanDetails';
 import _ from 'lodash';
 
 
-export const Biodata = ({ data }) => {
+export const Biodata = ({ data, userId }) => {
+
+  const [ loanDeets ] = useLoanDetails(userId);
 
   const [biodata, setBiodata] = useState({
     firstName: "",
@@ -26,10 +30,11 @@ export const Biodata = ({ data }) => {
     dateOfBirth: "",
     emailAddress: "",
     phoneNumber: "",
-    residentialStatus: "",
     altPhoneNumber: "",
-    residentialAddress: ""
+    residentialAddress: "",
   });
+
+  const [residentialStatus, setResidentialStatus] = useState('');
 
   useEffect(() => {
     if(data) {
@@ -42,10 +47,17 @@ export const Biodata = ({ data }) => {
         emailAddress: data.email,
         phoneNumber: data.phoneNumber.replace('234', '0'),
         altPhoneNumber: data.alternativePhoneNumber,
-        residentialAddress: `${data.street}, ${_.capitalize(data.state)}`
+        residentialAddress: `${data.street}, ${_.capitalize(data.state)}`,
+        // residentialStatus: data
       })
     }
   }, [data]);
+
+  useEffect(() => {
+    if(loanDeets) {
+      setResidentialStatus(_.capitalize(loanDeets?.residence[0]?.residentialStatus))
+    }
+  }, [loanDeets])
 
   return (
     <>
@@ -115,7 +127,7 @@ export const Biodata = ({ data }) => {
             type="text"
             label="Residential Status"
             nameAttr="residentStatus"
-            value={biodata.residentialStatus}
+            value={   residentialStatus}
             disable={true}
           />
         </Col>
@@ -229,7 +241,7 @@ export const NextOfKin = ({ data }) => {
 }
 
 
-export const Bank = ({ data }) => {
+export const Bank = ({ data, userId }) => {
 
   const [disburseBank, setDisburseBank] = useState({
     bankName: "",
@@ -245,6 +257,8 @@ export const Bank = ({ data }) => {
     accountName: ""
   });
 
+  const [ loanDeets ] = useLoanDetails(userId);
+
   useEffect(() => {
     if(data) {
       console.log(data);
@@ -257,6 +271,18 @@ export const Bank = ({ data }) => {
       })
     }
   }, [data])
+
+  useEffect(() => {
+    if(loanDeets) {
+      setSalaryBank({
+        ...salaryBank,
+        bankName: _.startCase(loanDeets?.bank[0]?.bank),
+        accountType: _.capitalize(loanDeets?.bank[0]?.accountType),
+        accountNumber: loanDeets?.bank[0]?.accountNumber,
+        accountName: loanDeets?.bank[0]?.accountName
+      })
+    }
+  }, [loanDeets])
 
   return (
     <>
@@ -311,6 +337,7 @@ export const Bank = ({ data }) => {
               type="text"
               label="Bank Name"
               nameAttr="salaryBank"
+              value={salaryBank.bankName}
               disable={true}
             />
           </Col>
@@ -319,6 +346,7 @@ export const Bank = ({ data }) => {
               type="text"
               label="Account Type"
               nameAttr="salaryAcctType"
+              value={salaryBank.accountType}
               disable={true}
             />
           </Col>
@@ -329,6 +357,7 @@ export const Bank = ({ data }) => {
               type="text"
               label="Account Number"
               nameAttr="salaryAcctNum"
+              value={salaryBank.accountNumber}
               disable={true}
             />
           </Col>
@@ -337,6 +366,7 @@ export const Bank = ({ data }) => {
               type="text"
               label="Account Name"
               nameAttr="salaryAcctName"
+              value={salaryBank.accountName}
               disable={true}
             />
           </Col>
@@ -347,7 +377,45 @@ export const Bank = ({ data }) => {
 }
 
 
-export const Employer = () => {
+export const Employer = ({ userId }) => {
+
+  const [employerInfo, setEmployerInfo] = useState({
+    employerName: '',
+    employmentDate: '',
+    employmentSector: '',
+    employmentType: '',
+    officialEmail: ''
+  });
+
+  const [OfficeAddress, setOfficeAddress] = useState({
+    street: '',
+    city: '',
+    state: '',
+    lga: ''
+  })
+
+  const [ loanDeets ] = useLoanDetails(userId)
+
+  useEffect(() => {
+    if(loanDeets) {
+      setEmployerInfo({
+        ...employerInfo,
+        employerName: loanDeets?.employment[0]?.employerName,
+        employmentDate: loanDeets?.employment[0]?.resumptionDate,
+        employmentSector: _.capitalize(loanDeets?.employment[0]?.sector),
+        employmentType: _.capitalize(loanDeets?.employment[0]?.employmentType),
+        officialEmail: loanDeets?.employment[0]?.officialEmail
+      })
+      setOfficeAddress({
+        ...OfficeAddress,
+        street: loanDeets?.employment[0]?.street,
+        city: loanDeets?.employment[0]?.city,
+        state: _.capitalize(loanDeets?.employment[0]?.state),
+        lga: _.capitalize(loanDeets?.employment[0]?.city),
+      })
+    }
+  }, [loanDeets])
+
   return (
     <>
       <Row className="mb-4">
@@ -356,6 +424,8 @@ export const Employer = () => {
             type="text"
             label="Employer Name"
             nameAttr="employerName"
+            disable={true}
+            value={employerInfo.employerName}
           />
         </Col>
         <Col>
@@ -363,6 +433,8 @@ export const Employer = () => {
             type="text"
             label="Employment Date"
             nameAttr="employmentDate"
+            disable={true}
+            value={employerInfo.employmentDate}
           />
         </Col>
       </Row>
@@ -372,6 +444,8 @@ export const Employer = () => {
             type="text"
             label="Employment Sector"
             nameAttr="employmentSector"
+            disable={true}
+            value={employerInfo.employmentSector}
           />
         </Col>
         <Col>
@@ -379,6 +453,8 @@ export const Employer = () => {
             type="text"
             label="Employment Type"
             nameAttr="employmentType"
+            disable={true}
+            value={employerInfo.employmentType}
           />
         </Col>
       </Row>
@@ -388,6 +464,8 @@ export const Employer = () => {
             type="text"
             label="Office Email Address"
             nameAttr="officeEmail"
+            disable={true}
+            value={employerInfo.officialEmail}
           />
         </Col>
       </Row>
@@ -399,6 +477,8 @@ export const Employer = () => {
               type="text"
               label="Street Address"
               nameAttr="streetAddress"
+              disable={true}
+              value={OfficeAddress.street}
             />
           </Col>
         </Row>
@@ -408,6 +488,8 @@ export const Employer = () => {
             type="text"
             label="City"
             nameAttr="city"
+            disable={true}
+            value={OfficeAddress.city}
           />
         </Col>
         <Col>
@@ -415,6 +497,8 @@ export const Employer = () => {
             type="text"
             label="State"
             nameAttr="state"
+            disable={true}
+            value={OfficeAddress.state}
           />
         </Col>
         <Col>
@@ -422,6 +506,8 @@ export const Employer = () => {
             type="text"
             label="Local Government Area"
             nameAttr="lga"
+            disable={true}
+            value={OfficeAddress.lga}
           />
         </Col>
       </Row>
@@ -450,6 +536,10 @@ export const ClientLoan = ({ userId, canApply, userRole }) => {
   const clientLoans = useMemo(() => {
     return loans.filter((loan) => loan.userId === userId)
   }, [loans, userId]);
+
+  useEffect(() => {
+    console.log(loans);
+  }, [loans])
 
   const { 
     currentList, 
@@ -546,6 +636,7 @@ const ClientDetails = () => {
     clearErrors
   } = useContext(UserContext);
 
+  const { state: { user } } = useContext(AuthContext);
   useEffect(() => {
     getClientDetails(clientId);
 
@@ -554,6 +645,8 @@ const ClientDetails = () => {
       clearErrors();
     }
   }, [])
+
+  // console.log(userDetails)
 
 
   const [detailSection, setDetailSection] = useState('biodata');
@@ -590,11 +683,11 @@ const ClientDetails = () => {
       <NavTabs navs={navArray} setActive={setActiveTab} currentTab={detailSection} />
       { userDetails || !detailStatus  ? 
         <div className={detailSection !== "loans" && styles.detailFields}>
-          { detailSection === "biodata" && <Biodata data={userDetails && {...userDetails.bioData, ...userDetails.residence}} /> }
+          { detailSection === "biodata" && <Biodata data={userDetails && {...userDetails.bioData, ...userDetails.residence}} userId={userDetails?.clientId} /> }
           { detailSection === "kin" && <NextOfKin data={userDetails && { ...userDetails.nextOfKin }} /> }
-          { detailSection === "bank" && <Bank data={userDetails && { ...userDetails.bank }} /> }
-          { detailSection === "employ" && <Employer data={userDetails.employer && { ...userDetails.employer }} /> }
-          { detailSection === "loans" && <ClientLoan userId={userDetails && userDetails.clientId} canApply={true} /> }
+          { detailSection === "bank" && <Bank data={userDetails && { ...userDetails.bank }} userId={userDetails?.clientId} /> }
+          { detailSection === "employ" && <Employer userId={userDetails?.clientId} /> }
+          { detailSection === "loans" && <ClientLoan userId={userDetails && userDetails.clientId} canApply={true} userRole={`${user.role}-agent`} /> }
         </div> :
         <Loader />
       }

@@ -5,15 +5,28 @@ import Dashboard from '../../components/Dashboard/Dashboard';
 import styles from './ProcessorClientDetails.module.scss';
 import NavTabs from '../../components/NavTabs/NavTabs';
 import { Biodata, NextOfKin, Bank, Employer, ClientLoan } from '../ClientDetails/ClientDetails';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Modal } from 'react-bootstrap';
 import { IoDocumentTextOutline } from 'react-icons/io5';
 import { RiDeleteBin5Line } from 'react-icons/ri'
 import { FiEye } from 'react-icons/fi';
 import { Context as UserContext } from '../../context/UserContext';
+import { Context as AuthContext } from '../../context/AuthContext';
 import Loader from '../../components/Loader/Loader';
+import useLoanDetails from '../../hooks/useLoanDetails';
 
 
-const DocCard = ({ docTitle }) => {
+const DocCard = ({ docTitle, docLink }) => {
+
+  const [show, setShow] = useState(false);
+
+  const openDoc = () => {
+    setShow(true);
+  }
+
+  const handleClose = () => {
+    setShow(false);
+  }
+
   return (
     <>
       <div className={styles.documentCard}>
@@ -21,30 +34,40 @@ const DocCard = ({ docTitle }) => {
           <IoDocumentTextOutline color="#741763" size="5em" />
           <div className={styles.ctrlBtn}>
             <RiDeleteBin5Line size="1.3em" color="#741763" />
-            <FiEye size="1.3em" color="#741763" />
+            <FiEye size="1.3em" color="#741763" onClick={openDoc} />
           </div>
         </div>
       </div>
       <h4 className={styles.docTitle}>{docTitle}</h4>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Body className={styles.documentImg}>
+          <img width="100%" src={docLink} />
+        </Modal.Body>
+      </Modal>
     </>
   )
 }
 
-export const DocTab = () => {
+export const DocTab = ({ userId }) => {
+
+  const [ loanDeets ] = useLoanDetails(userId);
+
+  console.log(loanDeets); 
+
   return (
     <>
       <Row>
         <Col>
-          <DocCard docTitle="Identification" />
+          <DocCard docTitle="Identification" docLink={loanDeets?.client[0]?.identity?.identityImageUrl} />
         </Col>
         <Col>
-          <DocCard docTitle="Proof of Address" />
+          <DocCard docTitle="Proof of Address" docLink={loanDeets?.residence[0]?.residenceProof} />
         </Col>
         <Col>
-          <DocCard docTitle="Official Document" />
+          <DocCard docTitle="Official Document" docLink={loanDeets?.employment[0]?.officialDocumentUrl} />
         </Col>
         <Col>
-          <DocCard docTitle="Statement of Account" />
+          <DocCard docTitle="Statement of Account" docLink={loanDeets?.bank[0]?.accountStatementUrl} />
         </Col>
       </Row>
     </>
@@ -59,6 +82,7 @@ const ProcessorClientDetails = () => {
   console.log(clientId);
 
   const { state: { userDetails, loading }, getClientDetails } = useContext(UserContext);
+  const { state: { user } } = useContext(AuthContext);
 
   useEffect(() => {
     getClientDetails(clientId);
@@ -108,6 +132,7 @@ const ProcessorClientDetails = () => {
           { detailSection === "biodata" && 
             <Biodata 
               data={userDetails && {...userDetails.bioData, ...userDetails.residence}}
+              userId={userDetails?.clientId}
             /> 
           }
           { detailSection === "kin" && 
@@ -125,9 +150,10 @@ const ProcessorClientDetails = () => {
               data={userDetails.employer && { ...userDetails.employer }}
             /> 
           }
-          { detailSection === "doc" && <DocTab /> }
+          { detailSection === "doc" && <DocTab userId={userDetails?.clientId} /> }
           { detailSection === "loans" && 
             <ClientLoan 
+              userRole={user.role}
               userId={userDetails && userDetails.clientId}
             /> 
           }

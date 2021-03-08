@@ -23,11 +23,13 @@ export const BasicInfo = ({ data, userRole }) => {
     loanTenure: '',
     monthlyRepayment: '',
     applicationDate: '',
-    monthlySalary: ''
+    monthlySalary: '',
+    dti: '',
   });
 
   useEffect(() => {
     if(data) {
+      console.log(data)
       setBasicInfo({
         ...basicInfo,
         fullName: `${_.capitalize(data.client.firstName)} ${_.capitalize(data.client.lastName)}`,
@@ -37,7 +39,8 @@ export const BasicInfo = ({ data, userRole }) => {
         loanTenure: data.paymentPeriod,
         monthlyRepayment: `N${numberWithCommas(data.monthlyRepayment)}`,
         applicationDate: moment(data.createdAt).format('lll'),
-        monthlySalary: `N${numberWithCommas(data.monthlySalary)}`
+        monthlySalary: `N${numberWithCommas(data.monthlySalary)}`,
+        dti: `${data?.DTI || '33'}%`
       })
     }
   }, [data])
@@ -100,6 +103,12 @@ export const BasicInfo = ({ data, userRole }) => {
         <Col>
           <h6>Monthly Salary</h6>
           <h4>{basicInfo.monthlySalary}</h4>
+        </Col>
+      </Row>
+      <Row className="mb-5">
+        <Col>
+          <h6>DTI</h6>
+          <h4>{basicInfo.dti}</h4>
         </Col>
       </Row>
     </div>
@@ -304,7 +313,7 @@ const LoanDetail = () => {
           <BasicInfo 
             data={ loanDetails ? { 
               client: {...loanDetails.client[0]?.bioData},
-              ...loanDetails.loan
+              ...loanDetails.loan, dti: loanDetails[0]?.DTI
             } : null } 
             userRole={user.role}
           /> 
