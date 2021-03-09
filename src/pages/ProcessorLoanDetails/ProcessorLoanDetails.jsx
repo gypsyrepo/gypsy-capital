@@ -11,8 +11,9 @@ import InputField from '../../components/InputField/InputField';
 import Button from '../../components/Button/Button';
 import { Row, Col, Table } from 'react-bootstrap';
 import OfferLetterPdf from '../../components/OfferLetter/OfferLetter';
-import { PDFViewer } from '@react-pdf/renderer';
+import ReactPDF, { PDFViewer } from '@react-pdf/renderer';
 import OfferLetterForm from '../../components/OfferLetter/OfferLetterForm';
+import ProcessOffer from '../../components/ProcessOffer/ProcessOffer';
 
 
 const DecisionApproval = () => {
@@ -264,7 +265,8 @@ const ProcessorLoanDetails = () => {
   const { state: { user } } = useContext(AuthContext);
 
   useEffect(() => {
-    retrieveLoan(loanId)
+    retrieveLoan(loanId);
+    // ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
   }, [])
   
   return(
@@ -300,7 +302,7 @@ const ProcessorLoanDetails = () => {
         }
         { visibleSection === "offer" ? 
           // <PDFViewer width="100%" height={500}><OfferLetterPdf /></PDFViewer> 
-          <OfferLetterForm />:
+          <ProcessOffer /> :
           null
         }
         { visibleSection === "mono" ? 

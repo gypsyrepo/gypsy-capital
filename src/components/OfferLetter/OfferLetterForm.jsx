@@ -5,7 +5,12 @@ import { Row, Col } from 'react-bootstrap';
 import Button from '../Button/Button';
 
 
-const OfferLetterForm = () => {
+const OfferLetterForm = ({ setState }) => {
+
+  const sendOffer = () => {
+    setState(true)
+  }
+
   return (
     <>
       <div className={styles.formWrapper}>
@@ -179,7 +184,7 @@ const OfferLetterForm = () => {
         </Button>
         <Button
           className="mt-4" 
-          // clicked={updateContactInfo} 
+          clicked={sendOffer} 
           bgColor="#741763" 
           size="lg" 
           color="#EBEBEB"
