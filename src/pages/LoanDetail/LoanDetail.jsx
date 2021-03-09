@@ -225,32 +225,14 @@ export const RepaymentSchedule = ({ data, userRole }) => {
       if(data.payments.length === 0) {
         setRepaymentArr(repaymentTrack);
       } else {
-        console.log(data?.payments)
+        console.log(data)
+        // console.log(data?.payments)
+        setRepaymentArr(data?.payments);
       }
     }
   }, [data]);
 
   console.log(repaymentArr)
-  const repaymentTrack = [
-    {
-      month: "Month 1",
-      dueDate: "May 27, 2020",
-      status: "Paid",
-      overdueAmount: "Not applicable"
-    },
-    {
-      month: "Month 2",
-      dueDate: "June 27, 2020",
-      status: "Waiting",
-      overdueAmount: null
-    },
-    {
-      month: "Month 3",
-      dueDate: "July 27, 2020",
-      status: "Waiting",
-      overdueAmount: null
-    }
-  ]
 
   return (
     <>
@@ -264,10 +246,10 @@ export const RepaymentSchedule = ({ data, userRole }) => {
           </thead>
           <tbody>
             <tr>
-              <td>Remita</td>
-              <td>N35,600</td>
-              <td>May 27, 2020</td>
-              <td>Active</td>
+              <td>{_.capitalize(data?.rePaymentAPI)}</td>
+              <td>{`N ${numberWithCommas(data?.monthlyRepayment)}`}</td>
+              <td>{data?.determinedRepaymentDate}</td>
+              <td>{_.capitalize(data?.rePaymentAPIstatus)}</td>
             </tr>
           </tbody>
         </Table>
@@ -285,10 +267,10 @@ export const RepaymentSchedule = ({ data, userRole }) => {
           <tbody>
             { repaymentArr && repaymentArr.map((track, idx) => (
               <tr key={idx}>
-                <td>{`Month ${track?.month}`}</td>
-                <td>{track?.dueDate}</td>
-                <td>{track?.status}</td>
-                <td>{track?.overdueAmount}</td>
+                <td>{`Month ${track?.month || idx + 1}`}</td>
+                <td>{track?.dueDate || moment(track?.scheduledDate).format('lll')}</td>
+                <td>{track?.status || 'false'}</td>
+                <td>{track?.overdueAmount || `N ${numberWithCommas(track?.scheduledAmount)}`}</td>
               </tr>
             ))}
           </tbody>

@@ -20,14 +20,18 @@ import ProcessOffer from '../../components/ProcessOffer/ProcessOffer';
 import { validateInput } from '../../utils/validateInput';
 
 
-const DecisionApproval = () => {
+const DecisionApproval = ({ loanId }) => {
+
+  const { state: { loading }, decideApproval } = useContext(ApprovalContext);
 
   const [approvalData, setApprovalData] = useState({
     decision: '',
     approvedRate: '',
     approvedTenure: '',
     repaymentDate: '',
-    decisionReason: ''
+    decisionReason: '',
+    totalPay: '',
+    approvedAmount: ''
   });
 
   const [approvalErrors, setApprovalErrors] = useState({
@@ -35,12 +39,25 @@ const DecisionApproval = () => {
     approvedRate: null,
     approvedTenure: null,
     repaymentDate: null,
-    decisionReason: null
+    decisionReason: null,
+    totalPay: null,
+    approvedAmount: null
   })
 
-  const decideApproval = () => {
+  const approveLoan = () => {
     const validated = validateInput(approvalData, setApprovalErrors);
     console.log(validated);
+    if(validated) {
+      const data = {
+        decision: approvalData.decision,
+        approved_interest: approvalData.approvedRate,
+        approved_tenure: approvalData.approvedTenure,
+        determined_repayment_date: approvalData.repaymentDate,
+        decision_reason: approvalData.decisionReason,
+        total_pay: approvalData.totalPay
+      }
+      decideApproval(loanId, data);
+    }
   }
 
   return (
@@ -104,6 +121,34 @@ const DecisionApproval = () => {
       <Row className="mb-4">
         <Col>
           <InputField 
+            type="text"
+            label="Total Repayment"
+            nameAttr="totalRepayment"
+            value={approvalData.totalPay}
+            changed={(val) => {
+              setApprovalData({...approvalData, totalPay: val });
+              setApprovalErrors({ ...approvalErrors, totalPay: null })
+            }}
+            error={approvalErrors.totalPay && approvalErrors.totalPay}
+          />
+        </Col>
+        <Col>
+          <InputField 
+            type="text"
+            label="Approved Loan Amount"
+            nameAttr="approvedAmount"
+            value={approvalData.approvedAmount}
+            changed={(val) => {
+              setApprovalData({...approvalData, approvedAmount: val });
+              setApprovalErrors({ ...approvalErrors, approvedAmount: null })
+            }}
+            error={approvalErrors.approvedAmount && approvalErrors.approvedAmount}
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4">
+        <Col>
+          <InputField 
             type="textarea"
             label="Decision Reason"
             nameAttr="decisionReason"
@@ -119,12 +164,12 @@ const DecisionApproval = () => {
       <Button
         className="mt-4" 
         fullWidth 
-        clicked={decideApproval} 
+        clicked={approveLoan} 
         bgColor="#741763" 
         size="lg" 
         color="#EBEBEB"
-        // disabled={loading}
-        // loading={loading}
+        disabled={loading}
+        loading={loading}
       >
         Submit Decision
       </Button>
@@ -162,11 +207,8 @@ const RepaySetup = ({ loanId }) => {
     const validated = validateInput(repayData, setRepayError);
     console.log(validated)
     const data = {
-      decision: "-",
-      approved_interest: "33",
       approved_tenure: repayData.tenure,
       determined_repayment_date: repayData.startDate,
-      decision_reason: "-",
       rePaymentAPI: "paystack",
       total_pay: repayData.totalRepay
     }
@@ -430,7 +472,7 @@ const ProcessorLoanDetails = () => {
           /> : null 
         }
         { visibleSection === "decision" ?
-          <DecisionApproval /> :
+          <DecisionApproval loanId={loanId} /> :
           null
         }
         { visibleSection === "setup" ? 
