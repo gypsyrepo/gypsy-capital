@@ -52,10 +52,11 @@ const getAccountInfo = dispatch => async(userId) => {
     const token = resolveToken();
     const response = await gypsy.get(`/api/mono/account_info/${userId}`, {
       headers: {
-        "Authorizaton": `Bearer ${token}`
+        "Authorization": `Bearer ${token}`
       }
     });
-    console.log(response.data);
+    console.log(response.data.data);
+    dispatch({ type: "set_loading", payload: false });
   } catch(err) {
     if(err.response) {
       console.log(err.response.data);
@@ -74,7 +75,7 @@ const getAccountStatement = dispatch => async(userId, months) => {
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
-    const response = await gypsy.get(`/api/mono/account_statement/:userId/:period`, {
+    const response = await gypsy.get(`/api/mono/account_statement/${userId}/${months}`, {
       headers: {
         "Authorization": `Bearer ${token}`
       }

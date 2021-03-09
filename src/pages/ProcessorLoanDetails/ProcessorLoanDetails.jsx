@@ -9,6 +9,7 @@ import { Context as LoanContext } from '../../context/LoanContext';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { Context as ApprovalContext } from '../../context/ApprovalContext';
 import { Context as RepaymentContext } from '../../context/RepaymentContext';
+import { Context as MonoContext } from '../../context/MonoContext';
 import InputField from '../../components/InputField/InputField';
 import Button from '../../components/Button/Button';
 import { Row, Col, Table } from 'react-bootstrap';
@@ -292,7 +293,20 @@ const RepaySetup = ({ loanId }) => {
 }
 
 
-const MonoTab = () => {
+const MonoTab = ({ clientId }) => {
+
+  const { state: { loading }, getAccountInfo, getAccountStatement  } = useContext(MonoContext);
+
+  const retrieveAccountInfo = () => {
+    console.log(clientId)
+    getAccountInfo(clientId);
+  }
+
+  const retrieveAccountStatement = () => {
+    console.log(clientId);
+    getAccountStatement(clientId, 3);
+  }
+
   return (
     <>
       <div className={styles.status}>
@@ -304,12 +318,12 @@ const MonoTab = () => {
             <Button
               className="mt-4" 
               fullWidth
-              // clicked={updateContactInfo} 
+              clicked={retrieveAccountStatement} 
               bgColor="#741763" 
               size="lg" 
               color="#EBEBEB"
-              // disabled={loading}
-              // loading={loading}
+              disabled={loading}
+              loading={loading}
             >
               Get Account Statement
             </Button>
@@ -336,12 +350,12 @@ const MonoTab = () => {
             <Button
               className="mt-4" 
               fullWidth
-              // clicked={updateContactInfo} 
+              clicked={retrieveAccountInfo} 
               bgColor="#741763" 
               size="lg" 
               color="#EBEBEB"
-              // disabled={loading}
-              // loading={loading}
+              disabled={loading}
+              loading={loading}
             >
               Get Account Info
             </Button>
@@ -399,6 +413,8 @@ const ProcessorLoanDetails = () => {
     retrieveLoan(loanId);
     // ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
   }, [])
+
+  console.log(loanDetails);
   
   return(
     <Dashboard sidebarRoutes={processorRoute} location={location}>
@@ -437,7 +453,7 @@ const ProcessorLoanDetails = () => {
           null
         }
         { visibleSection === "mono" ? 
-          <MonoTab /> :
+          <MonoTab clientId={loanDetails?.client[0]?.clientId} /> :
           null
         }
       </div>
