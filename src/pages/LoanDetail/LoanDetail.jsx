@@ -195,9 +195,11 @@ const LoanStatus = ({ data }) => {
   )
 }
 
-export const RepaymentSchedule = ({ data }) => {
+export const RepaymentSchedule = ({ data, userRole }) => {
 
   const [repaymentArr, setRepaymentArr] = useState(null);
+
+  console.log(userRole);
 
   useEffect(() => {
     if(data) {
@@ -206,24 +208,29 @@ export const RepaymentSchedule = ({ data }) => {
       let repaymentTrack = [];
       let instance = {
         month: 1,
-        dueDate: moment(data.createdAt).format('LL'),
-        status: data.payments.length === 0 ? 'Waiting' : data.payments[0],
-        overdueAmount: data.overdue
+        dueDate: 'undecided',
+        status: 'pending',
+        overdueAmount: 0
       }
       for(let i=0; i < paymentPeriod; i++) {
         repaymentTrack.push(instance);
         instance = {
           month: instance.month + 1,
-          dueDate: moment(data.createdAt).add(i + 1, 'M').format('LL'),
-          status: data.payments.length === 0 ? 'Waiting' : data.payments[i+1],
-          overdueAmount: data.overdue
+          dueDate: 'undecided',
+          status: 'pending',
+          overdueAmount: 0
         }
       }
       console.log(repaymentTrack);
-      setRepaymentArr(repaymentTrack);
+      if(data.payments.length === 0) {
+        setRepaymentArr(repaymentTrack);
+      } else {
+        console.log(data?.payments)
+      }
     }
   }, [data]);
 
+  console.log(repaymentArr)
   const repaymentTrack = [
     {
       month: "Month 1",
@@ -246,28 +253,48 @@ export const RepaymentSchedule = ({ data }) => {
   ]
 
   return (
-    <div className={styles.repayment}>
-      <Table>
-        <thead> 
-          <tr>
-            <th>Months</th>
-            <th>Due Date</th>
+    <>
+      { userRole === "processor"  && <div className={[styles.repayment, "mb-5"].join(' ')}>
+        <Table>
+          <thead>
+            <th>Repayment API</th>
+            <th>Monthly Repayment</th>
+            <th>Start Date</th>
             <th>Status</th>
-            <th>Overdue Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          { repaymentArr && repaymentArr.map((track, idx) => (
-            <tr key={idx}>
-              <td>{`Month ${track?.month}`}</td>
-              <td>{track?.dueDate}</td>
-              <td>{track?.status}</td>
-              <td>{track?.overdueAmount}</td>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Remita</td>
+              <td>N35,600</td>
+              <td>May 27, 2020</td>
+              <td>Active</td>
             </tr>
-          ))}
-        </tbody>
-      </Table>
-    </div>
+          </tbody>
+        </Table>
+      </div>}
+      <div className={styles.repayment}>
+        <Table>
+          <thead> 
+            <tr>
+              <th>Months</th>
+              <th>Due Date</th>
+              <th>Status</th>
+              <th>Overdue Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            { repaymentArr && repaymentArr.map((track, idx) => (
+              <tr key={idx}>
+                <td>{`Month ${track?.month}`}</td>
+                <td>{track?.dueDate}</td>
+                <td>{track?.status}</td>
+                <td>{track?.overdueAmount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    </>
   )
 }
 
@@ -285,6 +312,7 @@ const LoanDetail = () => {
   useEffect(() => {
     retrieveLoan(loanId);
   }, []);
+
 
   const navArray = [
     {
@@ -331,6 +359,7 @@ const LoanDetail = () => {
               ...loanDetails.loan,
               payments: loanDetails.payments
             } : null }
+            userRole={user.role}
           /> 
         }
       </div> : <Loader /> } 
