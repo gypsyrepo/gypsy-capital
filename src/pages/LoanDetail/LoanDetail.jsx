@@ -195,9 +195,11 @@ const LoanStatus = ({ data }) => {
   )
 }
 
-export const RepaymentSchedule = ({ data }) => {
+export const RepaymentSchedule = ({ data, userRole }) => {
 
   const [repaymentArr, setRepaymentArr] = useState(null);
+
+  console.log(userRole);
 
   useEffect(() => {
     if(data) {
@@ -246,28 +248,48 @@ export const RepaymentSchedule = ({ data }) => {
   ]
 
   return (
-    <div className={styles.repayment}>
-      <Table>
-        <thead> 
-          <tr>
-            <th>Months</th>
-            <th>Due Date</th>
+    <>
+      { userRole === "processor"  && <div className={[styles.repayment, "mb-5"].join(' ')}>
+        <Table>
+          <thead>
+            <th>Repayment API</th>
+            <th>Monthly Repayment</th>
+            <th>Start Date</th>
             <th>Status</th>
-            <th>Overdue Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          { repaymentArr && repaymentArr.map((track, idx) => (
-            <tr key={idx}>
-              <td>{`Month ${track?.month}`}</td>
-              <td>{track?.dueDate}</td>
-              <td>{track?.status}</td>
-              <td>{track?.overdueAmount}</td>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Remita</td>
+              <td>N35,600</td>
+              <td>May 27, 2020</td>
+              <td>Active</td>
             </tr>
-          ))}
-        </tbody>
-      </Table>
-    </div>
+          </tbody>
+        </Table>
+      </div>}
+      <div className={styles.repayment}>
+        <Table>
+          <thead> 
+            <tr>
+              <th>Months</th>
+              <th>Due Date</th>
+              <th>Status</th>
+              <th>Overdue Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            { repaymentArr && repaymentArr.map((track, idx) => (
+              <tr key={idx}>
+                <td>{`Month ${track?.month}`}</td>
+                <td>{track?.dueDate}</td>
+                <td>{track?.status}</td>
+                <td>{track?.overdueAmount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    </>
   )
 }
 
@@ -285,6 +307,7 @@ const LoanDetail = () => {
   useEffect(() => {
     retrieveLoan(loanId);
   }, []);
+
 
   const navArray = [
     {
@@ -331,6 +354,7 @@ const LoanDetail = () => {
               ...loanDetails.loan,
               payments: loanDetails.payments
             } : null }
+            userRole={user.role}
           /> 
         }
       </div> : <Loader /> } 

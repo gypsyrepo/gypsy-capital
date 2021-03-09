@@ -90,6 +90,21 @@
     }
 }
 
+.status {
+    width: 200px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 9px 10px;
+    border-radius: 9px;
+    margin-bottom: 40px !important;
+    p {
+        text-align: center;
+        margin-bottom: 0;
+        font-size: 1.05rem;
+    }
+}
+
 .monoContainer {
     width: 300px;
     margin: 0 auto;

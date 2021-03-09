@@ -163,12 +163,15 @@ const RepaySetup = () => {
 const MonoTab = () => {
   return (
     <>
+      <div className={styles.status}>
+        <p>Status: Inactive</p>
+      </div>
       <div className={styles.monoContainer}>
         <Row>
           <Col>
             <Button
               className="mt-4" 
-              fullwidth
+              fullWidth
               // clicked={updateContactInfo} 
               bgColor="#741763" 
               size="lg" 
@@ -184,7 +187,7 @@ const MonoTab = () => {
           <Col>
             <Button
               className="mt-4" 
-              fullwidth
+              fullWidth
               // clicked={updateContactInfo} 
               bgColor="#741763" 
               size="lg" 
@@ -200,7 +203,7 @@ const MonoTab = () => {
           <Col>
             <Button
               className="mt-4" 
-              fullwidth
+              fullWidth
               // clicked={updateContactInfo} 
               bgColor="#741763" 
               size="lg" 
@@ -291,6 +294,7 @@ const ProcessorLoanDetails = () => {
               ...loanDetails?.loan,
               payments: loanDetails?.payments
             } : null }
+            userRole={user.role}
           /> : 
           null
         }
