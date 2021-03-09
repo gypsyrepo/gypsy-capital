@@ -208,24 +208,29 @@ export const RepaymentSchedule = ({ data, userRole }) => {
       let repaymentTrack = [];
       let instance = {
         month: 1,
-        dueDate: moment(data.createdAt).format('LL'),
-        status: data.payments.length === 0 ? 'Waiting' : data.payments[0],
-        overdueAmount: data.overdue
+        dueDate: 'undecided',
+        status: 'pending',
+        overdueAmount: 0
       }
       for(let i=0; i < paymentPeriod; i++) {
         repaymentTrack.push(instance);
         instance = {
           month: instance.month + 1,
-          dueDate: moment(data.createdAt).add(i + 1, 'M').format('LL'),
-          status: data.payments.length === 0 ? 'Waiting' : data.payments[i+1],
-          overdueAmount: data.overdue
+          dueDate: 'undecided',
+          status: 'pending',
+          overdueAmount: 0
         }
       }
       console.log(repaymentTrack);
-      setRepaymentArr(repaymentTrack);
+      if(data.payments.length === 0) {
+        setRepaymentArr(repaymentTrack);
+      } else {
+        console.log(data?.payments)
+      }
     }
   }, [data]);
 
+  console.log(repaymentArr)
   const repaymentTrack = [
     {
       month: "Month 1",

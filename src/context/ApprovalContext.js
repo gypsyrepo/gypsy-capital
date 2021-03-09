@@ -1,25 +1,23 @@
 import createDataContext from './createDataContext';
 import gypsy from '../api/gypsy-web';
 import resolveToken from '../utils/resolveToken';
+import history from '../utils/history';
+// import _ from 'lodash';
 
 
-const repaymentReducer = (state, action) => {
-  switch(action.type) {
-    case 'set_loading':
-      return { ...state, loading: action.payload}
-    case 'set_error':
-      return { ...state, error: action.payload }
+const approvalReducer = (state, action) => {
+  switch(action) {
     default:
-      return state
+      return state;
   }
 }
 
 
-const setupRepayment = dispatch => async(loanId, repayData) => {
-  dispatch({ type: 'set_loading', payload: true })
+const decideApproval = dispatch => async(loanId, decisionData) => {
+  dispatch({ type: 'set_loading', payload: true });
   try {
     const token = resolveToken();
-    const response = await gypsy.post(`/user/loan/set_pay/${loanId}`, repayData, {
+    const response = await gypsy.post(`/user/loan/action/${loanId}`, decisionData, {
       headers: {
         "Authorization": `Bearer ${token}`
       }
@@ -41,7 +39,7 @@ const setupRepayment = dispatch => async(loanId, repayData) => {
 
 
 export const { Context, Provider } = createDataContext(
-  repaymentReducer,
-  { setupRepayment },
-  { loading: false, error: null }
+  approvalReducer,
+  { decideApproval },
+  { loading: false }
 )
