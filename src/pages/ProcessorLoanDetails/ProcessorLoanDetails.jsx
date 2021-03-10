@@ -21,13 +21,27 @@ import ProcessOffer from '../../components/ProcessOffer/ProcessOffer';
 import { validateInput } from '../../utils/validateInput';
 import _ from 'lodash';
 import { numberWithCommas } from '../../utils/nigeriaStates';
+import { toast, ToastContainer } from 'react-toastify';
 
 
 export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) => {
 
-  const { state: { loading }, decideApproval, disburseLoan } = useContext(ApprovalContext);
+  const { state: { loading, error, approvedStatus }, decideApproval, disburseLoan, clearError, resetApprovalStatus } = useContext(ApprovalContext);
   const [showModal, setShowModal] = useState(false);
-  // console.log(userRole);
+
+  useEffect(() => {
+    if(error) {
+      toast.error(error);
+      clearError();
+    }
+  }, [error])
+
+  // useEffect(() => {
+  //   if(approvedStatus) {
+  //     resetApprovalStatus();
+  //     setShowModal(true);
+  //   }
+  // }, [approvedStatus])
 
   const [approvalData, setApprovalData] = useState({
     decision: '',
@@ -47,7 +61,15 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
     decisionReason: null,
     totalPay: null,
     approvedAmount: null
-  })
+  });
+
+  const { state: { bankList }, getBankList } = useContext(BankContext);
+
+  useEffect(() => {
+    (async() => {
+      await getBankList();
+    })()
+  }, []);
 
   useEffect(() => {
     if(loanData && loanData.processorDecision) {
@@ -83,12 +105,12 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
       if(loanData && loanData?.processorDecision) {
         await decideApproval(loanId, {
           decision: loanData.processorDecision,
-          approved_interest: loanData.approvedInterest,
-          approved_tenure: loanData.approvedTenure,
+          approved_interest: loanData.approvedInterest.toString(),
+          approved_tenure: loanData.approvedTenure.toString(),
           determined_repayment_date: loanData.determinedRepaymentDate,
-          total_pay: '200000',
+          total_pay: loanData?.calculatedPayBack.toString(),
           decision_reason: loanData.processorDecisionReason,
-          approvedAmount: loanData.amount
+          approvedAmount: loanData.amount.toString()
         });
         setShowModal(true);
       } else {
@@ -104,15 +126,16 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
             total_pay: approvalData.totalPay
           }
           await decideApproval(loanId, data);
-          setShowModal(true);
         }
       }
     }
   }
 
   const transferPaymentToClient = () => {
+    const bankInfo = bankList.filter(bank => bank.name.toLowerCase() === disburseBank.bank.toLowerCase() )
+    // console.log(bankInfo[0].code);
     const paymentData = {
-      account_bank: disburseBank.bank,
+      account_bank: bankInfo[0].code,
       account_number: disburseBank.accountNumber,
       amount: loanData.amount
     }
@@ -142,20 +165,6 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
         })
       }
     }, [disburseBank])
-
-    const { state: { bankList }, getBankList } = useContext(BankContext);
-
-    useEffect(() => {
-      (async() => {
-        await getBankList();
-      })()
-    }, [])
-   
-    const bankNames = useMemo(() => {
-      return bankList ? 
-        bankList.map((bank) => bank.name) :
-        []
-    }, [bankList])
 
     return (
       <Modal show={showModal} onHide={handleClose}>
@@ -209,6 +218,7 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
 
   return (
     <>
+      <ToastContainer position="top-center" />
       <Row className="mb-4">
         <Col>
           <InputField 

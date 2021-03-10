@@ -5,7 +5,7 @@ import resolveToken from '../utils/resolveToken';
 
 
 const approvalReducer = (state, action) => {
-  switch(action) {
+  switch(action.type) {
     case 'set_loading':
       return { ...state, loading: action.payload }
     case 'set_error':
@@ -74,8 +74,17 @@ const disburseLoan = dispatch => async(loanId, paymentData) => {
 }
 
 
+const clearError = dispatch => () => {
+  dispatch({ type: "set_error", payload: null })
+}
+
+const resetApprovalStatus = dispatch => () => {
+  dispatch({ type: "set_approval_status", payload: false })
+}
+
+
 export const { Context, Provider } = createDataContext(
   approvalReducer,
-  { decideApproval, disburseLoan },
+  { decideApproval, disburseLoan, clearError, resetApprovalStatus },
   { loading: false, error: null, disbursedStatus: false, approvedStatus: false }
 )

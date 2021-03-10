@@ -6,7 +6,7 @@ import history from '../utils/history';
 
 
 const monoReducer = (state, action) => {
-  switch(action) {
+  switch(action.type) {
     case 'set_loading':
       return { ...state, loading: action.payload }
     case 'set_error':
