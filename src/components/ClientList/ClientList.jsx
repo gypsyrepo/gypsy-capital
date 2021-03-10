@@ -18,10 +18,11 @@ const ClientList = ({ clientList, role }) => {
     currentList, 
     items, 
     goToNextPage, 
-    goToPrevPage 
+    goToPrevPage,
+    numOfPages 
   } = usePagination(currentPage, postsPerPage, clientList, setCurrentPage, styles);
 
-  // console.log(currentList)
+  console.log(numOfPages)
 
   return (
     <>
@@ -75,6 +76,7 @@ const ClientList = ({ clientList, role }) => {
             </div>
             <Pagination className={styles.pagination}>
               <Pagination.Prev onClick={goToPrevPage}/>
+              { numOfPages > 4 && <Pagination.Ellipsis />}
               {items}
               <Pagination.Next onClick={goToNextPage} />
             </Pagination>

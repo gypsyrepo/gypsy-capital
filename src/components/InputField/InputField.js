@@ -38,7 +38,7 @@ const InputField = ({ type, label, nameAttr, value, changed, options, placeholde
         }
         {
           type === "select" &&
-          <select name={nameAttr} onChange={(e) => changed(e.currentTarget.value)}>
+          <select disabled={disable} name={nameAttr} value={value} onChange={(e) => changed(e.currentTarget.value)}>
             <option value="none" selected disabled hidden>  
               Select... 
             </option>
@@ -59,6 +59,7 @@ const InputField = ({ type, label, nameAttr, value, changed, options, placeholde
             onChange={(e) => changed(e.currentTarget.value)}
             name={nameAttr}
             placeholder={placeholder}
+            disabled={disable}
           />
         }
         { type === "password" && <FontAwesomeIcon 

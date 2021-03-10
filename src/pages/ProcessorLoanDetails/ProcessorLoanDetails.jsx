@@ -9,6 +9,7 @@ import { Context as LoanContext } from '../../context/LoanContext';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { Context as ApprovalContext } from '../../context/ApprovalContext';
 import { Context as RepaymentContext } from '../../context/RepaymentContext';
+import { Context as MonoContext } from '../../context/MonoContext';
 import InputField from '../../components/InputField/InputField';
 import Button from '../../components/Button/Button';
 import { Row, Col, Table } from 'react-bootstrap';
@@ -19,14 +20,18 @@ import ProcessOffer from '../../components/ProcessOffer/ProcessOffer';
 import { validateInput } from '../../utils/validateInput';
 
 
-const DecisionApproval = () => {
+export const DecisionApproval = ({ loanId, loanData }) => {
+
+  const { state: { loading }, decideApproval } = useContext(ApprovalContext);
 
   const [approvalData, setApprovalData] = useState({
     decision: '',
     approvedRate: '',
     approvedTenure: '',
     repaymentDate: '',
-    decisionReason: ''
+    decisionReason: '',
+    totalPay: '',
+    approvedAmount: ''
   });
 
   const [approvalErrors, setApprovalErrors] = useState({
@@ -34,12 +39,40 @@ const DecisionApproval = () => {
     approvedRate: null,
     approvedTenure: null,
     repaymentDate: null,
-    decisionReason: null
+    decisionReason: null,
+    totalPay: null,
+    approvedAmount: null
   })
 
-  const decideApproval = () => {
+  useEffect(() => {
+    if(loanData && loanData.processorDecision) {
+      console.log(loanData);
+      setApprovalData({
+        ...approvalData,
+        decision: loanData.processorDecision,
+        approvedRate: loanData.approvedInterest,
+        approvedTenure: loanData.approvedTenure,
+        repaymentDate: loanData.determinedRepaymentDate,
+        approvedAmount: loanData.amount,
+        decisionReason: loanData.processorDecisionReason
+      });
+    }
+  }, [loanData])
+
+  const approveLoan = () => {
     const validated = validateInput(approvalData, setApprovalErrors);
     console.log(validated);
+    if(validated) {
+      const data = {
+        decision: approvalData.decision,
+        approved_interest: approvalData.approvedRate,
+        approved_tenure: approvalData.approvedTenure,
+        determined_repayment_date: approvalData.repaymentDate,
+        decision_reason: approvalData.decisionReason,
+        total_pay: approvalData.totalPay
+      }
+      decideApproval(loanId, data);
+    }
   }
 
   return (
@@ -51,11 +84,13 @@ const DecisionApproval = () => {
             label="Decision"
             nameAttr="decision"
             options={['Approve', 'Decline']}
+            value={approvalData.decision}
             changed={(val) => {
               setApprovalData({...approvalData, decision: val });
               setApprovalErrors({ ...approvalErrors, decision: null })
             }}
             error={approvalErrors.decision && approvalErrors.decision}
+            disable={!!loanData?.processorDecision}
           />
         </Col>
         <Col>
@@ -69,6 +104,7 @@ const DecisionApproval = () => {
               setApprovalErrors({ ...approvalErrors, approvedRate: null })
             }}
             error={approvalErrors.approvedRate && approvalErrors.approvedRate}
+            disable={!!loanData?.processorDecision}
           />
         </Col>
       </Row>
@@ -84,6 +120,7 @@ const DecisionApproval = () => {
               setApprovalErrors({ ...approvalErrors, approvedTenure: null })
             }}
             error={approvalErrors.approvedTenure && approvalErrors.approvedTenure}
+            disable={!!loanData?.processorDecision}
           />
         </Col>
         <Col>
@@ -97,6 +134,37 @@ const DecisionApproval = () => {
               setApprovalErrors({ ...approvalErrors, repaymentDate: null })
             }}
             error={approvalErrors.repaymentDate && approvalErrors.repaymentDate}
+            disable={!!loanData?.processorDecision}
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4">
+        <Col>
+          <InputField 
+            type="text"
+            label="Total Repayment"
+            nameAttr="totalRepayment"
+            value={approvalData.totalPay}
+            changed={(val) => {
+              setApprovalData({...approvalData, totalPay: val });
+              setApprovalErrors({ ...approvalErrors, totalPay: null })
+            }}
+            error={approvalErrors.totalPay && approvalErrors.totalPay}
+            disable={!!loanData?.processorDecision}
+          />
+        </Col>
+        <Col>
+          <InputField 
+            type="text"
+            label="Approved Loan Amount"
+            nameAttr="approvedAmount"
+            value={approvalData.approvedAmount}
+            changed={(val) => {
+              setApprovalData({...approvalData, approvedAmount: val });
+              setApprovalErrors({ ...approvalErrors, approvedAmount: null })
+            }}
+            error={approvalErrors.approvedAmount && approvalErrors.approvedAmount}
+            disable={!!loanData?.processorDecision}
           />
         </Col>
       </Row>
@@ -112,18 +180,19 @@ const DecisionApproval = () => {
               setApprovalErrors({ ...approvalErrors, decisionReason: null })
             }}
             error={approvalErrors.decisionReason && approvalErrors.decisionReason}
+            disable={!!loanData?.processorDecision}
           />
         </Col>
       </Row>
       <Button
         className="mt-4" 
         fullWidth 
-        clicked={decideApproval} 
+        clicked={approveLoan} 
         bgColor="#741763" 
         size="lg" 
         color="#EBEBEB"
-        // disabled={loading}
-        // loading={loading}
+        disabled={loanData?.processorDecision ? true : loading}
+        loading={loading}
       >
         Submit Decision
       </Button>
@@ -132,7 +201,7 @@ const DecisionApproval = () => {
 }
 
 
-const RepaySetup = ({ loanId }) => {
+export const RepaySetup = ({ loanId, loanData }) => {
 
   const { state: { loading }, setupRepayment } = useContext(RepaymentContext);
 
@@ -156,16 +225,32 @@ const RepaySetup = ({ loanId }) => {
     accountNumber: null
   });
 
+  useEffect(() => {
+    if(loanData && loanData.rePaymentAPIstatus) {
+      setRepayData({
+        ...repayData,
+        repaymentApi: loanData.rePaymentAPIstatus,
+        tenure: loanData.approvedTenure,
+        payday: loanData.payDay,
+        startDate: loanData.determinedRepaymentDate
+      });
+    }
+  }, [loanData])
+
 
   const startRepaymentSetup = () => {
-    const validated = validateInput(repayData, setRepayError);
+    const { repaymentApi, totalRepay, tenure, payday, startDate } = repayData;
+    const forPaystack = { repaymentApi, totalRepay, tenure, payday, startDate };
+    let validated;
+    if(repayData.repaymentApi === "paystack") {
+      validated = validateInput(forPaystack, setRepayError)
+    } else {
+      validated = validateInput(repayData, setRepayError);
+    }
     console.log(validated)
     const data = {
-      decision: "-",
-      approved_interest: "33",
       approved_tenure: repayData.tenure,
       determined_repayment_date: repayData.startDate,
-      decision_reason: "-",
       rePaymentAPI: "paystack",
       total_pay: repayData.totalRepay
     }
@@ -182,12 +267,14 @@ const RepaySetup = ({ loanId }) => {
             type="select"
             label="Repayment API"
             nameAttr="repayApi"
+            value={repayData.repaymentApi}
             options={["Paystack", "Remita"]}
             changed={(val) => {
               setRepayError({ ...repayError, repaymentApi: null });
               setRepayData({ ...repayData, repaymentApi: val });
             }}
             error={repayError.repaymentApi && repayError.repaymentApi}
+            disable={!!loanData.rePaymentAPIstatus}
           />
         </Col>
       </Row>
@@ -203,6 +290,7 @@ const RepaySetup = ({ loanId }) => {
               setRepayData({ ...repayData, totalRepay: val });
             }}
             error={repayError.totalRepay && repayError.totalRepay}
+            disable={!!loanData.rePaymentAPIstatus}
           />
         </Col>
         <Col>
@@ -216,6 +304,7 @@ const RepaySetup = ({ loanId }) => {
               setRepayData({ ...repayData, tenure: val });
             }}
             error={repayError.tenure && repayError.tenure}
+            disable={!!loanData.rePaymentAPIstatus}
           />
         </Col>
       </Row>
@@ -231,6 +320,7 @@ const RepaySetup = ({ loanId }) => {
               setRepayData({ ...repayData, payday: val });
             }}
             error={repayError.payday && repayError.payday}
+            disable={!!loanData.rePaymentAPIstatus}
           />
         </Col>
         <Col>
@@ -244,10 +334,11 @@ const RepaySetup = ({ loanId }) => {
               setRepayData({ ...repayData, startDate: val });
             }}
             error={repayError.startDate && repayError.startDate}
+            disable={!!loanData.rePaymentAPIstatus} 
           />
         </Col>
       </Row>
-      <Row className="mb-4">
+      { repayData.repaymentApi !== "paystack" && <Row className="mb-4">
         <Col>
           <InputField 
             type="text"
@@ -274,7 +365,7 @@ const RepaySetup = ({ loanId }) => {
             error={repayError.accountNumber && repayError.accountNumber}
           />
         </Col>
-      </Row>
+      </Row>}
       <Button
         className="mt-4" 
         fullWidth 
@@ -282,7 +373,7 @@ const RepaySetup = ({ loanId }) => {
         bgColor="#741763" 
         size="lg" 
         color="#EBEBEB"
-        disabled={loading}
+        disabled={loanData?.rePaymentAPIstatus ? true : loading}
         loading={loading}
       >
         Continue
@@ -292,7 +383,20 @@ const RepaySetup = ({ loanId }) => {
 }
 
 
-const MonoTab = () => {
+export const MonoTab = ({ clientId }) => {
+
+  const { state: { loading }, getAccountInfo, getAccountStatement  } = useContext(MonoContext);
+
+  const retrieveAccountInfo = () => {
+    console.log(clientId)
+    getAccountInfo(clientId);
+  }
+
+  const retrieveAccountStatement = () => {
+    console.log(clientId);
+    getAccountStatement(clientId, 3);
+  }
+
   return (
     <>
       <div className={styles.status}>
@@ -304,12 +408,12 @@ const MonoTab = () => {
             <Button
               className="mt-4" 
               fullWidth
-              // clicked={updateContactInfo} 
+              clicked={retrieveAccountStatement} 
               bgColor="#741763" 
               size="lg" 
               color="#EBEBEB"
-              // disabled={loading}
-              // loading={loading}
+              disabled={loading}
+              loading={loading}
             >
               Get Account Statement
             </Button>
@@ -336,12 +440,12 @@ const MonoTab = () => {
             <Button
               className="mt-4" 
               fullWidth
-              // clicked={updateContactInfo} 
+              clicked={retrieveAccountInfo} 
               bgColor="#741763" 
               size="lg" 
               color="#EBEBEB"
-              // disabled={loading}
-              // loading={loading}
+              disabled={loading}
+              loading={loading}
             >
               Get Account Info
             </Button>
@@ -399,6 +503,8 @@ const ProcessorLoanDetails = () => {
     retrieveLoan(loanId);
     // ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
   }, [])
+
+  console.log(loanDetails);
   
   return(
     <Dashboard sidebarRoutes={processorRoute} location={location}>
@@ -414,11 +520,11 @@ const ProcessorLoanDetails = () => {
           /> : null 
         }
         { visibleSection === "decision" ?
-          <DecisionApproval /> :
+          <DecisionApproval loanId={loanId} loanData={loanDetails.loan} /> :
           null
         }
         { visibleSection === "setup" ? 
-          <RepaySetup loanId={loanId} /> :
+          <RepaySetup loanId={loanId} loanData={loanDetails.loan} /> :
           null
         }
         { visibleSection === "repay" ? 
@@ -437,7 +543,7 @@ const ProcessorLoanDetails = () => {
           null
         }
         { visibleSection === "mono" ? 
-          <MonoTab /> :
+          <MonoTab clientId={loanDetails?.client[0]?.clientId} /> :
           null
         }
       </div>
