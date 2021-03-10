@@ -54,6 +54,8 @@ const AuthorizerLoanDetails = () => {
     setVisibleSection(link);
   }
 
+  console.log(loanDetails)
+
   return (
     <Dashboard sidebarRoutes={authorizerRoutes} location={location}>
       <NavTabs navs={navArray} setActive={setActiveTab} currentTab={visibleSection} />
@@ -62,7 +64,7 @@ const AuthorizerLoanDetails = () => {
           client: {...loanDetails.client[0]?.bioData},
           ...loanDetails.loan, dti: loanDetails[0]?.DTI
         } : null } userRole={user.role} /> }
-        { visibleSection === "decision" && <DecisionApproval loanData={loanDetails.loan} loanId={loanId} /> }
+        { visibleSection === "decision" && <DecisionApproval loanData={loanDetails.loan} loanId={loanId} userRole={user.role} disburseBank={loanDetails?.bank[0]} /> }
         { visibleSection === "setup" && <RepaySetup loanData={loanDetails.loan} loanId={loanId} /> }
         { visibleSection === "repay" && <RepaymentSchedule data={ loanDetails ? {
             ...loanDetails?.loan,

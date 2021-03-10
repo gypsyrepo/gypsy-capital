@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useMemo } from 'react';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import styles from './ProcessorLoanDetails.module.scss';
 import { routes } from '../../routes/sidebarRoutes';
@@ -10,19 +10,24 @@ import { Context as AuthContext } from '../../context/AuthContext';
 import { Context as ApprovalContext } from '../../context/ApprovalContext';
 import { Context as RepaymentContext } from '../../context/RepaymentContext';
 import { Context as MonoContext } from '../../context/MonoContext';
+import { Context as BankContext } from '../../context/BankCotext';
 import InputField from '../../components/InputField/InputField';
 import Button from '../../components/Button/Button';
-import { Row, Col, Table } from 'react-bootstrap';
+import { Row, Col, Modal } from 'react-bootstrap';
 import OfferLetterPdf from '../../components/OfferLetter/OfferLetter';
 import ReactPDF, { PDFViewer } from '@react-pdf/renderer';
 import OfferLetterForm from '../../components/OfferLetter/OfferLetterForm';
 import ProcessOffer from '../../components/ProcessOffer/ProcessOffer';
 import { validateInput } from '../../utils/validateInput';
+import _ from 'lodash';
+import { numberWithCommas } from '../../utils/nigeriaStates';
 
 
-export const DecisionApproval = ({ loanId, loanData }) => {
+export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) => {
 
-  const { state: { loading }, decideApproval } = useContext(ApprovalContext);
+  const { state: { loading }, decideApproval, disburseLoan } = useContext(ApprovalContext);
+  const [showModal, setShowModal] = useState(false);
+  // console.log(userRole);
 
   const [approvalData, setApprovalData] = useState({
     decision: '',
@@ -59,20 +64,147 @@ export const DecisionApproval = ({ loanId, loanData }) => {
     }
   }, [loanData])
 
-  const approveLoan = () => {
-    const validated = validateInput(approvalData, setApprovalErrors);
-    console.log(validated);
-    if(validated) {
-      const data = {
-        decision: approvalData.decision,
-        approved_interest: approvalData.approvedRate,
-        approved_tenure: approvalData.approvedTenure,
-        determined_repayment_date: approvalData.repaymentDate,
-        decision_reason: approvalData.decisionReason,
-        total_pay: approvalData.totalPay
+  const approveLoan = async() => {
+    if(userRole === "processor") {
+      const validated = validateInput(approvalData, setApprovalErrors);
+      console.log(validated);
+      if(validated) {
+        const data = {
+          decision: approvalData.decision,
+          approved_interest: approvalData.approvedRate,
+          approved_tenure: approvalData.approvedTenure,
+          determined_repayment_date: approvalData.repaymentDate,
+          decision_reason: approvalData.decisionReason,
+          total_pay: approvalData.totalPay
+        }
+        decideApproval(loanId, data);
       }
-      decideApproval(loanId, data);
+    } else if(userRole === "authorizer") {
+      if(loanData && loanData?.processorDecision) {
+        await decideApproval(loanId, {
+          decision: loanData.processorDecision,
+          approved_interest: loanData.approvedInterest,
+          approved_tenure: loanData.approvedTenure,
+          determined_repayment_date: loanData.determinedRepaymentDate,
+          total_pay: '200000',
+          decision_reason: loanData.processorDecisionReason,
+          approvedAmount: loanData.amount
+        });
+        setShowModal(true);
+      } else {
+        const validated = validateInput(approvalData, setApprovalErrors);
+        console.log(validated);
+        if(validated) {
+          const data = {
+            decision: approvalData.decision,
+            approved_interest: approvalData.approvedRate,
+            approved_tenure: approvalData.approvedTenure,
+            determined_repayment_date: approvalData.repaymentDate,
+            decision_reason: approvalData.decisionReason,
+            total_pay: approvalData.totalPay
+          }
+          await decideApproval(loanId, data);
+          setShowModal(true);
+        }
+      }
     }
+  }
+
+  const transferPaymentToClient = () => {
+    const paymentData = {
+      account_bank: disburseBank.bank,
+      account_number: disburseBank.accountNumber,
+      amount: loanData.amount
+    }
+    disburseLoan(loanId, paymentData);
+  }
+
+
+  const DisburseModal = () => {
+
+    const handleClose = () => {
+      setShowModal(false);
+    }
+
+    const [clientBank, setClientBank] = useState({
+      bankName: '',
+      accountNumber: '',
+      amount: ''
+    })
+
+    useEffect(() => {
+      if(disburseBank && disburseBank.isDisbursement) {
+        setClientBank({
+          ...clientBank,
+          bankName: _.startCase(disburseBank.bank),
+          accountNumber: disburseBank.accountNumber,
+          amount: numberWithCommas(loanData.amount)
+        })
+      }
+    }, [disburseBank])
+
+    const { state: { bankList }, getBankList } = useContext(BankContext);
+
+    useEffect(() => {
+      (async() => {
+        await getBankList();
+      })()
+    }, [])
+   
+    const bankNames = useMemo(() => {
+      return bankList ? 
+        bankList.map((bank) => bank.name) :
+        []
+    }, [bankList])
+
+    return (
+      <Modal show={showModal} onHide={handleClose}>
+        <Modal.Body className={styles.disburseModal}>
+          <Row className="mb-4">
+            <Col>
+              <InputField 
+                type="text"
+                label="Bank Name"
+                nameAttr="bankName"
+                value={clientBank.bankName}
+              />
+            </Col>
+          </Row>
+          <Row className="mb-4">
+            <Col>
+              <InputField 
+                type="text"
+                label="Account Number"
+                nameAttr="accNumber"
+                value={clientBank.accountNumber}
+              />
+            </Col>
+          </Row>
+          <Row className="mb-4">
+            <Col>
+              <InputField 
+                type="text"
+                label="Amount"
+                nameAttr="amount"
+                value={clientBank.amount}
+              />
+            </Col>
+          </Row>
+          <Button
+            className="mt-4" 
+            fullWidth 
+            clicked={transferPaymentToClient} 
+            bgColor="#741763" 
+            size="lg" 
+            color="#EBEBEB"
+            disabled={loading}
+            loading={loading}
+          >
+            Disburse
+          </Button>
+        </Modal.Body>
+      </Modal>
+    )
   }
 
   return (
@@ -191,11 +323,13 @@ export const DecisionApproval = ({ loanId, loanData }) => {
         bgColor="#741763" 
         size="lg" 
         color="#EBEBEB"
-        disabled={loanData?.processorDecision ? true : loading}
+        disabled={loading}
         loading={loading}
       >
-        Submit Decision
+        { userRole === 'processor' && `Submit Decision`}
+        { userRole === 'authorizer' && `Submit & Disburse`}
       </Button>
+      <DisburseModal />
     </>
   )
 }
