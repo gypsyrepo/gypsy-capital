@@ -8,6 +8,8 @@ import { BasicInfo } from '../LoanDetail/LoanDetail';
 import { Context as LoanContext } from '../../context/LoanContext';
 import { Context as AuthContext } from '../../context/AuthContext';
 import Loader from '../../components/Loader/Loader';
+import { DecisionApproval, RepaySetup, MonoTab } from '../ProcessorLoanDetails/ProcessorLoanDetails';
+import { RepaymentSchedule } from '../LoanDetail/LoanDetail';
 
 
 const AuthorizerLoanDetails = () => {
@@ -31,16 +33,20 @@ const AuthorizerLoanDetails = () => {
       shortlink: "basic"
     },
     {
-      title: "Decision and Approval",
+      title: "Decision & Approval",
       shortlink: "decision"
     },
     {
-      title: "Repayment Schedule",
-      shortlink: "repayment"
+      title: "Repayment Setup",
+      shortlink: "setup"
     },
     {
-      title: "Offer Letter",
-      shortlink: "offer"
+      title: "Repayment Schedule",
+      shortlink: "repay"
+    },
+    { 
+      title: "Mono",
+      shortlink: "mono"
     }
   ]
 
@@ -56,6 +62,15 @@ const AuthorizerLoanDetails = () => {
           client: {...loanDetails.client[0]?.bioData},
           ...loanDetails.loan, dti: loanDetails[0]?.DTI
         } : null } userRole={user.role} /> }
+        { visibleSection === "decision" && <DecisionApproval loanData={loanDetails.loan} loanId={loanId} /> }
+        { visibleSection === "setup" && <RepaySetup loanData={loanDetails.loan} loanId={loanId} /> }
+        { visibleSection === "repay" && <RepaymentSchedule data={ loanDetails ? {
+            ...loanDetails?.loan,
+            payments: loanDetails?.payments
+          } : null } 
+          userRole={user.role}
+        /> }
+        { visibleSection === "mono" && <MonoTab clientId={loanDetails?.client[0]?.clientId} /> }
       </div> : <Loader />}
     </Dashboard>
   )

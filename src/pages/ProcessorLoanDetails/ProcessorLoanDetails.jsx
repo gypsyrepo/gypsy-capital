@@ -20,7 +20,7 @@ import ProcessOffer from '../../components/ProcessOffer/ProcessOffer';
 import { validateInput } from '../../utils/validateInput';
 
 
-const DecisionApproval = ({ loanId, loanData }) => {
+export const DecisionApproval = ({ loanId, loanData }) => {
 
   const { state: { loading }, decideApproval } = useContext(ApprovalContext);
 
@@ -201,7 +201,7 @@ const DecisionApproval = ({ loanId, loanData }) => {
 }
 
 
-const RepaySetup = ({ loanId, loanData }) => {
+export const RepaySetup = ({ loanId, loanData }) => {
 
   const { state: { loading }, setupRepayment } = useContext(RepaymentContext);
 
@@ -248,15 +248,15 @@ const RepaySetup = ({ loanId, loanData }) => {
       validated = validateInput(repayData, setRepayError);
     }
     console.log(validated)
-    // const data = {
-    //   approved_tenure: repayData.tenure,
-    //   determined_repayment_date: repayData.startDate,
-    //   rePaymentAPI: "paystack",
-    //   total_pay: repayData.totalRepay
-    // }
-    // if(validated) {
-    //   setupRepayment(loanId, data);
-    // }
+    const data = {
+      approved_tenure: repayData.tenure,
+      determined_repayment_date: repayData.startDate,
+      rePaymentAPI: "paystack",
+      total_pay: repayData.totalRepay
+    }
+    if(validated) {
+      setupRepayment(loanId, data);
+    }
   }
 
   return (
@@ -383,7 +383,7 @@ const RepaySetup = ({ loanId, loanData }) => {
 }
 
 
-const MonoTab = ({ clientId }) => {
+export const MonoTab = ({ clientId }) => {
 
   const { state: { loading }, getAccountInfo, getAccountStatement  } = useContext(MonoContext);
 

@@ -236,7 +236,7 @@ export const RepaymentSchedule = ({ data, userRole }) => {
 
   return (
     <>
-      { userRole === "processor"  && <div className={[styles.repayment, "mb-5"].join(' ')}>
+      { userRole === "processor" || "authorizer"  && <div className={[styles.repayment, "mb-5"].join(' ')}>
         <Table>
           <thead>
             <th>Repayment API</th>
