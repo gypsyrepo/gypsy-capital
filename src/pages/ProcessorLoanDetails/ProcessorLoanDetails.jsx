@@ -20,7 +20,7 @@ import ProcessOffer from '../../components/ProcessOffer/ProcessOffer';
 import { validateInput } from '../../utils/validateInput';
 
 
-const DecisionApproval = ({ loanId }) => {
+const DecisionApproval = ({ loanId, loanData }) => {
 
   const { state: { loading }, decideApproval } = useContext(ApprovalContext);
 
@@ -43,6 +43,21 @@ const DecisionApproval = ({ loanId }) => {
     totalPay: null,
     approvedAmount: null
   })
+
+  useEffect(() => {
+    if(loanData && loanData.processorDecision) {
+      console.log(loanData);
+      setApprovalData({
+        ...approvalData,
+        decision: loanData.processorDecision,
+        approvedRate: loanData.approvedInterest,
+        approvedTenure: loanData.approvedTenure,
+        repaymentDate: loanData.determinedRepaymentDate,
+        approvedAmount: loanData.amount,
+        decisionReason: loanData.processorDecisionReason
+      });
+    }
+  }, [loanData])
 
   const approveLoan = () => {
     const validated = validateInput(approvalData, setApprovalErrors);
@@ -69,11 +84,13 @@ const DecisionApproval = ({ loanId }) => {
             label="Decision"
             nameAttr="decision"
             options={['Approve', 'Decline']}
+            value={approvalData.decision}
             changed={(val) => {
               setApprovalData({...approvalData, decision: val });
               setApprovalErrors({ ...approvalErrors, decision: null })
             }}
             error={approvalErrors.decision && approvalErrors.decision}
+            disable={!!loanData?.processorDecision}
           />
         </Col>
         <Col>
@@ -87,6 +104,7 @@ const DecisionApproval = ({ loanId }) => {
               setApprovalErrors({ ...approvalErrors, approvedRate: null })
             }}
             error={approvalErrors.approvedRate && approvalErrors.approvedRate}
+            disable={!!loanData?.processorDecision}
           />
         </Col>
       </Row>
@@ -102,6 +120,7 @@ const DecisionApproval = ({ loanId }) => {
               setApprovalErrors({ ...approvalErrors, approvedTenure: null })
             }}
             error={approvalErrors.approvedTenure && approvalErrors.approvedTenure}
+            disable={!!loanData?.processorDecision}
           />
         </Col>
         <Col>
@@ -115,6 +134,7 @@ const DecisionApproval = ({ loanId }) => {
               setApprovalErrors({ ...approvalErrors, repaymentDate: null })
             }}
             error={approvalErrors.repaymentDate && approvalErrors.repaymentDate}
+            disable={!!loanData?.processorDecision}
           />
         </Col>
       </Row>
@@ -130,6 +150,7 @@ const DecisionApproval = ({ loanId }) => {
               setApprovalErrors({ ...approvalErrors, totalPay: null })
             }}
             error={approvalErrors.totalPay && approvalErrors.totalPay}
+            disable={!!loanData?.processorDecision}
           />
         </Col>
         <Col>
@@ -143,6 +164,7 @@ const DecisionApproval = ({ loanId }) => {
               setApprovalErrors({ ...approvalErrors, approvedAmount: null })
             }}
             error={approvalErrors.approvedAmount && approvalErrors.approvedAmount}
+            disable={!!loanData?.processorDecision}
           />
         </Col>
       </Row>
@@ -158,6 +180,7 @@ const DecisionApproval = ({ loanId }) => {
               setApprovalErrors({ ...approvalErrors, decisionReason: null })
             }}
             error={approvalErrors.decisionReason && approvalErrors.decisionReason}
+            disable={!!loanData?.processorDecision}
           />
         </Col>
       </Row>
@@ -168,7 +191,7 @@ const DecisionApproval = ({ loanId }) => {
         bgColor="#741763" 
         size="lg" 
         color="#EBEBEB"
-        disabled={loading}
+        disabled={loanData?.processorDecision ? true : loading}
         loading={loading}
       >
         Submit Decision
@@ -178,7 +201,7 @@ const DecisionApproval = ({ loanId }) => {
 }
 
 
-const RepaySetup = ({ loanId }) => {
+const RepaySetup = ({ loanId, loanData }) => {
 
   const { state: { loading }, setupRepayment } = useContext(RepaymentContext);
 
@@ -202,19 +225,38 @@ const RepaySetup = ({ loanId }) => {
     accountNumber: null
   });
 
+  useEffect(() => {
+    if(loanData && loanData.rePaymentAPIstatus) {
+      setRepayData({
+        ...repayData,
+        repaymentApi: loanData.rePaymentAPIstatus,
+        tenure: loanData.approvedTenure,
+        payday: loanData.payDay,
+        startDate: loanData.determinedRepaymentDate
+      });
+    }
+  }, [loanData])
+
 
   const startRepaymentSetup = () => {
-    const validated = validateInput(repayData, setRepayError);
+    const { repaymentApi, totalRepay, tenure, payday, startDate } = repayData;
+    const forPaystack = { repaymentApi, totalRepay, tenure, payday, startDate };
+    let validated;
+    if(repayData.repaymentApi === "paystack") {
+      validated = validateInput(forPaystack, setRepayError)
+    } else {
+      validated = validateInput(repayData, setRepayError);
+    }
     console.log(validated)
-    const data = {
-      approved_tenure: repayData.tenure,
-      determined_repayment_date: repayData.startDate,
-      rePaymentAPI: "paystack",
-      total_pay: repayData.totalRepay
-    }
-    if(validated) {
-      setupRepayment(loanId, data);
-    }
+    // const data = {
+    //   approved_tenure: repayData.tenure,
+    //   determined_repayment_date: repayData.startDate,
+    //   rePaymentAPI: "paystack",
+    //   total_pay: repayData.totalRepay
+    // }
+    // if(validated) {
+    //   setupRepayment(loanId, data);
+    // }
   }
 
   return (
@@ -225,12 +267,14 @@ const RepaySetup = ({ loanId }) => {
             type="select"
             label="Repayment API"
             nameAttr="repayApi"
+            value={repayData.repaymentApi}
             options={["Paystack", "Remita"]}
             changed={(val) => {
               setRepayError({ ...repayError, repaymentApi: null });
               setRepayData({ ...repayData, repaymentApi: val });
             }}
             error={repayError.repaymentApi && repayError.repaymentApi}
+            disable={!!loanData.rePaymentAPIstatus}
           />
         </Col>
       </Row>
@@ -246,6 +290,7 @@ const RepaySetup = ({ loanId }) => {
               setRepayData({ ...repayData, totalRepay: val });
             }}
             error={repayError.totalRepay && repayError.totalRepay}
+            disable={!!loanData.rePaymentAPIstatus}
           />
         </Col>
         <Col>
@@ -259,6 +304,7 @@ const RepaySetup = ({ loanId }) => {
               setRepayData({ ...repayData, tenure: val });
             }}
             error={repayError.tenure && repayError.tenure}
+            disable={!!loanData.rePaymentAPIstatus}
           />
         </Col>
       </Row>
@@ -274,6 +320,7 @@ const RepaySetup = ({ loanId }) => {
               setRepayData({ ...repayData, payday: val });
             }}
             error={repayError.payday && repayError.payday}
+            disable={!!loanData.rePaymentAPIstatus}
           />
         </Col>
         <Col>
@@ -287,10 +334,11 @@ const RepaySetup = ({ loanId }) => {
               setRepayData({ ...repayData, startDate: val });
             }}
             error={repayError.startDate && repayError.startDate}
+            disable={!!loanData.rePaymentAPIstatus} 
           />
         </Col>
       </Row>
-      <Row className="mb-4">
+      { repayData.repaymentApi !== "paystack" && <Row className="mb-4">
         <Col>
           <InputField 
             type="text"
@@ -317,7 +365,7 @@ const RepaySetup = ({ loanId }) => {
             error={repayError.accountNumber && repayError.accountNumber}
           />
         </Col>
-      </Row>
+      </Row>}
       <Button
         className="mt-4" 
         fullWidth 
@@ -325,7 +373,7 @@ const RepaySetup = ({ loanId }) => {
         bgColor="#741763" 
         size="lg" 
         color="#EBEBEB"
-        disabled={loading}
+        disabled={loanData?.rePaymentAPIstatus ? true : loading}
         loading={loading}
       >
         Continue
@@ -472,11 +520,11 @@ const ProcessorLoanDetails = () => {
           /> : null 
         }
         { visibleSection === "decision" ?
-          <DecisionApproval loanId={loanId} /> :
+          <DecisionApproval loanId={loanId} loanData={loanDetails.loan} /> :
           null
         }
         { visibleSection === "setup" ? 
-          <RepaySetup loanId={loanId} /> :
+          <RepaySetup loanId={loanId} loanData={loanDetails.loan} /> :
           null
         }
         { visibleSection === "repay" ? 

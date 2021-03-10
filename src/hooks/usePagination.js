@@ -15,6 +15,10 @@ export default (currentPage, postsPerPage, list, setPage, cssStyles) => {
     return list.slice(indexOfFirstItem, indexOfLastItem);
   }, [indexOfFirstItem, indexOfLastItem, list]);
 
+  const numOfPages = useMemo(() => {
+    return Math.ceil(list.length / postsPerPage);
+  }, [list, postsPerPage])
+
   const goToPage = (event) => {
     if(event.target.text) {
       setPage(Number(event.target.text));
@@ -48,5 +52,5 @@ export default (currentPage, postsPerPage, list, setPage, cssStyles) => {
     }
   }
 
-  return { currentList, items, goToNextPage, goToPrevPage }
+  return { currentList, items, goToNextPage, goToPrevPage, numOfPages }
 }

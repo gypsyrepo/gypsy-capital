@@ -137,7 +137,7 @@ const LoanStatus = ({ data }) => {
         processorDecision: data.processorDecision || 'Pending',
         processorDecReason: data.processorDecisionReason || '_____',
         processorInCharge: data.processorOfficerInCharge || 'None',
-        processorDecTime: data.processorDecisionTime || '_____',
+        processorDecTime: moment.unix(Number(data.processorDecisionTime) / 1000).format('llll') || '_____',
         adminDecision: data.adminDecision || "Pending",
         adminDecReason: data.adminDecisionReason || '_____',
         adminInCharge: data.adminOfficerInCharge || 'None',
