@@ -22,7 +22,7 @@ const bankReducer = (state, action) => {
 const getBankList = dispatch => async() => {
   try {
     const token = resolveToken();
-    const response = await gypsy.get('/bank/list', {
+    const response = await gypsy.get('/bank/list/flutter', {
       headers: {
         "Authorization": `Bearer ${token}`
       }

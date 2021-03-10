@@ -6,7 +6,7 @@ import history from '../utils/history';
 
 
 const monoReducer = (state, action) => {
-  switch(action) {
+  switch(action.type) {
     case 'set_loading':
       return { ...state, loading: action.payload }
     case 'set_error':
@@ -82,6 +82,24 @@ const getAccountStatement = dispatch => async(userId, months) => {
     });
     console.log(response.data);
     dispatch({ type: "set_loading", payload: false });
+  } catch(err) {
+    if(err.response) {
+      console.log(err.response.data);
+      const errorMessage = err.response.data.error || err.response.data.message
+      dispatch({
+        type: "set_error",
+        payload: errorMessage
+      });
+      dispatch({ type: "set_loading", payload: false });
+    }
+  }
+}
+
+const getAccountTransactionHistory = dispatch => async(userId) => {
+  dispatch({ type: "set_loading", payload: true });
+  try {
+    const token = resolveToken();
+    const response = await gypsy.get(`/api/mono/transaction_history/${userId}`,   )
   } catch(err) {
     if(err.response) {
       console.log(err.response.data);
