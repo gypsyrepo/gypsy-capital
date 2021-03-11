@@ -240,6 +240,10 @@ export const RepaymentSchedule = ({ data, userRole, loanId }) => {
 
   console.log(repaymentArr)
 
+  if(loading) {
+    return <Loader />
+  }
+
   return (
     <>
       { userRole === "processor" || userRole === "authorizer"  ? <div className={[styles.repayment, "mb-5"].join(' ')}>
