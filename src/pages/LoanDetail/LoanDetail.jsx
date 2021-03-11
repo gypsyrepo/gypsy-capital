@@ -7,6 +7,7 @@ import NavTabs from '../../components/NavTabs/NavTabs';
 import { Row, Col, Table } from 'react-bootstrap';
 import { Context as LoanContext } from '../../context/LoanContext';
 import { Context as AuthContext } from '../../context/AuthContext';
+import { Context as RepaymentContext } from '../../context/RepaymentContext';
 import Loader from '../../components/Loader/Loader';
 import { numberWithCommas } from '../../utils/nigeriaStates';
 import moment from 'moment';
@@ -195,11 +196,16 @@ const LoanStatus = ({ data }) => {
   )
 }
 
-export const RepaymentSchedule = ({ data, userRole }) => {
+export const RepaymentSchedule = ({ data, userRole, loanId }) => {
 
   const [repaymentArr, setRepaymentArr] = useState(null);
 
   console.log(userRole);
+  const { state: { loading }, verifyRepaymentStatus } = useContext(RepaymentContext);
+
+  useEffect(() => {
+    verifyRepaymentStatus(loanId);
+  }, [])
 
   useEffect(() => {
     if(data) {

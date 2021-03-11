@@ -40,8 +40,34 @@ const setupRepayment = dispatch => async(loanId, repayData) => {
 }
 
 
+const verifyRepaymentStatus = dispatch => async(loanId) => {
+  dispatch({ type: 'set_loading', payload: true })
+  try {
+    const token = resolveToken();
+    const response = await gypsy.post(`/paystack/verify/${loanId}`, {}, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    console.log(response.data);
+    dispatch({ type: 'set_loading', payload: false })
+  } catch(err) {
+    if(err.response) {
+      console.log(err.response.data);
+      const errorMessage = err.response.data.error || err.response.data.message
+      dispatch({
+        type: "set_error",
+        payload: errorMessage
+      });
+      dispatch({ type: "set_loading", payload: false });
+    }
+  }
+}
+
+
 export const { Context, Provider } = createDataContext(
   repaymentReducer,
-  { setupRepayment },
+  { setupRepayment, verifyRepaymentStatus },
   { loading: false, error: null }
 )

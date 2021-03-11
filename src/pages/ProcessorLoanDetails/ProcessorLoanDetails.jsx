@@ -97,7 +97,8 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
           approved_tenure: approvalData.approvedTenure,
           determined_repayment_date: approvalData.repaymentDate,
           decision_reason: approvalData.decisionReason,
-          total_pay: approvalData.totalPay
+          total_pay: approvalData.totalPay,
+          approvedAmount: approvalData.approvedAmount
         }
         decideApproval(loanId, data);
       }
@@ -676,6 +677,7 @@ const ProcessorLoanDetails = () => {
               ...loanDetails?.loan,
               payments: loanDetails?.payments
             } : null }
+            loanId={loanId}
             userRole={user.role}
           /> : 
           null
