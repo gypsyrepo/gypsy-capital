@@ -36,12 +36,12 @@ const AgentOverview = () => {
   }, []);
 
   const totalDisbursedLoans = useMemo(() => {
-    return loans.filter((loan) => loan.disbustmentStatus.toLowerCase() === "active")
+    return loans.filter((loan) => loan.status.toLowerCase() === "approved")
       .reduce((acc, loan) => (loan.amount + acc), 0)
   }, [loans]);
 
   const noOfActiveLoans = useMemo(() => {
-    return loans.filter((loan) => loan.status.toLowerCase() === "active").length; 
+    return loans.filter((loan) => loan.status.toLowerCase() === "approved").length; 
   }, [loans]);
 
   const recentLoans = useMemo(() => {
@@ -75,7 +75,7 @@ const AgentOverview = () => {
             <StatBox 
               icon={DisburseStat} 
               title="Total Disbursed Loans" 
-              statData={totalDisbursedLoans} 
+              statData={numberWithCommas(totalDisbursedLoans)} 
             />
           </Col>
           <Col>
