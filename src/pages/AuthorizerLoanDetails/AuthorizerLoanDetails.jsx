@@ -71,6 +71,7 @@ const AuthorizerLoanDetails = () => {
             payments: loanDetails?.payments
           } : null } 
           userRole={user.role}
+          loanId={loanId}
         /> }
         { visibleSection === "mono" && <MonoTab clientId={loanDetails?.client[0]?.clientId} /> }
       </div> : <Loader />}
