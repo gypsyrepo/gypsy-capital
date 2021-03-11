@@ -43,12 +43,12 @@ const ProcessorDashboard = () => {
   }, [clientsForRole]);
 
   const totalDisbursedLoans = useMemo(() => {
-    return loans.filter((loan) => loan.disbustmentStatus.toLowerCase() === "active")
+    return loans.filter((loan) => loan.status.toLowerCase() === "approved")
       .reduce((acc, loan) => (loan.amount + acc), 0)
   }, [loans]);
 
   const noOfActiveLoans = useMemo(() => {
-    return loans.filter((loan) => loan.status.toLowerCase() === "active").length; 
+    return loans.filter((loan) => loan.status.toLowerCase() === "approved").length; 
   }, [loans]);
 
   const noOfPendingLoans = useMemo(() => {
@@ -79,7 +79,7 @@ const ProcessorDashboard = () => {
             <StatBox icon={ClientStat} title="Total Clients" statData={clientsForRole.length} />
           </Col>
           <Col>
-            <StatBox icon={DisburseStat} title="Total Disbursed Loans" statData={totalDisbursedLoans} />
+            <StatBox icon={DisburseStat} title="Total Disbursed Loans" statData={numberWithCommas(totalDisbursedLoans)} />
           </Col>
           <Col>
             <StatBox icon={LoanStat} title="Total Active Loans" statData={noOfActiveLoans} />
