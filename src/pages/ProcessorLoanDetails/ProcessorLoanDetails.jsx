@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useMemo } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Dashboard from '../../components/Dashboard/Dashboard';
 import styles from './ProcessorLoanDetails.module.scss';
 import { routes } from '../../routes/sidebarRoutes';
@@ -104,13 +104,13 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
     } else if(userRole === "authorizer") {
       if(loanData && loanData?.processorDecision) {
         await decideApproval(loanId, {
-          decision: loanData.processorDecision,
-          approved_interest: loanData.approvedInterest.toString(),
-          approved_tenure: loanData.approvedTenure.toString(),
-          determined_repayment_date: loanData.determinedRepaymentDate,
-          total_pay: loanData?.calculatedPayBack.toString(),
-          decision_reason: loanData.processorDecisionReason,
-          approvedAmount: loanData.amount.toString()
+          decision: loanData?.processorDecision,
+          approved_interest: loanData?.approvedInterest?.toString(),
+          approved_tenure: loanData?.approvedTenure?.toString(),
+          determined_repayment_date: loanData?.determinedRepaymentDate,
+          total_pay: loanData?.calculatedPayBack?.toString(),
+          decision_reason: loanData?.processorDecisionReason,
+          approvedAmount: loanData?.amount?.toString()
         });
         setShowModal(true);
       } else {
@@ -336,8 +336,7 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
         disabled={loading}
         loading={loading}
       >
-        { userRole === 'processor' && `Submit Decision`}
-        { userRole === 'authorizer' && `Submit & Disburse`}
+        { userRole === 'processor' ? `Submit Decision` : `Submit & Disburse` }
       </Button>
       <DisburseModal />
     </>
@@ -664,7 +663,7 @@ const ProcessorLoanDetails = () => {
           /> : null 
         }
         { visibleSection === "decision" ?
-          <DecisionApproval loanId={loanId} loanData={loanDetails.loan} /> :
+          <DecisionApproval loanId={loanId} loanData={loanDetails.loan} userRole={user.role} /> :
           null
         }
         { visibleSection === "setup" ? 

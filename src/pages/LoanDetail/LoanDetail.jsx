@@ -236,7 +236,7 @@ export const RepaymentSchedule = ({ data, userRole }) => {
 
   return (
     <>
-      { userRole === "processor" || "authorizer"  && <div className={[styles.repayment, "mb-5"].join(' ')}>
+      { userRole === "processor" || userRole === "authorizer"  ? <div className={[styles.repayment, "mb-5"].join(' ')}>
         <Table>
           <thead>
             <th>Repayment API</th>
@@ -249,11 +249,11 @@ export const RepaymentSchedule = ({ data, userRole }) => {
               <td>{_.capitalize(data?.rePaymentAPI)}</td>
               <td>{`N ${numberWithCommas(data?.monthlyRepayment)}`}</td>
               <td>{data?.determinedRepaymentDate}</td>
-              <td>{_.capitalize(data?.rePaymentAPIstatus)}</td>
+              <td>{data?.rePaymentAPIstatus ? 'Active' : 'Inactive'}</td>
             </tr>
           </tbody>
         </Table>
-      </div>}
+      </div> : null }
       <div className={styles.repayment}>
         <Table>
           <thead> 
