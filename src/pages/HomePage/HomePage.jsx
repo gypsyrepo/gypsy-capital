@@ -361,11 +361,11 @@ const HomePage = () => {
                 </div>
                 <div className={styles.contactGroup}>
                   <HiPhone className={styles.icon} size="1.8em" />
-                  <p>+234 809 9907 888</p>
+                  <p>+234 904 144 4888</p>
                 </div>
                 <div className={styles.contactGroup}>
                   <IoLogoWhatsapp className={styles.icon} size="1.8em" />
-                  <p>+234 809 9907 888</p>
+                  <p>+234 904 144 4888</p>
                 </div>
               </div>
             </Col>

@@ -6,7 +6,7 @@ import { HiLocationMarker, HiMail, HiPhone } from "react-icons/hi";
 import { IoLogoWhatsapp } from "react-icons/io";
 import Footer from "../../components/Footer/Footer";
 import InputField from "../../components/InputField/InputField";
-import { useRouteMatch, Link } from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
 import ScrollToTopOnMount from "../../components/ScrollToTopOnMount/ScrollToTopOnMount";
 
 const ContactPage = ({ history }) => {
@@ -122,14 +122,14 @@ const ContactPage = ({ history }) => {
                     className={[styles.icon, styles.others].join(" ")}
                     size="1.8em"
                   />
-                  <p>+234 809 9907 888</p>
+                  <p>+234 904 144 4888</p>
                 </div>
                 <div className={styles.addressGroup}>
                   <IoLogoWhatsapp
                     className={[styles.icon, styles.others].join(" ")}
                     size="1.8em"
                   />
-                  <p>+234 809 9907 888</p>
+                  <p>+234 904 144 4888</p>
                 </div>
               </div>
             </Col>
