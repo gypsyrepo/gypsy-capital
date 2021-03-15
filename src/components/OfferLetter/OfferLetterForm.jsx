@@ -1,11 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './OfferLetterForm.module.scss';
 import WhiteLogo from '../../assets/logo-white.png';
+import OfferLetterPdf from './OfferLetter';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import { Row, Col } from 'react-bootstrap';
 import Button from '../Button/Button';
 
 
 const OfferLetterForm = ({ setState }) => {
+
+  const [offerFormData, setOfferFormData] = useState({
+    date: '',
+    fullName: '',
+    clientAddress: '',
+    loanAmount: '',
+    borrowerName: '',
+    natureofBusiness: '',
+    loanFacility: '',
+    loanPurpose: '',
+    monthlyRepayment: '',
+    repaymentSource: '',
+    headCreditSign: '',
+    headRiskSign: '',
+    memoFullName: '',
+    memoAddress: '',
+    memoName: '',
+    memoSign: ''
+  })
 
   const sendOffer = () => {
     setState(true)
@@ -21,7 +42,13 @@ const OfferLetterForm = ({ setState }) => {
             <p>Loan Approved</p>
             <div className={styles.dateGroup}>
               <p>Date: </p>
-              <input type="text" placeholder="DD/MM/YYYY" name="date" />
+              <input 
+                type="text" 
+                placeholder="DD/MM/YYYY" 
+                name="date" 
+                value={offerFormData.date}
+                onChange={(e) => setOfferFormData({...offerFormData, date: e.currentTarget.value})}
+              />
             </div>
           </div>
         </div>
@@ -29,19 +56,35 @@ const OfferLetterForm = ({ setState }) => {
           <div className={styles.addressGroup}>
             <div className={styles.greet}>
               <p>Dear,</p>
-              <input type="text" name="clientName" placeholder="Full Name" />
+              <input 
+                type="text" 
+                name="clientName" 
+                placeholder="Full Name" 
+                value={offerFormData.fullName}
+                onChange={(e) => setOfferFormData({...offerFormData, fullName: e.currentTarget.value})}
+              />
             </div>
             <input 
               type="text" 
               name="clientAddress" 
               placeholder="Client Address" 
-              className={styles.address} 
+              className={styles.address}
+              value={offerFormData.clientAddress} 
+              onChange={(e) => setOfferFormData({ ...offerFormData, clientAddress: e.currentTarget.value })}
             />
           </div>
           <div className={styles.mainContent}>
             <p className={styles.letterHead}>OFFER FOR PERSONAL LOAN FACILITY</p>
             <p>We are pleased to advise that the Management of Gypsy Capital Limited has approved the loan facility requested, hence, this offer made to you. This letter outlines the major terms and conditions under which we are willing to make available to you, the sum of 
-            <span><input type="text" name="additional" placeholder="₦xxx,xxx (Loans amount in words)" /></span>  
+            <span>
+              <input 
+                type="text" 
+                name="additional" 
+                placeholder="₦xxx,xxx (Loans amount in words)" 
+                value={offerFormData.loanAmount}
+                onChange={(e) => setOfferFormData({ ...offerFormData, loanAmount: e.currentTarget.value })}
+              />
+            </span>  
             </p>
             <div className={styles.loanData}>
               <Row className="mb-4">
@@ -57,7 +100,13 @@ const OfferLetterForm = ({ setState }) => {
                   <p>Borrower:</p>
                 </Col>
                 <Col md={8}>
-                  <input type="text" name="clientname" placeholder="Client Name" />
+                  <input 
+                    type="text" 
+                    name="clientname" 
+                    placeholder="Client Name" 
+                    value={offerFormData.borrowerName}
+                    onChange={(e) => setOfferFormData({ ...offerFormData, borrowerName: e.currentTarget.value })}
+                  />
                 </Col>
               </Row>
               <Row className="mb-4 align-items-center">
@@ -65,7 +114,12 @@ const OfferLetterForm = ({ setState }) => {
                   <p>Nature of Business:</p>
                 </Col>
                 <Col md={8}>
-                  <input type="text" name="business" />
+                  <input 
+                    type="text" 
+                    name="business" 
+                    value={offerFormData.natureofBusiness}
+                    onChange={(e) => setOfferFormData({ ...offerFormData, natureofBusiness: e.currentTarget.value })}
+                  />
                 </Col>
               </Row>
               <Row className="mb-4 align-items-center">
@@ -73,7 +127,12 @@ const OfferLetterForm = ({ setState }) => {
                   <p>Amount of Loan Facility:</p>
                 </Col>
                 <Col md={8}>
-                  <input type="text" name="loanAmount" />
+                  <input 
+                    type="text" 
+                    name="loanAmount" 
+                    value={offerFormData.loanFacility}
+                    onChange={(e) => setOfferFormData({ ...offerFormData, loanFacility: e.currentTarget.value })}
+                  />
                 </Col>
               </Row>
               <Row className="mb-4 align-items-center">
@@ -81,7 +140,12 @@ const OfferLetterForm = ({ setState }) => {
                   <p>Purpose:</p>
                 </Col>
                 <Col md={8}>
-                  <input type="text" name="purpose" />
+                  <input 
+                    type="text" 
+                    name="purpose" 
+                    value={offerFormData.loanPurpose}
+                    onChange={(e) => setOfferFormData({ ...offerFormData, loanPurpose: e.currentTarget.value })}
+                  />
                 </Col>
               </Row>
               <Row className="mb-4 align-items-center">
@@ -89,7 +153,12 @@ const OfferLetterForm = ({ setState }) => {
                   <p>Monthly Repayment:</p>
                 </Col>
                 <Col md={8}>
-                  <input type="text" name="monthlyRepay" />
+                  <input 
+                    type="text" 
+                    name="monthlyRepay" 
+                    value={offerFormData.monthlyRepayment}
+                    onChange={(e) => setOfferFormData({...offerFormData, monthlyRepayment: e.currentTarget.value })}
+                  />
                 </Col>
               </Row>
               <Row className="mb-4 align-items-center">
@@ -97,7 +166,12 @@ const OfferLetterForm = ({ setState }) => {
                   <p>Repayment Source/Method:</p>
                 </Col>
                 <Col md={8}>
-                  <input type="text" name="source" />
+                  <input 
+                    type="text" 
+                    name="source" 
+                    value={offerFormData.repaymentSource}
+                    onChange={(e) => setOfferFormData({ ...offerFormData, repaymentSource: e.currentTarget.value })}
+                  />
                 </Col>
               </Row>
             </div>
@@ -146,23 +220,41 @@ const OfferLetterForm = ({ setState }) => {
             <div className={styles.signatureGroup}>
               <div>
                 <p>HEAD, CREDIT</p>
-                <textarea />
+                <textarea
+                  name="headCredit"
+                  value={offerFormData.headCreditSign}
+                  onChange={(e) => setOfferFormData({ ...offerFormData, headCreditSign: e.currentTarget.value })}
+                />
               </div>
               <div>
                 <p>HEAD, CREDIT & RISK MANAGEMENT</p>
-                <textarea />
+                <textarea 
+                  name="headRisk"
+                  value={offerFormData.headRiskSign}
+                  onChange={(e) => setOfferFormData({ ...offerFormData, headRiskSign: e.currentTarget.value })}
+                />
               </div>
             </div>
             <div className={styles.memorandum}>
                 <p className={styles.title}>Memorandum of Acceptance</p>
-              <p style={{lineHeight: "1.8rem"}}>I <span style={{ marginLeft: "10px" }}><input style={{width: "250px"}} type="text" name="client" placeholder="Full Name" /></span>, OF <span style={{ marginLeft: "10px" }}><input type="text" name="address" placeholder="Address goes here" /></span> have read and have fully understood the terms and conditions of the offer. Therefore I agree to the terms and conditions of the offer and have accordingly affirmed same;</p>
+              <p style={{lineHeight: "1.8rem"}}>I <span style={{ marginLeft: "10px" }}><input style={{width: "250px"}} type="text" name="client" placeholder="Full Name" value={offerFormData.memoFullName} onChange={(e) => setOfferFormData({ ...offerFormData, memoFullName: e.currentTarget.value})} /></span>, OF <span style={{ marginLeft: "10px" }}><input type="text" name="address" placeholder="Address goes here" value={offerFormData.memoAddress} onChange={(e) => setOfferFormData({...offerFormData, memoAddress: e.currentTarget.value})} /></span> have read and have fully understood the terms and conditions of the offer. Therefore I agree to the terms and conditions of the offer and have accordingly affirmed same;</p>
               <div className={styles.clientSign}>
                 <Row>
                   <Col sm={6}>
-                    Name: <input type="text" name="name" />
+                    Name: <input 
+                      type="text" 
+                      name="name" 
+                      value={offerFormData.memoName}
+                      onChange={(e) => setOfferFormData({ ...offerFormData, memoName: e.currentTarget.value })}
+                    />
                   </Col>
                   <Col sm={6}>
-                    Signature: <input type="text" name="name" />
+                    Signature: <input 
+                      type="text" 
+                      name="name" 
+                      value={offerFormData.memoSign}
+                      onChange={(e) => setOfferFormData({ ...offerFormData, memoSign: e.currentTarget.value })}
+                    />
                   </Col>
                 </Row>
               </div>
@@ -171,19 +263,14 @@ const OfferLetterForm = ({ setState }) => {
         </div>
       </div>
       <div className={styles.offerBtn}>
-        <Button
-          className="mt-4" 
-          // clicked={updateContactInfo} 
-          bgColor="#741763" 
-          size="lg" 
-          color="#EBEBEB"
-          // disabled={loading}
-          // loading={loading}
+        <PDFDownloadLink 
+          className={styles.downloadBtn} 
+          document={<OfferLetterPdf />} 
+          fileName="offerLetter.pdf"
         >
-          Download Offer Letter
-        </Button>
+          {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download Offer Letter')}
+        </PDFDownloadLink>
         <Button
-          className="mt-4" 
           clicked={sendOffer} 
           bgColor="#741763" 
           size="lg" 
