@@ -1,40 +1,46 @@
-import React, { useState, useContext, useEffect } from 'react';
-import Dashboard from '../../components/Dashboard/Dashboard';
-import styles from './ProcessorLoanDetails.module.scss';
-import { routes } from '../../routes/sidebarRoutes';
-import { useLocation, useParams } from 'react-router-dom';
-import NavTabs from '../../components/NavTabs/NavTabs';
-import { BasicInfo, RepaymentSchedule } from '../LoanDetail/LoanDetail';
-import { Context as LoanContext } from '../../context/LoanContext';
-import { Context as AuthContext } from '../../context/AuthContext';
-import { Context as ApprovalContext } from '../../context/ApprovalContext';
-import { Context as RepaymentContext } from '../../context/RepaymentContext';
-import { Context as MonoContext } from '../../context/MonoContext';
-import { Context as BankContext } from '../../context/BankCotext';
-import InputField from '../../components/InputField/InputField';
-import Button from '../../components/Button/Button';
-import { Row, Col, Modal } from 'react-bootstrap';
-import OfferLetterPdf from '../../components/OfferLetter/OfferLetter';
-import ReactPDF, { PDFViewer } from '@react-pdf/renderer';
-import OfferLetterForm from '../../components/OfferLetter/OfferLetterForm';
-import ProcessOffer from '../../components/ProcessOffer/ProcessOffer';
-import { validateInput } from '../../utils/validateInput';
-import _ from 'lodash';
-import { numberWithCommas } from '../../utils/nigeriaStates';
-import { toast, ToastContainer } from 'react-toastify';
+import React, { useState, useContext, useEffect } from "react";
+import Dashboard from "../../components/Dashboard/Dashboard";
+import styles from "./ProcessorLoanDetails.module.scss";
+import { routes } from "../../routes/sidebarRoutes";
+import { useLocation, useParams } from "react-router-dom";
+import NavTabs from "../../components/NavTabs/NavTabs";
+import { BasicInfo, RepaymentSchedule } from "../LoanDetail/LoanDetail";
+import { Context as LoanContext } from "../../context/LoanContext";
+import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as ApprovalContext } from "../../context/ApprovalContext";
+import { Context as RepaymentContext } from "../../context/RepaymentContext";
+import { Context as MonoContext } from "../../context/MonoContext";
+import { Context as BankContext } from "../../context/BankCotext";
+import InputField from "../../components/InputField/InputField";
+import Button from "../../components/Button/Button";
+import { Row, Col, Modal } from "react-bootstrap";
+import ProcessOffer from "../../components/ProcessOffer/ProcessOffer";
+import { validateInput } from "../../utils/validateInput";
+import _ from "lodash";
+import { numberWithCommas } from "../../utils/nigeriaStates";
+import { toast, ToastContainer } from "react-toastify";
 
-
-export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) => {
-
-  const { state: { loading, error, approvedStatus }, decideApproval, disburseLoan, clearError, resetApprovalStatus } = useContext(ApprovalContext);
+export const DecisionApproval = ({
+  loanId,
+  loanData,
+  userRole,
+  disburseBank,
+}) => {
+  const {
+    state: { loading, error, approvedStatus },
+    decideApproval,
+    disburseLoan,
+    clearError,
+    resetApprovalStatus,
+  } = useContext(ApprovalContext);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    if(error) {
+    if (error) {
       toast.error(error);
       clearError();
     }
-  }, [error])
+  }, [error]);
 
   // useEffect(() => {
   //   if(approvedStatus) {
@@ -44,13 +50,13 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
   // }, [approvedStatus])
 
   const [approvalData, setApprovalData] = useState({
-    decision: '',
-    approvedRate: '',
-    approvedTenure: '',
-    repaymentDate: '',
-    decisionReason: '',
-    totalPay: '',
-    approvedAmount: ''
+    decision: "",
+    approvedRate: "",
+    approvedTenure: "",
+    repaymentDate: "",
+    decisionReason: "",
+    totalPay: "",
+    approvedAmount: "",
   });
 
   const [approvalErrors, setApprovalErrors] = useState({
@@ -60,19 +66,22 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
     repaymentDate: null,
     decisionReason: null,
     totalPay: null,
-    approvedAmount: null
+    approvedAmount: null,
   });
 
-  const { state: { bankList }, getBankList } = useContext(BankContext);
+  const {
+    state: { bankList },
+    getBankList,
+  } = useContext(BankContext);
 
   useEffect(() => {
-    (async() => {
+    (async () => {
       await getBankList();
-    })()
+    })();
   }, []);
 
   useEffect(() => {
-    if(loanData && loanData.processorDecision) {
+    if (loanData && loanData.processorDecision) {
       console.log(loanData);
       setApprovalData({
         ...approvalData,
@@ -81,16 +90,16 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
         approvedTenure: loanData.approvedTenure,
         repaymentDate: loanData.determinedRepaymentDate,
         approvedAmount: loanData.amount,
-        decisionReason: loanData.processorDecisionReason
+        decisionReason: loanData.processorDecisionReason,
       });
     }
-  }, [loanData])
+  }, [loanData]);
 
-  const approveLoan = async() => {
-    if(userRole === "processor") {
+  const approveLoan = async () => {
+    if (userRole === "processor") {
       const validated = validateInput(approvalData, setApprovalErrors);
       console.log(validated);
-      if(validated) {
+      if (validated) {
         const data = {
           decision: approvalData.decision,
           approved_interest: approvalData.approvedRate,
@@ -98,12 +107,12 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
           determined_repayment_date: approvalData.repaymentDate,
           decision_reason: approvalData.decisionReason,
           total_pay: approvalData.totalPay,
-          approvedAmount: approvalData.approvedAmount
-        }
+          approvedAmount: approvalData.approvedAmount,
+        };
         decideApproval(loanId, data);
       }
-    } else if(userRole === "authorizer") {
-      if(loanData && loanData?.processorDecision) {
+    } else if (userRole === "authorizer") {
+      if (loanData && loanData?.processorDecision) {
         await decideApproval(loanId, {
           decision: loanData?.processorDecision,
           approved_interest: loanData?.approvedInterest?.toString(),
@@ -111,68 +120,68 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
           determined_repayment_date: loanData?.determinedRepaymentDate,
           total_pay: loanData?.calculatedPayBack?.toString(),
           decision_reason: loanData?.processorDecisionReason,
-          approvedAmount: loanData?.amount?.toString()
+          approvedAmount: loanData?.amount?.toString(),
         });
         setShowModal(true);
       } else {
         const validated = validateInput(approvalData, setApprovalErrors);
         console.log(validated);
-        if(validated) {
+        if (validated) {
           const data = {
             decision: approvalData.decision,
             approved_interest: approvalData.approvedRate,
             approved_tenure: approvalData.approvedTenure,
             determined_repayment_date: approvalData.repaymentDate,
             decision_reason: approvalData.decisionReason,
-            total_pay: approvalData.totalPay
-          }
+            total_pay: approvalData.totalPay,
+          };
           await decideApproval(loanId, data);
         }
       }
     }
-  }
+  };
 
   const transferPaymentToClient = () => {
-    const bankInfo = bankList.filter(bank => bank.name.toLowerCase() === disburseBank.bank.toLowerCase() )
+    const bankInfo = bankList.filter(
+      (bank) => bank.name.toLowerCase() === disburseBank.bank.toLowerCase()
+    );
     // console.log(bankInfo[0].code);
     const paymentData = {
       account_bank: bankInfo[0].code,
       account_number: disburseBank.accountNumber,
-      amount: loanData.amount
-    }
+      amount: loanData.amount,
+    };
     disburseLoan(loanId, paymentData);
-  }
-
+  };
 
   const DisburseModal = () => {
-
     const handleClose = () => {
       setShowModal(false);
-    }
+    };
 
     const [clientBank, setClientBank] = useState({
-      bankName: '',
-      accountNumber: '',
-      amount: ''
-    })
+      bankName: "",
+      accountNumber: "",
+      amount: "",
+    });
 
     useEffect(() => {
-      if(disburseBank && disburseBank.isDisbursement) {
+      if (disburseBank && disburseBank.isDisbursement) {
         setClientBank({
           ...clientBank,
           bankName: _.startCase(disburseBank.bank),
           accountNumber: disburseBank.accountNumber,
-          amount: numberWithCommas(loanData.amount)
-        })
+          amount: numberWithCommas(loanData.amount),
+        });
       }
-    }, [disburseBank])
+    }, [disburseBank]);
 
     return (
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Body className={styles.disburseModal}>
           <Row className="mb-4">
             <Col>
-              <InputField 
+              <InputField
                 type="text"
                 label="Bank Name"
                 nameAttr="bankName"
@@ -182,7 +191,7 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
           </Row>
           <Row className="mb-4">
             <Col>
-              <InputField 
+              <InputField
                 type="text"
                 label="Account Number"
                 nameAttr="accNumber"
@@ -192,7 +201,7 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
           </Row>
           <Row className="mb-4">
             <Col>
-              <InputField 
+              <InputField
                 type="text"
                 label="Amount"
                 nameAttr="amount"
@@ -201,11 +210,11 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
             </Col>
           </Row>
           <Button
-            className="mt-4" 
-            fullWidth 
-            clicked={transferPaymentToClient} 
-            bgColor="#741763" 
-            size="lg" 
+            className="mt-4"
+            fullWidth
+            clicked={transferPaymentToClient}
+            bgColor="#741763"
+            size="lg"
             color="#EBEBEB"
             disabled={loading}
             loading={loading}
@@ -214,37 +223,37 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
           </Button>
         </Modal.Body>
       </Modal>
-    )
-  }
+    );
+  };
 
   return (
     <>
       <ToastContainer position="top-center" />
       <Row className="mb-4">
         <Col>
-          <InputField 
+          <InputField
             type="select"
             label="Decision"
             nameAttr="decision"
-            options={['Approve', 'Decline']}
+            options={["Approve", "Decline"]}
             value={approvalData.decision}
             changed={(val) => {
-              setApprovalData({...approvalData, decision: val });
-              setApprovalErrors({ ...approvalErrors, decision: null })
+              setApprovalData({ ...approvalData, decision: val });
+              setApprovalErrors({ ...approvalErrors, decision: null });
             }}
             error={approvalErrors.decision && approvalErrors.decision}
             disable={!!loanData?.processorDecision}
           />
         </Col>
         <Col>
-          <InputField 
+          <InputField
             type="text"
             label="Approved Interest Rate"
             nameAttr="interestRate"
             value={approvalData.approvedRate}
             changed={(val) => {
-              setApprovalData({...approvalData, approvedRate: val });
-              setApprovalErrors({ ...approvalErrors, approvedRate: null })
+              setApprovalData({ ...approvalData, approvedRate: val });
+              setApprovalErrors({ ...approvalErrors, approvedRate: null });
             }}
             error={approvalErrors.approvedRate && approvalErrors.approvedRate}
             disable={!!loanData?.processorDecision}
@@ -253,28 +262,30 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
       </Row>
       <Row className="mb-4">
         <Col>
-          <InputField 
+          <InputField
             type="text"
             label="Approved Tenure"
             nameAttr="approvedTenure"
             value={approvalData.approvedTenure}
             changed={(val) => {
-              setApprovalData({...approvalData, approvedTenure: val });
-              setApprovalErrors({ ...approvalErrors, approvedTenure: null })
+              setApprovalData({ ...approvalData, approvedTenure: val });
+              setApprovalErrors({ ...approvalErrors, approvedTenure: null });
             }}
-            error={approvalErrors.approvedTenure && approvalErrors.approvedTenure}
+            error={
+              approvalErrors.approvedTenure && approvalErrors.approvedTenure
+            }
             disable={!!loanData?.processorDecision}
           />
         </Col>
         <Col>
-          <InputField 
+          <InputField
             type="text"
             label="Determined Repayment Date"
             nameAttr="repaymentDate"
             value={approvalData.repaymentDate}
             changed={(val) => {
-              setApprovalData({...approvalData, repaymentDate: val });
-              setApprovalErrors({ ...approvalErrors, repaymentDate: null })
+              setApprovalData({ ...approvalData, repaymentDate: val });
+              setApprovalErrors({ ...approvalErrors, repaymentDate: null });
             }}
             error={approvalErrors.repaymentDate && approvalErrors.repaymentDate}
             disable={!!loanData?.processorDecision}
@@ -283,80 +294,85 @@ export const DecisionApproval = ({ loanId, loanData, userRole, disburseBank }) =
       </Row>
       <Row className="mb-4">
         <Col>
-          <InputField 
+          <InputField
             type="text"
             label="Total Repayment"
             nameAttr="totalRepayment"
             value={approvalData.totalPay}
             changed={(val) => {
-              setApprovalData({...approvalData, totalPay: val });
-              setApprovalErrors({ ...approvalErrors, totalPay: null })
+              setApprovalData({ ...approvalData, totalPay: val });
+              setApprovalErrors({ ...approvalErrors, totalPay: null });
             }}
             error={approvalErrors.totalPay && approvalErrors.totalPay}
             disable={!!loanData?.processorDecision}
           />
         </Col>
         <Col>
-          <InputField 
+          <InputField
             type="text"
             label="Approved Loan Amount"
             nameAttr="approvedAmount"
             value={approvalData.approvedAmount}
             changed={(val) => {
-              setApprovalData({...approvalData, approvedAmount: val });
-              setApprovalErrors({ ...approvalErrors, approvedAmount: null })
+              setApprovalData({ ...approvalData, approvedAmount: val });
+              setApprovalErrors({ ...approvalErrors, approvedAmount: null });
             }}
-            error={approvalErrors.approvedAmount && approvalErrors.approvedAmount}
+            error={
+              approvalErrors.approvedAmount && approvalErrors.approvedAmount
+            }
             disable={!!loanData?.processorDecision}
           />
         </Col>
       </Row>
       <Row className="mb-4">
         <Col>
-          <InputField 
+          <InputField
             type="textarea"
             label="Decision Reason"
             nameAttr="decisionReason"
             value={approvalData.decisionReason}
             changed={(val) => {
-              setApprovalData({...approvalData, decisionReason: val });
-              setApprovalErrors({ ...approvalErrors, decisionReason: null })
+              setApprovalData({ ...approvalData, decisionReason: val });
+              setApprovalErrors({ ...approvalErrors, decisionReason: null });
             }}
-            error={approvalErrors.decisionReason && approvalErrors.decisionReason}
+            error={
+              approvalErrors.decisionReason && approvalErrors.decisionReason
+            }
             disable={!!loanData?.processorDecision}
           />
         </Col>
       </Row>
       <Button
-        className="mt-4" 
-        fullWidth 
-        clicked={approveLoan} 
-        bgColor="#741763" 
-        size="lg" 
+        className="mt-4"
+        fullWidth
+        clicked={approveLoan}
+        bgColor="#741763"
+        size="lg"
         color="#EBEBEB"
         disabled={loading}
         loading={loading}
       >
-        { userRole === 'processor' ? `Submit Decision` : `Submit & Disburse` }
+        {userRole === "processor" ? `Submit Decision` : `Submit & Disburse`}
       </Button>
       <DisburseModal />
     </>
-  )
-}
-
+  );
+};
 
 export const RepaySetup = ({ loanId, loanData }) => {
-
-  const { state: { loading }, setupRepayment } = useContext(RepaymentContext);
+  const {
+    state: { loading },
+    setupRepayment,
+  } = useContext(RepaymentContext);
 
   const [repayData, setRepayData] = useState({
-    repaymentApi: '',
-    totalRepay: '',
-    tenure: '',
-    payday: '',
-    startDate: '',
-    bankName: '',
-    accountNumber: ''
+    repaymentApi: "",
+    totalRepay: "",
+    tenure: "",
+    payday: "",
+    startDate: "",
+    bankName: "",
+    accountNumber: "",
   });
 
   const [repayError, setRepayError] = useState({
@@ -366,48 +382,47 @@ export const RepaySetup = ({ loanId, loanData }) => {
     payday: null,
     startDate: null,
     bankName: null,
-    accountNumber: null
+    accountNumber: null,
   });
 
   useEffect(() => {
-    if(loanData && loanData.rePaymentAPIstatus) {
+    if (loanData && loanData.rePaymentAPIstatus) {
       setRepayData({
         ...repayData,
         repaymentApi: loanData.rePaymentAPIstatus,
         tenure: loanData.approvedTenure,
         payday: loanData.payDay,
-        startDate: loanData.determinedRepaymentDate
+        startDate: loanData.determinedRepaymentDate,
       });
     }
-  }, [loanData])
-
+  }, [loanData]);
 
   const startRepaymentSetup = () => {
     const { repaymentApi, totalRepay, tenure, payday, startDate } = repayData;
     const forPaystack = { repaymentApi, totalRepay, tenure, payday, startDate };
     let validated;
-    if(repayData.repaymentApi === "paystack") {
-      validated = validateInput(forPaystack, setRepayError)
+    if (repayData.repaymentApi === "paystack") {
+      validated = validateInput(forPaystack, setRepayError);
     } else {
       validated = validateInput(repayData, setRepayError);
     }
-    console.log(validated)
+    console.log(validated);
     const data = {
       approved_tenure: repayData.tenure,
       determined_repayment_date: repayData.startDate,
       rePaymentAPI: "paystack",
-      total_pay: repayData.totalRepay
-    }
-    if(validated) {
+      total_pay: repayData.totalRepay,
+    };
+    if (validated) {
       setupRepayment(loanId, data);
     }
-  }
+  };
 
   return (
     <>
       <Row className="mb-4">
         <Col>
-          <InputField 
+          <InputField
             type="select"
             label="Repayment API"
             nameAttr="repayApi"
@@ -424,7 +439,7 @@ export const RepaySetup = ({ loanId, loanData }) => {
       </Row>
       <Row className="mb-4">
         <Col>
-          <InputField 
+          <InputField
             type="text"
             label="Total Repayment"
             nameAttr="totalRepay"
@@ -438,7 +453,7 @@ export const RepaySetup = ({ loanId, loanData }) => {
           />
         </Col>
         <Col>
-          <InputField 
+          <InputField
             type="text"
             label="Tenure"
             nameAttr="tenure"
@@ -454,7 +469,7 @@ export const RepaySetup = ({ loanId, loanData }) => {
       </Row>
       <Row className="mb-4">
         <Col>
-          <InputField 
+          <InputField
             type="text"
             label="Pay day"
             nameAttr="payday"
@@ -468,7 +483,7 @@ export const RepaySetup = ({ loanId, loanData }) => {
           />
         </Col>
         <Col>
-          <InputField 
+          <InputField
             type="text"
             label="Repayment Start Date"
             nameAttr="startDate"
@@ -478,44 +493,46 @@ export const RepaySetup = ({ loanId, loanData }) => {
               setRepayData({ ...repayData, startDate: val });
             }}
             error={repayError.startDate && repayError.startDate}
-            disable={!!loanData.rePaymentAPIstatus} 
+            disable={!!loanData.rePaymentAPIstatus}
           />
         </Col>
       </Row>
-      { repayData.repaymentApi !== "paystack" && <Row className="mb-4">
-        <Col>
-          <InputField 
-            type="text"
-            label="Bank Name"
-            nameAttr="bankName"
-            value={repayData.bankName}
-            changed={(val) => {
-              setRepayError({ ...repayError, bankName: null });
-              setRepayData({ ...repayData, bankName: val });
-            }}
-            error={repayError.bankName && repayError.bankName}
-          />
-        </Col>
-        <Col>
-          <InputField 
-            type="text"
-            label="Account Number"
-            nameAttr="accountNumber"
-            value={repayData.accountNumber}
-            changed={(val) => {
-              setRepayError({ ...repayError, accountNumber: null });
-              setRepayData({ ...repayData, accountNumber: val });
-            }}
-            error={repayError.accountNumber && repayError.accountNumber}
-          />
-        </Col>
-      </Row>}
+      {repayData.repaymentApi !== "paystack" && (
+        <Row className="mb-4">
+          <Col>
+            <InputField
+              type="text"
+              label="Bank Name"
+              nameAttr="bankName"
+              value={repayData.bankName}
+              changed={(val) => {
+                setRepayError({ ...repayError, bankName: null });
+                setRepayData({ ...repayData, bankName: val });
+              }}
+              error={repayError.bankName && repayError.bankName}
+            />
+          </Col>
+          <Col>
+            <InputField
+              type="text"
+              label="Account Number"
+              nameAttr="accountNumber"
+              value={repayData.accountNumber}
+              changed={(val) => {
+                setRepayError({ ...repayError, accountNumber: null });
+                setRepayData({ ...repayData, accountNumber: val });
+              }}
+              error={repayError.accountNumber && repayError.accountNumber}
+            />
+          </Col>
+        </Row>
+      )}
       <Button
-        className="mt-4" 
-        fullWidth 
-        clicked={startRepaymentSetup} 
-        bgColor="#741763" 
-        size="lg" 
+        className="mt-4"
+        fullWidth
+        clicked={startRepaymentSetup}
+        bgColor="#741763"
+        size="lg"
         color="#EBEBEB"
         disabled={loanData?.rePaymentAPIstatus ? true : loading}
         loading={loading}
@@ -523,23 +540,25 @@ export const RepaySetup = ({ loanId, loanData }) => {
         Continue
       </Button>
     </>
-  )
-}
-
+  );
+};
 
 export const MonoTab = ({ clientId }) => {
-
-  const { state: { loading }, getAccountInfo, getAccountStatement  } = useContext(MonoContext);
+  const {
+    state: { loading },
+    getAccountInfo,
+    getAccountStatement,
+  } = useContext(MonoContext);
 
   const retrieveAccountInfo = () => {
-    console.log(clientId)
+    console.log(clientId);
     getAccountInfo(clientId);
-  }
+  };
 
   const retrieveAccountStatement = () => {
     console.log(clientId);
     getAccountStatement(clientId, 3);
-  }
+  };
 
   return (
     <>
@@ -550,11 +569,11 @@ export const MonoTab = ({ clientId }) => {
         <Row>
           <Col>
             <Button
-              className="mt-4" 
+              className="mt-4"
               fullWidth
-              clicked={retrieveAccountStatement} 
-              bgColor="#741763" 
-              size="lg" 
+              clicked={retrieveAccountStatement}
+              bgColor="#741763"
+              size="lg"
               color="#EBEBEB"
               disabled={loading}
               loading={loading}
@@ -566,11 +585,11 @@ export const MonoTab = ({ clientId }) => {
         <Row>
           <Col>
             <Button
-              className="mt-4" 
+              className="mt-4"
               fullWidth
-              // clicked={updateContactInfo} 
-              bgColor="#741763" 
-              size="lg" 
+              // clicked={updateContactInfo}
+              bgColor="#741763"
+              size="lg"
               color="#EBEBEB"
               // disabled={loading}
               // loading={loading}
@@ -582,11 +601,11 @@ export const MonoTab = ({ clientId }) => {
         <Row>
           <Col>
             <Button
-              className="mt-4" 
+              className="mt-4"
               fullWidth
-              clicked={retrieveAccountInfo} 
-              bgColor="#741763" 
-              size="lg" 
+              clicked={retrieveAccountInfo}
+              bgColor="#741763"
+              size="lg"
               color="#EBEBEB"
               disabled={loading}
               loading={loading}
@@ -597,104 +616,126 @@ export const MonoTab = ({ clientId }) => {
         </Row>
       </div>
     </>
-  )
-}
-
+  );
+};
 
 const ProcessorLoanDetails = () => {
-
   const location = useLocation();
   const processorRoute = routes[2];
   const { loanId } = useParams();
 
-  const [visibleSection, setVisibleSection] = useState('basic');
+  const [visibleSection, setVisibleSection] = useState("basic");
 
   const navArray = [
     {
       title: "Basic Info",
-      shortlink: "basic"
+      shortlink: "basic",
     },
     {
       title: "Decision & Approval",
-      shortlink: "decision"
+      shortlink: "decision",
     },
     {
       title: "Repayment Setup",
-      shortlink: "setup"
+      shortlink: "setup",
     },
     {
       title: "Repayment Schedule",
-      shortlink: "repay"
+      shortlink: "repay",
     },
     {
       title: "Offer Letter",
-      shortlink: "offer"
+      shortlink: "offer",
     },
-    { 
+    {
       title: "Mono",
-      shortlink: "mono"
-    }
-  ]
+      shortlink: "mono",
+    },
+  ];
 
   const setActiveTab = (link) => {
     setVisibleSection(link);
-  }
+  };
 
-  const { state: { loanDetails }, retrieveLoan } = useContext(LoanContext);
-  const { state: { user } } = useContext(AuthContext);
+  const {
+    state: { loanDetails },
+    retrieveLoan,
+  } = useContext(LoanContext);
+  const {
+    state: { user },
+  } = useContext(AuthContext);
 
   useEffect(() => {
     retrieveLoan(loanId);
-    // ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
-  }, [])
+  }, []);
 
   console.log(loanDetails);
-  
-  return(
+
+  return (
     <Dashboard sidebarRoutes={processorRoute} location={location}>
-      <NavTabs navs={navArray} setActive={setActiveTab} currentTab={visibleSection} />
+      <NavTabs
+        navs={navArray}
+        setActive={setActiveTab}
+        currentTab={visibleSection}
+      />
       <div className={styles.detailFields}>
-        { visibleSection === "basic" ? 
-          <BasicInfo 
-            data={loanDetails ? { 
-              client: {...loanDetails?.client[0]?.bioData},
-              ...loanDetails?.loan
-            } : null }
+        {visibleSection === "basic" ? (
+          <BasicInfo
+            data={
+              loanDetails
+                ? {
+                    client: { ...loanDetails?.client[0]?.bioData },
+                    ...loanDetails?.loan,
+                  }
+                : null
+            }
             userRole={user.role}
-          /> : null 
-        }
-        { visibleSection === "decision" ?
-          <DecisionApproval loanId={loanId} loanData={loanDetails.loan} userRole={user.role} /> :
-          null
-        }
-        { visibleSection === "setup" ? 
-          <RepaySetup loanId={loanId} loanData={loanDetails.loan} /> :
-          null
-        }
-        { visibleSection === "repay" ? 
-          <RepaymentSchedule 
-            data={ loanDetails ? {
-              ...loanDetails?.loan,
-              payments: loanDetails?.payments
-            } : null }
+          />
+        ) : null}
+        {visibleSection === "decision" ? (
+          <DecisionApproval
+            loanId={loanId}
+            loanData={loanDetails.loan}
+            userRole={user.role}
+          />
+        ) : null}
+        {visibleSection === "setup" ? (
+          <RepaySetup loanId={loanId} loanData={loanDetails.loan} />
+        ) : null}
+        {visibleSection === "repay" ? (
+          <RepaymentSchedule
+            data={
+              loanDetails
+                ? {
+                    ...loanDetails?.loan,
+                    payments: loanDetails?.payments,
+                  }
+                : null
+            }
             loanId={loanId}
             userRole={user.role}
-          /> : 
-          null
-        }
-        { visibleSection === "offer" ? 
-          // <PDFViewer width="100%" height={500}><OfferLetterPdf /></PDFViewer> 
-          <ProcessOffer /> :
-          null
-        }
-        { visibleSection === "mono" ? 
-          <MonoTab clientId={loanDetails?.client[0]?.clientId} /> :
-          null
-        }
+          />
+        ) : null}
+        {visibleSection === "offer" ? (
+          <ProcessOffer
+            data={
+              loanDetails
+                ? {
+                    client: { ...loanDetails?.client[0]?.bioData },
+                    ...loanDetails?.loan,
+                    residence: { ...loanDetails?.residence[0] },
+                    employment: { ...loanDetails?.employment[0] },
+                  }
+                : null
+            }
+          />
+        ) : null}
+        {visibleSection === "mono" ? (
+          <MonoTab clientId={loanDetails?.client[0]?.clientId} />
+        ) : null}
       </div>
     </Dashboard>
-  )
-}
-
+  );
+};
 
 export default ProcessorLoanDetails;

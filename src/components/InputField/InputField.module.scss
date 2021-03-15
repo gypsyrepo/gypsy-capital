@@ -1,78 +1,80 @@
 .label {
-    text-align: left;
-    display: block;
-    font-size: 1.1rem;
-    font-family: 'Source Sans Pro', sans-serif;
-    margin-bottom: 5px;
+  text-align: left;
+  display: block;
+  font-size: 1.1rem;
+  font-family: "Source Sans Pro", sans-serif;
+  margin-bottom: 5px;
 }
 
 .errorStyle {
-    margin-bottom: 0;
-    text-align: left;
-    font-size: 0.85rem !important;
-    color: red !important;
-    font-weight: normal !important;
-    margin-top: 2px;
+  margin-bottom: 0 !important;
+  text-align: left !important;
+  font-size: 0.85rem !important;
+  color: red !important;
+  font-weight: normal !important;
+  margin-top: 2px;
 }
 
 .inputGroup {
-    position: relative;
-    input {
-        background-color: #F0F0F0;
-        border: 1px solid rgba(116, 23, 99, 0.3);
-        border-radius: 4px;
-        padding: 8px 16px;
-        font-size: 16px;
-        width: 100%;
-        &:focus {
-            outline: none;
-            border: 1px solid rgba(116, 23, 99, 0.8);
-        }
-        &:active {
-            outline: none;
-        }
+  position: relative;
+  input {
+    background-color: #f0f0f0;
+    border: 1px solid rgba(116, 23, 99, 0.3);
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 16px;
+    width: 100%;
+    &:focus {
+      outline: none;
+      border: 1px solid rgba(116, 23, 99, 0.8);
     }
-    select {
-        border: 1px solid rgba(116, 23, 99, 0.3);
-        border-radius: 4px;
-        padding: 8px 16px;
-        font-size: 16px;
-        width: 100%;
-        -webkit-appearance: none; 
-        -moz-appearance: none; 
-        appearance: none; 
-        background: #F0F0F0 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='18' height='18' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='black'/></g></svg>") no-repeat;
-        background-position: right 15px top 50%;
-        &:focus {
-            outline: none;
-            border: 1px solid rgba(116, 23, 99, 0.8);
-        }
-        option {
-            font-size: 16px;
-        }
+    &:active {
+      outline: none;
     }
-    .passwordToggle {
-        position: absolute;
-        display: inline-block;
-        cursor: pointer;
-        right: 0.5rem;
-        top: 0.7rem;
-        z-index: 2;
+  }
+  select {
+    border: 1px solid rgba(116, 23, 99, 0.3);
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 16px;
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: #f0f0f0
+      url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='18' height='18' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='black'/></g></svg>")
+      no-repeat;
+    background-position: right 15px top 50%;
+    &:focus {
+      outline: none;
+      border: 1px solid rgba(116, 23, 99, 0.8);
     }
-    textarea {
-        width: 100%;
-        border: 1px solid rgba(116, 23, 99, 0.3);
-        border-radius: 4px;
-        padding: 8px 16px;
-        font-size: 16px;
-        background-color: #F0F0F0;
-        height: 120px;
-        &:focus {
-            outline: none;
-            border: 1px solid rgba(116, 23, 99, 0.8);
-        }
-        &:active {
-            outline: none;
-        }
+    option {
+      font-size: 16px;
     }
+  }
+  .passwordToggle {
+    position: absolute;
+    display: inline-block;
+    cursor: pointer;
+    right: 0.5rem;
+    top: 0.7rem;
+    z-index: 2;
+  }
+  textarea {
+    width: 100%;
+    border: 1px solid rgba(116, 23, 99, 0.3);
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 16px;
+    background-color: #f0f0f0;
+    height: 120px;
+    &:focus {
+      outline: none;
+      border: 1px solid rgba(116, 23, 99, 0.8);
+    }
+    &:active {
+      outline: none;
+    }
+  }
 }
