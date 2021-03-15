@@ -667,7 +667,6 @@ const ProcessorLoanDetails = () => {
 
   useEffect(() => {
     retrieveLoan(loanId);
-    // ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);
   }, []);
 
   console.log(loanDetails);
@@ -717,7 +716,20 @@ const ProcessorLoanDetails = () => {
             userRole={user.role}
           />
         ) : null}
-        {visibleSection === "offer" ? <ProcessOffer /> : null}
+        {visibleSection === "offer" ? (
+          <ProcessOffer
+            data={
+              loanDetails
+                ? {
+                    client: { ...loanDetails?.client[0]?.bioData },
+                    ...loanDetails?.loan,
+                    residence: { ...loanDetails?.residence[0] },
+                    employment: { ...loanDetails?.employment[0] },
+                  }
+                : null
+            }
+          />
+        ) : null}
         {visibleSection === "mono" ? (
           <MonoTab clientId={loanDetails?.client[0]?.clientId} />
         ) : null}
