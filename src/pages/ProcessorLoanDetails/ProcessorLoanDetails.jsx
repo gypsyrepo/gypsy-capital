@@ -19,6 +19,7 @@ import { validateInput } from "../../utils/validateInput";
 import _ from "lodash";
 import { numberWithCommas } from "../../utils/nigeriaStates";
 import { toast, ToastContainer } from "react-toastify";
+import { DtiRangeSlider } from "../../components/LoanCalculatorForm/LoanCalculatorForm";
 
 export const DecisionApproval = ({
   loanId,
@@ -619,6 +620,170 @@ export const MonoTab = ({ clientId }) => {
   );
 };
 
+const RepayPlusApprove = () => {
+
+  const [setupData, setSetupData] = useState({
+    decision: "",
+    approvedPayDay: "",
+    repaymentStartDate: "",
+    approvedLoanAmount: "",
+    approvedTenure: "",
+    approvedDti: "",
+    approvedMonthlyRepayment: "",
+    totalRepayment: "",
+    repaymentApi: "",
+    bank: "",
+    accountNumber: "",
+    decisionReason: "",
+    approvedInterest: "",
+    adminFee: ""
+  })
+
+  return (
+    <>
+      <Row className="mb-4">
+        <Col>
+          <InputField 
+            type="select"
+            nameAttr="decision"
+            label="Decision"
+            options={["Approve", "Decline"]}
+          />
+        </Col>
+        <Col>
+          <InputField 
+            type="number"
+            nameAttr="payDay"
+            label="Approved Payday"
+            value={setupData.approvedPayDay}
+          />
+        </Col>
+        <Col>
+          <InputField 
+            type="text"
+            nameAttr="repaymentDate"
+            label="Repayment Start Date"
+            value={setupData.repaymentStartDate}
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4"> 
+        <Col>
+          <InputField 
+            type="text"
+            nameAttr="loanAmount"
+            label="Approved Loan Amount"
+            value={setupData.approvedLoanAmount}
+          />
+        </Col>
+        <Col>
+          <InputField 
+            type="text"
+            nameAttr="approvedTenure"
+            label="Approved Tenure"
+            value={setupData.approvedTenure}
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4">
+        <Col>
+          <DtiRangeSlider 
+            dtiVal={setupData.approvedDti} 
+            setVal={(val) => setSetupData({...setupData, approvedDti: val })} 
+            label="Approved DTI"
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4">
+        <Col>
+          <InputField 
+            type="text"
+            nameAttr="monthlyRepayment"
+            label="Approved Monthly Repayment"
+            value={setupData.approvedMonthlyRepayment}
+          />
+        </Col>
+        <Col>
+          <InputField 
+            type="text"
+            nameAttr="totalRepay"
+            label="Total Repayment"
+            value={setupData.totalRepayment}
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4">
+        <Col>
+          <InputField 
+            type="select"
+            nameAttr="repaymentApi"
+            label="Repayment API"
+            options={["Paystack", "Remita", "Flutterwave"]}
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4">
+        <Col>
+          <InputField 
+            type="text"
+            nameAttr="bank"
+            label="Bank"
+            value={setupData.bank}
+          />
+        </Col>
+        <Col>
+          <InputField 
+            type="text"
+            nameAttr="accountNumber"
+            label="Account Number"
+            value={setupData.accountNumber}
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4">
+        <Col>
+          <InputField 
+            type="textarea"
+            nameAttr="decisionReason"
+            label="Decision Reason"
+            value={setupData.decisionReason}
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4">
+        <Col>
+          <InputField 
+            type="text"
+            nameAttr="interestRate"
+            label="Approved Interest Rate"
+            value={setupData.approvedInterest}
+          />
+        </Col>
+        <Col>
+          <InputField 
+            type="text"
+            nameAttr="adminFee"
+            label="Admin Fee"
+            value={setupData.adminFee}
+          />
+        </Col>
+      </Row>
+      <Button
+        className="mt-4"
+        fullWidth
+        // clicked={startRepaymentSetup}
+        bgColor="#741763"
+        size="lg"
+        color="#EBEBEB"
+        // disabled={loanData?.rePaymentAPIstatus ? true : loading}
+        // loading={loading}
+      >
+        Submit
+      </Button>
+    </>
+  )
+}
+
 const ProcessorLoanDetails = () => {
   const location = useLocation();
   const processorRoute = routes[2];
@@ -635,10 +800,10 @@ const ProcessorLoanDetails = () => {
       title: "Decision & Approval",
       shortlink: "decision",
     },
-    {
-      title: "Repayment Setup",
-      shortlink: "setup",
-    },
+    // {
+    //   title: "Repayment Setup",
+    //   shortlink: "setup",
+    // },
     {
       title: "Repayment Schedule",
       shortlink: "repay",
@@ -693,15 +858,15 @@ const ProcessorLoanDetails = () => {
           />
         ) : null}
         {visibleSection === "decision" ? (
-          <DecisionApproval
+          <RepayPlusApprove
             loanId={loanId}
             loanData={loanDetails.loan}
             userRole={user.role}
           />
         ) : null}
-        {visibleSection === "setup" ? (
+        {/* {visibleSection === "setup" ? (
           <RepaySetup loanId={loanId} loanData={loanDetails.loan} />
-        ) : null}
+        ) : null} */}
         {visibleSection === "repay" ? (
           <RepaymentSchedule
             data={

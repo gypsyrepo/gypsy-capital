@@ -11,7 +11,7 @@ import { Context as AuthContext } from '../../context/AuthContext';
 import 'react-rangeslider/lib/index.css'
 
 
-const DtiRangeSlider = ({ dtiVal, setVal }) => {
+export const DtiRangeSlider = ({ label, dtiVal, setVal }) => {
 
   const handleChange = (val) => {
     setVal(val)
@@ -19,7 +19,7 @@ const DtiRangeSlider = ({ dtiVal, setVal }) => {
 
   return (  
     <div>
-      <p>DTI: {`${dtiVal}%`}</p>
+      <p>{`${label}: ${dtiVal}%`}</p>
       <Slider 
         min={33}
         max={50}
@@ -184,6 +184,7 @@ const LoanCalculatorForm = ({ delegateApply }) => {
       {user?.role === "sales" && <Row className="mb-4">
         <Col>
           <DtiRangeSlider 
+            label="DTI"
             dtiVal={loanCalcData.dti} 
             setVal={(val) => setLoanCalcData({...loanCalcData, dti: val })} 
             />
