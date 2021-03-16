@@ -61,6 +61,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 1.35,
   },
+  address: {
+    width: 200,
+  },
   letterTitle: {
     fontWeight: 600,
     textAlign: "center",
@@ -141,8 +144,7 @@ const OfferLetterPdf = ({ dynamicData }) => {
           <View style={styles.body}>
             <Text>{`Dear ${dynamicData?.fullName},`}</Text>
             <Text style={styles.address}>
-              13, Saka Agbaje Street,{"\n"}
-              Aare Avenue Bodija, Ibadan.
+              13, Saka Agbaje Street, Aare Avenue Bodija, Ibadan.
             </Text>
             <Text style={styles.letterTitle}>
               OFFER FOR PERSONAL LOAN FACILITY
