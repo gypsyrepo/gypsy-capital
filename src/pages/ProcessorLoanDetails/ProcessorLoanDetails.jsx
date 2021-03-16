@@ -25,6 +25,8 @@ import {
   convertInput,
   stripCommasInNumber,
 } from "../../utils/convertInputType";
+import { RiSendPlaneFill } from "react-icons/ri";
+import moment from "moment";
 
 export const DecisionApproval = ({
   loanId,
@@ -625,7 +627,7 @@ export const MonoTab = ({ clientId }) => {
   );
 };
 
-const RepayPlusApprove = () => {
+const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
   const [setupData, setSetupData] = useState({
     decision: null,
     approvedPayDay: "",
@@ -635,7 +637,7 @@ const RepayPlusApprove = () => {
     approvedDti: 33,
     approvedMonthlyRepayment: "",
     totalRepayment: "",
-    repaymentApi: "",
+    repaymentApi: null,
     bank: "",
     accountNumber: "",
     decisionReason: "",
@@ -643,12 +645,39 @@ const RepayPlusApprove = () => {
     adminFee: "",
   });
 
+  const [repaymentError, setRepaymentError] = useState({
+    approvedPayDay: null,
+    repaymentStartDate: null,
+    approvedLoanAmount: null,
+    approvedTenure: null,
+    approvedInterest: null,
+    adminFee: null,
+  });
+
+  const [limitError, setLimitError] = useState(null);
+
   const {
     approvedLoanAmount,
     approvedTenure,
     approvedInterest,
     adminFee,
   } = setupData;
+
+  console.log(moment("03/16/2021", "L").toDate(), loanData);
+
+  useEffect(() => {
+    if (loanData?.rePaymentAPIstatus && userRole) {
+      setSetupData({
+        ...setupData,
+        decision:
+          userRole === "processor"
+            ? loanData?.processorDecision
+            : loanData?.adminDecision,
+        approvedPayDay: loanData?.payDay,
+        // repaymentStartDate: ,
+      });
+    }
+  }, [loanData, userRole]);
 
   useEffect(() => {
     if ((approvedInterest && approvedLoanAmount, approvedTenure, adminFee)) {
@@ -661,18 +690,63 @@ const RepayPlusApprove = () => {
       totalRepay = totalRepay + totalRepay * interestRate * tenor;
       const monthlyRepay = Math.floor(totalRepay / tenor);
 
+      const decimalDTI = (setupData.approvedDti / 100).toFixed(3);
+
+      if (monthlyRepay > decimalDTI * Number(loanData?.monthlySalary)) {
+        setLimitError(
+          "The user is not eligible for this amount, increase DTI or enter a lower amount"
+        );
+      } else {
+        setLimitError(null);
+      }
+
       setSetupData({
         ...setupData,
         approvedMonthlyRepayment: numberWithCommas(monthlyRepay),
         totalRepayment: numberWithCommas(totalRepay),
       });
     }
-  }, [approvedInterest, approvedLoanAmount, approvedTenure, adminFee]);
+  }, [
+    approvedInterest,
+    approvedLoanAmount,
+    approvedTenure,
+    adminFee,
+    setupData.approvedDti,
+  ]);
+
+  const setupRepayment = () => {
+    const fieldsToSetup = (({
+      approvedPayDay,
+      repaymentStartDate,
+      approvedLoanAmount,
+      approvedTenure,
+      approvedInterest,
+      adminFee,
+    }) => ({
+      approvedPayDay,
+      repaymentStartDate,
+      approvedLoanAmount,
+      approvedTenure,
+      approvedInterest,
+      adminFee,
+    }))(setupData);
+
+    const validated = validateInput(fieldsToSetup, setRepaymentError);
+    console.log(validated);
+    if (validated) {
+      if (setupData.repaymentApi) {
+        console.log("Hey setup payment");
+      } else {
+        toast.error("You need to choose a repayment API to setup repayment");
+      }
+    }
+  };
 
   return (
     <>
+      <ToastContainer position="top-center" />
       <Row className="mb-4">
-        <Col>
+        <Col md={4}>
           <InputField
             type="select"
             nameAttr="decision"
@@ -684,24 +758,36 @@ const RepayPlusApprove = () => {
             }}
           />
         </Col>
-        <Col>
+        <Col md={4}>
           <InputField
             type="number"
             nameAttr="payDay"
             label="Approved Payday"
             value={setupData.approvedPayDay}
             changed={(val) => {
+              setRepaymentError({ ...repaymentError, approvedPayDay: null });
               setSetupData({ ...setupData, approvedPayDay: val });
             }}
+            error={
+              repaymentError.approvedPayDay && repaymentError.approvedPayDay
+            }
           />
         </Col>
-        <Col>
+        <Col md={4}>
           <CustomDatePicker
             label="Repayment Start Date"
             value={setupData.repaymentStartDate}
             changed={(val) => {
               setSetupData({ ...setupData, repaymentStartDate: val });
+              setRepaymentError({
+                ...repaymentError,
+                repaymentStartDate: null,
+              });
             }}
+            error={
+              repaymentError.repaymentStartDate &&
+              repaymentError.repaymentStartDate
+            }
           />
         </Col>
       </Row>
@@ -719,8 +805,16 @@ const RepayPlusApprove = () => {
                   ...setupData,
                   approvedLoanAmount: convertedToNumber.toLocaleString(),
                 });
+                setRepaymentError({
+                  ...repaymentError,
+                  approvedLoanAmount: null,
+                });
               }
             }}
+            error={
+              repaymentError.approvedLoanAmount &&
+              repaymentError.approvedLoanAmount
+            }
           />
         </Col>
         <Col>
@@ -730,8 +824,12 @@ const RepayPlusApprove = () => {
             label="Approved Tenure"
             value={setupData.approvedTenure}
             options={[1, 2, 3, 4, 5, 6]}
-            changed={(val) =>
-              setSetupData({ ...setupData, approvedTenure: val })
+            changed={(val) => {
+              setRepaymentError({ ...repaymentError, approvedTenure: null });
+              setSetupData({ ...setupData, approvedTenure: val });
+            }}
+            error={
+              repaymentError.approvedTenure && repaymentError.approvedTenure
             }
           />
         </Col>
@@ -744,8 +842,12 @@ const RepayPlusApprove = () => {
             label="Approved Interest Rate (%)"
             value={setupData.approvedInterest}
             changed={(val) => {
+              setRepaymentError({ ...repaymentError, approvedInterest: null });
               setSetupData({ ...setupData, approvedInterest: val });
             }}
+            error={
+              repaymentError.approvedInterest && repaymentError.approvedInterest
+            }
           />
         </Col>
         <Col>
@@ -755,8 +857,10 @@ const RepayPlusApprove = () => {
             label="Admin Fee (%)"
             value={setupData.adminFee}
             changed={(val) => {
+              setRepaymentError({ ...repaymentError, adminFee });
               setSetupData({ ...setupData, adminFee: val });
             }}
+            error={repaymentError.adminFee && repaymentError.adminFee}
           />
         </Col>
       </Row>
@@ -777,10 +881,21 @@ const RepayPlusApprove = () => {
             label="Approved Monthly Repayment"
             value={setupData.approvedMonthlyRepayment}
             changed={(val) => {
+              setRepaymentError({
+                ...repaymentError,
+                approvedMonthlyRepayment: null,
+              });
               setSetupData({ ...setupData, approvedMonthlyRepayment: val });
             }}
             disable={true}
+            error={
+              repaymentError.approvedMonthlyRepayment &&
+              repaymentError.approvedMonthlyRepayment
+            }
           />
+          {limitError ? (
+            <p className={styles.limitError}>{limitError}</p>
+          ) : null}
         </Col>
         <Col>
           <InputField
@@ -789,40 +904,57 @@ const RepayPlusApprove = () => {
             label="Total Repayment"
             value={setupData.totalRepayment}
             changed={(val) => {
+              setRepaymentError({ ...repaymentError, totalRepayment: null });
               setSetupData({ ...setupData, totalRepayment: val });
             }}
             disable={true}
+            error={repaymentError?.totalRepayment}
           />
         </Col>
       </Row>
-      <Row className="mb-4">
-        <Col>
+      <Row className="mb-4 align-items-end no-gutters">
+        <Col md={11}>
           <InputField
             type="select"
             nameAttr="repaymentApi"
             label="Repayment API"
             options={["Paystack", "Remita", "Flutterwave"]}
+            value={setupData.repaymentApi}
+            changed={(val) => {
+              setSetupData({ ...setupData, repaymentApi: val });
+            }}
           />
+        </Col>
+        <Col md={1}>
+          <button
+            disabled={loanData?.rePaymentAPIstatus}
+            onClick={setupRepayment}
+            className={styles.repaymentBtn}
+          >
+            <RiSendPlaneFill size="1.2rem" />
+          </button>
         </Col>
       </Row>
-      <Row className="mb-4">
-        <Col>
-          <InputField
-            type="text"
-            nameAttr="bank"
-            label="Bank"
-            value={setupData.bank}
-          />
-        </Col>
-        <Col>
-          <InputField
-            type="text"
-            nameAttr="accountNumber"
-            label="Account Number"
-            value={setupData.accountNumber}
-          />
-        </Col>
-      </Row>
+      {setupData?.repaymentApi === "remita" && (
+        <Row className="mb-4">
+          <Col>
+            <InputField
+              type="text"
+              nameAttr="bank"
+              label="Bank"
+              value={setupData.bank}
+            />
+          </Col>
+          <Col>
+            <InputField
+              type="text"
+              nameAttr="accountNumber"
+              label="Account Number"
+              value={setupData.accountNumber}
+            />
+          </Col>
+        </Row>
+      )}
       <Row className="mb-4">
         <Col>
           <InputField
@@ -925,8 +1057,8 @@ const ProcessorLoanDetails = () => {
         {visibleSection === "decision" ? (
           <RepayPlusApprove
             loanId={loanId}
-            loanData={loanDetails.loan}
-            userRole={user.role}
+            loanData={loanDetails?.loan}
+            userRole={user?.role}
           />
         ) : null}
         {/* {visibleSection === "setup" ? (
@@ -943,7 +1075,7 @@ const ProcessorLoanDetails = () => {
                 : null
             }
             loanId={loanId}
-            userRole={user.role}
+            userRole={user?.role}
           />
         ) : null}
         {visibleSection === "offer" ? (

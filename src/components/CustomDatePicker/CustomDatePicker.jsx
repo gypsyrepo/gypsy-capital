@@ -2,7 +2,7 @@ import React, { forwardRef } from "react";
 import DatePicker from "react-datepicker";
 import styles from "./CustomDatePicker.module.scss";
 
-const CustomDatePicker = ({ value, changed, label }) => {
+const CustomDatePicker = ({ value, changed, label, error }) => {
   const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <input
       className={styles.datePicker}
@@ -22,6 +22,7 @@ const CustomDatePicker = ({ value, changed, label }) => {
         }}
         customInput={<CustomInput />}
       />
+      {error && <p className={styles.error}>{error}</p>}
     </>
   );
 };
