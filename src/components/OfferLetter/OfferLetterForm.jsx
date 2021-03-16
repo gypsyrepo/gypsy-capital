@@ -59,9 +59,7 @@ const OfferLetterForm = ({ setState, loanData }) => {
       date: moment().format("DD-MM-YYYY"),
       fullName: `${_.capitalize(loanData?.client?.firstName)}`,
       clientAddress: loanData?.residence?.street,
-      loanAmount: `N${numberWithCommas(
-        loanData?.approvedAmount
-      )} (${toWords.convert(loanData?.approvedAmount)})`,
+      loanAmount: `N${numberWithCommas(loanData?.approvedAmount)}`,
       borrowerName: `${_.capitalize(
         loanData?.client?.firstName
       )} ${_.capitalize(loanData?.client?.lastName)}`,

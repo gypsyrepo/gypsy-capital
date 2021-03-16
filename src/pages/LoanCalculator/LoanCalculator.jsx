@@ -118,7 +118,6 @@ const LoanCalculator = () => {
                   nameAttr="proposedDuration"
                   options={[1, 2, 3, 4, 5, 6]}
                   value={loanData.proposedDuration}
-                  useValue={false}
                   changed={(val) => {
                     setLoanData({ ...loanData, proposedDuration: val });
                     setInputError({ ...inputErrors, proposedDuration: null });
