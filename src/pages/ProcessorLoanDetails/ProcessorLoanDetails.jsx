@@ -800,7 +800,7 @@ export const RepayPlusApprove = ({
             setupData.repaymentStartDate
           ).format("DD/MM/YYYY"),
           rePaymentAPI: setupData.repaymentApi,
-          total_pay: setupData.totalRepayment,
+          total_pay: stripCommasInNumber(setupData.totalRepayment),
         };
         // console.log(data);
         setupRepayment(loanId, data);
@@ -831,7 +831,7 @@ export const RepayPlusApprove = ({
               setupData.repaymentStartDate
             ).format("DD/MM/YYYY"),
             decision_reason: setupData.decisionReason,
-            total_pay: setupData.totalRepayment,
+            total_pay: stripCommasInNumber(setupData.totalRepayment),
           };
           await decideApproval(loanId, data);
           if (userRole === "authorizer") {
