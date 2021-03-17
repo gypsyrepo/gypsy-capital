@@ -122,14 +122,14 @@ const ContactPage = ({ history }) => {
                     className={[styles.icon, styles.others].join(" ")}
                     size="1.8em"
                   />
-                  <p>+234 904 144 4888</p>
+                  <p>08099907888</p>
                 </div>
                 <div className={styles.addressGroup}>
                   <IoLogoWhatsapp
                     className={[styles.icon, styles.others].join(" ")}
                     size="1.8em"
                   />
-                  <p>+234 904 144 4888</p>
+                  <p>08099907888</p>
                 </div>
               </div>
             </Col>

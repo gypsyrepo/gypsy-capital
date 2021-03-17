@@ -629,13 +629,30 @@ export const MonoTab = ({ clientId }) => {
   );
 };
 
-export const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
+export const RepayPlusApprove = ({
+  loanData,
+  loanId,
+  userRole,
+  setActiveTab,
+}) => {
   const {
     state: { loading, repaymentStatus, error },
     setupRepayment,
     resetRepaymentStatus,
     clearError,
   } = useContext(RepaymentContext);
+
+  const {
+    state: {
+      loading: approvalLoading,
+      error: approveLoanError,
+      approvedStatus,
+    },
+    decideApproval,
+    disburseLoan,
+    clearError: clearApprovalError,
+    resetApprovalStatus,
+  } = useContext(ApprovalContext);
 
   const [setupData, setSetupData] = useState({
     decision: null,
@@ -682,6 +699,7 @@ export const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
   useEffect(() => {
     if (repaymentStatus) {
       toast.success("Repayment has been successfully setup for this loan!");
+      resetRepaymentStatus();
     }
   }, [repaymentStatus]);
 
@@ -792,7 +810,7 @@ export const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
     }
   };
 
-  const submitApproval = () => {
+  const submitApproval = async () => {
     const fieldsforApproval = (({ decision, decisionReason }) => ({
       decision,
       decisionReason,
@@ -801,7 +819,37 @@ export const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
     const validated = validateInput(fieldsforApproval, setApprovalError);
     console.log(validated);
     if (validated) {
-      //TODO - setup approval here
+      if (loanData?.rePaymentAPI) {
+        const mappedRole = userRole === "processor" ? `processor` : `admin`;
+        if (!loanData[`${mappedRole}Decision`]) {
+          //TODO - setup approval here
+          const data = {
+            decision: setupData.decision,
+            approved_interest: setupData.approvedInterest,
+            approved_tenure: setupData.approvedTenure,
+            determined_repayment_date: moment(
+              setupData.repaymentStartDate
+            ).format("DD/MM/YYYY"),
+            decision_reason: setupData.decisionReason,
+            total_pay: setupData.totalRepayment,
+          };
+          await decideApproval(loanId, data);
+          if (userRole === "authorizer") {
+            setActiveTab("disburse");
+          }
+        } else {
+          toast.error(
+            "Decision and approval has already been done on this loan"
+          );
+          if (userRole === "authorizer") {
+            setActiveTab("disburse");
+          }
+        }
+      } else {
+        toast.error(
+          "You have to setup repayment for this loan before it can be approved"
+        );
+      }
     }
   };
 
