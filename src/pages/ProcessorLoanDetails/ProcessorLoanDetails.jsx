@@ -711,7 +711,7 @@ export const RepayPlusApprove = ({
   }, [error]);
 
   useEffect(() => {
-    if (loanData?.rePaymentAPIstatus && userRole) {
+    if (loanData?.rePaymentAPI && userRole) {
       setSetupData({
         ...setupData,
         decision:
@@ -832,6 +832,7 @@ export const RepayPlusApprove = ({
             ).format("DD/MM/YYYY"),
             decision_reason: setupData.decisionReason,
             total_pay: stripCommasInNumber(setupData.totalRepayment),
+            approvedAmount: stripCommasInNumber(setupData.approvedLoanAmount),
           };
           await decideApproval(loanId, data);
           if (userRole === "authorizer") {
