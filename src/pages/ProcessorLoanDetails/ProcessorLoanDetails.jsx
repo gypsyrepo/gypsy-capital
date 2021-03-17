@@ -27,6 +27,8 @@ import {
 } from "../../utils/convertInputType";
 import { RiSendPlaneFill } from "react-icons/ri";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export const DecisionApproval = ({
   loanId,
@@ -627,7 +629,14 @@ export const MonoTab = ({ clientId }) => {
   );
 };
 
-const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
+export const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
+  const {
+    state: { loading, repaymentStatus, error },
+    setupRepayment,
+    resetRepaymentStatus,
+    clearError,
+  } = useContext(RepaymentContext);
+
   const [setupData, setSetupData] = useState({
     decision: null,
     approvedPayDay: "",
@@ -654,6 +663,11 @@ const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
     adminFee: null,
   });
 
+  const [approvalError, setApprovalError] = useState({
+    decision: null,
+    decisionReason: null,
+  });
+
   const [limitError, setLimitError] = useState(null);
 
   const {
@@ -663,7 +677,20 @@ const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
     adminFee,
   } = setupData;
 
-  console.log(moment("03/16/2021", "L").toDate(), loanData);
+  console.log(moment("16/03/2021", "DD/MM/YYYY").toDate(), loanData, userRole);
+
+  useEffect(() => {
+    if (repaymentStatus) {
+      toast.success("Repayment has been successfully setup for this loan!");
+    }
+  }, [repaymentStatus]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      clearError();
+    }
+  }, [error]);
 
   useEffect(() => {
     if (loanData?.rePaymentAPIstatus && userRole) {
@@ -674,7 +701,22 @@ const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
             ? loanData?.processorDecision
             : loanData?.adminDecision,
         approvedPayDay: loanData?.payDay,
-        // repaymentStartDate: ,
+        repaymentStartDate: moment(
+          loanData?.determinedRepaymentDate,
+          "DD/MM/YYYY"
+        ).toDate(),
+        approvedLoanAmount: numberWithCommas(loanData?.approvedAmount),
+        approvedTenure: loanData?.approvedTenure,
+        approvedInterest: loanData?.approvedInterest,
+        approvedMonthlyRepayment: numberWithCommas(
+          loanData?.calculatedPayBack / loanData?.approvedTenure
+        ),
+        totalRepayment: numberWithCommas(loanData?.calculatedPayBack),
+        repaymentApi: loanData?.rePaymentAPI,
+        decisionReason:
+          userRole === "processor"
+            ? loanData?.processorDecisionReason
+            : loanData?.adminDecisionReason,
       });
     }
   }, [loanData, userRole]);
@@ -714,7 +756,7 @@ const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
     setupData.approvedDti,
   ]);
 
-  const setupRepayment = () => {
+  const initiateRepayment = () => {
     const fieldsToSetup = (({
       approvedPayDay,
       repaymentStartDate,
@@ -732,13 +774,34 @@ const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
     }))(setupData);
 
     const validated = validateInput(fieldsToSetup, setRepaymentError);
-    console.log(validated);
     if (validated) {
       if (setupData.repaymentApi) {
-        console.log("Hey setup payment");
+        const data = {
+          approved_tenure: setupData.approvedTenure,
+          determined_repayment_date: moment(
+            setupData.repaymentStartDate
+          ).format("DD/MM/YYYY"),
+          rePaymentAPI: setupData.repaymentApi,
+          total_pay: setupData.totalRepayment,
+        };
+        // console.log(data);
+        setupRepayment(loanId, data);
       } else {
         toast.error("You need to choose a repayment API to setup repayment");
       }
+    }
+  };
+
+  const submitApproval = () => {
+    const fieldsforApproval = (({ decision, decisionReason }) => ({
+      decision,
+      decisionReason,
+    }))(setupData);
+
+    const validated = validateInput(fieldsforApproval, setApprovalError);
+    console.log(validated);
+    if (validated) {
+      //TODO - setup approval here
     }
   };
 
@@ -754,8 +817,17 @@ const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
             value={setupData.decision}
             options={["Approve", "Decline"]}
             changed={(val) => {
+              setApprovalError({ ...approvalError, decision: null });
               setSetupData({ ...setupData, decision: val });
             }}
+            disable={
+              loanData &&
+              loanData[
+                `${userRole === "authorizer" ? `admin` : `processor`}Decision`
+              ] &&
+              loanData?.rePaymentAPIstatus
+            }
+            error={approvalError?.decision}
           />
         </Col>
         <Col md={4}>
@@ -771,6 +843,7 @@ const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
             error={
               repaymentError.approvedPayDay && repaymentError.approvedPayDay
             }
+            disable={loanData?.rePaymentAPIstatus}
           />
         </Col>
         <Col md={4}>
@@ -788,6 +861,7 @@ const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
               repaymentError.repaymentStartDate &&
               repaymentError.repaymentStartDate
             }
+            disable={loanData?.rePaymentAPIstatus}
           />
         </Col>
       </Row>
@@ -815,6 +889,7 @@ const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
               repaymentError.approvedLoanAmount &&
               repaymentError.approvedLoanAmount
             }
+            disable={loanData?.rePaymentAPIstatus}
           />
         </Col>
         <Col>
@@ -831,6 +906,7 @@ const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
             error={
               repaymentError.approvedTenure && repaymentError.approvedTenure
             }
+            disable={loanData?.rePaymentAPIstatus}
           />
         </Col>
       </Row>
@@ -848,6 +924,7 @@ const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
             error={
               repaymentError.approvedInterest && repaymentError.approvedInterest
             }
+            disable={loanData?.rePaymentAPIstatus}
           />
         </Col>
         <Col>
@@ -861,6 +938,7 @@ const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
               setSetupData({ ...setupData, adminFee: val });
             }}
             error={repaymentError.adminFee && repaymentError.adminFee}
+            disable={loanData?.rePaymentAPIstatus}
           />
         </Col>
       </Row>
@@ -923,15 +1001,21 @@ const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
             changed={(val) => {
               setSetupData({ ...setupData, repaymentApi: val });
             }}
+            disable={loanData?.rePaymentAPIstatus}
           />
         </Col>
         <Col md={1}>
           <button
             disabled={loanData?.rePaymentAPIstatus}
-            onClick={setupRepayment}
+            onClick={initiateRepayment}
             className={styles.repaymentBtn}
           >
-            <RiSendPlaneFill size="1.2rem" />
+            {/* <RiSendPlaneFill size="1.2rem" /> */}
+            {loading ? (
+              <FontAwesomeIcon icon={faSpinner} className="fa-spin mr-3" />
+            ) : (
+              <RiSendPlaneFill size="1.2rem" />
+            )}
           </button>
         </Col>
       </Row>
@@ -962,20 +1046,32 @@ const RepayPlusApprove = ({ loanData, loanId, userRole }) => {
             nameAttr="decisionReason"
             label="Decision Reason"
             value={setupData.decisionReason}
+            changed={(val) => {
+              setApprovalError({ ...approvalError, decisionReason: null });
+              setSetupData({ ...setupData, decisionReason: val });
+            }}
+            disable={
+              loanData &&
+              loanData[
+                `${userRole === "authorizer" ? `admin` : `processor`}Decision`
+              ] &&
+              loanData?.rePaymentAPIstatus
+            }
+            error={approvalError?.decisionReason}
           />
         </Col>
       </Row>
       <Button
         className="mt-4"
         fullWidth
-        // clicked={startRepaymentSetup}
+        clicked={submitApproval}
         bgColor="#741763"
         size="lg"
         color="#EBEBEB"
         // disabled={loanData?.rePaymentAPIstatus ? true : loading}
         // loading={loading}
       >
-        Submit
+        {userRole === "processor" ? `Submit` : `Submit & Disburse`}
       </Button>
     </>
   );

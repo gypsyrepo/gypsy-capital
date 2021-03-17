@@ -123,9 +123,18 @@
 
 .repaymentBtn {
   border-radius: 0 4px 4px 0;
+  width: 100%;
   padding: 8px 16px;
   background-color: #741763;
   color: #fff;
   border: 1px solid #741763;
   margin-left: -2px;
+  &:disabled,
+  &[disabled] {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  &:focus {
+    outline: none;
+  }
 }

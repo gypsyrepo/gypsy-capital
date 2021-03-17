@@ -9,8 +9,7 @@ import { Context as LoanContext } from "../../context/LoanContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import Loader from "../../components/Loader/Loader";
 import {
-  DecisionApproval,
-  RepaySetup,
+  RepayPlusApprove,
   MonoTab,
 } from "../ProcessorLoanDetails/ProcessorLoanDetails";
 import { RepaymentSchedule } from "../LoanDetail/LoanDetail";
@@ -43,10 +42,10 @@ const AuthorizerLoanDetails = () => {
       title: "Decision & Approval",
       shortlink: "decision",
     },
-    {
-      title: "Repayment Setup",
-      shortlink: "setup",
-    },
+    // {
+    //   title: "Repayment Setup",
+    //   shortlink: "setup",
+    // },
     {
       title: "Repayment Schedule",
       shortlink: "repay",
@@ -87,16 +86,15 @@ const AuthorizerLoanDetails = () => {
             />
           )}
           {visibleSection === "decision" && (
-            <DecisionApproval
-              loanData={loanDetails.loan}
+            <RepayPlusApprove
               loanId={loanId}
-              userRole={user.role}
-              disburseBank={loanDetails?.bank[0]}
+              loanData={loanDetails?.loan}
+              userRole={user?.role}
             />
           )}
-          {visibleSection === "setup" && (
+          {/* {visibleSection === "setup" && (
             <RepaySetup loanData={loanDetails.loan} loanId={loanId} />
-          )}
+          )} */}
           {visibleSection === "repay" && (
             <RepaymentSchedule
               data={
