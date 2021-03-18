@@ -309,6 +309,6 @@ export const limitFaqContent = (limit) => {
 };
 
 export const numberWithCommas = (x) => {
-  x = x.toString.split(".");
+  x = x.toString().split(".");
   return x[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
