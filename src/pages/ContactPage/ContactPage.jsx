@@ -129,7 +129,7 @@ const ContactPage = ({ history }) => {
                     className={[styles.icon, styles.others].join(" ")}
                     size="1.8em"
                   />
-                  <p>08099907888</p>
+                  <p>09041444888</p>
                 </div>
               </div>
             </Col>
