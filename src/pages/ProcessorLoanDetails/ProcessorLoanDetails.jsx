@@ -874,7 +874,7 @@ export const RepayPlusApprove = ({
               loanData[
                 `${userRole === "authorizer" ? `admin` : `processor`}Decision`
               ] &&
-              loanData?.rePaymentAPIstatus
+              loanData?.rePaymentAPI
             }
             error={approvalError?.decision}
           />
@@ -892,7 +892,7 @@ export const RepayPlusApprove = ({
             error={
               repaymentError.approvedPayDay && repaymentError.approvedPayDay
             }
-            disable={loanData?.rePaymentAPIstatus}
+            disable={loanData?.rePaymentAPI}
           />
         </Col>
         <Col md={4}>
@@ -910,7 +910,7 @@ export const RepayPlusApprove = ({
               repaymentError.repaymentStartDate &&
               repaymentError.repaymentStartDate
             }
-            disable={loanData?.rePaymentAPIstatus}
+            disable={loanData?.rePaymentAPI}
           />
         </Col>
       </Row>
@@ -938,7 +938,7 @@ export const RepayPlusApprove = ({
               repaymentError.approvedLoanAmount &&
               repaymentError.approvedLoanAmount
             }
-            disable={loanData?.rePaymentAPIstatus}
+            disable={loanData?.rePaymentAPI}
           />
         </Col>
         <Col>
@@ -955,7 +955,7 @@ export const RepayPlusApprove = ({
             error={
               repaymentError.approvedTenure && repaymentError.approvedTenure
             }
-            disable={loanData?.rePaymentAPIstatus}
+            disable={loanData?.rePaymentAPI}
           />
         </Col>
       </Row>
@@ -973,7 +973,7 @@ export const RepayPlusApprove = ({
             error={
               repaymentError.approvedInterest && repaymentError.approvedInterest
             }
-            disable={loanData?.rePaymentAPIstatus}
+            disable={loanData?.rePaymentAPI}
           />
         </Col>
         <Col>
@@ -987,7 +987,7 @@ export const RepayPlusApprove = ({
               setSetupData({ ...setupData, adminFee: val });
             }}
             error={repaymentError.adminFee && repaymentError.adminFee}
-            disable={loanData?.rePaymentAPIstatus}
+            disable={loanData?.rePaymentAPI}
           />
         </Col>
       </Row>
@@ -1050,12 +1050,12 @@ export const RepayPlusApprove = ({
             changed={(val) => {
               setSetupData({ ...setupData, repaymentApi: val });
             }}
-            disable={loanData?.rePaymentAPIstatus}
+            disable={loanData?.rePaymentAPI}
           />
         </Col>
         <Col md={1}>
           <button
-            disabled={loanData?.rePaymentAPIstatus}
+            disabled={loanData?.rePaymentAPI}
             onClick={initiateRepayment}
             className={styles.repaymentBtn}
           >
@@ -1104,7 +1104,7 @@ export const RepayPlusApprove = ({
               loanData[
                 `${userRole === "authorizer" ? `admin` : `processor`}Decision`
               ] &&
-              loanData?.rePaymentAPIstatus
+              loanData?.rePaymentAPI
             }
             error={approvalError?.decisionReason}
           />
