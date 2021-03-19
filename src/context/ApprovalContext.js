@@ -34,7 +34,7 @@ const decideApproval = (dispatch) => async (loanId, decisionData, callback) => {
     );
     console.log(response);
     if (callback) {
-      callback();
+      await callback(loanId);
     }
     dispatch({ type: "set_approval_status", payload: true });
     dispatch({ type: "set_loading", payload: false });
