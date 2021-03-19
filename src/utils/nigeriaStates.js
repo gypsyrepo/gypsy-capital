@@ -305,11 +305,14 @@ export const faqContent = [
 ];
 
 export const limitFaqContent = (limit) => {
-  return faqContent.slice(0, limit);
+  return faqContent?.slice(0, limit);
 };
 
 export const numberWithCommas = (x) => {
-  x = x.toFixed(2);
-  x = x.toString().split(".");
-  return `${x[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")}.${x[1]}`;
+  x = x?.toFixed(2);
+  x = x?.toString().split(".");
+  if (x) {
+    return `${x[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")}.${x[1]}`;
+  }
+  return null;
 };

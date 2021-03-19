@@ -654,6 +654,8 @@ export const RepayPlusApprove = ({
     resetApprovalStatus,
   } = useContext(ApprovalContext);
 
+  const { retrieveLoan } = useContext(LoanContext);
+
   const [setupData, setSetupData] = useState({
     decision: null,
     approvedPayDay: "",
@@ -697,11 +699,47 @@ export const RepayPlusApprove = ({
   console.log(moment("16/03/2021", "DD/MM/YYYY").toDate(), loanData, userRole);
 
   useEffect(() => {
+    const savedLoanData = JSON.parse(sessionStorage.getItem(`gypsy-${loanId}`));
+
+    if (sessionStorage.getItem(`gypsy-${loanId}`)) {
+      setSetupData({
+        decision: savedLoanData.decision,
+        approvedPayDay: savedLoanData.approvedPayDay,
+        repaymentStartDate: savedLoanData?.repaymentStartDate
+          ? moment(savedLoanData?.repaymentStartDate).toDate()
+          : "",
+        approvedLoanAmount: savedLoanData.approvedLoanAmount,
+        approvedTenure: savedLoanData.approvedTenure,
+        approvedDti: savedLoanData.approvedDti,
+        approvedMonthlyRepayment: savedLoanData.approvedMonthlyRepayment,
+        totalRepayment: savedLoanData.totalRepayment,
+        repaymentApi: savedLoanData.repaymentApi,
+        bank: savedLoanData.bank,
+        accountNumber: savedLoanData.accountNumber,
+        decisionReason: savedLoanData.decisionReason,
+        approvedInterest: savedLoanData.approvedInterest,
+        adminFee: savedLoanData.adminFee,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem(`gypsy-${loanId}`, JSON.stringify(setupData));
+  }, [setupData]);
+
+  useEffect(() => {
     if (repaymentStatus) {
       toast.success("Repayment has been successfully setup for this loan!");
       resetRepaymentStatus();
     }
   }, [repaymentStatus]);
+
+  useEffect(() => {
+    if (approvedStatus) {
+      toast.success("The loan has been approved successfully!");
+      resetApprovalStatus();
+    }
+  }, [approvedStatus]);
 
   useEffect(() => {
     if (error) {
@@ -711,21 +749,34 @@ export const RepayPlusApprove = ({
   }, [error]);
 
   useEffect(() => {
+    if (approvalError) {
+      toast.error(approvalError);
+      clearApprovalError();
+    }
+  }, [approvalError]);
+
+  useEffect(() => {
     if (loanData?.rePaymentAPI && userRole) {
       setSetupData({
         ...setupData,
         decision:
           userRole === "processor"
-            ? loanData?.processorDecision
+            ? loanData?.processorDecision || setupData.decision
             : loanData?.adminDecision,
         approvedPayDay: loanData?.payDay,
         repaymentStartDate: moment(
           loanData?.determinedRepaymentDate,
           "DD/MM/YYYY"
         ).toDate(),
-        approvedLoanAmount: numberWithCommas(loanData?.approvedAmount),
+        approvedLoanAmount:
+          loanData?.approvedAmount > 0
+            ? numberWithCommas(loanData?.approvedAmount)
+            : setupData.approvedLoanAmount,
         approvedTenure: loanData?.approvedTenure,
-        approvedInterest: loanData?.approvedInterest,
+        approvedInterest:
+          loanData?.approvedInterest > 0
+            ? loanData?.approvedInterest
+            : setupData.approvedInterest,
         approvedMonthlyRepayment: numberWithCommas(
           loanData?.calculatedPayBack / loanData?.approvedTenure
         ),
@@ -803,7 +854,7 @@ export const RepayPlusApprove = ({
           total_pay: stripCommasInNumber(setupData.totalRepayment),
         };
         // console.log(data);
-        setupRepayment(loanId, data);
+        setupRepayment(loanId, data, retrieveLoan);
       } else {
         toast.error("You need to choose a repayment API to setup repayment");
       }
@@ -834,7 +885,7 @@ export const RepayPlusApprove = ({
             total_pay: stripCommasInNumber(setupData.totalRepayment),
             approvedAmount: stripCommasInNumber(setupData.approvedLoanAmount),
           };
-          await decideApproval(loanId, data);
+          await decideApproval(loanId, data, retrieveLoan);
           if (userRole === "authorizer") {
             setActiveTab("disburse");
           }
@@ -1117,8 +1168,8 @@ export const RepayPlusApprove = ({
         bgColor="#741763"
         size="lg"
         color="#EBEBEB"
-        // disabled={loanData?.rePaymentAPIstatus ? true : loading}
-        // loading={loading}
+        disabled={approvalLoading}
+        loading={approvalLoading}
       >
         {userRole === "processor" ? `Submit` : `Submit & Disburse`}
       </Button>
