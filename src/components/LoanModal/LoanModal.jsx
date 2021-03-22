@@ -1,25 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
-import styles from './LoanModal.module.scss';
-import { Modal } from 'react-bootstrap';
-import LoanCalculatorForm from '../LoanCalculatorForm/LoanCalculatorForm';
-import LoanContactForm from '../LoanContactForm/LoanContactForm';
-import { Context as LoanContext } from '../../context/LoanContext';
-import EmployerInfoForm from '../EmployerInfoForm/EmployerInfoForm';
-import BankInfoForm from '../BankInfoForm/BankInfoForm';
-import { FaCheckCircle } from 'react-icons/fa';
-import Button from '../Button/Button';
-import { toast, ToastContainer } from 'react-toastify';
-
+import React, { useContext, useEffect, useState } from "react";
+import styles from "./LoanModal.module.scss";
+import { Modal } from "react-bootstrap";
+import LoanCalculatorForm from "../LoanCalculatorForm/LoanCalculatorForm";
+import LoanContactForm from "../LoanContactForm/LoanContactForm";
+import { Context as LoanContext } from "../../context/LoanContext";
+import EmployerInfoForm from "../EmployerInfoForm/EmployerInfoForm";
+import BankInfoForm from "../BankInfoForm/BankInfoForm";
+import { FaCheckCircle } from "react-icons/fa";
+import Button from "../Button/Button";
+import { toast, ToastContainer } from "react-toastify";
 
 const Calculator = ({ clientId, stage }) => {
-
   const { loanApply } = useContext(LoanContext);
 
-  const calculateLoan = async(data) => {
+  const calculateLoan = async (data) => {
     console.log(stage);
     await loanApply(data, clientId, true);
     console.log(stage);
-  }
+  };
 
   return (
     <>
@@ -34,17 +32,18 @@ const Calculator = ({ clientId, stage }) => {
         </div>
       </Modal.Body>
     </>
-  )
-}
-
+  );
+};
 
 const ContactAddr = () => {
-
-  const { state: { currentLoanId }, addAddressForLoan } = useContext(LoanContext);
+  const {
+    state: { currentLoanId },
+    addAddressForLoan,
+  } = useContext(LoanContext);
 
   const updateAddress = (data) => {
     addAddressForLoan(data, currentLoanId, true);
-  }
+  };
 
   return (
     <>
@@ -59,17 +58,18 @@ const ContactAddr = () => {
         </div>
       </Modal.Body>
     </>
-  )
-}
-
+  );
+};
 
 const EmployerInfo = () => {
-
-  const { state: { currentLoanId }, addWorkInfoForLoan } = useContext(LoanContext);
+  const {
+    state: { currentLoanId },
+    addWorkInfoForLoan,
+  } = useContext(LoanContext);
 
   const updateEmployerInfo = (data) => {
     addWorkInfoForLoan(data, currentLoanId, true);
-  }
+  };
 
   return (
     <>
@@ -84,17 +84,18 @@ const EmployerInfo = () => {
         </div>
       </Modal.Body>
     </>
-  )
-}
-
+  );
+};
 
 const BankInfo = () => {
-
-  const { state: { currentLoanId }, addBankInfoForLoan } = useContext(LoanContext);
+  const {
+    state: { currentLoanId },
+    addBankInfoForLoan,
+  } = useContext(LoanContext);
 
   const updateBankInfo = (data) => {
-    addBankInfoForLoan(data, currentLoanId, true);
-  }
+    addBankInfoForLoan(data, currentLoanId, false, true);
+  };
 
   return (
     <>
@@ -109,11 +110,10 @@ const BankInfo = () => {
         </div>
       </Modal.Body>
     </>
-  )
-}
+  );
+};
 
 const ApplySuccess = ({ close }) => {
-
   useEffect(() => {
     setTimeout(() => {
       close();
@@ -127,10 +127,10 @@ const ApplySuccess = ({ close }) => {
           <FaCheckCircle size="4em" color="#741763" />
           <h4>Loan successfully requested for this user.</h4>
           <Button
-            className="mt-4" 
-            clicked={close} 
-            bgColor="#741763" 
-            size="sm" 
+            className="mt-4"
+            clicked={close}
+            bgColor="#741763"
+            size="sm"
             color="#EBEBEB"
           >
             Continue
@@ -138,36 +138,38 @@ const ApplySuccess = ({ close }) => {
         </div>
       </Modal.Body>
     </>
-  )
-}
-
+  );
+};
 
 const LoanModal = ({ openState, closeHandler, userId }) => {
-
-  const { state: { loanApplicationStage, error }, clearErrors, resetApplyStage } = useContext(LoanContext); 
+  const {
+    state: { loanApplicationStage, error },
+    clearErrors,
+    resetApplyStage,
+  } = useContext(LoanContext);
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
-    console.log(stage)
+    console.log(stage);
   }, [stage]);
 
   useEffect(() => {
-    if(loanApplicationStage === "calculated") {
+    if (loanApplicationStage === "calculated") {
       setStage(1);
     }
-    if(loanApplicationStage === "address_added") {
+    if (loanApplicationStage === "address_added") {
       setStage(2);
     }
-    if(loanApplicationStage === "employer_added") {
+    if (loanApplicationStage === "employer_added") {
       setStage(3);
     }
-    if(loanApplicationStage === "bank_added") {
+    if (loanApplicationStage === "bank_added") {
       setStage(4);
     }
-  }, [loanApplicationStage])
+  }, [loanApplicationStage]);
 
   useEffect(() => {
-    if(error) {
+    if (error) {
       toast.error(error);
       clearErrors();
     }
@@ -177,26 +179,26 @@ const LoanModal = ({ openState, closeHandler, userId }) => {
     resetApplyStage();
     setStage(0);
     closeHandler();
-  }
+  };
 
   return (
     <>
       <ToastContainer position="top-center" />
       <Modal
         show={openState}
-        size={ stage === 4 ? "sm" : "lg" }
+        size={stage === 4 ? "sm" : "lg"}
         onHide={() => {
           resetAndCloseModal();
         }}
       >
-        { stage === 0 && <Calculator clientId={userId} stage={stage} /> }
-        { stage === 1 && <ContactAddr /> }
-        { stage === 2 && <EmployerInfo /> }
-        { stage === 3 && <BankInfo /> }
-        { stage === 4 && <ApplySuccess close={resetAndCloseModal} /> }
+        {stage === 0 && <Calculator clientId={userId} stage={stage} />}
+        {stage === 1 && <ContactAddr />}
+        {stage === 2 && <EmployerInfo />}
+        {stage === 3 && <BankInfo />}
+        {stage === 4 && <ApplySuccess close={resetAndCloseModal} />}
       </Modal>
     </>
-  )
-}
+  );
+};
 
 export default LoanModal;
