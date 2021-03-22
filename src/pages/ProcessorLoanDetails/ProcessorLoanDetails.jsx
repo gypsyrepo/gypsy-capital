@@ -133,22 +133,7 @@ export const RepayPlusApprove = ({
 
   const { retrieveLoan } = useContext(LoanContext);
 
-  const [setupData, setSetupData] = useState({
-    decision: null,
-    approvedPayDay: "",
-    repaymentStartDate: "",
-    approvedLoanAmount: "",
-    approvedTenure: null,
-    approvedDti: 33,
-    approvedMonthlyRepayment: "",
-    totalRepayment: "",
-    repaymentApi: null,
-    bank: "",
-    accountNumber: "",
-    decisionReason: "",
-    approvedInterest: "",
-    adminFee: "",
-  });
+  const [setupData, setSetupData] = useState(null);
 
   const [repaymentError, setRepaymentError] = useState({
     approvedPayDay: null,
@@ -166,41 +151,46 @@ export const RepayPlusApprove = ({
 
   const [limitError, setLimitError] = useState(null);
 
-  const {
-    approvedLoanAmount,
-    approvedTenure,
-    approvedInterest,
-    adminFee,
-  } = setupData;
+  const { approvedLoanAmount, approvedTenure, approvedInterest, adminFee } = {
+    ...setupData,
+  };
 
   console.log(moment("16/03/2021", "DD/MM/YYYY").toDate(), loanData, userRole);
 
   useEffect(() => {
     const savedLoanData = JSON.parse(sessionStorage.getItem(`gypsy-${loanId}`));
 
-    console.log(savedLoanData);
-
     if (sessionStorage.getItem(`gypsy-${loanId}`)) {
       setSetupData({
-        decision: savedLoanData.decision,
-        approvedPayDay: savedLoanData.approvedPayDay,
+        decision: savedLoanData?.decision || loanData[`${mappedRole}Decision`],
+        approvedPayDay: savedLoanData?.approvedPayDay || loanData?.payDay,
         repaymentStartDate: savedLoanData?.repaymentStartDate
           ? moment(savedLoanData?.repaymentStartDate).toDate()
-          : "",
-        approvedLoanAmount: savedLoanData.approvedLoanAmount,
-        approvedTenure: savedLoanData.approvedTenure,
-        approvedDti: savedLoanData.approvedDti,
-        approvedMonthlyRepayment: savedLoanData.approvedMonthlyRepayment,
-        totalRepayment: savedLoanData.totalRepayment,
-        repaymentApi: savedLoanData.repaymentApi,
-        bank: savedLoanData.bank,
-        accountNumber: savedLoanData.accountNumber,
-        decisionReason: savedLoanData.decisionReason,
-        approvedInterest: savedLoanData.approvedInterest,
-        adminFee: savedLoanData.adminFee,
+          : moment(loanData?.determinedRepaymentDate, "DD/MM/YYYY").toDate(),
+        approvedLoanAmount:
+          savedLoanData?.approvedLoanAmount ||
+          numberWithCommas(loanData?.approvedAmount),
+        approvedTenure:
+          savedLoanData?.approvedTenure || loanData?.approvedTenure,
+        approvedDti: savedLoanData?.approvedDti || loanData?.Dti || 33,
+        approvedMonthlyRepayment:
+          savedLoanData?.approvedMonthlyRepayment ||
+          numberWithCommas(loanData?.monthlyRepayment),
+        totalRepayment:
+          savedLoanData?.totalRepayment ||
+          numberWithCommas(loanData?.calculatedPayBack),
+        repaymentApi: savedLoanData?.repaymentApi || loanData?.rePaymentAPI,
+        bank: savedLoanData?.bank,
+        accountNumber: savedLoanData?.accountNumber,
+        decisionReason:
+          savedLoanData?.decisionReason ||
+          loanData[`${mappedRole}DecisionReason`],
+        approvedInterest:
+          savedLoanData?.approvedInterest || loanData?.approvedInterest,
+        adminFee: savedLoanData?.adminFee,
       });
     }
-  }, []);
+  }, [loanData, loanId]);
 
   useEffect(() => {
     sessionStorage.setItem(`gypsy-${loanId}`, JSON.stringify(setupData));
@@ -215,7 +205,13 @@ export const RepayPlusApprove = ({
 
   useEffect(() => {
     if (approvedStatus) {
-      toast.success("The loan has been approved successfully!");
+      toast.success(
+        `The loan has been ${
+          loanData[`${mappedRole}Decision`] === "approve"
+            ? `approved`
+            : `declined`
+        } successfully!`
+      );
       resetApprovalStatus();
     }
   }, [approvedStatus]);
@@ -233,46 +229,6 @@ export const RepayPlusApprove = ({
       clearApprovalError();
     }
   }, [approvalError]);
-
-  useEffect(() => {
-    if (loanData?.rePaymentAPI && userRole) {
-      setSetupData({
-        ...setupData,
-        decision:
-          userRole === "processor"
-            ? loanData?.processorDecision || setupData.decision
-            : loanData?.adminDecision,
-        approvedPayDay: loanData?.payDay,
-        repaymentStartDate: moment(
-          loanData?.determinedRepaymentDate,
-          "DD/MM/YYYY"
-        ).toDate(),
-        approvedLoanAmount:
-          loanData?.approvedAmount > 0
-            ? numberWithCommas(loanData?.approvedAmount)
-            : setupData.approvedLoanAmount,
-        approvedTenure: loanData?.approvedTenure,
-        approvedInterest:
-          loanData?.approvedInterest > 0
-            ? loanData?.approvedInterest
-            : setupData.approvedInterest,
-        approvedMonthlyRepayment: numberWithCommas(
-          loanData?.calculatedPayBack / loanData?.approvedTenure
-        ),
-        totalRepayment: numberWithCommas(loanData?.calculatedPayBack),
-        repaymentApi: loanData?.rePaymentAPI,
-        decisionReason:
-          userRole === "processor"
-            ? loanData?.processorDecisionReason
-            : loanData?.adminDecisionReason,
-      });
-    } else if (loanData?.processorDecision === "decline") {
-      setSetupData({
-        ...setupData,
-        decision: loanData?.processorDecisionReason,
-      });
-    }
-  }, [loanData, userRole]);
 
   useEffect(() => {
     if ((approvedInterest && approvedLoanAmount, approvedTenure, adminFee)) {
@@ -306,7 +262,7 @@ export const RepayPlusApprove = ({
     approvedLoanAmount,
     approvedTenure,
     adminFee,
-    setupData.approvedDti,
+    setupData?.approvedDti,
   ]);
 
   const initiateRepayment = () => {
@@ -345,6 +301,8 @@ export const RepayPlusApprove = ({
     }
   };
 
+  const mappedRole = userRole === "processor" ? `processor` : `admin`;
+
   const submitApproval = async () => {
     const fieldsforApproval = (({ decision, decisionReason }) => ({
       decision,
@@ -355,27 +313,29 @@ export const RepayPlusApprove = ({
     console.log(validated);
     if (validated) {
       if (loanData?.rePaymentAPI || setupData?.decision === "decline") {
-        const mappedRole = userRole === "processor" ? `processor` : `admin`;
         if (!loanData[`${mappedRole}Decision`]) {
           //TODO - setup approval here
           let data;
 
           if (setupData?.decision === "approve") {
+            console.log(setupData?.totalRepayment);
             data = {
-              decision: setupData.decision,
-              approved_interest: setupData.approvedInterest,
-              approved_tenure: setupData.approvedTenure,
+              decision: setupData?.decision,
+              approved_interest: setupData?.approvedInterest,
+              approved_tenure: setupData?.approvedTenure,
               determined_repayment_date: moment(
-                setupData.repaymentStartDate
+                setupData?.repaymentStartDate
               ).format("DD/MM/YYYY"),
-              decision_reason: setupData.decisionReason,
-              total_pay: stripCommasInNumber(setupData.totalRepayment),
-              approvedAmount: stripCommasInNumber(setupData.approvedLoanAmount),
+              decision_reason: setupData?.decisionReason,
+              total_pay: stripCommasInNumber(setupData?.totalRepayment),
+              approvedAmount: stripCommasInNumber(
+                setupData?.approvedLoanAmount
+              ),
             };
           } else if (setupData?.decision === "decline") {
             data = {
-              decision: setupData.decision,
-              decision_reason: setupData.decisionReason,
+              decision: setupData?.decision,
+              decision_reason: setupData?.decisionReason,
             };
           }
 
@@ -399,6 +359,10 @@ export const RepayPlusApprove = ({
     }
   };
 
+  if (!loanData) {
+    return null;
+  }
+
   return (
     <>
       <ToastContainer position="top-center" />
@@ -408,18 +372,17 @@ export const RepayPlusApprove = ({
             type="select"
             nameAttr="decision"
             label="Decision"
-            value={setupData.decision}
+            value={setupData?.decision}
             options={["Approve", "Decline"]}
             changed={(val) => {
               setApprovalError({ ...approvalError, decision: null });
               setSetupData({ ...setupData, decision: val });
             }}
             disable={
-              loanData &&
-              loanData[
-                `${userRole === "authorizer" ? `admin` : `processor`}Decision`
-              ] &&
-              loanData?.rePaymentAPI
+              (loanData &&
+                loanData[`${mappedRole}Decision`] &&
+                loanData?.rePaymentAPI) ||
+              loanData[`${mappedRole}Decision`] === "decline"
             }
             error={approvalError?.decision}
           />
@@ -432,7 +395,7 @@ export const RepayPlusApprove = ({
               type="number"
               nameAttr="payDay"
               label="Approved Payday"
-              value={setupData.approvedPayDay}
+              value={setupData?.approvedPayDay}
               changed={(val) => {
                 setRepaymentError({ ...repaymentError, approvedPayDay: null });
                 setSetupData({ ...setupData, approvedPayDay: val });
@@ -446,7 +409,7 @@ export const RepayPlusApprove = ({
           <Col md={6}>
             <CustomDatePicker
               label="Repayment Start Date"
-              value={setupData.repaymentStartDate}
+              value={setupData?.repaymentStartDate}
               changed={(val) => {
                 setSetupData({ ...setupData, repaymentStartDate: val });
                 setRepaymentError({
@@ -470,7 +433,7 @@ export const RepayPlusApprove = ({
               type="text"
               nameAttr="loanAmount"
               label="Approved Loan Amount"
-              value={setupData.approvedLoanAmount}
+              value={setupData?.approvedLoanAmount}
               changed={(val) => {
                 const { includesAlphabet, convertedToNumber } = convertInput(
                   val
@@ -498,7 +461,7 @@ export const RepayPlusApprove = ({
               type="select"
               nameAttr="approvedTenure"
               label="Approved Tenure"
-              value={setupData.approvedTenure}
+              value={setupData?.approvedTenure}
               options={[1, 2, 3, 4, 5, 6]}
               changed={(val) => {
                 setRepaymentError({ ...repaymentError, approvedTenure: null });
@@ -519,7 +482,7 @@ export const RepayPlusApprove = ({
               type="number"
               nameAttr="interestRate"
               label="Approved Interest Rate (%)"
-              value={setupData.approvedInterest}
+              value={setupData?.approvedInterest}
               changed={(val) => {
                 setRepaymentError({
                   ...repaymentError,
@@ -539,7 +502,7 @@ export const RepayPlusApprove = ({
               type="number"
               nameAttr="adminFee"
               label="Admin Fee (%)"
-              value={setupData.adminFee}
+              value={setupData?.adminFee}
               changed={(val) => {
                 setRepaymentError({ ...repaymentError, adminFee });
                 setSetupData({ ...setupData, adminFee: val });
@@ -554,7 +517,7 @@ export const RepayPlusApprove = ({
         <Row className="mb-4">
           <Col>
             <DtiRangeSlider
-              dtiVal={setupData.approvedDti}
+              dtiVal={setupData?.approvedDti}
               setVal={(val) => setSetupData({ ...setupData, approvedDti: val })}
               label="Approved DTI"
             />
@@ -568,7 +531,7 @@ export const RepayPlusApprove = ({
               type="text"
               nameAttr="monthlyRepayment"
               label="Approved Monthly Repayment"
-              value={setupData.approvedMonthlyRepayment}
+              value={setupData?.approvedMonthlyRepayment}
               changed={(val) => {
                 setRepaymentError({
                   ...repaymentError,
@@ -591,7 +554,7 @@ export const RepayPlusApprove = ({
               type="text"
               nameAttr="totalRepay"
               label="Total Repayment"
-              value={setupData.totalRepayment}
+              value={setupData?.totalRepayment}
               changed={(val) => {
                 setRepaymentError({ ...repaymentError, totalRepayment: null });
                 setSetupData({ ...setupData, totalRepayment: val });
@@ -610,7 +573,7 @@ export const RepayPlusApprove = ({
               nameAttr="repaymentApi"
               label="Repayment API"
               options={["Paystack", "Remita", "Flutterwave"]}
-              value={setupData.repaymentApi}
+              value={setupData?.repaymentApi}
               changed={(val) => {
                 setSetupData({ ...setupData, repaymentApi: val });
               }}
@@ -640,7 +603,7 @@ export const RepayPlusApprove = ({
               type="text"
               nameAttr="bank"
               label="Bank"
-              value={setupData.bank}
+              value={setupData?.bank}
             />
           </Col>
           <Col>
@@ -648,7 +611,7 @@ export const RepayPlusApprove = ({
               type="text"
               nameAttr="accountNumber"
               label="Account Number"
-              value={setupData.accountNumber}
+              value={setupData?.accountNumber}
             />
           </Col>
         </Row>
@@ -659,17 +622,18 @@ export const RepayPlusApprove = ({
             type="textarea"
             nameAttr="decisionReason"
             label="Decision Reason"
-            value={setupData.decisionReason}
+            value={setupData?.decisionReason}
             changed={(val) => {
               setApprovalError({ ...approvalError, decisionReason: null });
               setSetupData({ ...setupData, decisionReason: val });
             }}
             disable={
-              loanData &&
-              loanData[
-                `${userRole === "authorizer" ? `admin` : `processor`}Decision`
-              ] &&
-              loanData?.rePaymentAPI
+              (loanData &&
+                loanData[
+                  `${userRole === "authorizer" ? `admin` : `processor`}Decision`
+                ] &&
+                loanData?.rePaymentAPI) ||
+              loanData[`${mappedRole}Decision`] === "decline"
             }
             error={approvalError?.decisionReason}
           />
