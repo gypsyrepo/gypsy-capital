@@ -9,6 +9,7 @@ import moment from "moment";
 import _ from "lodash";
 import { numberWithCommas } from "../../utils/nigeriaStates";
 import { convertInput } from "../../utils/convertInputType";
+import { toast, ToastContainer } from "react-toastify";
 
 const OfferLetterForm = ({ setState, loanData }) => {
   console.log(loanData);
@@ -29,6 +30,25 @@ const OfferLetterForm = ({ setState, loanData }) => {
     memoAddress: "",
     memoName: "",
     memoSign: "",
+  });
+
+  const [formErr, setFormErr] = useState({
+    date: true,
+    fullName: true,
+    clientAddress: true,
+    loanAmount: true,
+    borrowerName: true,
+    natureofBusiness: true,
+    loanFacility: true,
+    loanPurpose: true,
+    monthlyRepayment: true,
+    repaymentSource: true,
+    headCreditSign: true,
+    headRiskSign: true,
+    memoFullName: true,
+    memoAddress: true,
+    memoName: true,
+    memoSign: true,
   });
 
   const [btnState, setBtnState] = useState(false);
@@ -55,8 +75,58 @@ const OfferLetterForm = ({ setState, loanData }) => {
     setState(true);
   };
 
+  const createPdf = () => {
+    const toValidateFields = (({
+      date,
+      fullName,
+      clientAddress,
+      loanAmount,
+      borrowerName,
+      natureofBusiness,
+      loanFacility,
+      loanPurpose,
+      monthlyRepayment,
+      repaymentSource,
+      headCreditSign,
+      headRiskSign,
+    }) => ({
+      date,
+      fullName,
+      clientAddress,
+      loanAmount,
+      borrowerName,
+      natureofBusiness,
+      loanFacility,
+      loanPurpose,
+      monthlyRepayment,
+      repaymentSource,
+      headCreditSign,
+      headRiskSign,
+    }))(offerFormData);
+
+    let fieldValidator = {};
+
+    for (const key in toValidateFields) {
+      if (!toValidateFields[key] || Number(toValidateFields[key]) === 0) {
+        fieldValidator[key] = false;
+      } else {
+        fieldValidator[key] = true;
+      }
+    }
+
+    setFormErr(fieldValidator);
+    const validatorValues = Object.values(fieldValidator);
+    if (!validatorValues.includes(false)) {
+      setBtnState(true);
+    } else {
+      toast.error("You need to fill in all necessary fields");
+    }
+    console.log(validatorValues);
+  };
+
   return (
     <>
+      <ToastContainer position="top-center" />
       <div className={styles.formWrapper}>
         <div className={styles.formHeader}>
           <img src={WhiteLogo} alt="logo" />
@@ -66,16 +136,18 @@ const OfferLetterForm = ({ setState, loanData }) => {
             <div className={styles.dateGroup}>
               <p>Date: </p>
               <input
+                className={!formErr?.date ? styles.error : null}
                 type="text"
                 placeholder="DD/MM/YYYY"
                 name="date"
                 value={offerFormData.date}
-                onChange={(e) =>
+                onChange={(e) => {
+                  setFormErr({ ...formErr, date: true });
                   setOfferFormData({
                     ...offerFormData,
                     date: e.currentTarget.value,
-                  })
-                }
+                  });
+                }}
               />
             </div>
           </div>
@@ -89,26 +161,33 @@ const OfferLetterForm = ({ setState, loanData }) => {
                 name="clientName"
                 placeholder="Full Name"
                 value={offerFormData.fullName}
-                onChange={(e) =>
+                onChange={(e) => {
+                  setFormErr({ ...formErr, fullName: true });
                   setOfferFormData({
                     ...offerFormData,
                     fullName: e.currentTarget.value,
-                  })
-                }
+                  });
+                }}
+                className={!formErr?.fullName ? styles.error : null}
               />
             </div>
             <input
               type="text"
               name="clientAddress"
               placeholder="Client Address"
-              className={styles.address}
+              className={
+                !formErr?.clientAddress
+                  ? [styles.address, styles.error].join(" ")
+                  : styles.address
+              }
               value={offerFormData.clientAddress}
-              onChange={(e) =>
+              onChange={(e) => {
+                setFormErr({ ...formErr, clientAddress: true });
                 setOfferFormData({
                   ...offerFormData,
                   clientAddress: e.currentTarget.value,
-                })
-              }
+                });
+              }}
             />
           </div>
           <div className={styles.mainContent}>
@@ -127,12 +206,14 @@ const OfferLetterForm = ({ setState, loanData }) => {
                   name="additional"
                   placeholder="₦xxx,xxx (Loans amount in words)"
                   value={offerFormData.loanAmount}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    setFormErr({ ...formErr, loanAmount: true });
                     setOfferFormData({
                       ...offerFormData,
                       loanAmount: e.currentTarget.value,
-                    })
-                  }
+                    });
+                  }}
+                  className={!formErr?.loanAmount ? styles.error : null}
                 />
               </span>
             </p>
@@ -155,12 +236,14 @@ const OfferLetterForm = ({ setState, loanData }) => {
                     name="clientname"
                     placeholder="Client Name"
                     value={offerFormData.borrowerName}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      setFormErr({ ...formErr, borrowerName: true });
                       setOfferFormData({
                         ...offerFormData,
                         borrowerName: e.currentTarget.value,
-                      })
-                    }
+                      });
+                    }}
+                    className={!formErr?.borrowerName ? styles.error : null}
                   />
                 </Col>
               </Row>
@@ -173,12 +256,14 @@ const OfferLetterForm = ({ setState, loanData }) => {
                     type="text"
                     name="business"
                     value={offerFormData.natureofBusiness}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      setFormErr({ ...formErr, natureofBusiness: true });
                       setOfferFormData({
                         ...offerFormData,
                         natureofBusiness: e.currentTarget.value,
-                      })
-                    }
+                      });
+                    }}
+                    className={!formErr?.natureofBusiness ? styles.error : null}
                   />
                 </Col>
               </Row>
@@ -192,6 +277,7 @@ const OfferLetterForm = ({ setState, loanData }) => {
                     name="loanAmount"
                     value={offerFormData.loanFacility}
                     onChange={(e) => {
+                      setFormErr({ ...formErr, loanFacility: true });
                       const {
                         includesAlphabet,
                         convertedToNumber,
@@ -203,6 +289,7 @@ const OfferLetterForm = ({ setState, loanData }) => {
                         });
                       }
                     }}
+                    className={!formErr?.loanFacility ? styles.error : null}
                   />
                 </Col>
               </Row>
@@ -215,12 +302,14 @@ const OfferLetterForm = ({ setState, loanData }) => {
                     type="text"
                     name="purpose"
                     value={offerFormData.loanPurpose}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      setFormErr({ ...formErr, loanPurpose: true });
                       setOfferFormData({
                         ...offerFormData,
                         loanPurpose: e.currentTarget.value,
-                      })
-                    }
+                      });
+                    }}
+                    className={!formErr?.loanPurpose ? styles.error : null}
                   />
                 </Col>
               </Row>
@@ -234,6 +323,7 @@ const OfferLetterForm = ({ setState, loanData }) => {
                     name="monthlyRepay"
                     value={offerFormData.monthlyRepayment}
                     onChange={(e) => {
+                      setFormErr({ ...formErr, monthlyRepayment: true });
                       const {
                         includesAlphabet,
                         convertedToNumber,
@@ -245,6 +335,7 @@ const OfferLetterForm = ({ setState, loanData }) => {
                         });
                       }
                     }}
+                    className={!formErr?.monthlyRepayment ? styles.error : null}
                   />
                 </Col>
               </Row>
@@ -257,12 +348,14 @@ const OfferLetterForm = ({ setState, loanData }) => {
                     type="text"
                     name="source"
                     value={offerFormData.repaymentSource}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      setFormErr({ ...formErr, repaymentSource: true });
                       setOfferFormData({
                         ...offerFormData,
                         repaymentSource: e.currentTarget.value,
-                      })
-                    }
+                      });
+                    }}
+                    className={!formErr?.repaymentSource ? styles.error : null}
                   />
                 </Col>
               </Row>
@@ -399,12 +492,14 @@ const OfferLetterForm = ({ setState, loanData }) => {
                   name="headCredit"
                   style={{ padding: "15px 18px" }}
                   value={offerFormData.headCreditSign}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    setFormErr({ ...formErr, headCreditSign: true });
                     setOfferFormData({
                       ...offerFormData,
                       headCreditSign: e.currentTarget.value,
-                    })
-                  }
+                    });
+                  }}
+                  className={!formErr?.headCreditSign ? styles.error : null}
                 />
               </div>
               <div>
@@ -413,12 +508,14 @@ const OfferLetterForm = ({ setState, loanData }) => {
                   name="headRisk"
                   style={{ padding: "15px 18px" }}
                   value={offerFormData.headRiskSign}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    setFormErr({ ...formErr, headRiskSign: true });
                     setOfferFormData({
                       ...offerFormData,
                       headRiskSign: e.currentTarget.value,
-                    })
-                  }
+                    });
+                  }}
+                  className={!formErr?.headRiskSign ? styles.error : null}
                 />
               </div>
             </div>
@@ -510,7 +607,7 @@ const OfferLetterForm = ({ setState, loanData }) => {
             </PDFDownloadLink>
           ) : (
             <Button
-              clicked={() => setBtnState(true)}
+              clicked={createPdf}
               bgColor="#741763"
               size="lg"
               color="#EBEBEB"

@@ -1,0 +1,32 @@
+.datePicker {
+  background-color: #f0f0f0;
+  border: 1px solid rgba(116, 23, 99, 0.3);
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 16px;
+  width: 100% !important;
+  &:focus {
+    outline: none;
+    border: 1px solid rgba(116, 23, 99, 0.8);
+  }
+  &:active {
+    outline: none;
+  }
+}
+
+label {
+  text-align: left;
+  display: block;
+  font-size: 1.1rem;
+  font-family: "Source Sans Pro", sans-serif;
+  margin-bottom: 5px;
+}
+
+.error {
+  margin-bottom: 0 !important;
+  text-align: left !important;
+  font-size: 0.85rem !important;
+  color: red !important;
+  font-weight: normal !important;
+  margin-top: 2px;
+}

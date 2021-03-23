@@ -1,30 +1,30 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
-import styles from './LoanContactForm.module.scss';
-import { Row, Col } from 'react-bootstrap';
-import InputField from '../InputField/InputField';
-import FileUploadButton from '../FileUploadButton/FileUploadButton';
-import { FaCloudUploadAlt } from 'react-icons/fa';
-import Button from '../Button/Button';
-import { validateInput } from '../../utils/validateInput';
-import { nigeriaStates } from '../../utils/nigeriaStates';
-import { lgaList } from '../../utils/mappedLgas';
-import { ToastContainer, toast } from 'react-toastify';
-import { Context as LoanContext } from '../../context/LoanContext';
-import BeatLoader from 'react-spinners/BeatLoader';
-import _ from 'lodash';
-
+import React, { useState, useRef, useEffect, useContext } from "react";
+import styles from "./LoanContactForm.module.scss";
+import { Row, Col } from "react-bootstrap";
+import InputField from "../InputField/InputField";
+import FileUploadButton from "../FileUploadButton/FileUploadButton";
+import { FaCloudUploadAlt } from "react-icons/fa";
+import Button from "../Button/Button";
+import { validateInput } from "../../utils/validateInput";
+import { nigeriaStates } from "../../utils/nigeriaStates";
+import { lgaList } from "../../utils/mappedLgas";
+import { ToastContainer, toast } from "react-toastify";
+import { Context as LoanContext } from "../../context/LoanContext";
+import BeatLoader from "react-spinners/BeatLoader";
+import _ from "lodash";
 
 const LoanContactForm = ({ submitContact }) => {
-
   // const { state: { user } } = useContext(AuthContext);
-  const { state: { loading } } = useContext(LoanContext);
+  const {
+    state: { loading },
+  } = useContext(LoanContext);
 
   const [contactAddress, setContactAddress] = useState({
     streetAddress: "",
     city: "",
-    state: "",
-    lga: "",
-    residentialStatus: ""
+    state: null,
+    lga: null,
+    residentialStatus: null,
   });
 
   const [contactErrors, setContactErrors] = useState({
@@ -32,29 +32,28 @@ const LoanContactForm = ({ submitContact }) => {
     city: null,
     state: null,
     lga: null,
-    residentialStatus: null
-  })
+    residentialStatus: null,
+  });
 
   const [lgaOptions, setLgaOptions] = useState([]);
   const [lgaLoading, setLgaLoading] = useState(false);
 
   useEffect(() => {
-    if(contactAddress.state.length > 0) {
-      setLgaOptions(lgaList[_.capitalize(contactAddress.state)])
+    if (contactAddress.state?.length > 0) {
+      setLgaOptions(lgaList[_.capitalize(contactAddress.state)]);
     }
-  }, [contactAddress.state])
-
+  }, [contactAddress.state]);
 
   const proofofAddressRef = useRef(null);
 
   const updateContactInfo = () => {
-    if(proofofAddressRef.current.files.length > 0) {
+    if (proofofAddressRef.current.files.length > 0) {
       console.log(proofofAddressRef);
       const proofofAddress = proofofAddressRef.current.files[0];
       console.log(proofofAddress);
-      const validated = validateInput(contactAddress, setContactErrors)
+      const validated = validateInput(contactAddress, setContactErrors);
       console.log(validated);
-      if(validated) {
+      if (validated) {
         const data = new FormData();
         data.append("city", contactAddress.city);
         data.append("street", contactAddress.streetAddress);
@@ -68,21 +67,21 @@ const LoanContactForm = ({ submitContact }) => {
     } else {
       toast.error("You need to upload a proof of address document to proceed");
     }
-  }
+  };
 
   return (
     <div className={styles.contactForm}>
       <ToastContainer position="top-center" />
       <Row className="mb-4">
         <Col>
-          <InputField 
+          <InputField
             label="Address"
             nameAttr="address"
             type="text"
             value={contactAddress.streetAddress}
             changed={(val) => {
-              setContactErrors({ ...contactErrors, streetAddress: null })
-              setContactAddress({ ...contactAddress, streetAddress: val })
+              setContactErrors({ ...contactErrors, streetAddress: null });
+              setContactAddress({ ...contactAddress, streetAddress: val });
             }}
             error={contactErrors.streetAddress && contactErrors.streetAddress}
           />
@@ -90,84 +89,91 @@ const LoanContactForm = ({ submitContact }) => {
       </Row>
       <Row className="mb-4">
         <Col>
-          <InputField 
+          <InputField
             type="text"
             nameAttr="city"
             label="City"
             value={contactAddress.city}
             changed={(val) => {
-              setContactErrors({ ...contactErrors, city: null })
-              setContactAddress({ ...contactAddress, city: val })
+              setContactErrors({ ...contactErrors, city: null });
+              setContactAddress({ ...contactAddress, city: val });
             }}
             error={contactErrors.city && contactErrors.city}
           />
         </Col>
         <Col>
-          <InputField 
+          <InputField
             type="select"
             nameAttr="state"
             label="State"
             options={nigeriaStates}
             value={contactAddress.state}
             changed={(val) => {
-              setContactErrors({ ...contactErrors, state: null })
-              setContactAddress({ ...contactAddress, state: val })
+              setContactErrors({ ...contactErrors, state: null });
+              setContactAddress({ ...contactAddress, state: val });
             }}
             error={contactErrors.state && contactErrors.state}
           />
         </Col>
         <Col>
-          { !lgaLoading ? <InputField 
-            type="select"
-            nameAttr="localGovt"
-            label="Local Govt. Area"
-            options={lgaOptions}
-            value={contactAddress.lga}
-            changed={(val) => {
-              setContactErrors({ ...contactErrors, lga: null })
-              setContactAddress({ ...contactAddress, lga: val })
-            }}
-            error={contactErrors.lga && contactErrors.lga}
-          /> :
+          {!lgaLoading ? (
+            <InputField
+              type="select"
+              nameAttr="localGovt"
+              label="Local Govt. Area"
+              options={lgaOptions}
+              value={contactAddress.lga}
+              changed={(val) => {
+                setContactErrors({ ...contactErrors, lga: null });
+                setContactAddress({ ...contactAddress, lga: val });
+              }}
+              error={contactErrors.lga && contactErrors.lga}
+            />
+          ) : (
             <div className={styles.loaderWrapper}>
               <BeatLoader color="#741763" size={10} />
             </div>
-          }
+          )}
         </Col>
       </Row>
       <Row>
         <Col>
-          <InputField 
+          <InputField
             type="select"
             label="Residential Status"
             nameAttr="residentialStatus"
-            options={['Renting', 'Owned']}
+            options={["Renting", "Owned"]}
             value={contactAddress.residentialStatus}
             changed={(val) => {
-              setContactErrors({ ...contactErrors, residentialStatus: null })
-              setContactAddress({ ...contactAddress, residentialStatus: val })
+              setContactErrors({ ...contactErrors, residentialStatus: null });
+              setContactAddress({ ...contactAddress, residentialStatus: val });
             }}
-            error={contactErrors.residentialStatus && contactErrors.residentialStatus}
+            error={
+              contactErrors.residentialStatus && contactErrors.residentialStatus
+            }
           />
         </Col>
         <Col>
-          <FileUploadButton 
-            label="Choose File" 
+          <FileUploadButton
+            label="Choose File"
             icon={<FaCloudUploadAlt className="ml-3" size="1.2em" />}
-            id="address-upload" 
+            id="address-upload"
             fileRef={proofofAddressRef}
             visibleLabel="Proof of Address"
             fullwidth
           />
-          <p className={styles.inputHint}>Note: Proof of address could be your recent utility bill or any other valid document containing your residential address.</p>
+          <p className={styles.inputHint}>
+            Note: Proof of address could be your recent utility bill or any
+            other valid document containing your residential address.
+          </p>
         </Col>
       </Row>
-      <Button 
-        className="mt-4" 
-        fullWidth 
-        clicked={updateContactInfo} 
-        bgColor="#741763" 
-        size="lg" 
+      <Button
+        className="mt-4"
+        fullWidth
+        clicked={updateContactInfo}
+        bgColor="#741763"
+        size="lg"
         color="#EBEBEB"
         disabled={loading}
         loading={loading}
@@ -175,8 +181,7 @@ const LoanContactForm = ({ submitContact }) => {
         Continue
       </Button>
     </div>
-  )
-}
-
+  );
+};
 
 export default LoanContactForm;

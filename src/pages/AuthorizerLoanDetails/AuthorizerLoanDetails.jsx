@@ -7,13 +7,139 @@ import NavTabs from "../../components/NavTabs/NavTabs";
 import { BasicInfo } from "../LoanDetail/LoanDetail";
 import { Context as LoanContext } from "../../context/LoanContext";
 import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as ApprovalContext } from "../../context/ApprovalContext";
+import { Context as BankContext } from "../../context/BankCotext";
+import { Row, Col } from "react-bootstrap";
+import InputField from "../../components/InputField/InputField";
+import Button from "../../components/Button/Button";
 import Loader from "../../components/Loader/Loader";
 import {
-  DecisionApproval,
-  RepaySetup,
+  RepayPlusApprove,
   MonoTab,
 } from "../ProcessorLoanDetails/ProcessorLoanDetails";
 import { RepaymentSchedule } from "../LoanDetail/LoanDetail";
+import _ from "lodash";
+import { numberWithCommas } from "../../utils/nigeriaStates";
+import { toast, ToastContainer } from "react-toastify";
+
+const Disbursal = ({ loanId, disburseBank, loanData }) => {
+  const {
+    state: { loading, error, disbursedStatus },
+    disburseLoan,
+    clearError,
+    resetDisburseStatus,
+  } = useContext(ApprovalContext);
+
+  const {
+    state: { bankList },
+    getBankList,
+  } = useContext(BankContext);
+
+  const [disburseData, setDisburseData] = useState({
+    bankName: "",
+    accountNumber: "",
+    amount: "",
+  });
+
+  useEffect(() => {
+    (async () => {
+      await getBankList();
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (disburseBank && disburseBank.isDisbursement) {
+      setDisburseData({
+        ...disburseData,
+        bankName: _.startCase(disburseBank.bank),
+        accountNumber: disburseBank.accountNumber,
+        amount: numberWithCommas(loanData.approvedAmount),
+      });
+    }
+  }, [disburseBank]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      clearError();
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (disbursedStatus) {
+      toast.success("Loan was disbursed successfully!");
+      resetDisburseStatus();
+    }
+  }, [disbursedStatus]);
+
+  const transferPaymentToClient = () => {
+    const bankInfo = bankList.filter(
+      (bank) => bank.name.toLowerCase() === disburseBank.bank.toLowerCase()
+    );
+    // console.log(bankInfo[0].code);
+    const paymentData = {
+      account_bank: bankInfo[0].code,
+      account_number: disburseBank.accountNumber,
+      amount: loanData.amount,
+    };
+    disburseLoan(loanId, paymentData);
+  };
+
+  if (!bankList) {
+    return null;
+  }
+
+  return (
+    <>
+      <ToastContainer position="top-center" />
+      <Row className="mb-4">
+        <Col>
+          <InputField
+            type="text"
+            label="Bank Name"
+            nameAttr="bankName"
+            value={disburseData.bankName}
+            disable={true}
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4">
+        <Col>
+          <InputField
+            type="text"
+            label="Account Number"
+            nameAttr="accNumber"
+            value={disburseData.accountNumber}
+            disable={true}
+          />
+        </Col>
+      </Row>
+      <Row className="mb-4">
+        <Col>
+          <InputField
+            type="text"
+            label="Amount"
+            nameAttr="amount"
+            value={disburseData.amount}
+            disable={true}
+          />
+        </Col>
+      </Row>
+      <Button
+        className="mt-4"
+        fullWidth
+        clicked={transferPaymentToClient}
+        bgColor="#741763"
+        size="lg"
+        color="#EBEBEB"
+        disabled={loading || loanData?.adminDecision !== "approve"}
+        loading={loading}
+      >
+        Disburse
+      </Button>
+    </>
+  );
+};
 
 const AuthorizerLoanDetails = () => {
   const [visibleSection, setVisibleSection] = useState("basic");
@@ -43,10 +169,10 @@ const AuthorizerLoanDetails = () => {
       title: "Decision & Approval",
       shortlink: "decision",
     },
-    {
-      title: "Repayment Setup",
-      shortlink: "setup",
-    },
+    // {
+    //   title: "Repayment Setup",
+    //   shortlink: "setup",
+    // },
     {
       title: "Repayment Schedule",
       shortlink: "repay",
@@ -54,6 +180,10 @@ const AuthorizerLoanDetails = () => {
     {
       title: "Mono",
       shortlink: "mono",
+    },
+    {
+      title: "Disbursal",
+      shortlink: "disburse",
     },
   ];
 
@@ -87,16 +217,16 @@ const AuthorizerLoanDetails = () => {
             />
           )}
           {visibleSection === "decision" && (
-            <DecisionApproval
-              loanData={loanDetails.loan}
+            <RepayPlusApprove
               loanId={loanId}
-              userRole={user.role}
-              disburseBank={loanDetails?.bank[0]}
+              loanData={loanDetails?.loan}
+              userRole={user?.role}
+              setActiveTab={setActiveTab}
             />
           )}
-          {visibleSection === "setup" && (
+          {/* {visibleSection === "setup" && (
             <RepaySetup loanData={loanDetails.loan} loanId={loanId} />
-          )}
+          )} */}
           {visibleSection === "repay" && (
             <RepaymentSchedule
               data={
@@ -113,6 +243,13 @@ const AuthorizerLoanDetails = () => {
           )}
           {visibleSection === "mono" && (
             <MonoTab clientId={loanDetails?.client[0]?.clientId} />
+          )}
+          {visibleSection === "disburse" && (
+            <Disbursal
+              loanData={loanDetails.loan}
+              loanId={loanId}
+              disburseBank={loanDetails?.bank[0]}
+            />
           )}
         </div>
       ) : (
