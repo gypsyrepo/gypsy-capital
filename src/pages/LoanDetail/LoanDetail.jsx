@@ -35,7 +35,9 @@ export const BasicInfo = ({ data, userRole }) => {
           data.client.lastName
         )}`,
         clientID: data.userId,
-        loanAmount: `N${numberWithCommas(data.amount)}`,
+        loanAmount: `N${numberWithCommas(
+          data?.approvedAmount || data?.amount
+        )}`,
         loanID: `#${data._id}`,
         loanTenure: data.paymentPeriod,
         monthlyRepayment: `N${numberWithCommas(data.monthlyRepayment)}`,

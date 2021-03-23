@@ -53,7 +53,7 @@ const Disbursal = ({ loanId, disburseBank, loanData }) => {
         ...disburseData,
         bankName: _.startCase(disburseBank.bank),
         accountNumber: disburseBank.accountNumber,
-        amount: numberWithCommas(loanData.amount),
+        amount: numberWithCommas(loanData.approvedAmount),
       });
     }
   }, [disburseBank]);
