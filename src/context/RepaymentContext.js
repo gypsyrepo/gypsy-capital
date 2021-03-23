@@ -15,7 +15,7 @@ const repaymentReducer = (state, action) => {
   }
 };
 
-const setupRepayment = (dispatch) => async (loanId, repayData) => {
+const setupRepayment = (dispatch) => async (loanId, repayData, callback) => {
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
@@ -29,6 +29,9 @@ const setupRepayment = (dispatch) => async (loanId, repayData) => {
       }
     );
     console.log(response.data);
+    if (callback) {
+      await callback(loanId);
+    }
     dispatch({ type: "set_repayment_status", payload: true });
     dispatch({ type: "set_loading", payload: false });
   } catch (err) {
@@ -64,10 +67,10 @@ const verifyRepaymentStatus = (dispatch) => async (loanId) => {
     if (err.response) {
       console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message;
-      dispatch({
-        type: "set_error",
-        payload: errorMessage,
-      });
+      // dispatch({
+      //   type: "set_error",
+      //   payload: errorMessage,
+      // });
       dispatch({ type: "set_loading", payload: false });
     }
   }

@@ -18,7 +18,7 @@ const approvalReducer = (state, action) => {
   }
 };
 
-const decideApproval = (dispatch) => async (loanId, decisionData) => {
+const decideApproval = (dispatch) => async (loanId, decisionData, callback) => {
   dispatch({ type: "set_loading", payload: true });
   try {
     console.log(decisionData);
@@ -33,6 +33,9 @@ const decideApproval = (dispatch) => async (loanId, decisionData) => {
       }
     );
     console.log(response);
+    if (callback) {
+      await callback(loanId);
+    }
     dispatch({ type: "set_approval_status", payload: true });
     dispatch({ type: "set_loading", payload: false });
   } catch (err) {
