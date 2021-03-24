@@ -220,7 +220,7 @@ export const RepayPlusApprove = ({
         approvedLoanAmount: loanData.processorDecision || loanData.adminDecision ? numberWithCommas(loanData?.approvedAmount) : "",
         approvedTenure: loanData?.approvedTenure,
         approvedDti: loanData?.Dti || 33,
-        approvedMonthlyRepayment: loanData.processorDecision || loanData.adminDecision ? numberWithCommas(loanData?.monthlyRepayment) : "",
+        approvedMonthlyRepayment: loanData?.rePaymentAPI ? numberWithCommas(loanData?.monthlyRepayment) : "",
         totalRepayment: numberWithCommas(loanData?.calculatedPayBack),
         repaymentApi: loanData?.rePaymentAPI,
         bank: "",
@@ -398,8 +398,6 @@ export const RepayPlusApprove = ({
     }
   };
 
-  console.log(setupData)
-
   if (!setupData) {
     return null;
   }
@@ -444,7 +442,7 @@ export const RepayPlusApprove = ({
               error={
                 repaymentError.approvedPayDay && repaymentError.approvedPayDay
               }
-              disable={loanData?.rePaymentAPI}
+              // disable={loanData?.rePaymentAPI}
             />
           </Col>
           <Col md={6}>
@@ -494,7 +492,7 @@ export const RepayPlusApprove = ({
                 repaymentError.approvedLoanAmount &&
                 repaymentError.approvedLoanAmount
               }
-              disable={loanData?.rePaymentAPI}
+              // disable={loanData?.rePaymentAPI}
             />
           </Col>
           <Col>
@@ -535,7 +533,7 @@ export const RepayPlusApprove = ({
                 repaymentError.approvedInterest &&
                 repaymentError.approvedInterest
               }
-              disable={loanData?.rePaymentAPI}
+              // disable={loanData?.rePaymentAPI}
             />
           </Col>
           <Col>
@@ -549,7 +547,7 @@ export const RepayPlusApprove = ({
                 setSetupData({ ...setupData, adminFee: val });
               }}
               error={repaymentError.adminFee && repaymentError.adminFee}
-              disable={loanData?.rePaymentAPI}
+              // disable={loanData?.rePaymentAPI}
             />
           </Col>
         </Row>
