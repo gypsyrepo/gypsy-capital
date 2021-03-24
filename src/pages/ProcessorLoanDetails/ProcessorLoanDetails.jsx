@@ -133,7 +133,21 @@ export const RepayPlusApprove = ({
 
   const { retrieveLoan } = useContext(LoanContext);
 
-  const [setupData, setSetupData] = useState(null);
+  const [setupData, setSetupData] = useState({
+    decision: null,
+    approvedPayDay: null,
+    repaymentStartDate: null,
+    approvedLoanAmount: null,
+    approvedTenure: null,
+    approvedDti: 33,
+    approvedMonthlyRepayment: null,
+    totalRepayment: null,
+    repaymentApi: null,
+    bank: null,
+    accountNumber: null,
+    decisionReason: null,
+    approvedInterest: null
+  });
 
   const [repaymentError, setRepaymentError] = useState({
     approvedPayDay: null,
@@ -161,36 +175,61 @@ export const RepayPlusApprove = ({
     const savedLoanData = JSON.parse(sessionStorage.getItem(`gypsy-${loanId}`));
 
     if (sessionStorage.getItem(`gypsy-${loanId}`)) {
+
+      let repayDate;
+      if(savedLoanData?.repaymentStartDate) {
+        console.log('works')
+        repayDate = moment(savedLoanData?.repaymentStartDate).toDate()
+      } else {
+        console.log('works 2')
+        repayDate = null
+      }
       setSetupData({
+        ...setupData,
         decision: savedLoanData?.decision || loanData[`${mappedRole}Decision`],
-        approvedPayDay: savedLoanData?.approvedPayDay || loanData?.payDay,
-        repaymentStartDate: savedLoanData?.repaymentStartDate
-          ? moment(savedLoanData?.repaymentStartDate).toDate()
-          : moment(loanData?.determinedRepaymentDate, "DD/MM/YYYY").toDate(),
-        approvedLoanAmount:
-          savedLoanData?.approvedLoanAmount ||
-          numberWithCommas(loanData?.approvedAmount),
-        approvedTenure:
-          savedLoanData?.approvedTenure || loanData?.approvedTenure,
-        approvedDti: savedLoanData?.approvedDti || loanData?.Dti || 33,
-        approvedMonthlyRepayment:
-          savedLoanData?.approvedMonthlyRepayment ||
-          numberWithCommas(loanData?.monthlyRepayment),
-        totalRepayment:
-          savedLoanData?.totalRepayment ||
-          numberWithCommas(loanData?.calculatedPayBack),
-        repaymentApi: savedLoanData?.repaymentApi || loanData?.rePaymentAPI,
+        approvedPayDay: savedLoanData?.approvedPayDay,
+        repaymentStartDate: repayDate,
+        approvedLoanAmount: savedLoanData?.approvedLoanAmount,
+        approvedTenure: savedLoanData?.approvedTenure,
+        approvedDti: savedLoanData?.approvedDti || 33,
+        approvedMonthlyRepayment: savedLoanData?.approvedMonthlyRepayment,
+        totalRepayment: savedLoanData?.totalRepayment,
+        repaymentApi: savedLoanData?.repaymentApi,
         bank: savedLoanData?.bank,
         accountNumber: savedLoanData?.accountNumber,
-        decisionReason:
-          savedLoanData?.decisionReason ||
-          loanData[`${mappedRole}DecisionReason`],
-        approvedInterest:
-          savedLoanData?.approvedInterest || loanData?.approvedInterest,
-        adminFee: savedLoanData?.adminFee,
+        decisionReason: savedLoanData?.decisionReason,
+        approvedInterest: savedLoanData?.approvedInterest
       });
+    } else {
+
+      let repayDate;
+
+      if(loanData?.determinedRepaymentDate) {
+        console.log('works')
+        repayDate = moment(loanData?.determinedRepaymentDate, "DD/MM/YYYY").toDate()
+      } else {
+        console.log('works 2')
+        repayDate = null
+      }
+
+      setSetupData({
+        ...setupData,
+        decision: loanData[`${mappedRole}Decision`],
+        approvedPayDay: loanData.processorDecision || loanData.adminDecision ? loanData?.payDay : "",
+        repaymentStartDate: repayDate,
+        approvedLoanAmount: loanData.processorDecision || loanData.adminDecision ? numberWithCommas(loanData?.approvedAmount) : "",
+        approvedTenure: loanData?.approvedTenure,
+        approvedDti: loanData?.Dti || 33,
+        approvedMonthlyRepayment: loanData.processorDecision || loanData.adminDecision ? numberWithCommas(loanData?.monthlyRepayment) : "",
+        totalRepayment: numberWithCommas(loanData?.calculatedPayBack),
+        repaymentApi: loanData?.rePaymentAPI,
+        bank: "",
+        accountNumber: "",
+        decisionReason: loanData[`${mappedRole}DecisionReason`] || "",
+        approvedInterest: loanData?.approvedInterest || ""
+      })
     }
-  }, [loanData, loanId]);
+  }, []);
 
   useEffect(() => {
     sessionStorage.setItem(`gypsy-${loanId}`, JSON.stringify(setupData));
@@ -359,10 +398,12 @@ export const RepayPlusApprove = ({
     }
   };
 
-  if (!loanData) {
+  console.log(setupData)
+
+  if (!setupData) {
     return null;
   }
-
+  
   return (
     <>
       <ToastContainer position="top-center" />
