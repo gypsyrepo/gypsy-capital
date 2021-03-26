@@ -442,7 +442,7 @@ export const RepayPlusApprove = ({
               error={
                 repaymentError.approvedPayDay && repaymentError.approvedPayDay
               }
-              // disable={loanData?.rePaymentAPI}
+              disable={loanData?.rePaymentAPI}
             />
           </Col>
           <Col md={6}>
@@ -492,7 +492,7 @@ export const RepayPlusApprove = ({
                 repaymentError.approvedLoanAmount &&
                 repaymentError.approvedLoanAmount
               }
-              // disable={loanData?.rePaymentAPI}
+              disable={loanData?.rePaymentAPI}
             />
           </Col>
           <Col>
@@ -533,7 +533,7 @@ export const RepayPlusApprove = ({
                 repaymentError.approvedInterest &&
                 repaymentError.approvedInterest
               }
-              // disable={loanData?.rePaymentAPI}
+              disable={loanData?.rePaymentAPI}
             />
           </Col>
           <Col>
@@ -547,7 +547,7 @@ export const RepayPlusApprove = ({
                 setSetupData({ ...setupData, adminFee: val });
               }}
               error={repaymentError.adminFee && repaymentError.adminFee}
-              // disable={loanData?.rePaymentAPI}
+              disable={loanData?.rePaymentAPI}
             />
           </Col>
         </Row>
