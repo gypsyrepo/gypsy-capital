@@ -9,7 +9,7 @@
     height: 70px;
     border-bottom: 0.5px solid #dddddd;
     background-color: #741763;
-    padding: 0 40px;
+    padding: 0 25px;
     .headerGrid {
       width: 100%;
       display: flex;
@@ -96,13 +96,11 @@
   .menuPanel {
     display: none;
   }
-  .mainPanel {
-    padding-left: 0;
-  }
 }
 
 .mainContent {
-  padding: 30px 40px;
+  margin: 0 auto;
+  padding: 70px 20px;
   max-height: calc(100vh - 70px);
   overflow-y: scroll;
 }

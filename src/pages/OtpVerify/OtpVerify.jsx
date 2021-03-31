@@ -18,8 +18,14 @@ const OtpVerify = () => {
       verifyOtp, 
       getActiveUser, 
       resendOtp,
-      clearErrors 
+      clearErrors, 
+      resetInactiveUserStatus
   } = useContext(AuthContext);
+
+  useEffect(() => {
+    resetInactiveUserStatus();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if(error) {

@@ -106,7 +106,6 @@ const SignUp = () => {
       password: signUpValues.password,
       hearAboutUs: signUpValues.referralChoice,
     };
-    console.log(signUpData);
     if (validated) {
       registerUser(signUpData, getActiveUser);
     }

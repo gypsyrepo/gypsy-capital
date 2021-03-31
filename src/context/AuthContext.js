@@ -20,6 +20,8 @@ const authReducer = (state, action) => {
       return { ...state, registerStatus: action.payload };
     case "set_current_added_user":
       return { ...state, currentAddedUser: action.payload };
+    case "set_redirect_inactive_user":
+      return { ...state, redirectInactiveUser: action.payload };
     case "set_error":
       return { ...state, error: action.payload };
     default:
@@ -44,6 +46,7 @@ const registerUser = (dispatch) => async (data, callback) => {
     dispatch({ type: "loading_state", payload: false });
     history.push(pageUrl.VERIFY_OTP_PAGE);
   } catch (err) {
+    console.log(err);
     if (err.response) {
       console.log(err.response);
       if (err.response.data.message) {
@@ -123,6 +126,7 @@ const addUserByAgent = (dispatch) => async (data, callback) => {
 };
 
 const loginUser = (dispatch) => async ({ email, password }, callback) => {
+  console.log('works')
   dispatch({ type: "set_error", payload: null });
   dispatch({ type: "loading_state", payload: true });
   try {
@@ -139,10 +143,19 @@ const loginUser = (dispatch) => async ({ email, password }, callback) => {
   } catch (err) {
     if (err.response) {
       console.log(err.response);
-      dispatch({
-        type: "set_error",
-        payload: err.response.data.message,
-      });
+      const errorMessage = err.response.data.error || err.response.data.message;
+      if(errorMessage === "Verify your email or phone to activate account") {
+        console.log('works')
+        dispatch({
+          type: "set_redirect_inactive_user",
+          payload: true
+        });
+      } else {
+        dispatch({
+          type: "set_error",
+          payload: errorMessage,
+        });
+      }
     }
     dispatch({ type: "loading_state", payload: false });
   }
@@ -268,6 +281,13 @@ const clearErrors = (dispatch) => () => {
   });
 };
 
+const resetInactiveUserStatus = (dispatch) => () => {
+  dispatch({
+    type: "set_redirect_inactive_user",
+    payload: false
+  });
+};
+
 const logout = (dispatch) => () => {
   Object.keys(sessionStorage)
     .filter((val) => {
@@ -302,6 +322,7 @@ export const { Context, Provider } = createPersistDataContext(
     clearErrors,
     getCurrentlyAddedUser,
     addUserByAgent,
+    resetInactiveUserStatus
   },
   {
     user: null,
@@ -312,6 +333,7 @@ export const { Context, Provider } = createPersistDataContext(
     message: null,
     registerStatus: null,
     currentAddedUser: null,
+    redirectInactiveUser: false
   },
   true,
   saveUserState,

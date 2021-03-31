@@ -25,7 +25,6 @@ export const validateInput = (inputValues, errorSetter) => {
   }
 
   errorSetter(errorsInit);
-  console.log(errorsInit);
   if (Object.entries(errorsInit).length === 0) {
     return true;
   } else {
