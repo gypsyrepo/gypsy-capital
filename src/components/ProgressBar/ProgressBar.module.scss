@@ -56,21 +56,23 @@
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  .circle {
-    width: 80px;
-    .activeStageIcon {
-      width: 40px;
-      height: 40px;
+  .progressBar {
+    .circle {
+      width: 80px;
+      .activeStageIcon {
+        width: 40px;
+        height: 40px;
+      }
+      .stageIcon {
+        width: 40px;
+        height: 40px;
+      }
     }
-    .stageIcon {
-      width: 40px;
-      height: 40px;
+    .bar {
+      position: relative;
+      width: 100px;
+      height: 2px;
     }
-  }
-  .bar {
-    position: relative;
-    width: 100px;
-    height: 2px;
   }
 }
 
