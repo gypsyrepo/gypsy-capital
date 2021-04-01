@@ -10,10 +10,9 @@ import noLoan from "../../assets/no-loan.png";
 import moment from "moment";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as LoanContext } from "../../context/LoanContext";
-import { useRouteMatch, useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 const Overview = () => {
-  const { path } = useRouteMatch();
   const history = useHistory();
   const location = useLocation();
   const [activeLoan, setActiveLoan] = useState(null);
@@ -28,6 +27,7 @@ const Overview = () => {
 
   useEffect(() => {
     retrieveClientLoans();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const Overview = () => {
                 Apply for loan
               </Button>
             </div>
-            <img src={noLoan} alt="No active loan" height="280" />
+            <img src={noLoan} alt="No active loan" />
           </div>
         )}
         {activeLoan && (

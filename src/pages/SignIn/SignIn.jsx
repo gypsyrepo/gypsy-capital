@@ -5,7 +5,7 @@ import { Row, Col } from 'react-bootstrap';
 import InputField from '../../components/InputField/InputField';
 import Button from '../../components/Button/Button';
 import pageUrl from '../../routes/pageUrl';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
 import { validateInput } from '../../utils/validateInput';
@@ -14,8 +14,10 @@ import useNavigateAfterAuth from '../../hooks/useNavigateAfterAuth';
 
 const SignIn = () => {
 
+  const history = useHistory();
+
   const { 
-      state: { loading, error }, 
+      state: { loading, error, redirectInactiveUser }, 
       loginUser, 
       clearErrors 
   } = useContext(AuthContext);
@@ -48,18 +50,11 @@ const SignIn = () => {
     }
   }
 
-  // useEffect(() => {
-  //   const listener = event => {
-  //     if (event.code === "Enter" || event.code === "NumpadEnter") {
-  //       console.log("Enter key was pressed. Run your function.");
-  //       handleSubmit();
-  //     }
-  //   };
-  //   document.addEventListener("keydown", listener);
-  //   return () => {
-  //     document.removeEventListener("keydown", listener);
-  //   };
-  // }, []);
+  useEffect(() => {
+    if(redirectInactiveUser) {
+      history.push('/verify-otp')
+    }
+  }, [redirectInactiveUser])
 
   return (
     <div className={styles.container}>
