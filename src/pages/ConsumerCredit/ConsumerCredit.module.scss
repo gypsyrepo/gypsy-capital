@@ -32,6 +32,9 @@
   .noLoanMessage {
     margin-top: 25px;
     text-align: center;
+    img {
+      display: none;
+    }
     p {
       font-size: 1.25rem;
       font-family: "Source Sans Pro", sans-serif;
@@ -296,6 +299,13 @@
     .noLoanMessage {
       margin-top: 25px;
       text-align: center;
+      img {
+        display: block;
+        margin: 0 auto;
+      }
+      .mobileNoLoan {
+        display: none;
+      }
       p {
         font-size: 1.25rem;
         font-family: "Source Sans Pro", sans-serif;
