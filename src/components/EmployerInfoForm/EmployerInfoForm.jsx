@@ -111,7 +111,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
     <div className={styles.employerInfo}>
       <ToastContainer position="top-center" />
       <Row className="mb-4">
-        <Col>
+        <Col className="mb-4 mb-md-0" sm={12} md={6}>
           <InputField
             type="text"
             nameAttr="employerName"
@@ -126,7 +126,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
             }
           />
         </Col>
-        <Col>
+        <Col sm={12} md={6}>
           <CustomDatePicker
             label="When did you start this job?"
             value={employmentInfo.startedDate}
@@ -139,7 +139,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
         </Col>
       </Row>
       <Row className="mb-4">
-        <Col>
+        <Col className="mb-4 mb-md-0" sm={12} md={6}>
           <InputField
             type="select"
             nameAttr="employerSector"
@@ -158,7 +158,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
             }
           />
         </Col>
-        <Col>
+        <Col sm={12} md={6}>
           <InputField
             type="select"
             nameAttr="employerIndustry"
@@ -180,7 +180,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
         </Col>
       </Row>
       <Row className="mb-4">
-        <Col>
+        <Col className="mb-4 mb-md-0" sm={12} md={6}>
           <InputField
             type="select"
             nameAttr="employType"
@@ -199,7 +199,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
             }
           />
         </Col>
-        <Col>
+        <Col sm={12} md={6}>
           <InputField
             type="email"
             nameAttr="officeEmail"
@@ -247,7 +247,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col className="mb-4 mb-md-0" sm={12} md={4}>
           <InputField
             type="text"
             label="City"
@@ -260,7 +260,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
             error={officeAddressErrors.city && officeAddressErrors.city}
           />
         </Col>
-        <Col>
+        <Col className="mb-4 mb-md-0" sm={12} md={4}>
           <InputField
             type="select"
             label="State"
@@ -274,7 +274,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
             error={officeAddressErrors.state && officeAddressErrors.state}
           />
         </Col>
-        <Col>
+        <Col sm={12} md={4}>
           <InputField
             type="select"
             label="Local Govt Area"

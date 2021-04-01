@@ -141,7 +141,7 @@ const LoanCalculatorForm = ({ delegateApply }) => {
     <div className={styles.calculatorForm}>
       <ToastContainer position="top-center" />
       <Row className="mb-4">
-        <Col>
+        <Col className="mb-4 mb-md-0" sm={12} md={6}>
           <InputField
             label="Monthly Salary"
             type="text"
@@ -166,7 +166,7 @@ const LoanCalculatorForm = ({ delegateApply }) => {
             }
           />
         </Col>
-        <Col>
+        <Col sm={12} md={6}>
           <InputField
             label="Pay Day"
             type="select"
@@ -182,7 +182,7 @@ const LoanCalculatorForm = ({ delegateApply }) => {
         </Col>
       </Row>
       <Row className="mb-4">
-        <Col>
+        <Col className="mb-4 mb-md-0" sm={12} md={6}>
           <InputField
             label="Loan Amount"
             type="text"
@@ -209,7 +209,7 @@ const LoanCalculatorForm = ({ delegateApply }) => {
             <span>min amt:</span> #100,000; <span>max amt:</span> #2,000,000
           </p>
         </Col>
-        <Col>
+        <Col sm={12} md={6}>
           <InputField
             label="Installment Period"
             type="select"

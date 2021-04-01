@@ -95,7 +95,7 @@ const BankInfoForm = ({ submitBankInfo }) => {
         Bank account provided must be your salary account
       </p>
       <Row className="mb-4">
-        <Col>
+        <Col className="mb-4 mb-md-0" sm={12} md={6}>
           <InputField
             type="select"
             nameAttr="bankName"
@@ -109,7 +109,7 @@ const BankInfoForm = ({ submitBankInfo }) => {
             error={bankErrors.bankName && bankErrors.bankName}
           />
         </Col>
-        <Col>
+        <Col sm={12} md={6}>
           <InputField
             type="select"
             nameAttr="accountType"
@@ -125,7 +125,7 @@ const BankInfoForm = ({ submitBankInfo }) => {
         </Col>
       </Row>
       <Row className="mb-4">
-        <Col>
+        <Col className="mb-4 mb-md-0" sm={12} md={6}>
           <InputField
             type="text"
             nameAttr="acctNumber"
@@ -138,7 +138,7 @@ const BankInfoForm = ({ submitBankInfo }) => {
             error={bankErrors.accountNumber && bankErrors.accountNumber}
           />
         </Col>
-        <Col>
+        <Col sm={12} md={6}>
           {!bankLoading ? (
             <InputField
               type="type"

@@ -88,7 +88,7 @@ const LoanContactForm = ({ submitContact }) => {
         </Col>
       </Row>
       <Row className="mb-4">
-        <Col>
+        <Col className="mb-4 mb-md-0" sm={12} md={4}>
           <InputField
             type="text"
             nameAttr="city"
@@ -101,7 +101,7 @@ const LoanContactForm = ({ submitContact }) => {
             error={contactErrors.city && contactErrors.city}
           />
         </Col>
-        <Col>
+        <Col className="mb-4 mb-md-0" sm={12} md={4}>
           <InputField
             type="select"
             nameAttr="state"
@@ -115,7 +115,7 @@ const LoanContactForm = ({ submitContact }) => {
             error={contactErrors.state && contactErrors.state}
           />
         </Col>
-        <Col>
+        <Col sm={12} md={4}>
           {!lgaLoading ? (
             <InputField
               type="select"
@@ -137,7 +137,7 @@ const LoanContactForm = ({ submitContact }) => {
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col className="mb-4 mb-md-0" sm={12} md={6}>
           <InputField
             type="select"
             label="Residential Status"
@@ -153,7 +153,7 @@ const LoanContactForm = ({ submitContact }) => {
             }
           />
         </Col>
-        <Col>
+        <Col sm={12} md={6}>
           <FileUploadButton
             label="Choose File"
             icon={<FaCloudUploadAlt className="ml-3" size="1.2em" />}
