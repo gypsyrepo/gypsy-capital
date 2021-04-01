@@ -89,7 +89,7 @@ const Dashboard = ({ children, sidebarRoutes, location }) => {
                       <FaUser size="1.4em" color="gray" />
                     </div>
                   ) : (
-                    <img src={placeholderAvatar} alt="Profile Picture" />
+                    <img src={placeholderAvatar} alt="Profile" />
                   )}
                   <div className={styles.userInfo}>
                     <p>
@@ -152,7 +152,7 @@ const Dashboard = ({ children, sidebarRoutes, location }) => {
               })}
             </ul>
             <div className={styles.footer}>
-              <button>
+              <button onClick={logout}>
                 <CgLogOut className="mr-2" size="1.3em" color="#f00" />
                 Log Out
               </button>
