@@ -46,6 +46,7 @@ const Profile = () => {
 
   useEffect(() => {
     getClientDetails(user.user_id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -65,6 +66,7 @@ const Profile = () => {
     } else if(!userDetails) {
       history.replace('/dashboard/profile/setup/bvn');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetails])
 
   useEffect(() => {
@@ -72,6 +74,7 @@ const Profile = () => {
       toast.error(error);
       clearErrors();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error])
 
 

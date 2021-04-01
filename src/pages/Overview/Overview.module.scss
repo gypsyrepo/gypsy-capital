@@ -1,108 +1,261 @@
 .welcomeGroup {
-    h2 {
-        font-weight: 700;
-        color: #741763;
-    }
-    p {
-        font-family: 'Source Sans Pro', sans-serif;
-        font-size: 1.1rem;
-    }
+  h2 {
+    font-weight: 700;
+    color: #741763;
+    font-size: 1.7rem;
+  }
+  p {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 1rem;
+  }
 }
 
 .loanStatus {
-    margin-top: 40px;
-    width: 100%;
-    border-radius: 15px;
-    box-shadow: 8px 15px 30px #0000001A;
-    background-color: #FFFFFF;
-    .innerContainer {
+  margin-top: 30px;
+  padding: 20px 30px;
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 8px 15px 30px #0000001a;
+  background-color: #ffffff;
+  .innerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img {
+      display: none;
+    }
+    .mainContent {
+      padding-left: 0;
+      margin: 0 auto;
+      text-align: center;
+    }
+    h3 {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #212121;
+    }
+  }
+  .activeStyle {
+    h3 {
+      font-size: 1.45rem;
+      span {
+        font-size: 0.9rem;
+        color: #741763;
+        font-style: italic;
+      }
+    }
+    .borderClass {
+      border-bottom: 1px dashed rgba(0, 0, 0, 0.25);
+    }
+    .statusBoard {
+      margin-top: 30px;
+      background-color: #ebebeb;
+      border-radius: 10px;
+      padding: 18px 28px;
+      .loanData {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .mainContent {
-            padding-left: 45px;
+        text-align: center;
+        justify-content: center;
+        padding: 10px 0;
+        h6 {
+          color: #741763;
+          font-weight: 600;
+          font-size: 16px;
+          font-family: "Source Sans Pro", sans-serif;
         }
-        h3 {
-            font-weight: 600;
-            margin-bottom: 25px;
-            color: #212121;
+        h1 {
+          font-size: 2.3rem;
+          margin-bottom: 0;
+          font-weight: 700;
+          color: #606060;
         }
+      }
     }
-    .activeStyle {
-        h3 {
-            span {
-                font-size: .9rem;
-                color: #741763;
-                font-style: italic;
-            }
-        }
-        .borderClass {
-            border-right: 1px solid #741763;
-        }
-        .statusBoard {
-            margin-top: 30px;
-            background-color: #EBEBEB;
-            border-radius: 10px;
-            padding: 18px 28px;
-            .loanData {
-                display: flex;
-                justify-content: center;
-                padding: 10px 0;
-                h6 {
-                    color: #741763;
-                    font-weight: 600;
-                    font-size: 16px;
-                    font-family: 'Source Sans Pro', sans-serif;
-                }
-                h1 {
-                    margin-bottom: 0;
-                    font-weight: 700;
-                    color: #606060;
-                }
-            }
-        }
-    }
+  }
 }
 
 .otherProducts {
-    margin-top: 50px;
-    .borderClass {
-        border-bottom: 4px solid #841FE8;
+  margin-top: 50px;
+  .borderClass {
+    border-bottom: 4px solid #841fe8;
+  }
+  .border2Class {
+    border-bottom: 4px solid #015514;
+  }
+  .product {
+    .productIcon {
+      height: 50px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
     }
-    .border2Class {
-        border-bottom: 4px solid #015514;
+    background-color: #ffffff;
+    border-radius: 15px 15px 0 0;
+    text-align: center;
+    box-shadow: 8px 15px 30px #0000001a;
+    padding: 28px 32px;
+    h3 {
+      font-size: 1.4rem;
+      margin-top: 20px;
+      font-weight: 600;
+      font-family: "Kanit", sans-serif;
+      color: #741763;
     }
+    p {
+      font-family: "Source Sans Pro", sans-serif;
+      font-size: 1.1rem;
+    }
+    .productBtn {
+      border: none;
+      background-color: #fff;
+      font-size: 1.15rem;
+      color: #741763;
+      font-family: "Source Sans Pro", sans-serif;
+      font-weight: 600;
+      border-bottom: 2px solid #741763;
+    }
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .welcomeGroup {
+    h2 {
+      font-size: 1.8rem;
+    }
+    p {
+      font-size: 1.1rem;
+    }
+  }
+
+  .loanStatus {
+    margin-top: 40px;
+    padding: 30px 40px;
+    .innerContainer {
+      .mainContent {
+        text-align: left;
+        margin: 0;
+      }
+      img {
+        display: block;
+        height: 240px;
+      }
+      h3 {
+        font-size: 1.75rem;
+      }
+    }
+    .activeStyle {
+      h3 {
+        font-size: 1.65rem;
+      }
+      .borderClass {
+        border-bottom: none;
+        border-right: 1px solid #741763;
+      }
+      .statusBoard {
+        margin-top: 30px;
+        padding: 18px 22px;
+        .loanData {
+          text-align: left;
+          h1 {
+            font-size: 2.4rem;
+          }
+        }
+      }
+    }
+  }
+
+  .otherProducts {
     .product {
-        .productIcon {
-            height: 50px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-        }
-        background-color: #FFFFFF;
-        border-radius: 15px 15px 0 0;
-        text-align: center;
-        box-shadow: 8px 15px 30px #0000001A;
-        padding: 28px 32px;
-        h3 {
-            font-size: 1.4rem;
-            margin-top: 20px;
-            font-weight: 600;
-            font-family: 'Kanit', sans-serif;
-            color: #741763;
-        }
-        p {
-            font-family: 'Source Sans Pro', sans-serif;
-            font-size: 1.1rem;
-        }
-        .productBtn {
-            border: none;
-            background-color: #fff;
-            font-size: 1.15rem;
-            color: #741763;
-            font-family: 'Source Sans Pro', sans-serif;
-            font-weight: 600;
-            border-bottom: 2px solid #741763;
-        }
+      height: 350px;
+      .productBtn {
+        font-size: 1.05rem;
+      }
     }
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .welcomeGroup {
+    h2 {
+      font-size: 2rem;
+    }
+  }
+
+  .loanStatus {
+    .innerContainer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .mainContent {
+        padding-left: 15px;
+      }
+      img {
+        height: 280px;
+      }
+      h3 {
+        font-size: 1.75rem;
+      }
+    }
+    .activeStyle {
+      h3 {
+        font-size: 1.75rem;
+      }
+      .borderClass {
+        border-right: 1px solid #741763;
+      }
+      .statusBoard {
+        .loanData {
+          h1 {
+            font-size: 2.5rem;
+          }
+        }
+      }
+    }
+  }
+
+  .otherProducts {
+    .product {
+      .productIcon {
+        height: 50px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      background-color: #ffffff;
+      border-radius: 15px 15px 0 0;
+      text-align: center;
+      box-shadow: 8px 15px 30px #0000001a;
+      padding: 28px 32px;
+      h3 {
+        font-size: 1.4rem;
+        margin-top: 20px;
+        font-weight: 600;
+        font-family: "Kanit", sans-serif;
+        color: #741763;
+      }
+      p {
+        font-family: "Source Sans Pro", sans-serif;
+        font-size: 1.1rem;
+      }
+      .productBtn {
+        border: none;
+        background-color: #fff;
+        font-size: 1.15rem;
+        color: #741763;
+        font-family: "Source Sans Pro", sans-serif;
+        font-weight: 600;
+        border-bottom: 2px solid #741763;
+      }
+    }
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
 }

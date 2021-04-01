@@ -1,74 +1,160 @@
 :root {
-    --fontColorOne:  #212121;
-    --fontFamilyOne: 'Source Sans Pro';
-    --fontFamilyTwo: 'Kanit';
-    --backgroundOne: ' #F5F5F5';
+  --fontColorOne: #212121;
+  --fontFamilyOne: "Source Sans Pro";
+  --fontFamilyTwo: "Kanit";
+  --backgroundOne: " #F5F5F5";
 }
 
 .welcomeGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h2 {
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin-bottom: 0;
+  }
+  p {
+    font-family: var(--fontFamilyOne);
+    font-size: 0.95rem;
+  }
+  button {
+    background-color: #f6f6f6;
+    border: 1px solid #bdbdbd;
+    border-radius: 5px;
+    padding: 6px 8px;
+    font-family: var(--fontFamilyOne);
+    font-size: 1rem;
+    &:focus {
+      outline: none;
+    }
+    .icon {
+      font-size: 1.3rem;
+      margin-right: 14px;
+      color: #741763;
+    }
+  }
+}
+
+.stats {
+  margin-top: 40px;
+}
+
+.recentLoans {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    h3 {
+      font-size: 1.5rem;
+      font-family: var(--fontFamilyOne);
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+  }
+  margin-top: 70px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 8px 15px 30px #0000001a;
+  padding: 18px 28px;
+  .table {
+    margin-top: 45px;
+    thead {
+      background-color: #741763;
+      color: #fff;
+    }
+    .loanId {
+      color: #0075d7;
+      font-weight: 600;
+    }
+  }
+  .nullList {
+    text-align: center;
+    width: 100%;
+    padding: 20px 0;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .welcomeGroup {
     display: flex;
     justify-content: space-between;
     align-items: center;
     h2 {
-        font-weight: 700;
+      font-weight: 700;
+      font-size: 2rem;
     }
     p {
-        font-family: var(--fontFamilyOne);
-        font-size: 1.05rem;
+      font-family: var(--fontFamilyOne);
+      font-size: 1.05rem;
     }
     button {
-        background-color: #F6F6F6;
-        border: 1px solid #BDBDBD;
-        border-radius: 5px;
-        padding: 10px 24px;
-        font-family: var(--fontFamilyOne);
-        font-size: 1.2rem;
-        &:focus {
-            outline: none;
-        }
-        .icon {
-            font-size: 1.5rem;
-            margin-right: 20px;
-            color: #741763;
-        }
+      background-color: #f6f6f6;
+      border: 1px solid #bdbdbd;
+      border-radius: 5px;
+      padding: 10px 24px;
+      font-family: var(--fontFamilyOne);
+      font-size: 1.2rem;
+      &:focus {
+        outline: none;
+      }
+      .icon {
+        font-size: 1.5rem;
+        margin-right: 20px;
+        color: #741763;
+      }
     }
-}
+  }
 
-.stats {
+  .stats {
     margin-top: 70px;
-}
+  }
 
-.recentLoans {
+  .recentLoans {
     .header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        h3 {
-            font-size: 1.5rem;
-            font-family: var(--fontFamilyOne);
-            font-weight: 600;
-            margin-bottom: 0;
-        }
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      h3 {
+        font-size: 1.5rem;
+        font-family: var(--fontFamilyOne);
+        font-weight: 600;
+        margin-bottom: 0;
+      }
     }
     margin-top: 70px;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 8px 15px 30px #0000001A;
+    box-shadow: 8px 15px 30px #0000001a;
     padding: 18px 28px;
     .table {
-        margin-top: 45px;
-        thead {
-            background-color: #741763;
-            color: #fff;
-        }
-        .loanId {
-            color: #0075D7;
-            font-weight: 600;
-        }
+      margin-top: 45px;
+      thead {
+        background-color: #741763;
+        color: #fff;
+      }
+      .loanId {
+        color: #0075d7;
+        font-weight: 600;
+      }
     }
     .nullList {
-        text-align: center;
-        width: 100%;
-        padding: 20px 0;
+      text-align: center;
+      width: 100%;
+      padding: 20px 0;
     }
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
 }

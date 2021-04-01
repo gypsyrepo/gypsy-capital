@@ -1,53 +1,120 @@
 .container {
-    text-align: center;
-    h1 {
-        font-weight: 700;
-        font-size: 1.9rem;
-        color: #741763;
-    }
-    h2 {
-        text-align: left;
-        font-weight: 700;
-        color: #741763;
-    }
-    .leadText {
-        font-size: 1.3rem;
-        font-family: 'Source Sans Pro', sans-serif;
-        font-weight: 600;
-        color: #212121;
-    }
+  text-align: center;
+  h1 {
+    font-weight: 700;
+    font-size: 1.7rem;
+    color: #741763;
+  }
+  h2 {
+    text-align: left;
+    font-weight: 700;
+    color: #741763;
+  }
+  .leadText {
+    font-size: 1.1rem;
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: 600;
+    color: #212121;
+  }
 
-    .profileProgress {
-        margin-top: 40px;
-    }
-
+  .profileProgress {
+    margin-top: 40px;
+  }
 }
 
 .stageComplete {
+  width: 550px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 15px;
+  margin-top: 60px;
+  margin-bottom: 70px;
+  padding: 40px 60px;
+  box-shadow: 8px 15px 30px #0000001a;
+  h2 {
+    font-weight: 700;
+    color: #741763;
+    margin-top: 10px;
+    text-align: center;
+  }
+  p {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    font-family: "Source Sans Pro", sans-serif;
+  }
+}
+
+.loadingStyle {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .container {
+    text-align: center;
+    h1 {
+      font-weight: 700;
+      font-size: 1.9rem;
+      color: #741763;
+    }
+    h2 {
+      text-align: left;
+      font-weight: 700;
+      color: #741763;
+    }
+    .leadText {
+      font-size: 1.3rem;
+      font-family: "Source Sans Pro", sans-serif;
+      font-weight: 600;
+      color: #212121;
+    }
+
+    .profileProgress {
+      margin-top: 40px;
+    }
+  }
+
+  .stageComplete {
     width: 550px;
     margin: 0 auto;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border-radius: 15px;
     margin-top: 60px;
     margin-bottom: 70px;
     padding: 40px 60px;
-    box-shadow: 8px 15px 30px #0000001A;
+    box-shadow: 8px 15px 30px #0000001a;
     h2 {
-        font-weight: 700;
-        color: #741763;
-        margin-top: 10px;
-        text-align: center;
+      font-weight: 700;
+      color: #741763;
+      margin-top: 10px;
+      text-align: center;
     }
     p {
-        font-size: 1.1rem;
-        margin-bottom: 5px;
-        font-family: 'Source Sans Pro', sans-serif;
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+      font-family: "Source Sans Pro", sans-serif;
     }
-}
+  }
 
-.loadingStyle {
+  .loadingStyle {
     height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
 }

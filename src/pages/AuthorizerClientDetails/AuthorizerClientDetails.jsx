@@ -33,6 +33,7 @@ const AuthorizerClientDetails = () => {
 
   useEffect(() => {
     getClientDetails(clientId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const navArray = [

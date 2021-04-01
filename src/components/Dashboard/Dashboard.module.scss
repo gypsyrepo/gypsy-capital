@@ -1,147 +1,316 @@
 .container {
-    background-color: #F5F5F5;
-    overflow-x: hidden;
-    .header {
-        height: 80px;
-        border-bottom: .5px solid #DDDDDD;
-        .logoGrid {
-            background-color: #741763;
-            padding-left: 50px;
-            display: flex;
-            align-items: center;
-        }
-        .navGrid {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 50px;
-        }
-        .altNavGrid {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-right: 50px;
-            padding-left: 50px;
-        }
+  background-color: #f5f5f5;
+  overflow-x: hidden;
+  .header {
+    visibility: hidden;
+    height: 0px;
+  }
+  .responsiveHeader {
+    height: 70px;
+    border-bottom: 0.5px solid #dddddd;
+    background-color: #741763;
+    padding: 0 25px;
+    .headerGrid {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    .menuPanel {
-        min-height: calc(100vh - 80px);
-        background-color: #741763;
-        padding-right: 0;
-        position: relative;
-        .menuList {
-            padding-left: 35px;
-            margin-top: 100px;
-            ul {
-                list-style-type: none;
-                padding-inline-start: 0;
-                li {
-                    display: flex;
-                    align-items: center;
-                    padding: 10px 20px;
-                    a {
-                        font-family: 'Source Sans Pro', sans-serif;
-                        color: #fff;
-                        margin-left: 25px;
-                        font-size: 1.1rem;
-                        font-weight: 600;
-                        &:hover {
-                            text-decoration: none;
-                        }
-                    }
-                }
-            }
-            .authGroup {
-                position: absolute;
-                bottom: 30px;
-                li {
-                    cursor: pointer;
-                    font-family: 'Source Sans Pro', sans-serif;
-                    color: #fff;
-                    font-size: 1.1rem;
-                    font-weight: 600;
-                }
-            }
+    .headerCol {
+      display: flex;
+      align-items: center;
+      img {
+        width: 130px;
+      }
+    }
+  }
+  .navOverlay {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 80;
+    background-color: rgba(0, 0, 0, 0.8);
+    &.inactive {
+      display: none;
+    }
+  }
+  .responsiveSideBar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    height: 100vh;
+    z-index: 100;
+    background-color: #fff;
+    width: 250px;
+    transition: 0.5s;
+    &.visible {
+      left: 0;
+    }
+    .menuWrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .footer {
+        height: 60px;
+        padding-left: 28px;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        button {
+          display: flex;
+          align-items: center;
+          border: none;
+          background-color: transparent;
+          font-size: 1.1rem;
+          font-family: "Source Sans Pro", sans-serif;
+          font-weight: 600;
+          color: #f00;
+          :focus {
+            outline: none;
+            border: none;
+          }
         }
+      }
+      ul {
+        padding-inline-start: 0;
+        padding: 54px 28px;
+        li {
+          list-style-type: none;
+          display: flex;
+          align-items: center;
+          a {
+            text-decoration: none;
+            color: rgb(46, 46, 46);
+            font-size: 1.1rem;
+            font-family: "Source Sans Pro", sans-serif;
+            font-weight: 600;
+            margin-bottom: 0;
+            margin-left: 18px;
+          }
+        }
+      }
     }
-    .mainPanel {
-        padding-left: 0;
-    }
-}
-
-.activeMenu {
-    background-color: #F5F5F5;
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-}
-
-a.activeLink {
-    color: #741763 !important;
+  }
+  .menuPanel {
+    display: none;
+  }
 }
 
 .mainContent {
-    padding: 40px 50px;
-    max-height: calc(100vh - 80px);
-    overflow-y: scroll;
-}
-
-.searchBar {
-    position: relative;
-    .searchTerm {
-        border: 0.5px solid rgba(0, 0, 0, 0.2);
-        width: 450px;
-        border-radius: 5px;
-        padding: 9px 60px;
-        font-family: 'Source Sans Pro', sans-serif;
-        font-size: 1.05rem;
-        &:focus {
-            outline: none;
-        }
-    }
-    .searchIcon {
-        position: absolute;
-        left: 25px;
-        font-size: 1rem;
-        color: #741763;
-        top: calc(50% - 0.5rem);
-    }
+  margin: 0 auto;
+  padding: 35px 20px 70px;
+  max-height: calc(100vh - 70px);
+  overflow-y: scroll;
 }
 
 .profileGroup {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .profileAvi {
+  display: flex;
+  align-items: center;
+  img {
+    width: 54px;
+    height: 54px;
+    border-radius: 100%;
+  }
+  .avatarWrapper {
+    width: 54px;
+    height: 54px;
+    border-radius: 100%;
+    background-color: #dddddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  p {
+    font-family: "Source Sans Pro", sans-serif;
+    &:first-child {
+      margin-bottom: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+    &:last-child {
+      margin-bottom: 0;
+      font-size: 0.95rem;
+    }
+  }
+  .userInfo {
+    margin-left: 20px;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .container {
+    background-color: #f5f5f5;
+    overflow-x: hidden;
+    .responsiveHeader {
+      display: none;
+    }
+    .header {
+      visibility: visible;
+      height: 80px;
+      border-bottom: 0.5px solid #dddddd;
+      .logoGrid {
+        background-color: #741763;
+        padding-left: 50px;
+        display: flex;
+        align-items: center;
+        img {
+          width: 150px;
+        }
+      }
+      .navGrid {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 50px;
+      }
+      .altNavGrid {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 50px;
+        padding-left: 50px;
+      }
+    }
+    .menuPanel {
+      display: block;
+      min-height: calc(100vh - 80px);
+      background-color: #741763;
+      padding-right: 0;
+      position: relative;
+      .menuList {
+        padding-left: 35px;
+        margin-top: 100px;
+        ul {
+          list-style-type: none;
+          padding-inline-start: 0;
+          li {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            a {
+              font-family: "Source Sans Pro", sans-serif;
+              color: #fff;
+              margin-left: 25px;
+              font-size: 1.1rem;
+              font-weight: 600;
+              &:hover {
+                text-decoration: none;
+              }
+            }
+          }
+        }
+        .authGroup {
+          position: absolute;
+          bottom: 30px;
+          li {
+            cursor: pointer;
+            font-family: "Source Sans Pro", sans-serif;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+    .mainPanel {
+      padding-left: 0;
+    }
+  }
+
+  .activeMenu {
+    background-color: #f5f5f5;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+
+  a.activeLink {
+    color: #741763 !important;
+  }
+
+  .mainContent {
+    padding: 40px 50px;
+    max-height: calc(100vh - 80px);
+    overflow-y: scroll;
+  }
+
+  .searchBar {
+    position: relative;
+    .searchTerm {
+      border: 0.5px solid rgba(0, 0, 0, 0.2);
+      width: 450px;
+      border-radius: 5px;
+      padding: 9px 60px;
+      font-family: "Source Sans Pro", sans-serif;
+      font-size: 1.05rem;
+      &:focus {
+        outline: none;
+      }
+    }
+    .searchIcon {
+      position: absolute;
+      left: 25px;
+      font-size: 1rem;
+      color: #741763;
+      top: calc(50% - 0.5rem);
+    }
+  }
+
+  .profileGroup {
+    display: flex;
+    align-items: center;
+  }
+
+  .profileAvi {
     display: flex;
     align-items: center;
     img {
-        width: 54px;
-        height: 54px;
-        border-radius: 100%;
+      width: 54px;
+      height: 54px;
+      border-radius: 100%;
     }
     .avatarWrapper {
-        width: 54px;
-        height: 54px;
-        border-radius: 100%;
-        background-color: #DDDDDD; 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 100%;
+      background-color: #dddddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     p {
-        font-family: 'Source Sans Pro', sans-serif;
-        &:first-child {
-            margin-bottom: 0;
-            font-size: 1.05rem;
-            font-weight: 600;
-        }
-        &:last-child {
-            margin-bottom: 0;
-            font-size: 0.95rem;
-        }
+      font-family: "Source Sans Pro", sans-serif;
+      &:first-child {
+        margin-bottom: 0;
+        font-size: 1.05rem;
+        font-weight: 600;
+      }
+      &:last-child {
+        margin-bottom: 0;
+        font-size: 0.95rem;
+      }
     }
     .userInfo {
-        margin-left: 20px;
+      margin-left: 20px;
     }
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
 }
