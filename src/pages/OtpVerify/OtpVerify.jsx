@@ -4,7 +4,7 @@ import Logo from '../../assets/logo.png';
 import { Row, Col } from 'react-bootstrap';
 import InputField from '../../components/InputField/InputField';
 import Button from '../../components/Button/Button';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -12,6 +12,8 @@ const OtpVerify = () => {
 
   const [otp, setOtp] = useState('');
   const [validationErr, setValidationErr] = useState(null);
+
+  const location = useLocation();
 
   const { 
       state: { error, loading, message, user }, 
@@ -23,6 +25,7 @@ const OtpVerify = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
+    console.log(location);
     resetInactiveUserStatus();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -32,6 +35,7 @@ const OtpVerify = () => {
       toast.error(error);
       clearErrors();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error])
 
   useEffect(() => {
@@ -44,7 +48,11 @@ const OtpVerify = () => {
     if(!otp) {
       setValidationErr('You need to enter your otp to verify your account')
     } else {
-      verifyOtp(otp, user.email, getActiveUser);
+      if(location?.state?.userEmail) {
+        verifyOtp(otp, location.state.userEmail, getActiveUser);
+      } else {
+        verifyOtp(otp, user.email, getActiveUser);
+      }
     }
   }
 

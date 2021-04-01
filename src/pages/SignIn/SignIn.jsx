@@ -19,7 +19,8 @@ const SignIn = () => {
   const { 
       state: { loading, error, redirectInactiveUser }, 
       loginUser, 
-      clearErrors 
+      clearErrors, 
+      resendOtp
   } = useContext(AuthContext);
 
   useEffect(() => {
@@ -27,6 +28,7 @@ const SignIn = () => {
       toast.error(error);
       clearErrors();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error])
 
   const [signinValues, setSigninValues] = useState({
@@ -52,8 +54,12 @@ const SignIn = () => {
 
   useEffect(() => {
     if(redirectInactiveUser) {
-      history.push('/verify-otp')
+      (async() => {
+        await resendOtp(signinValues.email);
+        history.push(pageUrl.VERIFY_OTP_PAGE, { userEmail: signinValues.email });
+      })();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [redirectInactiveUser])
 
   return (
