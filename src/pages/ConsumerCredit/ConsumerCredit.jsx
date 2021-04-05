@@ -6,7 +6,7 @@ import { Table } from "react-bootstrap";
 import noLoan from "../../assets/no-loan.png";
 import { Row, Col, Modal } from "react-bootstrap";
 import { FaCheckCircle } from "react-icons/fa";
-import { TiCancelOutline } from 'react-icons/ti';
+import { TiCancelOutline } from "react-icons/ti";
 import LoanCalculatorForm from "../../components/LoanCalculatorForm/LoanCalculatorForm";
 import LoanContactForm from "../../components/LoanContactForm/LoanContactForm";
 import EmployerInfoForm from "../../components/EmployerInfoForm/EmployerInfoForm";
@@ -51,6 +51,7 @@ const ConsumerCredit = () => {
 
   useEffect(() => {
     retrieveClientLoans();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -58,6 +59,7 @@ const ConsumerCredit = () => {
       toast.error(error);
       clearError();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
   const numberWithCommas = (x) => {
@@ -157,7 +159,11 @@ const ConsumerCredit = () => {
                 <div className={styles.noLoanMessage}>
                   <p>Sorry you currently have no loan</p>
                   <img src={noLoan} alt="No loan history" height="250" />
-                  <TiCancelOutline className={styles.mobileNoLoan} size="6em" color="rgba(116, 23, 99, 0.6)" />
+                  <TiCancelOutline
+                    className={styles.mobileNoLoan}
+                    size="6em"
+                    color="rgba(116, 23, 99, 0.6)"
+                  />
                 </div>
               )}
             </div>

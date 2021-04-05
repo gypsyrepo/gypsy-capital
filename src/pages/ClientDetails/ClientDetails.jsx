@@ -580,7 +580,7 @@ export const ClientLoan = ({ userId, canApply, userRole }) => {
         </Button>
       )}
       <div className={styles.tableCard}>
-        <Table className={styles.table}>
+        <Table striped className={styles.table}>
           <thead>
             <tr>
               <th>Loan ID</th>

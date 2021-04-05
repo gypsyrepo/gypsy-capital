@@ -12,6 +12,8 @@ import {
   stripCommasInNumber,
 } from "../../utils/convertInputType";
 import ScrollToTopOnMount from "../../components/ScrollToTopOnMount/ScrollToTopOnMount";
+import { toast, ToastContainer } from "react-toastify";
+import pageUrl from "../../routes/pageUrl";
 
 const LoanCalculator = () => {
   const [loanData, setLoanData] = useState({
@@ -40,6 +42,7 @@ const LoanCalculator = () => {
     if (location.state) {
       setLoanData({ ...loanData, proposedAmount: location.state.loanAmount });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   const { proposedAmount, proposedDuration, monthlyIncome } = loanData;
@@ -66,16 +69,33 @@ const LoanCalculator = () => {
         proposedMonthyRepayment: numberWithCommas(Math.floor(monthlyRepay)),
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [proposedAmount, proposedDuration, monthlyIncome]);
 
   const handleSubmit = () => {
     const validated = validateInput(loanData, setInputError);
-    console.log(validated);
-    console.log(loanData);
+    if (validated) {
+      if (100000 > stripCommasInNumber(loanData.proposedAmount)) {
+        toast.error(
+          "The minimum amount of loan that we offer starts at N100,000"
+        );
+      } else if (loanData.employmentStatus === "unemployed") {
+        toast.error(
+          "At the moment, our loan facilities are only available for employed individuals"
+        );
+      } else if (limitError) {
+        toast.error(
+          "You are not eligible for this amount, kindly enter a lower loan amount"
+        );
+      } else {
+        history.push(pageUrl.SIGNIN_PAGE);
+      }
+    }
   };
 
   return (
     <>
+      <ToastContainer position="top-center" />
       <ScrollToTopOnMount />
       <NavBar location={url} history={history} />
       <div className={styles.mainSection}>
