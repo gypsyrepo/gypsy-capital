@@ -20,6 +20,7 @@ const ClientListPage = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
+  // eslint-disable-next-line no-unused-vars
   const [pageNumberLimit, setpageNumberLimit] = useState(3);
   const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(3);
   const [minPageNumberLimit, setminPageNumberLimit] = useState(0);

@@ -42,6 +42,7 @@ const AuthorizerOverview = () => {
   useEffect(() => {
     getClientListForRole();
     retrieveClientLoans();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const totalDisbursedLoans = useMemo(() => {

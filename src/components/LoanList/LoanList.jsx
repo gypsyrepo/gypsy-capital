@@ -12,6 +12,7 @@ import _ from "lodash";
 const LoanList = ({ loanList, userRole }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
+  // eslint-disable-next-line no-unused-vars
   const [pageNumberLimit, setpageNumberLimit] = useState(3);
   const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(3);
   const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
@@ -114,7 +115,7 @@ const LoanList = ({ loanList, userRole }) => {
             </thead>
             {currentList && currentList.length > 0 ? (
               <tbody>
-                {currentList.map((loan, idx) => (
+                {currentList.map((loan) => (
                   <tr>
                     <td className={styles.loanId}>
                       <Link to={`/${detailRoutePrefix}/loan/${loan._id}`}>
