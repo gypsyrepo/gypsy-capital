@@ -101,7 +101,7 @@
 .mainContent {
   margin: 0 auto;
   padding: 35px 20px 70px;
-  max-height: calc(100vh - 70px);
+  min-height: calc(100vh - 70px);
   overflow-y: scroll;
 }
 
