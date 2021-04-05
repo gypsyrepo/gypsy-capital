@@ -146,7 +146,7 @@ export const RepayPlusApprove = ({
     bank: null,
     accountNumber: null,
     decisionReason: null,
-    approvedInterest: null
+    approvedInterest: null,
   });
 
   const [repaymentError, setRepaymentError] = useState({
@@ -175,14 +175,11 @@ export const RepayPlusApprove = ({
     const savedLoanData = JSON.parse(sessionStorage.getItem(`gypsy-${loanId}`));
 
     if (sessionStorage.getItem(`gypsy-${loanId}`)) {
-
       let repayDate;
-      if(savedLoanData?.repaymentStartDate) {
-        console.log('works')
-        repayDate = moment(savedLoanData?.repaymentStartDate).toDate()
+      if (savedLoanData?.repaymentStartDate) {
+        repayDate = moment(savedLoanData?.repaymentStartDate).toDate();
       } else {
-        console.log('works 2')
-        repayDate = null
+        repayDate = null;
       }
       setSetupData({
         ...setupData,
@@ -198,41 +195,53 @@ export const RepayPlusApprove = ({
         bank: savedLoanData?.bank,
         accountNumber: savedLoanData?.accountNumber,
         decisionReason: savedLoanData?.decisionReason,
-        approvedInterest: savedLoanData?.approvedInterest
+        approvedInterest: savedLoanData?.approvedInterest,
       });
     } else {
-
       let repayDate;
 
-      if(loanData?.determinedRepaymentDate) {
-        console.log('works')
-        repayDate = moment(loanData?.determinedRepaymentDate, "DD/MM/YYYY").toDate()
+      if (loanData?.determinedRepaymentDate) {
+        console.log("works");
+        repayDate = moment(
+          loanData?.determinedRepaymentDate,
+          "DD/MM/YYYY"
+        ).toDate();
       } else {
-        console.log('works 2')
-        repayDate = null
+        console.log("works 2");
+        repayDate = null;
       }
 
       setSetupData({
         ...setupData,
         decision: loanData[`${mappedRole}Decision`],
-        approvedPayDay: loanData.processorDecision || loanData.adminDecision ? loanData?.payDay : "",
+        approvedPayDay:
+          loanData.processorDecision || loanData.adminDecision
+            ? loanData?.payDay
+            : "",
         repaymentStartDate: repayDate,
-        approvedLoanAmount: loanData.processorDecision || loanData.adminDecision ? numberWithCommas(loanData?.approvedAmount) : "",
+        approvedLoanAmount:
+          loanData.processorDecision || loanData.adminDecision
+            ? numberWithCommas(loanData?.approvedAmount)
+            : "",
         approvedTenure: loanData?.approvedTenure,
         approvedDti: loanData?.Dti || 33,
-        approvedMonthlyRepayment: loanData?.rePaymentAPI ? numberWithCommas(loanData?.monthlyRepayment) : "",
+        approvedMonthlyRepayment: loanData?.rePaymentAPI
+          ? numberWithCommas(loanData?.monthlyRepayment)
+          : "",
         totalRepayment: numberWithCommas(loanData?.calculatedPayBack),
         repaymentApi: loanData?.rePaymentAPI,
         bank: "",
         accountNumber: "",
         decisionReason: loanData[`${mappedRole}DecisionReason`] || "",
-        approvedInterest: loanData?.approvedInterest || ""
-      })
+        approvedInterest: loanData?.approvedInterest || "",
+      });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     sessionStorage.setItem(`gypsy-${loanId}`, JSON.stringify(setupData));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setupData]);
 
   useEffect(() => {
@@ -240,6 +249,7 @@ export const RepayPlusApprove = ({
       toast.success("Repayment has been successfully setup for this loan!");
       resetRepaymentStatus();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [repaymentStatus]);
 
   useEffect(() => {
@@ -253,6 +263,7 @@ export const RepayPlusApprove = ({
       );
       resetApprovalStatus();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [approvedStatus]);
 
   useEffect(() => {
@@ -260,6 +271,7 @@ export const RepayPlusApprove = ({
       toast.error(error);
       clearError();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
   useEffect(() => {
@@ -267,6 +279,7 @@ export const RepayPlusApprove = ({
       toast.error(approvalError);
       clearApprovalError();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [approvalError]);
 
   useEffect(() => {
@@ -296,6 +309,7 @@ export const RepayPlusApprove = ({
         totalRepayment: numberWithCommas(totalRepay),
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     approvedInterest,
     approvedLoanAmount,
@@ -401,7 +415,7 @@ export const RepayPlusApprove = ({
   if (!setupData) {
     return null;
   }
-  
+
   return (
     <>
       <ToastContainer position="top-center" />
@@ -738,6 +752,7 @@ const ProcessorLoanDetails = () => {
 
   useEffect(() => {
     retrieveLoan(loanId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   console.log(loanDetails);

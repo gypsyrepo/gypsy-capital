@@ -213,9 +213,9 @@ export const RepaymentSchedule = ({ data, userRole, loanId }) => {
     verifyRepaymentStatus(loanId);
 
     return () => {
-      console.log("unmounted");
       clearError();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -251,8 +251,8 @@ export const RepaymentSchedule = ({ data, userRole, loanId }) => {
 
   console.log(repaymentArr);
 
-  if(loading) {
-    return <Loader />
+  if (loading) {
+    return <Loader />;
   }
 
   return (
@@ -327,6 +327,7 @@ const LoanDetail = () => {
 
   useEffect(() => {
     retrieveLoan(loanId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const navArray = [
