@@ -43,6 +43,7 @@ const SignUp = () => {
       toast.error(error);
       clearErrors();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
   const referralOptions = [
@@ -59,6 +60,7 @@ const SignUp = () => {
   ];
 
   const validateInput = () => {
+    // eslint-disable-next-line no-useless-escape
     const validMail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     let validPhoneNumber = /^[0]\d{10}$/;
@@ -100,8 +102,8 @@ const SignUp = () => {
     const validated = validateInput();
     const signUpData = {
       email: signUpValues.email,
-      firstName: signUpValues.firstName,
-      lastName: signUpValues.lastName,
+      firstName: signUpValues.firstName.trim(),
+      lastName: signUpValues.lastName.trim(),
       phoneNumber: signUpValues.mobileNumber.replace("0", "234"),
       password: signUpValues.password,
       hearAboutUs: signUpValues.referralChoice,
