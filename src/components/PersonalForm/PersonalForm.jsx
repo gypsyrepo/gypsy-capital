@@ -29,6 +29,7 @@ const PersonalForm = ({ submit }) => {
       await getClientDetails(user.user_id);
       await getBankList();
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const bankNames = useMemo(() => {
@@ -99,6 +100,7 @@ const PersonalForm = ({ submit }) => {
       console.log(bankCode);
       verifyBankInfo(bankInfo.accountNumber, bankCode);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bankInfo.accountNumber, bankInfo.bankName]);
 
   useEffect(() => {
@@ -106,6 +108,7 @@ const PersonalForm = ({ submit }) => {
     if (userBankDetails) {
       setBankInfo({ ...bankInfo, accountName: userBankDetails.account_name });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userBankDetails]);
 
   const handleSubmit = () => {
@@ -138,6 +141,7 @@ const PersonalForm = ({ submit }) => {
         bvnPhoneNo: bioData.bvnPhoneNumber,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, userDetails]);
 
   if (!userDetails) {
@@ -153,7 +157,7 @@ const PersonalForm = ({ submit }) => {
       <div className={styles.biodata}>
         <h3>Biodata Information</h3>
         <Row className="mb-4">
-          <Col>
+          <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField
               label="Full name"
               type="text"
@@ -166,7 +170,7 @@ const PersonalForm = ({ submit }) => {
               error={biodataErrors.fullName && biodataErrors.fullName}
             />
           </Col>
-          <Col>
+          <Col sm={12} md={6}>
             <InputField
               label="Date of Birth"
               type="text"
@@ -181,7 +185,7 @@ const PersonalForm = ({ submit }) => {
           </Col>
         </Row>
         <Row className="mb-4">
-          <Col>
+          <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField
               label="BVN-linked Phone Number"
               type="text"
@@ -194,7 +198,7 @@ const PersonalForm = ({ submit }) => {
               error={biodataErrors.bvnPhoneNo && biodataErrors.bvnPhoneNo}
             />
           </Col>
-          <Col>
+          <Col sm={12} md={6}>
             <InputField
               label="Email"
               type="email"
@@ -209,7 +213,7 @@ const PersonalForm = ({ submit }) => {
           </Col>
         </Row>
         <Row className="mb-4">
-          <Col>
+          <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField
               label="Phone Number"
               type="text"
@@ -222,7 +226,7 @@ const PersonalForm = ({ submit }) => {
               error={biodataErrors.phoneNo && biodataErrors.phoneNo}
             />
           </Col>
-          <Col>
+          <Col sm={12} md={6}>
             <InputField
               label="Alternative Phone Number"
               type="text"
@@ -271,7 +275,7 @@ const PersonalForm = ({ submit }) => {
           </Col>
         </Row>
         <Row>
-          <Col>
+          <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField
               label="City"
               type="text"
@@ -284,7 +288,7 @@ const PersonalForm = ({ submit }) => {
               error={residentialErrors.city && residentialErrors.city}
             />
           </Col>
-          <Col>
+          <Col sm={12} md={6}>
             <InputField
               label="State"
               type="select"
@@ -303,7 +307,7 @@ const PersonalForm = ({ submit }) => {
       <div className={styles.kinInfo}>
         <h3>Next of Kin Information</h3>
         <Row className="mb-4">
-          <Col>
+          <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField
               label="Full name"
               type="text"
@@ -316,7 +320,7 @@ const PersonalForm = ({ submit }) => {
               error={kinErrors.fullName && kinErrors.fullName}
             />
           </Col>
-          <Col>
+          <Col sm={12} md={6}>
             <InputField
               label="Relationship"
               type="text"
@@ -331,7 +335,7 @@ const PersonalForm = ({ submit }) => {
           </Col>
         </Row>
         <Row className="mb-4">
-          <Col>
+          <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField
               label="Email Address"
               type="email"
@@ -344,7 +348,7 @@ const PersonalForm = ({ submit }) => {
               error={kinErrors.email && kinErrors.email}
             />
           </Col>
-          <Col>
+          <Col sm={12} md={6}>
             <InputField
               label="Phone Number"
               type="text"
@@ -382,7 +386,7 @@ const PersonalForm = ({ submit }) => {
           proceeds or loan requests to.
         </p>
         <Row className="mb-4">
-          <Col>
+          <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField
               type="select"
               label="Bank"
@@ -396,7 +400,7 @@ const PersonalForm = ({ submit }) => {
               error={bankInfoErrors.bankName && bankInfoErrors.bankName}
             />
           </Col>
-          <Col>
+          <Col sm={12} md={6}>
             <InputField
               label="Account Type"
               type="select"
@@ -412,7 +416,7 @@ const PersonalForm = ({ submit }) => {
           </Col>
         </Row>
         <Row className="mb-4">
-          <Col>
+          <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField
               type="text"
               label="Account Number"
@@ -427,7 +431,7 @@ const PersonalForm = ({ submit }) => {
               }
             />
           </Col>
-          <Col>
+          <Col sm={12} md={6}>
             {!bankLoading ? (
               <InputField
                 label="Account Name"

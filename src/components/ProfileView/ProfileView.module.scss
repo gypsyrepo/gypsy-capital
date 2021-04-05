@@ -9,12 +9,16 @@
   border-radius: 15px;
   background-color: #fff;
   box-shadow: 8px 15px 30px #0000001a;
-  margin-top: 80px;
+  margin-top: 50px;
   .borderStyle {
     border-right: 1px solid #707070;
   }
   .tabMenu {
     cursor: pointer;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .tabCol {
     &:nth-child(1) {
@@ -44,26 +48,27 @@
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     p {
-      padding: 18px 0px;
+      padding: 14px 0px;
       color: #606060;
       font-family: "Source Sans Pro", sans-serif;
       font-weight: 600;
-      font-size: 1.2rem;
+      font-size: 1rem;
       margin-bottom: 0;
     }
   }
   .body {
-    padding: 50px 80px;
+    padding: 40px 30px;
     h2 {
       margin-bottom: 40px;
       text-align: center;
+      font-size: 1.7rem;
     }
     .security {
-      padding: 0 140px;
+      padding: 0;
     }
     .profilePictureSection {
-      width: 170px;
-      height: 170px;
+      width: 130px;
+      height: 130px;
       margin: 0 auto;
       background-color: #f5f5f5;
       border-radius: 100%;
@@ -95,11 +100,11 @@
         display: flex;
         justify-content: center;
         button {
-          margin: 0 30px;
+          margin: 0 10px;
           color: #a02089;
           font-family: var(--fontFamilyOne);
           font-weight: 600;
-          padding: 10px 35px;
+          padding: 8px 18px;
           border-radius: 10px;
           border: 1px solid #606060;
           display: flex;
@@ -118,15 +123,15 @@
           }
         }
         .icon {
-          font-size: 2rem;
-          margin-right: 25px;
+          font-size: 1.6rem;
+          margin-right: 18px;
         }
       }
       .content {
         min-height: 200px;
         .addCard {
-          width: 450px;
-          height: 220px;
+          width: 100%;
+          height: 150px;
           border: 1px dashed #707070;
           border-radius: 15px;
           margin: 0 auto;
@@ -138,22 +143,21 @@
             p {
               font-family: var(--fontFamilyOne);
               font-weight: 600;
-              font-size: 1.3rem;
+              font-size: 1.2rem;
             }
           }
         }
         .monoLink {
-          width: 450px;
+          width: 100%;
           height: 220px;
-          border: 1px solid #707070;
-          border-radius: 15px;
           margin: 0 auto;
-          margin-top: 50px;
+          margin-top: 30px;
           display: flex;
           align-items: center;
           justify-content: center;
           h4 {
-            width: 80%;
+            font-size: 1.4rem;
+            width: 100%;
             font-family: var(--fontFamilyOne);
             font-weight: 600;
             margin: 0 auto;
@@ -163,4 +167,90 @@
       }
     }
   }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .profileBox {
+    margin-top: 80px;
+    .header {
+      p {
+        padding: 18px 0px;
+        font-size: 1.2rem;
+      }
+    }
+    .body {
+      padding: 50px 80px;
+      h2 {
+        font-size: 2rem;
+      }
+      .security {
+        padding: 0 80px;
+      }
+      .profilePictureSection {
+        width: 170px;
+        height: 170px;
+      }
+      .payment {
+        .btnGroup {
+          button {
+            margin: 0 30px;
+            padding: 10px 35px;
+            font-size: 1.1rem;
+          }
+          .icon {
+            font-size: 2rem;
+            margin-right: 25px;
+          }
+        }
+        .content {
+          min-height: 200px;
+          .addCard {
+            max-width: 450px;
+            height: 220px;
+            margin-top: 50px;
+            .cardInner {
+              p {
+                font-size: 1.3rem;
+              }
+            }
+          }
+          .monoLink {
+            width: 450px;
+            height: 220px;
+            border: 1px solid #707070;
+            border-radius: 15px;
+            margin: 0 auto;
+            margin-top: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            h4 {
+              font-size: 1.55rem;
+              width: 80%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .profileBox {
+    .body {
+      .security {
+        padding: 0 140px;
+      }
+    }
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
 }

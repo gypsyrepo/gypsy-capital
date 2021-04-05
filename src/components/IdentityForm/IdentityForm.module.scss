@@ -1,13 +1,14 @@
 .identityForm {
-  width: 550px;
+  width: 100%;
   margin: 0 auto;
   background-color: #ffffff;
   border-radius: 15px;
   margin-top: 60px;
   margin-bottom: 70px;
-  padding: 40px 60px;
+  padding: 30px;
   box-shadow: 8px 15px 30px #0000001a;
   h3 {
+    font-size: 1.65rem;
     font-weight: 600;
     font-family: "Source Sans Pro", sans-serif;
   }
@@ -17,7 +18,7 @@
     font-family: "Source Sans Pro", sans-serif;
   }
   .passportVerify {
-    margin-top: 25px;
+    margin-top: 35px;
   }
   .passportImg {
     font-family: "Source Sans Pro", sans-serif;
@@ -39,38 +40,12 @@
 @media only screen and (min-width: 600px) {
   .identityForm {
     width: 550px;
-    margin: 0 auto;
-    background-color: #ffffff;
-    border-radius: 15px;
-    margin-top: 60px;
-    margin-bottom: 70px;
     padding: 40px 60px;
-    box-shadow: 8px 15px 30px #0000001a;
     h3 {
-      font-weight: 600;
-      font-family: "Source Sans Pro", sans-serif;
-    }
-    .validID {
-      font-size: 0.85rem;
-      margin-bottom: 25px;
-      font-family: "Source Sans Pro", sans-serif;
+      font-size: 1.75rem;
     }
     .passportVerify {
       margin-top: 25px;
-    }
-    .passportImg {
-      font-family: "Source Sans Pro", sans-serif;
-      font-size: 0.85rem;
-    }
-    .extraTip {
-      font-size: 0.8rem;
-      font-family: "Source Sans Pro", sans-serif;
-      margin-top: 10px;
-      margin-bottom: 0;
-      span {
-        font-weight: 600;
-        color: #741763;
-      }
     }
   }
 }
