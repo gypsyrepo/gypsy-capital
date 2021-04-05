@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useMemo } from "react";
 import Dashboard from "../../components/Dashboard/Dashboard";
 import styles from "./LoanList.module.scss";
 import { useLocation, Link } from "react-router-dom";
@@ -26,17 +26,46 @@ const LoanList = () => {
 
   const location = useLocation();
   const salesRoutes = routes[1];
-  const [filterInput, setFilterInput] = useState("");
+  const [filterInput, setFilterInput] = useState("all");
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
+  const [pageNumberLimit, setpageNumberLimit] = useState(3);
+  const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(3);
+  const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
 
-  const { currentList, items, goToPrevPage, goToNextPage } = usePagination(
+  const filteredList = useMemo(() => {
+    if (filterInput === "all") {
+      return loans;
+    } else if (filterInput === "active loans") {
+      return loans.filter((loanInstance) => loanInstance.status === "approved");
+    } else if (filterInput === "pending loans") {
+      return loans.filter((loanInstance) => loanInstance.status === "pending");
+    } else if (filterInput === "declined loans") {
+      return loans.filter((loanInstance) => loanInstance.status === "declined");
+    } else if (filterInput === "expired loans") {
+      return loans.filter((loanInstance) => loanInstance.status === "expired");
+    }
+  }, [loans, filterInput]);
+
+  const {
+    currentList,
+    items,
+    goToPrevPage,
+    goToNextPage,
+    incrementBtn,
+    decrementBtn,
+  } = usePagination(
     currentPage,
     postsPerPage,
-    loans,
+    filteredList,
     setCurrentPage,
-    styles
+    styles,
+    maxPageNumberLimit,
+    minPageNumberLimit,
+    setmaxPageNumberLimit,
+    setminPageNumberLimit,
+    pageNumberLimit
   );
 
   return (
@@ -56,6 +85,7 @@ const LoanList = () => {
             <InputField
               type="select"
               options={[
+                "All",
                 "Active Loans",
                 "Pending Loans",
                 "Declined Loans",
@@ -129,7 +159,9 @@ const LoanList = () => {
                 </div>
                 <Pagination className={styles.pagination}>
                   <Pagination.Prev onClick={goToPrevPage} />
+                  {decrementBtn}
                   {items}
+                  {incrementBtn}
                   <Pagination.Next onClick={goToNextPage} />
                 </Pagination>
               </div>

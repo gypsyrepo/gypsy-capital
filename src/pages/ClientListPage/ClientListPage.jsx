@@ -20,6 +20,9 @@ const ClientListPage = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
+  const [pageNumberLimit, setpageNumberLimit] = useState(3);
+  const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(3);
+  const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
 
   const {
@@ -48,12 +51,24 @@ const ClientListPage = () => {
 
   console.log(salesClients);
 
-  const { currentList, items, goToNextPage, goToPrevPage } = usePagination(
+  const {
+    currentList,
+    items,
+    goToNextPage,
+    goToPrevPage,
+    incrementBtn,
+    decrementBtn,
+  } = usePagination(
     currentPage,
     postsPerPage,
     salesClients,
     setCurrentPage,
-    styles
+    styles,
+    maxPageNumberLimit,
+    minPageNumberLimit,
+    setmaxPageNumberLimit,
+    setminPageNumberLimit,
+    pageNumberLimit
   );
 
   const onboardStart = () => {
@@ -139,7 +154,9 @@ const ClientListPage = () => {
                 </div>
                 <Pagination className={styles.pagination}>
                   <Pagination.Prev onClick={goToPrevPage} />
+                  {decrementBtn}
                   {items}
+                  {incrementBtn}
                   <Pagination.Next onClick={goToNextPage} />
                 </Pagination>
               </div>
