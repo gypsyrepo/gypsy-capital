@@ -531,6 +531,10 @@ export const ClientLoan = ({ userId, canApply, userRole }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
+  // eslint-disable-next-line no-unused-vars
+  const [pageNumberLimit, setpageNumberLimit] = useState(3);
+  const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(3);
+  const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
 
   const closeModal = () => {
     setModalOpen(false);
@@ -554,12 +558,24 @@ export const ClientLoan = ({ userId, canApply, userRole }) => {
     console.log(loans);
   }, [loans]);
 
-  const { currentList, items, goToNextPage, goToPrevPage } = usePagination(
+  const {
+    currentList,
+    items,
+    goToNextPage,
+    goToPrevPage,
+    incrementBtn,
+    decrementBtn,
+  } = usePagination(
     currentPage,
     postsPerPage,
     clientLoans,
     setCurrentPage,
-    styles
+    styles,
+    maxPageNumberLimit,
+    minPageNumberLimit,
+    setmaxPageNumberLimit,
+    setminPageNumberLimit,
+    pageNumberLimit
   );
 
   const startApply = () => {
@@ -580,7 +596,7 @@ export const ClientLoan = ({ userId, canApply, userRole }) => {
         </Button>
       )}
       <div className={styles.tableCard}>
-        <Table className={styles.table}>
+        <Table striped className={styles.table}>
           <thead>
             <tr>
               <th>Loan ID</th>
@@ -639,7 +655,9 @@ export const ClientLoan = ({ userId, canApply, userRole }) => {
             </div>
             <Pagination className={styles.pagination}>
               <Pagination.Prev onClick={goToPrevPage} />
+              {decrementBtn}
               {items}
+              {incrementBtn}
               <Pagination.Next onClick={goToNextPage} />
             </Pagination>
           </div>

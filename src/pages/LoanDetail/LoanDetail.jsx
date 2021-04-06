@@ -24,7 +24,10 @@ export const BasicInfo = ({ data, userRole }) => {
     applicationDate: "",
     monthlySalary: "",
     dti: "",
+    loanPurpose: "",
   });
+
+  console.log(data);
 
   useEffect(() => {
     if (data) {
@@ -44,8 +47,10 @@ export const BasicInfo = ({ data, userRole }) => {
         applicationDate: moment(data.createdAt).format("lll"),
         monthlySalary: `N${numberWithCommas(data.monthlySalary)}`,
         dti: `${data?.DTI || "33"}%`,
+        loanPurpose: _.startCase(data.loanPurpose),
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const detailRoutePrefix = useMemo(() => {
@@ -109,9 +114,13 @@ export const BasicInfo = ({ data, userRole }) => {
         </Col>
       </Row>
       <Row className="mb-5">
-        <Col>
+        <Col md={4}>
           <h6>DTI</h6>
           <h4>{basicInfo.dti}</h4>
+        </Col>
+        <Col md={4}>
+          <h6>Loan Purpose</h6>
+          <h4>{basicInfo.loanPurpose}</h4>
         </Col>
       </Row>
     </div>
@@ -213,9 +222,9 @@ export const RepaymentSchedule = ({ data, userRole, loanId }) => {
     verifyRepaymentStatus(loanId);
 
     return () => {
-      console.log("unmounted");
       clearError();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -251,8 +260,8 @@ export const RepaymentSchedule = ({ data, userRole, loanId }) => {
 
   console.log(repaymentArr);
 
-  if(loading) {
-    return <Loader />
+  if (loading) {
+    return <Loader />;
   }
 
   return (
@@ -278,7 +287,7 @@ export const RepaymentSchedule = ({ data, userRole, loanId }) => {
         </div>
       ) : null}
       <div className={styles.repayment}>
-        <Table>
+        <Table striped>
           <thead>
             <tr>
               <th>Months</th>
@@ -296,7 +305,7 @@ export const RepaymentSchedule = ({ data, userRole, loanId }) => {
                     {track?.dueDate ||
                       moment(track?.scheduledDate).format("lll")}
                   </td>
-                  <td>{track?.status || "false"}</td>
+                  <td>{track.status ? "true" : "false"}</td>
                   <td>
                     {track?.overdueAmount ||
                       `N ${numberWithCommas(track?.scheduledAmount)}`}
@@ -327,6 +336,7 @@ const LoanDetail = () => {
 
   useEffect(() => {
     retrieveLoan(loanId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const navArray = [

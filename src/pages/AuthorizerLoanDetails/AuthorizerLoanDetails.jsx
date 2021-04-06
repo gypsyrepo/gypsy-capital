@@ -45,6 +45,7 @@ const Disbursal = ({ loanId, disburseBank, loanData }) => {
     (async () => {
       await getBankList();
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -56,6 +57,7 @@ const Disbursal = ({ loanId, disburseBank, loanData }) => {
         amount: numberWithCommas(loanData.approvedAmount),
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disburseBank]);
 
   useEffect(() => {
@@ -63,6 +65,7 @@ const Disbursal = ({ loanId, disburseBank, loanData }) => {
       toast.error(error);
       clearError();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
   useEffect(() => {
@@ -70,6 +73,7 @@ const Disbursal = ({ loanId, disburseBank, loanData }) => {
       toast.success("Loan was disbursed successfully!");
       resetDisburseStatus();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disbursedStatus]);
 
   const transferPaymentToClient = () => {
@@ -158,6 +162,7 @@ const AuthorizerLoanDetails = () => {
 
   useEffect(() => {
     retrieveLoan(loanId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const navArray = [

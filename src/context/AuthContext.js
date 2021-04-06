@@ -281,6 +281,13 @@ const clearErrors = (dispatch) => () => {
   });
 };
 
+const clearMessage = (dispatch) => () => {
+  dispatch({
+    type: "set_message",
+    payload: null,
+  });
+};
+
 const resetInactiveUserStatus = (dispatch) => () => {
   dispatch({
     type: "set_redirect_inactive_user",
@@ -322,7 +329,8 @@ export const { Context, Provider } = createPersistDataContext(
     clearErrors,
     getCurrentlyAddedUser,
     addUserByAgent,
-    resetInactiveUserStatus
+    resetInactiveUserStatus,
+    clearMessage
   },
   {
     user: null,

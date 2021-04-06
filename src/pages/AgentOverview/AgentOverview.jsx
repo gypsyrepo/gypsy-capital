@@ -113,7 +113,7 @@ const AgentOverview = () => {
               </Button>
             </div>
             <div className={styles.recentCard}>
-              <Table className={styles.table}>
+              <Table striped className={styles.table}>
                 <thead>
                   <tr>
                     <th>Client Name</th>

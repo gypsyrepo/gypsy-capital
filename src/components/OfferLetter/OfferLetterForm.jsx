@@ -10,6 +10,7 @@ import _ from "lodash";
 import { numberWithCommas } from "../../utils/nigeriaStates";
 import { convertInput } from "../../utils/convertInputType";
 import { toast, ToastContainer } from "react-toastify";
+import { toWords } from "number-to-words";
 
 const OfferLetterForm = ({ setState, loanData }) => {
   console.log(loanData);
@@ -17,7 +18,7 @@ const OfferLetterForm = ({ setState, loanData }) => {
     date: "",
     fullName: "",
     clientAddress: "",
-    loanAmount: "",
+    loanAmount: null,
     borrowerName: "",
     natureofBusiness: "",
     loanFacility: "",
@@ -59,7 +60,9 @@ const OfferLetterForm = ({ setState, loanData }) => {
       date: moment().format("DD-MM-YYYY"),
       fullName: `${_.capitalize(loanData?.client?.firstName)}`,
       clientAddress: loanData?.residence?.street,
-      loanAmount: `N${numberWithCommas(loanData?.approvedAmount)}`,
+      loanAmount: `N${numberWithCommas(
+        loanData?.approvedAmount
+      )} (${_.startCase(toWords(loanData?.approvedAmount))} Naira Only)`,
       borrowerName: `${_.capitalize(
         loanData?.client?.firstName
       )} ${_.capitalize(loanData?.client?.lastName)}`,
@@ -69,10 +72,15 @@ const OfferLetterForm = ({ setState, loanData }) => {
       monthlyRepayment: numberWithCommas(loanData?.monthlyRepayment),
       repaymentSource: "Salary",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const sendOffer = () => {
-    setState(true);
+    if (btnState) {
+      setState(true);
+    } else {
+      toast.error("You need to create the Offer PDF letter before sending!");
+    }
   };
 
   const createPdf = () => {
@@ -204,6 +212,7 @@ const OfferLetterForm = ({ setState, loanData }) => {
                 <input
                   type="text"
                   name="additional"
+                  style={{ width: "200px", margin: "0 10px" }}
                   placeholder="₦xxx,xxx (Loans amount in words)"
                   value={offerFormData.loanAmount}
                   onChange={(e) => {
@@ -601,9 +610,12 @@ const OfferLetterForm = ({ setState, loanData }) => {
               document={<OfferLetterPdf dynamicData={{ ...offerFormData }} />}
               fileName="offerLetter.pdf"
             >
-              {({ blob, url, loading, error }) =>
-                loading ? "Loading document..." : "Download Offer Letter"
-              }
+              {({ blob, url, loading, error }) => {
+                console.log(blob, url);
+                return loading
+                  ? "Loading document..."
+                  : "Download Offer Letter";
+              }}
             </PDFDownloadLink>
           ) : (
             <Button

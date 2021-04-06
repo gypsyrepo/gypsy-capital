@@ -11,6 +11,7 @@ import moment from "moment";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as LoanContext } from "../../context/LoanContext";
 import { useHistory, useLocation } from "react-router-dom";
+import Loader from "../../components/Loader/Loader";
 
 const Overview = () => {
   const history = useHistory();
@@ -27,7 +28,7 @@ const Overview = () => {
 
   useEffect(() => {
     retrieveClientLoans();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -46,8 +47,8 @@ const Overview = () => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  if (!user) {
-    return null;
+  if (!user && !loans) {
+    return <Loader />;
   }
 
   return (

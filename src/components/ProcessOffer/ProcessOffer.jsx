@@ -5,8 +5,13 @@ import { Row, Col } from "react-bootstrap";
 import Button from "../Button/Button";
 import InputField from "../InputField/InputField";
 import { GrAttachment } from "react-icons/gr";
+import { pdf } from "@react-pdf/renderer";
+import OfferLetterPdf from "../OfferLetter/OfferLetter";
 
 const SendOfferForm = () => {
+  const offerLetterBlob = pdf(OfferLetterPdf).toBlob();
+  console.log(offerLetterBlob);
+
   return (
     <div className={styles.send}>
       <div className={styles.header}>

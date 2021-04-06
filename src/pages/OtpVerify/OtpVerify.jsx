@@ -1,66 +1,84 @@
-import React, { useContext, useEffect, useState } from 'react';
-import styles from './OtpVerify.module.scss';
-import Logo from '../../assets/logo.png';
-import { Row, Col } from 'react-bootstrap';
-import InputField from '../../components/InputField/InputField';
-import Button from '../../components/Button/Button';
-import { Link, useLocation } from 'react-router-dom';
-import { Context as AuthContext } from '../../context/AuthContext';
-import { ToastContainer, toast } from 'react-toastify';
+import React, { useContext, useEffect, useState } from "react";
+import styles from "./OtpVerify.module.scss";
+import Logo from "../../assets/logo.png";
+import { Row, Col } from "react-bootstrap";
+import InputField from "../../components/InputField/InputField";
+import Button from "../../components/Button/Button";
+import { Link, useLocation } from "react-router-dom";
+import { Context as AuthContext } from "../../context/AuthContext";
+import { ToastContainer, toast } from "react-toastify";
 
 const OtpVerify = () => {
-
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState("");
   const [validationErr, setValidationErr] = useState(null);
 
   const location = useLocation();
 
-  const { 
-      state: { error, loading, message, user }, 
-      verifyOtp, 
-      getActiveUser, 
-      resendOtp,
-      clearErrors, 
-      resetInactiveUserStatus
+  const {
+    state: { error, loading, message, user },
+    verifyOtp,
+    getActiveUser,
+    resendOtp,
+    clearErrors,
+    resetInactiveUserStatus,
+    clearMessage,
   } = useContext(AuthContext);
 
   useEffect(() => {
-    console.log(location);
     resetInactiveUserStatus();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (location?.state?.userEmail) {
+      sessionStorage.setItem(
+        "gypsy-inactive-userEmail",
+        JSON.stringify({
+          email: location?.state?.userEmail,
+        })
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if(error) {
+    if (error) {
       toast.error(error);
       clearErrors();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [error])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
 
   useEffect(() => {
-    if(message) {
+    if (message) {
       toast.success(message);
+      clearMessage();
     }
-  }, [message])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [message]);
 
   const handleSubmit = () => {
-    if(!otp) {
-      setValidationErr('You need to enter your otp to verify your account')
+    if (!otp) {
+      setValidationErr("You need to enter your otp to verify your account");
     } else {
-      if(location?.state?.userEmail) {
+      if (location?.state?.userEmail) {
         verifyOtp(otp, location.state.userEmail, getActiveUser);
       } else {
         verifyOtp(otp, user.email, getActiveUser);
       }
     }
-  }
+  };
 
   const resendCode = () => {
-    resendOtp(user.email);
-  }
+    if (user) {
+      resendOtp(user.email);
+    } else if (location?.state?.userEmail) {
+      resendOtp(location.state.userEmail);
+    } else {
+      const inactiveUser = JSON.parse(
+        sessionStorage.getItem("gypsy-inactive-userEmail")
+      );
+      resendOtp(inactiveUser.email);
+    }
+  };
 
-  return(
+  return (
     <div className={styles.container}>
       <img src={Logo} alt="Gypsy Logo" />
       <h1>Verify Your Details</h1>
@@ -69,38 +87,37 @@ const OtpVerify = () => {
         <ToastContainer position="top-center" />
         <Row>
           <Col>
-            <InputField 
+            <InputField
               type="text"
               label="One Time Password"
               nameAttr="otp"
               value={otp}
               changed={(val) => {
-                setValidationErr(null)
-                setOtp(val)
+                setValidationErr(null);
+                setOtp(val);
               }}
               error={validationErr && validationErr}
             />
           </Col>
         </Row>
-        <Button 
-          clicked={handleSubmit} 
-          fullWidth 
-          className="mt-4" 
-          bgColor="#741763" 
-          size="lg" 
+        <Button
+          clicked={handleSubmit}
+          fullWidth
+          className="mt-4"
+          bgColor="#741763"
+          size="lg"
           color="#EBEBEB"
           disabled={loading}
           loading={loading}
         >
           Verify Code
         </Button>
-        <p className={[styles.authLink, 'mt-3'].join(' ')}>
+        <p className={[styles.authLink, "mt-3"].join(" ")}>
           Didn’t receive code? <Link onClick={resendCode}>Resend OTP</Link>
         </p>
       </div>
     </div>
-  )
-}
-
+  );
+};
 
 export default OtpVerify;

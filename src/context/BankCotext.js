@@ -7,6 +7,8 @@ const bankReducer = (state, action) => {
   switch(action.type) {
     case 'set_bank_list':
       return { ...state, bankList: action.payload }
+    case 'set_remita_bank_list':
+      return { ...state, remitaBankList: action.payload }
     case 'set_error':
       return { ...state, error: action.payload }
     case 'set_loading':
@@ -32,6 +34,29 @@ const getBankList = dispatch => async() => {
       type: 'set_bank_list',
       payload: response.data.data
     });
+  } catch(err) {
+    if(err.response) {
+      dispatch({
+        type: 'set_error',
+        payload: err.response.message
+      });
+    }
+  }
+}
+
+
+const getBankListRemita = dispatch => async() => {
+  try {
+    const token = resolveToken();
+    const response = await gypsy.get('/bank/list/remita', {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    dispatch({
+      type: 'set_remita_bank_list',
+      payload: response.data.data
+    })
   } catch(err) {
     if(err.response) {
       dispatch({
@@ -73,6 +98,6 @@ const verifyBankInfo = dispatch => async(accountNo, bankCode) => {
 
 export const { Context, Provider } = createDataContext(
   bankReducer,
-  { getBankList, verifyBankInfo },
-  { bankList: [], error: null, userBankDetails: null, bankLoading: false }
+  { getBankList, verifyBankInfo, getBankListRemita },
+  { bankList: [], error: null, userBankDetails: null, bankLoading: false, remitaBankList: [] }
 )
