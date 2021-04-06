@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useMemo } from "react";
 import Dashboard from "../../components/Dashboard/Dashboard";
 import styles from "./ProcessorLoanDetails.module.scss";
 import { routes } from "../../routes/sidebarRoutes";
@@ -13,7 +13,7 @@ import { Context as MonoContext } from "../../context/MonoContext";
 import { Context as BankContext } from "../../context/BankCotext";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
-import { Row, Col, Modal } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import ProcessOffer from "../../components/ProcessOffer/ProcessOffer";
 import { validateInput } from "../../utils/validateInput";
 import _ from "lodash";
@@ -43,7 +43,6 @@ export const MonoTab = ({ clientId }) => {
   };
 
   const retrieveAccountStatement = () => {
-    console.log(clientId);
     getAccountStatement(clientId, 3);
   };
 
@@ -111,6 +110,7 @@ export const RepayPlusApprove = ({
   loanId,
   userRole,
   setActiveTab,
+  clientData,
 }) => {
   const {
     state: { loading, repaymentStatus, error },
@@ -122,16 +122,21 @@ export const RepayPlusApprove = ({
   const {
     state: {
       loading: approvalLoading,
-      error: approveLoanError,
+      // error: approveLoanError,
       approvedStatus,
     },
     decideApproval,
-    disburseLoan,
+    // disburseLoan,
     clearError: clearApprovalError,
     resetApprovalStatus,
   } = useContext(ApprovalContext);
 
   const { retrieveLoan } = useContext(LoanContext);
+
+  const {
+    state: { remitaBankList },
+    getBankListRemita,
+  } = useContext(BankContext);
 
   const [setupData, setSetupData] = useState({
     decision: null,
@@ -169,7 +174,18 @@ export const RepayPlusApprove = ({
     ...setupData,
   };
 
-  console.log(moment("16/03/2021", "DD/MM/YYYY").toDate(), loanData, userRole);
+  useEffect(() => {
+    if (setupData.repaymentApi === "remita") {
+      getBankListRemita();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setupData.repaymentApi]);
+
+  const remitaBanks = useMemo(() => {
+    return remitaBankList.map((bankInstance) =>
+      _.startCase(_.toLower(bankInstance.bank))
+    );
+  }, [remitaBankList]);
 
   useEffect(() => {
     const savedLoanData = JSON.parse(sessionStorage.getItem(`gypsy-${loanId}`));
@@ -338,15 +354,37 @@ export const RepayPlusApprove = ({
     const validated = validateInput(fieldsToSetup, setRepaymentError);
     if (validated) {
       if (setupData.repaymentApi) {
-        const data = {
-          approved_tenure: setupData.approvedTenure,
-          determined_repayment_date: moment(
-            setupData.repaymentStartDate
-          ).format("DD/MM/YYYY"),
-          rePaymentAPI: setupData.repaymentApi,
-          total_pay: stripCommasInNumber(setupData.totalRepayment),
-        };
-        // console.log(data);
+        let data;
+        if (setupData.repaymentApi === "paystack") {
+          data = {
+            approved_tenure: setupData.approvedTenure,
+            determined_repayment_date: moment(
+              setupData.repaymentStartDate
+            ).format("DD/MM/YYYY"),
+            rePaymentAPI: setupData.repaymentApi,
+            total_pay: stripCommasInNumber(setupData.totalRepayment),
+          };
+        } else if (setupData.repaymentApi === "remita") {
+          let bankCode = remitaBankList.filter(
+            (bankInstance) => bankInstance.bank.toLowerCase() === setupData.bank
+          )[0].code;
+
+          data = {
+            decision: setupData.decision,
+            approved_interest: setupData.approvedTenure,
+            approved_tenure: setupData.approvedTenure,
+            determined_repayment_date: moment(
+              setupData.repaymentStartDate
+            ).format("DD/MM/YYYY"),
+            rePaymentAPI: setupData.repaymentApi,
+            total_pay: stripCommasInNumber(setupData.totalRepayment),
+            remita_bank_account_number: setupData.accountNumber,
+            remita_bank_code: bankCode,
+            decision_reason: setupData.decisionReason,
+            payerName: clientData.email,
+            payerPhone: clientData.phoneNumber.replace("234", "0"),
+          };
+        }
         setupRepayment(loanId, data, retrieveLoan);
       } else {
         toast.error("You need to choose a repayment API to setup repayment");
@@ -653,10 +691,12 @@ export const RepayPlusApprove = ({
         <Row className="mb-4">
           <Col>
             <InputField
-              type="text"
+              type="select"
               nameAttr="bank"
               label="Bank"
               value={setupData?.bank}
+              options={remitaBanks}
+              changed={(val) => setSetupData({ ...setupData, bank: val })}
             />
           </Col>
           <Col>
@@ -665,6 +705,9 @@ export const RepayPlusApprove = ({
               nameAttr="accountNumber"
               label="Account Number"
               value={setupData?.accountNumber}
+              changed={(val) =>
+                setSetupData({ ...setupData, accountNumber: val })
+              }
             />
           </Col>
         </Row>
@@ -782,6 +825,7 @@ const ProcessorLoanDetails = () => {
           <RepayPlusApprove
             loanId={loanId}
             loanData={loanDetails?.loan}
+            clientData={loanDetails?.client[0]?.bioData}
             userRole={user?.role}
           />
         ) : null}

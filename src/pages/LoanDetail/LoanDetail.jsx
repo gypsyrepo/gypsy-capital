@@ -305,7 +305,7 @@ export const RepaymentSchedule = ({ data, userRole, loanId }) => {
                     {track?.dueDate ||
                       moment(track?.scheduledDate).format("lll")}
                   </td>
-                  <td>{track?.status || "false"}</td>
+                  <td>{track.status ? "true" : "false"}</td>
                   <td>
                     {track?.overdueAmount ||
                       `N ${numberWithCommas(track?.scheduledAmount)}`}

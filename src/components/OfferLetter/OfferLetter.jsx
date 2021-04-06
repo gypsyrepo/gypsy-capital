@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   termsTitle: {
     fontWeight: "medium",
-    marginTop: 40,
+    marginTop: 60,
     fontSize: 16,
   },
   termsContent: {
@@ -143,27 +143,29 @@ const OfferLetterPdf = ({ dynamicData }) => {
           </View>
           <View style={styles.body}>
             <Text>{`Dear ${dynamicData?.fullName},`}</Text>
-            <Text style={styles.address}>
-              13, Saka Agbaje Street, Aare Avenue Bodija, Ibadan.
-            </Text>
+            <Text style={styles.address}>{dynamicData?.clientAddress}</Text>
             <Text style={styles.letterTitle}>
               OFFER FOR PERSONAL LOAN FACILITY
             </Text>
             <Text style={styles.paragraphOne}>
-              We are pleased to advise that the Management of Gypsy Capital
-              Limited has approved the loan facility requested, hence, this
-              offer made to you. This letter outlines the major terms and
-              conditions under which we are willing to make available to you,
-              the sum of N500,000 (Five hundred thousand naira).
+              {`We are pleased to advise that the Management of Gypsy Capital Limited has approved the loan facility requested, hence, this offer made to you. This letter outlines the major terms and conditions under which we are willing to make available to you, the sum of ${dynamicData.loanAmount}.`}
             </Text>
             <Text style={styles.loanData}>Lender: Gypsy Capital</Text>
-            <Text style={styles.loanData}>Borrower: Richard Emate</Text>
-            <Text style={styles.loanData}>Nature of Business: IT Services</Text>
+            <Text
+              style={styles.loanData}
+            >{`Borrower: ${dynamicData?.borrowerName}`}</Text>
+            <Text
+              style={styles.loanData}
+            >{`Nature of Business: ${dynamicData?.natureofBusiness}`}</Text>
             <Text style={styles.loanData}>
-              Amount of Loan Facility: N500,000
+              {`Amount of Loan Facility: N${dynamicData.loanFacility}`}
             </Text>
-            <Text style={styles.loanData}>Purpose: Home Remodelling</Text>
-            <Text style={styles.loanData}>Monthly Repayment: N130,550</Text>
+            <Text
+              style={styles.loanData}
+            >{`Purpose: ${dynamicData?.loanPurpose}`}</Text>
+            <Text
+              style={styles.loanData}
+            >{`Monthly Repayment: N${dynamicData.monthlyRepayment}`}</Text>
             <Text style={styles.loanData}>Repayment Source/Method: Salary</Text>
             <Text style={styles.termsTitle}>TERMS OF THE OFFER:</Text>
             <View style={styles.termsContent}>
@@ -302,11 +304,11 @@ const OfferLetterPdf = ({ dynamicData }) => {
             <View style={styles.signature}>
               <View style={styles.signGroup}>
                 <Text>Head Credit</Text>
-                <Text>Adams Brown.</Text>
+                <Text>{dynamicData.headCreditSign}</Text>
               </View>
               <View style={styles.signGroup}>
                 <Text>Head Credit & Risk Management</Text>
-                <Text>Felix Magicman.</Text>
+                <Text>{dynamicData.headRiskSign}</Text>
               </View>
             </View>
             <Text style={styles.termsTitle}>Memorandum of Acceptance</Text>
