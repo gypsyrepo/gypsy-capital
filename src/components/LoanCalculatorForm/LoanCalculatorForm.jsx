@@ -104,10 +104,10 @@ const LoanCalculatorForm = ({ delegateApply }) => {
         estimatedMonthlyPayment: numberWithCommas(Math.floor(monthlyRepay)),
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [monthlySalary, loanAmount, installmentPeriod, loanCalcData.dti]);
 
   const submitLoanCalcData = () => {
-    console.log("works");
     const fieldsTovalidate = {
       monthlySalary,
       payDay,
@@ -128,8 +128,13 @@ const LoanCalculatorForm = ({ delegateApply }) => {
         ),
         DTI: loanCalcData.dti,
       };
-      console.log(applyData);
-      limitError ? toast.error(limitError) : delegateApply(applyData);
+      if (stripCommasInNumber(loanAmount) < 100000) {
+        toast.error(
+          "Your requested amount is too low. We only offer loans starting from N100,000"
+        );
+      } else {
+        limitError ? toast.error(limitError) : delegateApply(applyData);
+      }
     }
   };
 
