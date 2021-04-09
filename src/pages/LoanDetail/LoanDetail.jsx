@@ -18,10 +18,10 @@ import FileUploadButton from "../../components/FileUploadButton/FileUploadButton
 import { FaCloudUploadAlt } from "react-icons/fa";
 import Button from "../../components/Button/Button";
 import { validateInput } from "../../utils/validateInput";
-import {
-  convertInput,
-  stripCommasInNumber,
-} from "../../utils/convertInputType";
+// import {
+//   convertInput,
+//   stripCommasInNumber,
+// } from "../../utils/convertInputType";
 import { toast, ToastContainer } from "react-toastify";
 
 export const BasicInfo = ({ data, userRole }) => {
@@ -230,7 +230,6 @@ export const RepaymentSchedule = ({ data, userRole, loanId, reloadLoan }) => {
     clearError,
     clearMessage,
   } = useContext(RepaymentContext);
-  const { retrieveLoan } = useContext(LoanContext);
 
   useEffect(() => {
     verifyRepaymentStatus(loanId);

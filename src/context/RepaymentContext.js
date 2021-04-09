@@ -73,7 +73,7 @@ const verifyRepaymentStatus = (dispatch) => async (loanId) => {
   } catch (err) {
     if (err.response) {
       console.log(err.response.data);
-      const errorMessage = err.response.data.error || err.response.data.message;
+      // const errorMessage = err.response.data.error || err.response.data.message;
       // dispatch({
       //   type: "set_error",
       //   payload: errorMessage,
