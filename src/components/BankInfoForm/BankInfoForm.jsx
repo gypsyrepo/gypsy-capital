@@ -39,6 +39,7 @@ const BankInfoForm = ({ submitBankInfo }) => {
     (async () => {
       await getBankList();
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const bankNames = useMemo(() => {
@@ -79,6 +80,7 @@ const BankInfoForm = ({ submitBankInfo }) => {
       console.log(bankCode);
       verifyBankInfo(bankInfo.accountNumber, bankCode);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bankInfo.accountNumber, bankInfo.bankName]);
 
   useEffect(() => {
@@ -86,6 +88,7 @@ const BankInfoForm = ({ submitBankInfo }) => {
     if (userBankDetails) {
       setBankInfo({ ...bankInfo, accountName: userBankDetails.account_name });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userBankDetails]);
 
   return (

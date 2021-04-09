@@ -1,15 +1,22 @@
 import createDataContext from "./createDataContext";
 import gypsy from "../api/gypsy-web";
 import resolveToken from "../utils/resolveToken";
+import { numberWithCommas } from "../utils/nigeriaStates";
 
 const repaymentReducer = (state, action) => {
   switch (action.type) {
     case "set_loading":
       return { ...state, loading: action.payload };
+    case "set_payment_loading":
+      return { ...state, paymentLoading: action.payload };
+    case "set_payment_error":
+      return { ...state, paymentError: action.payload };
     case "set_error":
       return { ...state, error: action.payload };
     case "set_repayment_status":
       return { ...state, repaymentStatus: action.payload };
+    case "set_message":
+      return { ...state, message: action.payload };
     default:
       return state;
   }
@@ -76,9 +83,43 @@ const verifyRepaymentStatus = (dispatch) => async (loanId) => {
   }
 };
 
+const manualPayment = (dispatch) => async(scheduleId, paymentData) => {
+  dispatch({ type: "set_payment_loading", payload: true });
+  try {
+    const token = resolveToken();
+    const response = await gypsy.post(`/paystack/outside_pay/${scheduleId}`, paymentData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    dispatch({
+      type: "set_message",
+      payload: `Manual repayment for the amount of N${numberWithCommas(response.data.data.amount)} was processed successfully`
+    })
+    dispatch({ type: "set_payment_loading", payload: false });
+  } catch(err) {
+    if(err.response) {
+      const errorMessage = err.response.data.error || err.response.data.message;
+      dispatch({
+        type: "set_payment_error",
+        payload: errorMessage
+      });
+      dispatch({ type: "set_payment_loading", payload: false });
+    }
+  }
+}
+
 const clearError = (dispatch) => () => {
   dispatch({ type: "set_error", payload: null });
 };
+
+const clearPaymentError = (dispatch) => () => {
+  dispatch({ type: "set_payment_error", payload: null});
+}
+
+const clearMessage = (dispatch) => () => {
+  dispatch({ type: "set_message", payload: null });
+}
 
 const resetRepaymentStatus = (dispatch) => () => {
   dispatch({ type: "set_repayment_status", payload: false });
@@ -86,6 +127,6 @@ const resetRepaymentStatus = (dispatch) => () => {
 
 export const { Context, Provider } = createDataContext(
   repaymentReducer,
-  { setupRepayment, verifyRepaymentStatus, clearError, resetRepaymentStatus },
-  { loading: false, error: null, repaymentStatus: false }
+  { setupRepayment, verifyRepaymentStatus, clearError, resetRepaymentStatus, manualPayment, clearPaymentError, clearMessage },
+  { loading: false, error: null, repaymentStatus: false, paymentLoading: false, paymentError: null, message: null }
 );

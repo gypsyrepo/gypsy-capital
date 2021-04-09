@@ -1,7 +1,7 @@
 export const convertInput = (val) => {
   let convertedToNumber = val.split(",");
   convertedToNumber = Number(convertedToNumber.join(""));
-  const includesAlphabet = /\D/.test(convertedToNumber);
+  const includesAlphabet = /[^0-9.]/g.test(convertedToNumber);
   return { includesAlphabet, convertedToNumber };
 };
 

@@ -165,6 +165,10 @@ const AuthorizerLoanDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const reloadLoan = () => {
+    retrieveLoan(loanId);
+  };
+
   const navArray = [
     {
       title: "Basic Info",
@@ -244,6 +248,7 @@ const AuthorizerLoanDetails = () => {
               }
               userRole={user.role}
               loanId={loanId}
+              reloadLoan={reloadLoan}
             />
           )}
           {visibleSection === "mono" && (

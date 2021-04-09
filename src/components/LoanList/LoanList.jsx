@@ -115,21 +115,33 @@ const LoanList = ({ loanList, userRole }) => {
             </thead>
             {currentList && currentList.length > 0 ? (
               <tbody>
-                {currentList.map((loan) => (
-                  <tr>
-                    <td className={styles.loanId}>
-                      <Link to={`/${detailRoutePrefix}/loan/${loan._id}`}>
-                        {loan._id.slice(0, 6)}
-                      </Link>
-                    </td>
-                    <td>{`N ${numberWithCommas(loan.monthlyRepayment)}`}</td>
-                    <td>{loan.paymentPeriod}</td>
-                    <td>{_.capitalize(loan.status)}</td>
-                    <td>{"Salary"}</td>
-                    <td>{`N ${numberWithCommas(loan.amount)}`}</td>
-                    <td>______</td>
-                  </tr>
-                ))}
+                {currentList.map((loan) => {
+                  let loanBalance = loan?.repayment
+                    .filter((repaid) => {
+                      return repaid.status === true;
+                    })
+                    .reduce((acc, curr) => {
+                      return curr.scheduledAmount + acc;
+                    }, 0);
+
+                  loanBalance = loan?.calculatedPayBack - loanBalance;
+
+                  return (
+                    <tr>
+                      <td className={styles.loanId}>
+                        <Link to={`/${detailRoutePrefix}/loan/${loan._id}`}>
+                          {loan._id.slice(0, 6)}
+                        </Link>
+                      </td>
+                      <td>{`N ${numberWithCommas(loan.monthlyRepayment)}`}</td>
+                      <td>{loan.paymentPeriod}</td>
+                      <td>{_.capitalize(loan.status)}</td>
+                      <td>{"Salary"}</td>
+                      <td>{`N ${numberWithCommas(loan.amount)}`}</td>
+                      <td>{`N ${numberWithCommas(loanBalance)}`}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             ) : null}
           </Table>
