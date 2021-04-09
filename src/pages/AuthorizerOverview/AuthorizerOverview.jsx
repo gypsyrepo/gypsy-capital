@@ -65,7 +65,7 @@ const AuthorizerOverview = () => {
     return loans.slice(0, 5);
   }, [loans]);
 
-  console.log(recentLoans);
+  console.log(loans);
 
   return (
     <Dashboard sidebarRoutes={authorizerRoutes} location={location}>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useMemo } from "react";
+import React, { useContext, useEffect, useState, useMemo, useRef } from "react";
 import styles from "./LoanDetail.module.scss";
 import { useLocation, useParams, Link } from "react-router-dom";
 import { routes } from "../../routes/sidebarRoutes";
@@ -12,6 +12,17 @@ import Loader from "../../components/Loader/Loader";
 import { numberWithCommas } from "../../utils/nigeriaStates";
 import moment from "moment";
 import _ from "lodash";
+import InputField from "../../components/InputField/InputField";
+import CustomDatePicker from "../../components/CustomDatePicker/CustomDatePicker";
+import FileUploadButton from "../../components/FileUploadButton/FileUploadButton";
+import { FaCloudUploadAlt } from "react-icons/fa";
+import Button from "../../components/Button/Button";
+import { validateInput } from "../../utils/validateInput";
+// import {
+//   convertInput,
+//   stripCommasInNumber,
+// } from "../../utils/convertInputType";
+import { toast, ToastContainer } from "react-toastify";
 
 export const BasicInfo = ({ data, userRole }) => {
   const [basicInfo, setBasicInfo] = useState({
@@ -208,14 +219,16 @@ const LoanStatus = ({ data }) => {
   );
 };
 
-export const RepaymentSchedule = ({ data, userRole, loanId }) => {
+export const RepaymentSchedule = ({ data, userRole, loanId, reloadLoan }) => {
   const [repaymentArr, setRepaymentArr] = useState(null);
 
-  console.log(userRole);
   const {
-    state: { loading },
+    state: { loading, paymentLoading, paymentError, message },
     verifyRepaymentStatus,
+    manualPayment,
+    clearPaymentError,
     clearError,
+    clearMessage,
   } = useContext(RepaymentContext);
 
   useEffect(() => {
@@ -228,6 +241,44 @@ export const RepaymentSchedule = ({ data, userRole, loanId }) => {
   }, []);
 
   useEffect(() => {
+    if (paymentError) {
+      toast.error(paymentError);
+      clearPaymentError();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paymentError]);
+
+  const [manualPayStatus, setManualPayStatus] = useState(false);
+  const [repayScheduleId, setRepayScheduleId] = useState("");
+  const [manualRepayData, setManualRepayData] = useState({
+    monthlyRepay: "",
+    dateofPayment: null,
+  });
+  const [repayDataError, setRepayDataError] = useState({
+    monthlyRepay: null,
+    dateofPayment: null,
+  });
+
+  const paymentProof = useRef();
+
+  useEffect(() => {
+    if (message) {
+      toast.success(message);
+      clearMessage();
+      setManualRepayData({
+        ...manualRepayData,
+        monthlyRepay: "",
+        dateofPayment: null,
+      });
+      (async () => {
+        await reloadLoan();
+      })();
+      setManualPayStatus(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [message]);
+
+  useEffect(() => {
     if (data) {
       const paymentPeriod = Number(data.paymentPeriod.split(" ")[0]);
       // console.log(paymentPeriod);
@@ -236,7 +287,10 @@ export const RepaymentSchedule = ({ data, userRole, loanId }) => {
         month: 1,
         dueDate: "undecided",
         status: "pending",
-        overdueAmount: "____",
+        amount: "____",
+        overPayment: "____",
+        dateofPayment: "____",
+        loanBalance: "____",
       };
       for (let i = 0; i < paymentPeriod; i++) {
         repaymentTrack.push(instance);
@@ -244,7 +298,10 @@ export const RepaymentSchedule = ({ data, userRole, loanId }) => {
           month: instance.month + 1,
           dueDate: "undecided",
           status: "pending",
-          overdueAmount: "____",
+          amount: "____",
+          overPayment: "____",
+          dateofPayment: "____",
+          loanBalance: "____",
         };
       }
       console.log(repaymentTrack);
@@ -260,11 +317,35 @@ export const RepaymentSchedule = ({ data, userRole, loanId }) => {
 
   console.log(repaymentArr);
 
-  if (loading) {
-    return <Loader />;
-  }
+  const goToManualRepaymentForm = (repayId) => {
+    setManualPayStatus(true);
+    setRepayScheduleId(repayId);
+  };
 
-  return (
+  const initiateManualRepayment = () => {
+    const validated = validateInput(manualRepayData, setRepayDataError);
+    if (validated) {
+      if (paymentProof.current.files.length > 0) {
+        const proof = paymentProof.current.files[0];
+        const data = new FormData();
+        data.append("amount", manualRepayData.monthlyRepay);
+        data.append(
+          "datePayed",
+          moment(manualRepayData.dateofPayment).format("DD/MM/YYYY")
+        );
+        console.log(proof);
+        data.append("image", proof);
+        // console.log(data);
+        manualPayment(repayScheduleId, data);
+      } else {
+        toast.error(
+          "You need to upload payment proof to initiate manual repayment"
+        );
+      }
+    }
+  };
+
+  const scheduleTemplate = () => (
     <>
       {userRole === "processor" || userRole === "authorizer" ? (
         <div className={[styles.repayment, "mb-5"].join(" ")}>
@@ -287,34 +368,142 @@ export const RepaymentSchedule = ({ data, userRole, loanId }) => {
         </div>
       ) : null}
       <div className={styles.repayment}>
-        <Table striped>
+        <Table className={styles.repaymentTable} striped>
           <thead>
             <tr>
               <th>Months</th>
               <th>Due Date</th>
               <th>Status</th>
-              <th>Overdue Amount</th>
+              <th>Amount</th>
+              <th>Overpayment</th>
+              <th>Date of Payment</th>
+              <th>Loan Balance</th>
+              {userRole === "authorizer" && <th>Action</th>}
             </tr>
           </thead>
           <tbody>
             {repaymentArr &&
-              repaymentArr.map((track, idx) => (
-                <tr key={idx}>
-                  <td>{`Month ${track?.month || idx + 1}`}</td>
-                  <td>
-                    {track?.dueDate ||
-                      moment(track?.scheduledDate).format("lll")}
-                  </td>
-                  <td>{track.status ? "true" : "false"}</td>
-                  <td>
-                    {track?.overdueAmount ||
-                      `N ${numberWithCommas(track?.scheduledAmount)}`}
-                  </td>
-                </tr>
-              ))}
+              repaymentArr.map((track, idx) => {
+                let repaidDate, loanBalance;
+                if (track.repaidDateStamp) {
+                  repaidDate = moment
+                    .unix(track?.repaidDateStamp / 1000)
+                    .format("llll");
+                } else {
+                  repaidDate = "____";
+                }
+                if (track.status) {
+                  loanBalance =
+                    data.calculatedPayBack - (idx + 1) * track.scheduledAmount;
+                  loanBalance = `N ${numberWithCommas(loanBalance)}`;
+                } else {
+                  loanBalance = "____";
+                }
+                return (
+                  <tr key={idx}>
+                    <td>{`Month ${track?.month || idx + 1}`}</td>
+                    <td>
+                      {track?.dueDate ||
+                        moment(track?.scheduledDate).format("lll")}
+                    </td>
+                    <td>{track.status ? "true" : "false"}</td>
+                    <td>
+                      {track?.amount ||
+                        `N${numberWithCommas(track?.scheduledAmount)}`}
+                    </td>
+                    <td>
+                      {track?.overPayment ||
+                        `N${numberWithCommas(track?.penaltyFee)}`}
+                    </td>
+                    <td>{track?.dateofPayment || repaidDate}</td>
+                    <td>{track?.loanBalance || loanBalance}</td>
+                    {userRole === "authorizer" && (
+                      <td>
+                        <button
+                          disabled={track.status}
+                          onClick={() => goToManualRepaymentForm(track._id)}
+                        >
+                          Manual Repayment
+                        </button>
+                      </td>
+                    )}
+                  </tr>
+                );
+              })}
           </tbody>
         </Table>
       </div>
+    </>
+  );
+
+  const manualRepaymentForm = () => (
+    <div className={styles.repaymentForm}>
+      <Row className="mb-4">
+        <Col>
+          <InputField
+            type="number"
+            nameAttr="monthlyRepay"
+            label="Monthly Repayment"
+            value={manualRepayData.monthlyRepay}
+            changed={(val) => {
+              setManualRepayData({
+                ...manualRepayData,
+                monthlyRepay: val,
+              });
+              setRepayDataError({ ...repayDataError, monthlyRepay: null });
+            }}
+            error={repayDataError?.monthlyRepay}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <CustomDatePicker
+            label="Date of Payment"
+            value={manualRepayData.dateofPayment}
+            changed={(val) => {
+              setManualRepayData({ ...manualRepayData, dateofPayment: val });
+              setRepayDataError({ ...repayDataError, dateofPayment: null });
+            }}
+            error={repayDataError?.dateofPayment}
+          />
+        </Col>
+      </Row>
+      <div className={styles.proofUpload}>
+        <h2>Upload Proof of Payment</h2>
+        <p>Please upload a clear proof of payment document</p>
+        <FileUploadButton
+          label="Choose File"
+          className={styles.uploadBtn}
+          icon={<FaCloudUploadAlt className="ml-3" size="1.2em" />}
+          id="paymentProof"
+          fileRef={paymentProof}
+          width="200px"
+        />
+      </div>
+      <Button
+        bgColor="#741763"
+        className="mt-5"
+        color="#fff"
+        fullWidth
+        size="lg"
+        clicked={initiateManualRepayment}
+        loading={paymentLoading}
+        disabled={paymentLoading}
+      >
+        Submit
+      </Button>
+    </div>
+  );
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  return (
+    <>
+      {!manualPayStatus ? scheduleTemplate() : manualRepaymentForm()}
+      <ToastContainer position="top-center" />
     </>
   );
 };
@@ -338,6 +527,10 @@ const LoanDetail = () => {
     retrieveLoan(loanId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const reloadLoan = () => {
+    retrieveLoan(loanId);
+  };
 
   const navArray = [
     {
@@ -402,6 +595,7 @@ const LoanDetail = () => {
                     }
                   : null
               }
+              reloadLoan={reloadLoan}
               userRole={user.role}
             />
           )}

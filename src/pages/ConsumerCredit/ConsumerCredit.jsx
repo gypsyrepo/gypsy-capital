@@ -22,6 +22,7 @@ import { Context as LoanContext } from "../../context/LoanContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import { clientRoutes } from "../../routes/sidebarRoutes";
+import _ from "lodash";
 
 const ConsumerCredit = () => {
   const { path } = useRouteMatch();
@@ -95,6 +96,8 @@ const ConsumerCredit = () => {
     }
   };
 
+  // console.log(loans);
+
   return (
     <>
       <Dashboard sidebarRoutes={clientRoutes} location={location}>
@@ -135,8 +138,18 @@ const ConsumerCredit = () => {
                 </thead>
                 <tbody>
                   {loans.map((loanInstance, idx) => {
+                    let loanBalance = loanInstance?.repayment
+                      .filter((repaid) => {
+                        return repaid.status === true;
+                      })
+                      .reduce((acc, curr) => {
+                        return curr.scheduledAmount + acc;
+                      }, 0);
+
+                    loanBalance = loanInstance?.calculatedPayBack - loanBalance;
+
                     return (
-                      <tr>
+                      <tr key={idx}>
                         <td>{loanInstance._id.substring(0, 5)}</td>
                         <td>{`N ${numberWithCommas(
                           loanInstance.monthlyRepayment
@@ -146,10 +159,10 @@ const ConsumerCredit = () => {
                             ? loanInstance.paymentPeriod
                             : loanInstance.approvedTenure}
                         </td>
-                        <td>{loanInstance.status}</td>
+                        <td>{_.startCase(loanInstance.status)}</td>
                         <td>Salary</td>
                         <td>{`N ${numberWithCommas(loanInstance.amount)}`}</td>
-                        <td>______</td>
+                        <td>{`N ${numberWithCommas(loanBalance)}`}</td>
                       </tr>
                     );
                   })}

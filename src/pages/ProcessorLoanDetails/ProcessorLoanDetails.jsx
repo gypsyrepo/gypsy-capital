@@ -223,7 +223,6 @@ export const RepayPlusApprove = ({
           "DD/MM/YYYY"
         ).toDate();
       } else {
-        console.log("works 2");
         repayDate = null;
       }
 

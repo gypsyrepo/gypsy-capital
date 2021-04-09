@@ -4,6 +4,7 @@ import history from '../utils/history';
 import pageUrl from '../routes/pageUrl';
 
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default (email, password) => {
   const { state: { user }, getActiveUser } = useContext(AuthContext);
 

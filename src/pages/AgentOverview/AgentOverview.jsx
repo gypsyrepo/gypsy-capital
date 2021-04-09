@@ -57,7 +57,7 @@ const AgentOverview = () => {
     return loans.slice(0, 5);
   }, [loans]);
 
-  // console.log(recentLoans, 'totalDisbursed');
+  // console.log(loans);
 
   return (
     <Dashboard sidebarRoutes={salesRoute} location={location}>

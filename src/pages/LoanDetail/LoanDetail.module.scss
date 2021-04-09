@@ -1,80 +1,120 @@
 :root {
-    --fontColorOne:  #212121;
-    --fontFamilyOne: 'Source Sans Pro';
-    --fontFamilyTwo: 'Kanit';
-    --backgroundOne: ' #F5F5F5';
+  --fontColorOne: #212121;
+  --fontFamilyOne: "Source Sans Pro";
+  --fontFamilyTwo: "Kanit";
+  --backgroundOne: " #F5F5F5";
 }
 
 .detailFields {
-    padding: 40px 60px;
-    font-family: var(--fontFamilyOne);
-    .basicInfo {
-        h4 {
-            font-size: 1.45rem;
-            font-weight: 600;
-        }
+  padding: 40px 60px;
+  font-family: var(--fontFamilyOne);
+  .basicInfo {
+    h4 {
+      font-size: 1.45rem;
+      font-weight: 600;
     }
+  }
 }
 
 .status {
-    p {
-        text-align: center;
-        background-color: #fff;
-        max-width: 180px;
-        margin: 0 auto;
-        padding: 10px 16px;
-        box-sizing: border-box;
-        font-weight: 600;
-        font-family: var(--fontFamilyOne);
-        font-size: 1.1rem;
-        color: #741763;
-        box-shadow: 8px 15px 30px #0000001A;
-        border-radius: 10px;
-    }
+  p {
+    text-align: center;
+    background-color: #fff;
+    max-width: 180px;
+    margin: 0 auto;
+    padding: 10px 16px;
+    box-sizing: border-box;
+    font-weight: 600;
+    font-family: var(--fontFamilyOne);
+    font-size: 1.1rem;
+    color: #741763;
+    box-shadow: 8px 15px 30px #0000001a;
+    border-radius: 10px;
+  }
 }
 
 .approvalCard {
-    background-color: #fff;
-    box-shadow: 8px 15px 30px #0000001A;
-    margin-top: 60px;
-    border-radius: 10px;
-    padding: 30px 25px;
-    h4 {
+  background-color: #fff;
+  box-shadow: 8px 15px 30px #0000001a;
+  margin-top: 60px;
+  border-radius: 10px;
+  padding: 30px 25px;
+  h4 {
+    font-family: var(--fontFamilyOne);
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  table {
+    margin-top: 25px;
+    thead {
+      background-color: #741763;
+      color: #fff;
+      border: none;
+    }
+    tbody {
+      td {
+        font-size: 1.05rem;
         font-family: var(--fontFamilyOne);
-        font-size: 1.4rem;
-        font-weight: 600;
-
+      }
     }
-    table {
-        margin-top: 25px;
-        thead {
-            background-color: #741763;
-            color: #fff;
-            border: none;
-        }
-        tbody {
-            td {
-                font-size: 1.05rem;
-                font-family: var(--fontFamilyOne);
-            }
-        }
-    }
+  }
 }
 
 .repayment {
-    background-color: #fff;
-    box-shadow: 8px 15px 30px #0000001A;
-    border-radius: 10px;
-    padding: 30px 25px;
-    thead {
-        th {
-            background-color: #741763;
-            color: #fff;
-        }
+  background-color: #fff;
+  box-shadow: 8px 15px 30px #0000001a;
+  border-radius: 10px;
+  overflow-x: scroll;
+  .repaymentTable {
+    // padding: 30px 25px;
+    overflow-x: scroll;
+  }
+  thead {
+    th {
+      background-color: #741763;
+      color: #fff;
+      white-space: nowrap;
     }
-    tbody {
-        td {
-            font-size: 1.05rem;
+  }
+  tbody {
+    td {
+      font-size: 1.05rem;
+      white-space: nowrap;
+      button {
+        border-radius: 5px;
+        background-color: rgba(116, 23, 99, 0.7);
+        border: none;
+        color: #fff;
+        padding: 2px 16px;
+        &:focus {
+          outline: none;
         }
+        &:disabled {
+          cursor: not-allowed;
+          background-color: rgba(116, 23, 99, 0.4);
+        }
+      }
     }
+  }
+}
+
+.repaymentForm {
+  width: 500px;
+  margin: 0 auto;
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 40px 36px;
+  .proofUpload {
+    margin-top: 28px;
+    text-align: center;
+    h2 {
+      font-size: 1.7rem;
+    }
+    p {
+      font-size: 1.05rem;
+    }
+    .uploadBtn {
+      margin: 0 auto;
+    }
+  }
 }
