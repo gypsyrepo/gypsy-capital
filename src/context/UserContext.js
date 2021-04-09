@@ -103,6 +103,43 @@ const verifyBvn = dispatch => async(userId, bvn, callback, inModal) => {
 }
 
 
+const verifyBvnAlt = dispatch => async(userId, verifyData, callback, inModal) => {
+  dispatch({ type: 'set_error', payload: null });
+  dispatch({ type: "set_loading", payload: true });
+  console.log(verifyData);
+  try {
+    const token = resolveToken();
+    await gypsy.post(`/verify_bvn_b/${userId}`, verifyData, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    // console.log(response.data);
+
+    dispatch({
+      type: "set_setup_stage",
+      payload: "bvn_verified"
+    })
+    if(callback) {
+      callback();
+    }
+    dispatch({ type: "set_loading", payload: false });
+    if(!inModal) {
+      history.push('/dashboard/profile/setup/info')
+    }
+  } catch(err) {
+    if(err.response) {
+      console.log(err.response)
+      dispatch({
+        type: 'set_error',
+        payload: err.response.data.message
+      });
+      dispatch({ type: "set_loading", payload: false });
+    }
+  }
+}
+
+
 const updateIdentityInfo = dispatch => async(userId, updateData, inModal) => {
   dispatch({ type: 'set_error', payload: null });
   dispatch({ type: "set_loading", payload: true });
@@ -277,6 +314,6 @@ const clearErrors = dispatch => () => {
 
 export const { Context, Provider } = createDataContext(
   userReducer,
-  { updatePersonalInfo, verifyBvn, clearErrors, getClientDetails, updateIdentityInfo, resetPassword, createNewPassword, getClientList, getClientListForRole },
+  { updatePersonalInfo, verifyBvn, clearErrors, getClientDetails, updateIdentityInfo, resetPassword, createNewPassword, getClientList, getClientListForRole, verifyBvnAlt },
   { loading: false, error: null, userDetails: null, setupStage: null, clients: [], detailStatus: true, clientsForRole: [] }
 )
