@@ -9,6 +9,7 @@ import { nigeriaStates } from "../../utils/nigeriaStates";
 import { Context as BankContext } from "../../context/BankCotext";
 import { validateInput } from "../../utils/validateInput";
 import BeatLoader from "react-spinners/BeatLoader";
+import CustomDatePicker from "../CustomDatePicker/CustomDatePicker";
 
 const PersonalForm = ({ submit }) => {
   const {
@@ -38,7 +39,7 @@ const PersonalForm = ({ submit }) => {
 
   const [biodata, setBiodata] = useState({
     fullName: "",
-    dateOfBirth: "",
+    dateOfBirth: null,
     bvnPhoneNo: "",
     email: "",
     phoneNo: "",
@@ -131,14 +132,13 @@ const PersonalForm = ({ submit }) => {
 
   useEffect(() => {
     if (user && userDetails) {
-      const { bioData } = userDetails;
       setBiodata({
         ...biodata,
         fullName: `${user.firstName} ${user.lastName}`,
         email: user.email,
         phoneNo: user.phoneNumber.replace("234", "0"),
-        dateOfBirth: bioData.DOB,
-        bvnPhoneNo: bioData.bvnPhoneNumber,
+        // dateOfBirth: bioData.DOB,
+        // bvnPhoneNo: bioData.bvnPhoneNumber,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -171,16 +171,14 @@ const PersonalForm = ({ submit }) => {
             />
           </Col>
           <Col sm={12} md={6}>
-            <InputField
+            <CustomDatePicker
               label="Date of Birth"
-              type="text"
-              nameAttr="dob"
               value={biodata.dateOfBirth}
               changed={(val) => {
                 setBiodataErrors({ ...biodataErrors, dateOfBirth: null });
                 setBiodata({ ...biodata, dateOfBirth: val });
               }}
-              error={biodataErrors.dateOfBirth && biodataErrors.dateOfBirth}
+              error={biodataErrors?.dateOfBirth}
             />
           </Col>
         </Row>
@@ -188,7 +186,7 @@ const PersonalForm = ({ submit }) => {
           <Col sm={12} md={6} className="mb-4 mb-md-0">
             <InputField
               label="BVN-linked Phone Number"
-              type="text"
+              type="number"
               nameAttr="bvnPhoneNo"
               value={biodata.bvnPhoneNo}
               changed={(val) => {

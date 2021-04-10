@@ -41,7 +41,8 @@ const Profile = () => {
 
   const {
     state: { error, userDetails },
-    verifyBvn,
+    // verifyBvn,
+    verifyBvnAlt,
     clearErrors,
     getClientDetails,
     updatePersonalInfo,
@@ -82,8 +83,8 @@ const Profile = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
-  const submitBvn = async (bvn) => {
-    await verifyBvn(user.user_id, bvn, getActiveUser);
+  const submitBvn = async (verifyData) => {
+    await verifyBvnAlt(user.user_id, verifyData, getActiveUser);
   };
 
   const submitPersonalInfo = async (biodata, residence, kin, bank) => {
