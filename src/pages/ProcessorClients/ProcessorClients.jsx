@@ -24,6 +24,8 @@ const ProcessorClients = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log(clientsForRole);
+
   return (
     <Dashboard sidebarRoutes={processorRoute} location={location}>
       {!loading ? (

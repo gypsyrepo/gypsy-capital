@@ -82,8 +82,10 @@ const AuthorizerClientDetails = () => {
                 userDetails && {
                   ...userDetails.bioData,
                   ...userDetails.residence,
+                  ...userDetails.identity,
                 }
               }
+              userRole={user.role}
             />
           )}
           {visibleSection === "kin" && (

@@ -9,6 +9,8 @@ const userReducer = (state, action) => {
   switch(action.type) {
     case 'set_loading':
       return { ...state, loading: action.payload }
+    case 'set_updating':
+      return { ...state, updating: action.payload }
     case 'set_user_details':
       return { ...state, userDetails: action.payload }
     case 'set_error':
@@ -21,6 +23,8 @@ const userReducer = (state, action) => {
       return { ...state, detailStatus: action.payload }
     case 'set_clients_for_role':
       return { ...state, clientsForRole: action.payload }
+    case 'set_message':
+      return { ...state, message: action.payload }
     default:
       return state;
   }
@@ -305,6 +309,44 @@ const createNewPassword = dispatch => async(data) => {
   }
 }
 
+const updateClientData = dispatch => async(clientId, newData) => {
+  dispatch({ type: 'set_error', payload: null });
+  dispatch({ type: "set_updating", payload: true });
+  try {
+    const token = resolveToken();
+    const response = await gypsy.patch(`/client_details/${clientId}`, newData, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    console.log(response.data.message);
+
+    dispatch({
+      type: "set_message",
+      payload: response.data.message
+    });
+    dispatch({ type: "set_updating", payload: false });
+  } catch(err) {
+    if(err.response) {
+      console.log(err.response)
+      const errorMessage = err.response.data.error || err.response.data.message
+      console.log(errorMessage);
+      dispatch({
+        type: 'set_error',
+        payload: errorMessage
+      })
+    }
+    dispatch({ type: "set_updating", payload: false });
+  }
+}
+
+const clearMessage = dispatch => () => {
+  dispatch({
+    type: 'set_message',
+    payload: null
+  });
+}
+
 const clearErrors = dispatch => () => {
   dispatch({
     type: 'set_error',
@@ -314,6 +356,6 @@ const clearErrors = dispatch => () => {
 
 export const { Context, Provider } = createDataContext(
   userReducer,
-  { updatePersonalInfo, verifyBvn, clearErrors, getClientDetails, updateIdentityInfo, resetPassword, createNewPassword, getClientList, getClientListForRole, verifyBvnAlt },
-  { loading: false, error: null, userDetails: null, setupStage: null, clients: [], detailStatus: true, clientsForRole: [] }
+  { updatePersonalInfo, verifyBvn, clearErrors, getClientDetails, updateIdentityInfo, resetPassword, createNewPassword, getClientList, getClientListForRole, verifyBvnAlt, updateClientData, clearMessage },
+  { loading: false, error: null, userDetails: null, setupStage: null, clients: [], detailStatus: true, clientsForRole: [], message: null, updating: false }
 )
