@@ -65,6 +65,23 @@ const AuthorizerOverview = () => {
     return loans.slice(0, 5);
   }, [loans]);
 
+  const repaidAmount = useMemo(() => {
+    let amount = loans
+      .map((loanInstance) => loanInstance?.repayment)
+      .map((instance) => {
+        return instance.filter((arr) => arr.status === true);
+      })
+      .map((filteredArr) => {
+        return filteredArr.reduce((acc, curr) => {
+          return acc + curr.scheduledAmount;
+        }, 0);
+      })
+      .reduce((acc, curr) => {
+        return acc + curr;
+      }, 0);
+    return amount;
+  }, [loans]);
+
   console.log(loans);
 
   return (
@@ -112,7 +129,9 @@ const AuthorizerOverview = () => {
                 <StatBox
                   icon={RepaymentStat}
                   title="Total Repayment Received"
-                  statData="3.75M"
+                  statData={
+                    numberWithCommas(Math.ceil(repaidAmount)).split(".")[0]
+                  }
                 />
               </Col>
               <Col>

@@ -159,9 +159,14 @@ const ProcessorClientDetails = () => {
                   userDetails && {
                     ...userDetails.bioData,
                     ...userDetails.residence,
+                    ...userDetails.identity,
+                    nextOfKin: { ...userDetails.nextOfKin },
+                    bank: { ...userDetails.bank },
                   }
                 }
                 userId={userDetails?.clientId}
+                reloadClients={getClientDetails}
+                userRole={user.role}
               />
             )}
             {detailSection === "kin" && (
@@ -172,7 +177,7 @@ const ProcessorClientDetails = () => {
             )}
             {detailSection === "employ" && (
               <Employer
-                data={userDetails.employer && { ...userDetails.employer }}
+                data={userDetails?.employer && { ...userDetails.employer }}
               />
             )}
             {detailSection === "doc" && (

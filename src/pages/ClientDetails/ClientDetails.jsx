@@ -17,23 +17,34 @@ import { numberWithCommas } from "../../utils/nigeriaStates";
 import { TiCancelOutline } from "react-icons/ti";
 import useLoanDetails from "../../hooks/useLoanDetails";
 import _ from "lodash";
+import CustomDatePicker from "../../components/CustomDatePicker/CustomDatePicker";
+import { toast, ToastContainer } from "react-toastify";
+import moment from "moment";
 
-export const Biodata = ({ data, userId }) => {
+export const Biodata = ({ data, userId, reloadClients, userRole }) => {
   const [loanDeets] = useLoanDetails(userId);
 
   const [biodata, setBiodata] = useState({
     firstName: "",
     lastName: "",
     gender: "",
-    dateOfBirth: "",
+    dateOfBirth: null,
     emailAddress: "",
     phoneNumber: "",
     altPhoneNumber: "",
     residentialAddress: "",
     bvn: "",
   });
+  console.log(data);
 
   const [residentialStatus, setResidentialStatus] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+
+  const {
+    state: { message, updating },
+    updateClientData,
+    clearMessage,
+  } = useContext(UserContext);
 
   useEffect(() => {
     if (data) {
@@ -42,7 +53,9 @@ export const Biodata = ({ data, userId }) => {
         firstName: data.firstName,
         lastName: data.lastName,
         gender: _.capitalize(data.gender),
-        dateOfBirth: data.DOB,
+        dateOfBirth: !data.DOB.includes("-")
+          ? moment(data?.DOB, "DD/MM/YYYY").toDate()
+          : null,
         emailAddress: data.email,
         phoneNumber: data.phoneNumber.replace("234", "0"),
         altPhoneNumber: data.alternativePhoneNumber,
@@ -62,16 +75,67 @@ export const Biodata = ({ data, userId }) => {
     }
   }, [loanDeets]);
 
+  const enterEditMode = () => {
+    setIsEditing(true);
+  };
+
+  const updateClientDetails = async () => {
+    const updateData = {
+      alternativePhoneNumber: biodata?.altPhoneNumber,
+      gender: biodata?.gender,
+      residence_street: data?.street,
+      residence_city: data?.city,
+      residence_state: data?.state,
+      nextOfKin_fullName: data?.nextOfKin?.fullName,
+      nextOfKin_relationship: data?.nextOfKin?.relationship,
+      nextOfKin_email: data?.nextOfKin?.email,
+      nextOfKin_phoneNumber: data?.nextOfKin?.phoneNumber,
+      nextOfKin_residentialAddress: data?.nextOfKin?.residentialAddress,
+      bank_name: data?.bank?.bankName,
+      bank_accountType: data?.bank?.accountType,
+      bank_accountNumber: data?.bank?.accountNumber,
+      bank_accountName: data?.bank?.accountName,
+      firstName: biodata?.firstName,
+      lastName: biodata?.lastName,
+      phoneNumber: biodata?.phoneNumber.replace("0", "234"),
+      dob: moment(biodata?.dateOfBirth).format("DD/MM/YYYY"),
+    };
+
+    // console.log(updateData);
+    await updateClientData(userId, updateData);
+    setIsEditing(false);
+  };
+
+  useEffect(() => {
+    if (message) {
+      toast.success(message);
+      clearMessage();
+      reloadClients(userId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [message]);
+
   return (
     <>
+      <ToastContainer position="top-center" />
+      <div className={styles.profileImg}>
+        {data.profilePhoto ? (
+          <img src={data?.profilePhoto} alt="user identity" />
+        ) : (
+          <div className={styles.placeholder} alt="image placeholder"></div>
+        )}
+      </div>
       <Row className="mb-4">
         <Col>
           <InputField
             type="text"
             label="First Name"
             nameAttr="firstName"
+            changed={(val) => {
+              setBiodata({ ...biodata, firstName: val });
+            }}
             value={biodata.firstName}
-            disable={true}
+            disable={!isEditing}
           />
         </Col>
         <Col>
@@ -79,8 +143,11 @@ export const Biodata = ({ data, userId }) => {
             type="text"
             label="Last Name"
             nameAttr="lastName"
+            changed={(val) => {
+              setBiodata({ ...biodata, lastName: val });
+            }}
             value={biodata.lastName}
-            disable={true}
+            disable={!isEditing}
           />
         </Col>
       </Row>
@@ -95,12 +162,18 @@ export const Biodata = ({ data, userId }) => {
           />
         </Col>
         <Col>
-          <InputField
+          <CustomDatePicker
             type="text"
             label="Date of Birth"
             nameAttr="dob"
+            changed={(val) => {
+              setBiodata({
+                ...biodata,
+                dateOfBirth: val,
+              });
+            }}
             value={biodata.dateOfBirth}
-            disable={true}
+            disable={!isEditing}
           />
         </Col>
       </Row>
@@ -119,8 +192,11 @@ export const Biodata = ({ data, userId }) => {
             type="text"
             label="Phone Number"
             nameAttr="phoneNo"
+            changed={(val) => {
+              setBiodata({ ...biodata, phoneNumber: val });
+            }}
             value={biodata.phoneNumber}
-            disable={true}
+            disable={!isEditing}
           />
         </Col>
       </Row>
@@ -166,6 +242,31 @@ export const Biodata = ({ data, userId }) => {
           />
         </Col>
       </Row>
+      {userRole === "processor" && (
+        <div className={styles.btnGroup}>
+          <Button
+            bgColor="#741763"
+            size="lg"
+            color="#fff"
+            className="mt-4"
+            disabled={isEditing}
+            clicked={enterEditMode}
+          >
+            Edit Info
+          </Button>
+          <Button
+            bgColor="#741763"
+            size="lg"
+            color="#fff"
+            className="mt-4"
+            disabled={!isEditing}
+            clicked={updateClientDetails}
+            loading={updating}
+          >
+            Save Changes
+          </Button>
+        </div>
+      )}
     </>
   );
 };
@@ -185,8 +286,8 @@ export const NextOfKin = ({ data }) => {
 
       setNextOfKin({
         ...nextOfKin,
-        firstName: names[0],
-        lastName: names[names.length - 1],
+        firstName: names && names[0],
+        lastName: names && names[names.length - 1],
         relationship: data.relationship,
         phoneNumber: data.phoneNumber,
         residentialAddress: data.residentialAddress,
@@ -742,9 +843,14 @@ const ClientDetails = () => {
                 userDetails && {
                   ...userDetails.bioData,
                   ...userDetails.residence,
+                  nextOfKin: { ...userDetails.nextOfKin },
+                  bank: { ...userDetails.bank },
+                  ...userDetails.identity,
                 }
               }
               userId={userDetails?.clientId}
+              reloadClients={getClientDetails}
+              userRole={`${user.role}-agent`}
             />
           )}
           {detailSection === "kin" && (
