@@ -1,16 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { Context as LoanContext } from "../../context/LoanContext";
 import OfferLetterForm from "../OfferLetter/OfferLetterForm";
 import styles from "./ProcessOffer.module.scss";
 import { Row, Col } from "react-bootstrap";
 import Button from "../Button/Button";
 import InputField from "../InputField/InputField";
 import { GrAttachment } from "react-icons/gr";
-import { pdf } from "@react-pdf/renderer";
-import OfferLetterPdf from "../OfferLetter/OfferLetter";
+import { validateInput } from "../../utils/validateInput";
+import { toast } from "react-toastify";
 
-const SendOfferForm = () => {
-  const offerLetterBlob = pdf(OfferLetterPdf).toBlob();
-  console.log(offerLetterBlob);
+const SendOfferForm = ({ offerLetter, clientData, loanId }) => {
+  console.log(loanId);
+  const {
+    state: { loading, error, message },
+    sendOfferLetter,
+    clearMessage,
+    clearError,
+  } = useContext(LoanContext);
+
+  const [sendFormInput, setSendFormInput] = useState({
+    email: "",
+    message: "",
+  });
+
+  const [sendFormErrors, setSendFormErrors] = useState({
+    email: null,
+    message: null,
+  });
+
+  useEffect(() => {
+    if (clientData) {
+      setSendFormInput({ ...sendFormInput, email: clientData?.email });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clientData]);
+
+  const sendOfferToClient = () => {
+    const validated = validateInput(sendFormInput, setSendFormErrors);
+
+    if (validated) {
+      const data = new FormData();
+      data.append("image", offerLetter);
+      data.append("subject", "Loan Approval Offer Letter From Gypsy Capital");
+      data.append("message", sendFormInput.message);
+
+      sendOfferLetter(loanId, data);
+    }
+  };
+
+  useEffect(() => {
+    if (message) {
+      toast.success(message);
+      clearMessage();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [message]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      clearError();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
 
   return (
     <div className={styles.send}>
@@ -27,6 +79,12 @@ const SendOfferForm = () => {
               type="email"
               placeholder="Client's email"
               nameAttr="clientEmail"
+              value={sendFormInput.email}
+              changed={(val) => {
+                setSendFormInput({ ...sendFormInput, email: val });
+                setSendFormErrors({ ...sendFormErrors, email: null });
+              }}
+              error={sendFormErrors?.email}
             />
           </Col>
         </Row>
@@ -45,7 +103,16 @@ const SendOfferForm = () => {
             <p>Message:</p>
           </Col>
           <Col md={10}>
-            <InputField type="textarea" nameAttr="message" />
+            <InputField
+              type="textarea"
+              nameAttr="message"
+              value={sendFormInput.message}
+              changed={(val) => {
+                setSendFormInput({ ...sendFormInput, message: val });
+                setSendFormErrors({ ...sendFormErrors, message: null });
+              }}
+              error={sendFormErrors?.message}
+            />
           </Col>
         </Row>
       </div>
@@ -56,12 +123,12 @@ const SendOfferForm = () => {
             Offer Letter Attached
           </p>
           <Button
-            // clicked={updateContactInfo}
+            clicked={sendOfferToClient}
             bgColor="#741763"
             size="sm"
             color="#EBEBEB"
-            // disabled={loading}
-            // loading={loading}
+            disabled={loading}
+            loading={loading}
           >
             Send
           </Button>
@@ -73,13 +140,22 @@ const SendOfferForm = () => {
 
 const ProcessOffer = ({ data }) => {
   const [sendState, setSendState] = useState(false);
+  const [offerLetterBlob, setOfferLetterBlob] = useState(null);
 
   return (
     <>
       {sendState ? (
-        <SendOfferForm />
+        <SendOfferForm
+          clientData={data?.client}
+          offerLetter={offerLetterBlob}
+          loanId={data?._id}
+        />
       ) : (
-        <OfferLetterForm loanData={data} setState={setSendState} />
+        <OfferLetterForm
+          saveBlob={setOfferLetterBlob}
+          loanData={data}
+          setState={setSendState}
+        />
       )}
     </>
   );

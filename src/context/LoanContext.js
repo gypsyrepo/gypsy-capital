@@ -10,6 +10,8 @@ const loanReducer = (state, action) => {
       return { ...state, loading: action.payload };
     case "set_error":
       return { ...state, error: action.payload };
+    case "set_message":
+      return { ...state, message: action.payload };
     case "set_application_stage":
       return { ...state, loanApplicationStage: action.payload };
     case "set_loan_list":
@@ -220,7 +222,6 @@ const retrieveClientLoans = (dispatch) => async () => {
 };
 
 const retrieveLoan = (dispatch) => async (loanId) => {
-  console.log("works");
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
@@ -245,6 +246,34 @@ const retrieveLoan = (dispatch) => async (loanId) => {
   }
 };
 
+const sendOfferLetter = dispatch => async(loanId, sendData) => {
+  dispatch({ type: "set_loading", payload: true });
+  try {
+    const token = resolveToken();
+    const response = await gypsy.post(`/user/loan/offer_letter/${loanId}`, sendData, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    // console.log(response.data);
+    dispatch({
+      type: "set_message",
+      payload: response.data.message
+    });
+    dispatch({ type: "set_loading", payload: false });
+  } catch(err) {
+    if (err.response) {
+      console.log(err.response.data);
+      const errorMessage = err.response.data.error || err.response.data.message;
+      dispatch({
+        type: "set_error",
+        payload: errorMessage,
+      });
+      dispatch({ type: "set_loading", payload: false });
+    }
+  }
+}
+
 const clearError = (dispatch) => () => {
   dispatch({
     type: "set_error",
@@ -259,6 +288,13 @@ const clearCompleteState = (dispatch) => () => {
   });
 };
 
+const clearMessage = (dispatch) => () => {
+  dispatch({
+    type: "set_message",
+    payload: null,
+  });
+}
+
 export const { Context, Provider } = createDataContext(
   loanReducer,
   {
@@ -271,6 +307,8 @@ export const { Context, Provider } = createDataContext(
     clearCompleteState,
     resetApplyStage,
     retrieveLoan,
+    sendOfferLetter,
+    clearMessage
   },
   {
     loading: false,
@@ -280,5 +318,6 @@ export const { Context, Provider } = createDataContext(
     loanApplicationStage: null,
     currentLoanId: null,
     incomplete: false,
+    message: null
   }
 );
