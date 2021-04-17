@@ -7,7 +7,7 @@ import Button from "../Button/Button";
 import InputField from "../InputField/InputField";
 import { GrAttachment } from "react-icons/gr";
 import { validateInput } from "../../utils/validateInput";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 const SendOfferForm = ({ offerLetter, clientData, loanId }) => {
   console.log(loanId);
@@ -65,76 +65,79 @@ const SendOfferForm = ({ offerLetter, clientData, loanId }) => {
   }, [error]);
 
   return (
-    <div className={styles.send}>
-      <div className={styles.header}>
-        <h2>Send Offer Letter</h2>
-      </div>
-      <div className={styles.body}>
-        <Row className="align-items-center mb-5">
-          <Col md={2}>
-            <p>To:</p>
-          </Col>
-          <Col md={10}>
-            <InputField
-              type="email"
-              placeholder="Client's email"
-              nameAttr="clientEmail"
-              value={sendFormInput.email}
-              changed={(val) => {
-                setSendFormInput({ ...sendFormInput, email: val });
-                setSendFormErrors({ ...sendFormErrors, email: null });
-              }}
-              error={sendFormErrors?.email}
-            />
-          </Col>
-        </Row>
-        <Row className="align-items-center mb-5">
-          <Col md={2}>
-            <p>Subject:</p>
-          </Col>
-          <Col md={10}>
-            <p style={{ fontWeight: "400" }}>
-              Loan Approval Offer Letter From Gypsy Capital
+    <>
+      <ToastContainer position="top-center" />
+      <div className={styles.send}>
+        <div className={styles.header}>
+          <h2>Send Offer Letter</h2>
+        </div>
+        <div className={styles.body}>
+          <Row className="align-items-center mb-5">
+            <Col md={2}>
+              <p>To:</p>
+            </Col>
+            <Col md={10}>
+              <InputField
+                type="email"
+                placeholder="Client's email"
+                nameAttr="clientEmail"
+                value={sendFormInput.email}
+                changed={(val) => {
+                  setSendFormInput({ ...sendFormInput, email: val });
+                  setSendFormErrors({ ...sendFormErrors, email: null });
+                }}
+                error={sendFormErrors?.email}
+              />
+            </Col>
+          </Row>
+          <Row className="align-items-center mb-5">
+            <Col md={2}>
+              <p>Subject:</p>
+            </Col>
+            <Col md={10}>
+              <p style={{ fontWeight: "400" }}>
+                Loan Approval Offer Letter From Gypsy Capital
+              </p>
+            </Col>
+          </Row>
+          <Row className="align-items-center">
+            <Col md={2}>
+              <p>Message:</p>
+            </Col>
+            <Col md={10}>
+              <InputField
+                type="textarea"
+                nameAttr="message"
+                value={sendFormInput.message}
+                changed={(val) => {
+                  setSendFormInput({ ...sendFormInput, message: val });
+                  setSendFormErrors({ ...sendFormErrors, message: null });
+                }}
+                error={sendFormErrors?.message}
+              />
+            </Col>
+          </Row>
+        </div>
+        <div className={styles.footer}>
+          <div>
+            <p>
+              <GrAttachment size="1.3em" color="#706767" className="mr-4" />
+              Offer Letter Attached
             </p>
-          </Col>
-        </Row>
-        <Row className="align-items-center">
-          <Col md={2}>
-            <p>Message:</p>
-          </Col>
-          <Col md={10}>
-            <InputField
-              type="textarea"
-              nameAttr="message"
-              value={sendFormInput.message}
-              changed={(val) => {
-                setSendFormInput({ ...sendFormInput, message: val });
-                setSendFormErrors({ ...sendFormErrors, message: null });
-              }}
-              error={sendFormErrors?.message}
-            />
-          </Col>
-        </Row>
-      </div>
-      <div className={styles.footer}>
-        <div>
-          <p>
-            <GrAttachment size="1.3em" color="#706767" className="mr-4" />
-            Offer Letter Attached
-          </p>
-          <Button
-            clicked={sendOfferToClient}
-            bgColor="#741763"
-            size="sm"
-            color="#EBEBEB"
-            disabled={loading}
-            loading={loading}
-          >
-            Send
-          </Button>
+            <Button
+              clicked={sendOfferToClient}
+              bgColor="#741763"
+              size="sm"
+              color="#EBEBEB"
+              disabled={loading}
+              loading={loading}
+            >
+              Send
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

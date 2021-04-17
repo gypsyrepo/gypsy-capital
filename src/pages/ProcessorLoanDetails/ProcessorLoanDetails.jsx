@@ -29,12 +29,17 @@ import { RiSendPlaneFill } from "react-icons/ri";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import DocumentModal from "../../components/DocumentModal/DocumentModal";
 
 export const MonoTab = ({ clientId }) => {
+  const [showAcctStatement, setShowAcctStatement] = useState(false);
+  console.log(clientId);
+
   const {
-    state: { loading },
+    state: { statementPdf, infoLoading, statementLoading, loading },
     getAccountInfo,
     getAccountStatement,
+    getAccountTransactionHistory,
   } = useContext(MonoContext);
 
   const retrieveAccountInfo = () => {
@@ -42,9 +47,18 @@ export const MonoTab = ({ clientId }) => {
     getAccountInfo(clientId);
   };
 
-  const retrieveAccountStatement = () => {
-    getAccountStatement(clientId, 3);
+  const retrieveAccountStatement = async () => {
+    await getAccountStatement(clientId, 3);
+    setShowAcctStatement(true);
   };
+
+  const retrieveTransactionHistory = () => {
+    getAccountTransactionHistory(clientId, "03/01/2021", "03/04/2021");
+  };
+
+  useEffect(() => {
+    console.log(statementPdf);
+  }, [statementPdf]);
 
   return (
     <>
@@ -61,8 +75,8 @@ export const MonoTab = ({ clientId }) => {
               bgColor="#741763"
               size="lg"
               color="#EBEBEB"
-              disabled={loading}
-              loading={loading}
+              disabled={statementLoading}
+              loading={statementLoading}
             >
               Get Account Statement
             </Button>
@@ -73,12 +87,12 @@ export const MonoTab = ({ clientId }) => {
             <Button
               className="mt-4"
               fullWidth
-              // clicked={updateContactInfo}
+              clicked={retrieveTransactionHistory}
               bgColor="#741763"
               size="lg"
               color="#EBEBEB"
-              // disabled={loading}
-              // loading={loading}
+              disabled={loading}
+              loading={loading}
             >
               Get Transaction History
             </Button>
@@ -93,14 +107,23 @@ export const MonoTab = ({ clientId }) => {
               bgColor="#741763"
               size="lg"
               color="#EBEBEB"
-              disabled={loading}
-              loading={loading}
+              disabled={infoLoading}
+              loading={infoLoading}
             >
               Get Account Info
             </Button>
           </Col>
         </Row>
       </div>
+      {showAcctStatement && (
+        <DocumentModal
+          fileTitle="Account Statement"
+          fileUrl={statementPdf}
+          closeModal={() => {
+            setShowAcctStatement(false);
+          }}
+        />
+      )}
     </>
   );
 };

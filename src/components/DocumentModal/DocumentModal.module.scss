@@ -1,0 +1,30 @@
+.documentModal {
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 9999;
+  overflow: scroll;
+  .header {
+    background-color: #741763;
+    display: flex;
+    padding: 10px 36px;
+    align-items: center;
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    right: 0;
+    top: 0;
+    p {
+      margin-bottom: 0;
+      font-size: 1.2rem;
+      color: #fff;
+      margin-right: auto;
+    }
+  }
+  .body {
+    padding-top: 80px;
+  }
+}

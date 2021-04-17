@@ -144,7 +144,7 @@ const ApplySuccess = ({ close }) => {
 const LoanModal = ({ openState, closeHandler, userId }) => {
   const {
     state: { loanApplicationStage, error },
-    clearErrors,
+    clearError,
     resetApplyStage,
   } = useContext(LoanContext);
   const [stage, setStage] = useState(0);
@@ -171,7 +171,7 @@ const LoanModal = ({ openState, closeHandler, userId }) => {
   useEffect(() => {
     if (error) {
       toast.error(error);
-      clearErrors();
+      clearError();
     }
   }, [error]);
 
