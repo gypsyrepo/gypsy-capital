@@ -30,21 +30,35 @@ import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import DocumentModal from "../../components/DocumentModal/DocumentModal";
+import Loader from "../../components/Loader/Loader";
+import AccountInfo from "../../components/AccountInfo/AccountInfo";
+import AccountHistory from "../../components/AccountHistory/AccountHistory";
 
 export const MonoTab = ({ clientId }) => {
   const [showAcctStatement, setShowAcctStatement] = useState(false);
-  console.log(clientId);
+  const [showAcctInfo, setShowAcctInfo] = useState(false);
+  const [showAcctHistory, setShowAcctHistory] = useState(false);
 
   const {
-    state: { statementPdf, infoLoading, statementLoading, loading },
+    state: {
+      statementPdf,
+      infoLoading,
+      statementLoading,
+      loading,
+      accountInfo,
+      monoStatus,
+      transactionHistory,
+    },
     getAccountInfo,
     getAccountStatement,
     getAccountTransactionHistory,
+    checkMonoStatus,
   } = useContext(MonoContext);
 
-  const retrieveAccountInfo = () => {
+  const retrieveAccountInfo = async () => {
     console.log(clientId);
-    getAccountInfo(clientId);
+    await getAccountInfo(clientId);
+    setShowAcctInfo(true);
   };
 
   const retrieveAccountStatement = async () => {
@@ -52,18 +66,47 @@ export const MonoTab = ({ clientId }) => {
     setShowAcctStatement(true);
   };
 
-  const retrieveTransactionHistory = () => {
-    getAccountTransactionHistory(clientId, "03/01/2021", "03/04/2021");
+  const retrieveTransactionHistory = async () => {
+    const now = new Date();
+    const today = `${
+      now.getDate().toString().length < 2 ? `0${now.getDate()}` : now.getDate()
+    }/${
+      (now.getMonth() + 1).toString().length < 2
+        ? `0${now.getMonth() + 1}`
+        : now.getMonth() + 1
+    }/${now.getFullYear()}`;
+    const oneYearAgo = `${
+      now.getDate().toString().length < 2 ? `0${now.getDate()}` : now.getDate()
+    }/${
+      (now.getMonth() + 1).toString().length < 2
+        ? `0${now.getMonth() + 1}`
+        : now.getMonth() + 1
+    }/${now.getFullYear() - 1}`;
+
+    await getAccountTransactionHistory(clientId, {
+      start: oneYearAgo,
+      end: today,
+    });
+    setShowAcctHistory(true);
   };
+
+  useEffect(() => {
+    checkMonoStatus(clientId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     console.log(statementPdf);
   }, [statementPdf]);
 
+  if (!monoStatus) {
+    return <Loader />;
+  }
+
   return (
     <>
       <div className={styles.status}>
-        <p>Status: Inactive</p>
+        <p>{`Status: ${_.startCase(monoStatus)}`}</p>
       </div>
       <div className={styles.monoContainer}>
         <Row>
@@ -121,6 +164,24 @@ export const MonoTab = ({ clientId }) => {
           fileUrl={statementPdf}
           closeModal={() => {
             setShowAcctStatement(false);
+          }}
+        />
+      )}
+      {showAcctInfo && (
+        <DocumentModal
+          fileTitle="Account Information"
+          childComponent={<AccountInfo info={accountInfo?.account} />}
+          closeModal={() => {
+            setShowAcctInfo(false);
+          }}
+        />
+      )}
+      {showAcctHistory && (
+        <DocumentModal
+          fileTitle="Account History"
+          childComponent={<AccountHistory history={transactionHistory?.data} />}
+          closeModal={() => {
+            setShowAcctHistory(false);
           }}
         />
       )}

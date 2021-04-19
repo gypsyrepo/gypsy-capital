@@ -5,7 +5,7 @@ import styles from "./DocumentModal.module.scss";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 
-const DocumentModal = ({ fileTitle, fileUrl, closeModal }) => {
+const DocumentModal = ({ fileTitle, fileUrl, closeModal, childComponent }) => {
   const modalBody = () => (
     <div className={styles.documentModal}>
       <div className={styles.header}>
@@ -15,11 +15,14 @@ const DocumentModal = ({ fileTitle, fileUrl, closeModal }) => {
         </Button>
       </div>
       <div className={styles.body}>
-        <Worker workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js">
-          <Viewer
-            fileUrl={`https://api.withmono.com/statements/WZOVfx7vlOZtFwgAOfUK.pdf`}
-          />
-        </Worker>
+        {fileUrl && (
+          <Worker workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js">
+            <Viewer
+              fileUrl={`https://frozen-caverns-56030.herokuapp.com/${fileUrl}`}
+            />
+          </Worker>
+        )}
+        {childComponent}
       </div>
     </div>
   );
