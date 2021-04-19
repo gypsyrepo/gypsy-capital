@@ -1,0 +1,59 @@
+:root {
+  --fontColorOne: #212121;
+  --fontFamilyOne: "Source Sans Pro";
+  --fontFamilyTwo: "Kanit";
+  --backgroundOne: " #F5F5F5";
+}
+
+.accountInfo {
+  width: 450px;
+  // height: 600px;
+  background-color: transparent;
+  margin: 0 auto;
+  margin-top: 70px;
+  border-radius: 2rem;
+  border: 2px solid #741763;
+  .header {
+    height: 200px;
+    background: linear-gradient(
+      90deg,
+      rgba(116, 23, 99, 1) 0%,
+      rgba(148, 20, 125, 1) 44%,
+      rgba(222, 41, 190, 1) 100%
+    );
+    border-top-left-radius: 1.85rem;
+    border-top-right-radius: 1.85rem;
+    position: relative;
+    h3 {
+      position: absolute;
+      bottom: 20px;
+      left: 30px;
+      color: #fff;
+      font-family: var(--fontFamilyTwo);
+      font-weight: 600;
+    }
+  }
+  .body {
+    padding: 20px 30px;
+    div {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      h4 {
+        font-family: var(--fontFamilyOne);
+        font-size: 1.2rem;
+        color: #741763;
+        font-weight: 600;
+        margin-bottom: 0;
+        width: 150px;
+      }
+      p {
+        font-family: var(--fontFamilyOne);
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-left: 0.8rem;
+        margin-bottom: 0;
+      }
+    }
+  }
+}

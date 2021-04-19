@@ -96,7 +96,7 @@ const ConsumerCredit = () => {
     }
   };
 
-  // console.log(loans);
+  console.log(loans);
 
   return (
     <>
@@ -134,6 +134,7 @@ const ConsumerCredit = () => {
                     <th>Repayment Source</th>
                     <th>Loan Amount</th>
                     <th>Balance</th>
+                    <th>Overpayment</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -147,6 +148,12 @@ const ConsumerCredit = () => {
                       }, 0);
 
                     loanBalance = loanInstance?.calculatedPayBack - loanBalance;
+
+                    let overpayment = loanInstance?.repayment
+                      .map((repayment) => repayment.penaltyFee)
+                      .reduce((acc, curr) => {
+                        return acc + curr;
+                      }, 0);
 
                     return (
                       <tr key={idx}>
@@ -163,6 +170,7 @@ const ConsumerCredit = () => {
                         <td>Salary</td>
                         <td>{`N ${numberWithCommas(loanInstance.amount)}`}</td>
                         <td>{`N ${numberWithCommas(loanBalance)}`}</td>
+                        <td>{`N ${numberWithCommas(overpayment)}`}</td>
                       </tr>
                     );
                   })}

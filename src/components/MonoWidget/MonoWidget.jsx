@@ -7,14 +7,22 @@ import { toast, ToastContainer } from "react-toastify";
 
 export default function Mono() {
   const {
-    state: { linkSuccess, error },
+    state: { linkSuccess, error, monoStatus },
     authenticateUser,
+    checkMonoStatus,
     resetLinkSuccess,
     clearErrors,
   } = useContext(MonoContext);
   const {
     state: { user },
   } = useContext(AuthContext);
+
+  useEffect(() => {
+    checkMonoStatus(user.user_id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  console.log(monoStatus);
 
   const monoConnect = React.useMemo(() => {
     const monoInstance = new MonoConnect({
@@ -37,8 +45,9 @@ export default function Mono() {
   useEffect(() => {
     if (linkSuccess) {
       toast.success("Your financial account has been successfully linked");
-      // resetLinkSuccess();
+      resetLinkSuccess();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [linkSuccess]);
 
   useEffect(() => {
@@ -57,9 +66,12 @@ export default function Mono() {
         bgColor="#741763"
         size="lg"
         color="#EBEBEB"
+        disabled={monoStatus === "active" ? true : false}
         clicked={() => monoConnect.open()}
       >
-        Link Your Financial Account
+        {monoStatus === "active"
+          ? `Account Linked`
+          : `Link Your Financial Account`}
       </Button>
     </>
   );

@@ -119,7 +119,7 @@ export const Biodata = ({ data, userId, reloadClients, userRole }) => {
     <>
       <ToastContainer position="top-center" />
       <div className={styles.profileImg}>
-        {data.profilePhoto ? (
+        {data?.profilePhoto ? (
           <img src={data?.profilePhoto} alt="user identity" />
         ) : (
           <div className={styles.placeholder} alt="image placeholder"></div>
