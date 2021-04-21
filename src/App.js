@@ -34,6 +34,11 @@ import {
   AuthorizerClients,
   AuthorizerClientDetails,
   AuthorizerLoanDetails,
+  AdminDashboard,
+  AdminLoans,
+  AdminClients,
+  AdminStaffs,
+  AdminReports,
 } from "./pages/pages";
 import { Provider as AuthProvider } from "./context/AuthContext";
 import { Provider as UserProvider } from "./context/UserContext";
@@ -159,6 +164,26 @@ const RouteManager = () => {
           <ProtectedRoute
             path={pageUrl.AUTHORIZER_LOAN_DETAILS}
             component={AuthorizerLoanDetails}
+          />
+          <ProtectedRoute
+            path={pageUrl.ADMIN_OVERVIEW}
+            component={AdminDashboard}
+          />
+          <ProtectedRoute
+            path={pageUrl.ADMIN_LOANS}
+            component={AdminLoans}
+          />
+          <ProtectedRoute
+            path={pageUrl.ADMIN_CLIENTS}
+            component={AdminClients}
+          />
+          <ProtectedRoute
+            path={pageUrl.ADMIN_STAFF}
+            component={AdminStaffs}
+          />
+          <ProtectedRoute
+            path={pageUrl.ADMIN_REPORTS}
+            component={AdminReports}
           />
         </Switch>
       </Router>

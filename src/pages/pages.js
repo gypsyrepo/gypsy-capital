@@ -30,6 +30,11 @@ import AuthorizerLoans from './AuthorizerLoans/AuthorizerLoans';
 import AuthorizerClients from './AuthorizerClients/AuthorizerClients';
 import AuthorizerClientDetails from './AuthorizerClientDetails/AuthorizerClientDetails';
 import AuthorizerLoanDetails from './AuthorizerLoanDetails/AuthorizerLoanDetails';
+import AdminDashboard from './AdminDashboard/AdminDashboard';
+import AdminLoans from './AdminLoans/AdminLoans';
+import AdminClients from './AdminClients/AdminClients';
+import AdminStaffs from './AdminStaffs/AdminStaffs';
+import AdminReports from './AdminReports/AdminReports';
 
 
 export {
@@ -64,5 +69,10 @@ export {
   AuthorizerLoans,
   AuthorizerClients,
   AuthorizerClientDetails,
-  AuthorizerLoanDetails
+  AuthorizerLoanDetails,
+  AdminDashboard,
+  AdminLoans,
+  AdminClients,
+  AdminStaffs,
+  AdminReports
 }
