@@ -53,7 +53,7 @@ export const Biodata = ({ data, userId, reloadClients, userRole }) => {
         firstName: data.firstName,
         lastName: data.lastName,
         gender: _.capitalize(data.gender),
-        dateOfBirth: !data.DOB.includes("-")
+        dateOfBirth: data.DOB.includes("/")
           ? moment(data?.DOB, "DD/MM/YYYY").toDate()
           : null,
         emailAddress: data.email,
@@ -369,6 +369,7 @@ export const Bank = ({ data, userId }) => {
   });
 
   const [loanDeets] = useLoanDetails(userId);
+  console.log(loanDeets);
 
   useEffect(() => {
     if (data) {

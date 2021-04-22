@@ -42,6 +42,7 @@
     border-radius: 10px;
     padding: 24px 24px;
     box-shadow: 8px 15px 30px #0000001a;
+    overflow-x: scroll;
     table {
       thead {
         background-color: #741763;
@@ -50,6 +51,10 @@
       .loanId {
         color: #0075d7;
         font-weight: 600;
+      }
+      th,
+      td {
+        white-space: nowrap;
       }
     }
     .tableFooter {

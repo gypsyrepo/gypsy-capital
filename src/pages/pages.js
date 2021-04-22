@@ -35,7 +35,8 @@ import AdminLoans from './AdminLoans/AdminLoans';
 import AdminClients from './AdminClients/AdminClients';
 import AdminStaffs from './AdminStaffs/AdminStaffs';
 import AdminReports from './AdminReports/AdminReports';
-
+import AdminLoanDetails from './AdminLoanDetails/AdminLoanDetails';
+import AdminClientDetails from './AdminClientDetails/AdminClientDetails';
 
 export {
   SignUp,
@@ -74,5 +75,7 @@ export {
   AdminLoans,
   AdminClients,
   AdminStaffs,
-  AdminReports
+  AdminReports,
+  AdminLoanDetails,
+  AdminClientDetails
 }

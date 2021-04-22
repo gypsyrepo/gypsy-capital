@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from "react";
-import styles from "./AdminClients.module.scss";
+import React, { useContext, useEffect, useMemo } from "react";
 import { routes } from "../../routes/sidebarRoutes";
 import { useLocation } from "react-router-dom";
 import Dashboard from "../../components/Dashboard/Dashboard";
@@ -26,10 +25,14 @@ const AdminClients = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const lenders = useMemo(() => {
+    return clientsForRole.filter((user) => user.role === "client");
+  }, [clientsForRole]);
+
   return (
     <Dashboard sidebarRoutes={adminRoutes} location={location}>
       {!loading ? (
-        <ClientList clientList={clientsForRole} role={user.role} />
+        <ClientList clientList={lenders} role={user.role} />
       ) : (
         <Loader />
       )}

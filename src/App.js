@@ -39,6 +39,8 @@ import {
   AdminClients,
   AdminStaffs,
   AdminReports,
+  AdminLoanDetails,
+  AdminClientDetails,
 } from "./pages/pages";
 import { Provider as AuthProvider } from "./context/AuthContext";
 import { Provider as UserProvider } from "./context/UserContext";
@@ -188,6 +190,14 @@ const RouteManager = () => {
           <AdminRoute
             path={pageUrl.ADMIN_REPORTS}
             component={AdminReports}
+          />
+          <AdminRoute 
+            path={pageUrl.ADMIN_LOAN_DETAILS}
+            component={AdminLoanDetails}
+          />
+          <AdminRoute 
+            path={pageUrl.ADMIN_CLIENT_DETAILS}
+            component={AdminClientDetails}
           />
         </Switch>
       </Router>

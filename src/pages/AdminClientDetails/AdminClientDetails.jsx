@@ -1,27 +1,25 @@
-import React, { useState, useContext, useEffect } from "react";
-import Dashboard from "../../components/Dashboard/Dashboard";
-import styles from "./AuthorizerClientDetails.module.scss";
+import React, { useContext, useEffect, useState } from "react";
+import styles from "./AdminClientDetails.module.scss";
 import { routes } from "../../routes/sidebarRoutes";
 import { useLocation, useParams } from "react-router-dom";
+import Dashboard from "../../components/Dashboard/Dashboard";
+import Loader from "../../components/Loader/Loader";
 import NavTabs from "../../components/NavTabs/NavTabs";
-import { Context as UserContext } from "../../context/UserContext";
 import { Context as AuthContext } from "../../context/AuthContext";
+import { Context as UserContext } from "../../context/UserContext";
 import {
   Biodata,
-  NextOfKin,
   Bank,
-  Employer,
   ClientLoan,
+  Employer,
+  NextOfKin,
 } from "../ClientDetails/ClientDetails";
 import { DocTab } from "../ProcessorClientDetails/ProcessorClientDetails";
-import Loader from "../../components/Loader/Loader";
 
-const AuthorizerClientDetails = () => {
+const AdminClientDetails = () => {
+  const adminRoutes = routes[4];
   const location = useLocation();
-  const authorizerRoutes = routes[3];
   const { clientId } = useParams();
-
-  const [visibleSection, setVisibleSection] = useState("biodata");
 
   const {
     state: { userDetails },
@@ -35,6 +33,8 @@ const AuthorizerClientDetails = () => {
     getClientDetails(clientId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const [visibleSection, setVisibleSection] = useState("biodata");
 
   const navArray = [
     {
@@ -68,11 +68,11 @@ const AuthorizerClientDetails = () => {
   };
 
   return (
-    <Dashboard sidebarRoutes={authorizerRoutes} location={location}>
+    <Dashboard sidebarRoutes={adminRoutes} location={location}>
       <NavTabs
+        currentTab={visibleSection}
         navs={navArray}
         setActive={setActiveTab}
-        currentTab={visibleSection}
       />
       {userDetails ? (
         <div className={visibleSection !== "loans" && styles.detailFields}>
@@ -99,7 +99,7 @@ const AuthorizerClientDetails = () => {
           )}
           {visibleSection === "employ" && (
             <Employer
-              data={userDetails.employer && { ...userDetails.employer }}
+              data={userDetails?.employer && { ...userDetails.employer }}
             />
           )}
           {visibleSection === "doc" && <DocTab />}
@@ -117,4 +117,4 @@ const AuthorizerClientDetails = () => {
   );
 };
 
-export default AuthorizerClientDetails;
+export default AdminClientDetails;

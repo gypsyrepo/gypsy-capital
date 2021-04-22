@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import styles from "./ClientList.module.scss";
 import { Pagination, Table } from "react-bootstrap";
 import { TiCancelOutline } from "react-icons/ti";
@@ -35,6 +35,16 @@ const ClientList = ({ clientList, role }) => {
     pageNumberLimit
   );
 
+  const detailRoutePrefix = useMemo(() => {
+    if (role === "sales") {
+      return "sales-agent";
+    } else if (role === "super") {
+      return "super-admin";
+    } else {
+      return role;
+    }
+  }, [role]);
+
   return (
     <>
       <div className={styles.welcomeGroup}>
@@ -66,7 +76,7 @@ const ClientList = ({ clientList, role }) => {
                       client.lastName
                     )}`}</td>
                     <td className={styles.loanId}>
-                      <Link to={`/${role}/client/${client._id}`}>
+                      <Link to={`/${detailRoutePrefix}/client/${client._id}`}>
                         {client._id.slice(0, 6)}
                       </Link>
                     </td>

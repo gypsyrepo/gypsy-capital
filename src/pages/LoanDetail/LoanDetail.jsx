@@ -138,7 +138,7 @@ export const BasicInfo = ({ data, userRole }) => {
   );
 };
 
-const LoanStatus = ({ data }) => {
+export const LoanStatus = ({ data }) => {
   const [loanStatus, setLoanStatus] = useState({
     status: "",
     processorDecision: "",
@@ -378,7 +378,7 @@ export const RepaymentSchedule = ({ data, userRole, loanId, reloadLoan }) => {
               <th>Overpayment</th>
               <th>Date of Payment</th>
               <th>Loan Balance</th>
-              {userRole === "authorizer" && <th>Action</th>}
+              {userRole === "authorizer" || "super" ? <th>Action</th> : null}
             </tr>
           </thead>
           <tbody>
@@ -417,7 +417,7 @@ export const RepaymentSchedule = ({ data, userRole, loanId, reloadLoan }) => {
                     </td>
                     <td>{track?.dateofPayment || repaidDate}</td>
                     <td>{track?.loanBalance || loanBalance}</td>
-                    {userRole === "authorizer" && (
+                    {userRole === "authorizer" || "super" ? (
                       <td>
                         <button
                           disabled={track.status}
@@ -426,7 +426,7 @@ export const RepaymentSchedule = ({ data, userRole, loanId, reloadLoan }) => {
                           Manual Repayment
                         </button>
                       </td>
-                    )}
+                    ) : null}
                   </tr>
                 );
               })}
