@@ -50,6 +50,10 @@ import { Provider as RepaymentProvider } from "./context/RepaymentContext";
 import ProtectedRoute from "./routes/protectedroute/ProtectedRoute";
 import history from "./utils/history";
 import { useEffect } from "react";
+import SalesRoute from "./routes/protectedroute/SalesRoute";
+import ProcessorRoute from "./routes/protectedroute/ProcessorRoute";
+import AuthorizerRoute from "./routes/protectedroute/AuthorizerRoute";
+import AdminRoute from "./routes/protectedroute/AdminRoute";
 
 const RouteManager = () => {
   return (
@@ -107,81 +111,81 @@ const RouteManager = () => {
             path={pageUrl.CONSUMER_CREDIT_PAGE}
             component={ConsumerCredit}
           />
-          <ProtectedRoute
+          <SalesRoute
             path={pageUrl.SALES_AGENT_OVERVIEW}
             component={AgentOverview}
           />
-          <ProtectedRoute
+          <SalesRoute
             path={pageUrl.CLIENT_LIST_PAGE}
             component={ClientListPage}
           />
-          <ProtectedRoute
+          <SalesRoute
             path={pageUrl.CLIENT_DETAILS_PAGE}
             component={ClientDetails}
           />
-          <ProtectedRoute path={pageUrl.LOAN_LIST_PAGE} component={LoanList} />
-          <ProtectedRoute
+          <SalesRoute path={pageUrl.LOAN_LIST_PAGE} component={LoanList} />
+          <SalesRoute
             path={pageUrl.LOAN_DETAIL_PAGE}
             component={LoanDetail}
           />
-          <ProtectedRoute path={pageUrl.SUPPORT_PAGE} component={Support} />
-          <ProtectedRoute
+          <SalesRoute path={pageUrl.SUPPORT_PAGE} component={Support} />
+          <ProcessorRoute
             path={pageUrl.PROCESSORS_DASHBOARD}
             component={ProcessorDashboard}
           />
-          <ProtectedRoute
+          <ProcessorRoute
             path={pageUrl.PROCESSORS_CLIENTS_PAGE}
             component={ProcessorClients}
           />
-          <ProtectedRoute
+          <ProcessorRoute
             path={pageUrl.PROCESSORS_CLIENT_DETAILS}
             component={ProcessorClientDetails}
           />
-          <ProtectedRoute
+          <ProcessorRoute
             path={pageUrl.PROCESSORS_LOANS_PAGE}
             component={ProcessorLoans}
           />
-          <ProtectedRoute
+          <ProcessorRoute
             path={pageUrl.PROCESSORS_LOAN_DETAILS}
             component={ProcessorLoanDetails}
           />
-          <ProtectedRoute
+          <AuthorizerRoute
             path={pageUrl.AUTHORIZER_OVERVIEW}
             component={AuthorizerOverview}
           />
-          <ProtectedRoute
+          <AuthorizerRoute
             path={pageUrl.AUTHORIZER_LOANS}
             component={AuthorizerLoans}
           />
-          <ProtectedRoute
+          <AuthorizerRoute
             path={pageUrl.AUTHORIZER_CLIENTS}
             component={AuthorizerClients}
           />
-          <ProtectedRoute
+          <AuthorizerRoute
             path={pageUrl.AUTHORIZER_CLIENT_DETAILS}
             component={AuthorizerClientDetails}
           />
-          <ProtectedRoute
+          <AuthorizerRoute
             path={pageUrl.AUTHORIZER_LOAN_DETAILS}
             component={AuthorizerLoanDetails}
           />
-          <ProtectedRoute
+          <AdminRoute
             path={pageUrl.ADMIN_OVERVIEW}
             component={AdminDashboard}
           />
-          <ProtectedRoute
+          <AdminRoute
             path={pageUrl.ADMIN_LOANS}
             component={AdminLoans}
           />
-          <ProtectedRoute
+          <AdminRoute
             path={pageUrl.ADMIN_CLIENTS}
             component={AdminClients}
           />
-          <ProtectedRoute
+          <AdminRoute
             path={pageUrl.ADMIN_STAFF}
             component={AdminStaffs}
           />
-          <ProtectedRoute
+          <AdminRoute
             path={pageUrl.ADMIN_REPORTS}
             component={AdminReports}
           />

@@ -98,6 +98,7 @@ const Dashboard = ({ children, sidebarRoutes, location }) => {
                     <p>
                       {_.capitalize(user.role)}{" "}
                       {user.role === "sales" && "agent"}
+                      {user.role === "super" && "admin"}
                     </p>
                   </div>
                 </div>

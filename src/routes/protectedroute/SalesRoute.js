@@ -4,7 +4,7 @@ import { Context as AuthContext } from '../../context/AuthContext';
 import pageUrl from '../pageUrl';
 
 
-const SalesRoute = () => {
+const SalesRoute = ({ component: Component, ...rest}) => {
   const { state: { loggedIn, user } } = useContext(AuthContext);
   const location = useLocation()
 

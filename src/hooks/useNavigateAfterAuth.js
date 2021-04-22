@@ -19,6 +19,8 @@ export default (email, password) => {
       history.push(pageUrl.PROCESSORS_DASHBOARD)
     } else if(user?.role && user.role === "authorizer") {
       history.push(pageUrl.AUTHORIZER_OVERVIEW) 
+    } else if(user?.role && user.role === "super") {
+      history.push(pageUrl.ADMIN_OVERVIEW)
     }
   }, [user])
 
