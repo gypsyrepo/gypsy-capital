@@ -139,7 +139,7 @@ const adminRoutes = [
   }, 
   {
     label: "Staff",
-    link: pageUrl.ADMIN_STAFF,
+    link: `/super-admin/staffs/list`,
     rootLink: pageUrl.ADMIN_STAFF,
     icon: FaUserTie
   },

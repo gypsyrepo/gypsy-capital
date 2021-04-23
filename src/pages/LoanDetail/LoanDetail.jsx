@@ -347,7 +347,7 @@ export const RepaymentSchedule = ({ data, userRole, loanId, reloadLoan }) => {
 
   const scheduleTemplate = () => (
     <>
-      {userRole === "processor" || userRole === "authorizer" ? (
+      {userRole === "processor" || "authorizer" || "super" ? (
         <div className={[styles.repayment, "mb-5"].join(" ")}>
           <Table>
             <thead>
