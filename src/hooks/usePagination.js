@@ -4,6 +4,11 @@ import { Pagination } from 'react-bootstrap';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (currentPage, postsPerPage, list, setPage, cssStyles, maxLimit, minLimit, setMaxLimit, setMinLimit, pageLimit) => {
+
+  if(!list) {
+    list = []
+  }
+
   const indexOfLastItem = useMemo(() => {
     return currentPage * postsPerPage
   }, [currentPage, postsPerPage]);

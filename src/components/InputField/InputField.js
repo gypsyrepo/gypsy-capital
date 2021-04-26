@@ -13,6 +13,7 @@ const InputField = ({
   placeholder,
   error,
   disable,
+  customDefault
 }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -52,7 +53,7 @@ const InputField = ({
             onChange={(e) => changed(e.currentTarget.value)}
           >
             <option value="none" selected disabled hidden>
-              Select...
+              { customDefault ? customDefault : 'Select...'}
             </option>
             {options.map((option) => {
               return (

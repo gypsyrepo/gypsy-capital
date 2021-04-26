@@ -145,7 +145,7 @@ const adminRoutes = [
   },
   {
     label: "Reports",
-    link: pageUrl.ADMIN_REPORTS,
+    link: `/super-admin/reports/loan`,
     rootLink: pageUrl.ADMIN_REPORTS,
     icon: FaFileAlt
   }

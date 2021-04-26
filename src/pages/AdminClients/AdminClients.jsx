@@ -5,7 +5,6 @@ import Dashboard from "../../components/Dashboard/Dashboard";
 import ClientList from "../../components/ClientList/ClientList";
 import Loader from "../../components/Loader/Loader";
 import { Context as UserContext } from "../../context/UserContext";
-import { Context as AuthContext } from "../../context/AuthContext";
 
 const AdminClients = () => {
   const adminRoutes = routes[4];
@@ -15,10 +14,6 @@ const AdminClients = () => {
     state: { clientsForRole, loading },
     getClientListForRole,
   } = useContext(UserContext);
-
-  const {
-    state: { user },
-  } = useContext(AuthContext);
 
   useEffect(() => {
     getClientListForRole();
@@ -32,7 +27,7 @@ const AdminClients = () => {
   return (
     <Dashboard sidebarRoutes={adminRoutes} location={location}>
       {!loading ? (
-        <ClientList clientList={lenders} role={user.role} />
+        <ClientList clientList={lenders} role="client" />
       ) : (
         <Loader />
       )}

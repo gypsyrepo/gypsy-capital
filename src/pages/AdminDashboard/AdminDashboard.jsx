@@ -187,7 +187,7 @@ const AdminDashboard = () => {
                           )} ${_.capitalize(loan.clientInfo[0]?.lastName)}`}
                         </td>
                         <td className={styles.loanId}>
-                          <Link to={`/processor/loan/${loan._id}`}>
+                          <Link to={`/super-admin/loan/${loan._id}`}>
                             {loan._id.slice(0, 6)}
                           </Link>
                         </td>

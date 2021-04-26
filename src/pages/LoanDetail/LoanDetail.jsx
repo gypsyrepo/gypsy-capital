@@ -23,6 +23,7 @@ import { validateInput } from "../../utils/validateInput";
 //   stripCommasInNumber,
 // } from "../../utils/convertInputType";
 import { toast, ToastContainer } from "react-toastify";
+import { convertUnixDatetoReadable } from "../../utils/convertInputType";
 
 export const BasicInfo = ({ data, userRole }) => {
   const [basicInfo, setBasicInfo] = useState({
@@ -155,17 +156,16 @@ export const LoanStatus = ({ data }) => {
     if (data) {
       setLoanStatus({
         status: _.capitalize(data.status),
-        processorDecision: data.processorDecision || "Pending",
+        processorDecision: _.startCase(data.processorDecision) || "Pending",
         processorDecReason: data.processorDecisionReason || "_____",
         processorInCharge: data.processorOfficerInCharge || "None",
-        processorDecTime:
-          moment
-            .unix(Number(data.processorDecisionTime) / 1000)
-            .format("llll") || "_____",
-        adminDecision: data.adminDecision || "Pending",
+        processorDecTime: convertUnixDatetoReadable(
+          data?.processorDecisionTime
+        ),
+        adminDecision: _.startCase(data?.adminDecision) || "Pending",
         adminDecReason: data.adminDecisionReason || "_____",
         adminInCharge: data.adminOfficerInCharge || "None",
-        adminDecTime: data.adminDecisionTime || "______",
+        adminDecTime: convertUnixDatetoReadable(data?.adminDecisionTime),
       });
     }
   }, [data]);
