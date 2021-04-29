@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import styles from "./ReportsTable.module.scss";
 import { Table, Pagination } from "react-bootstrap";
-import { numberWithCommas } from "../../utils/nigeriaStates";
-import _ from "lodash";
-import { convertUnixDatetoReadable } from "../../utils/convertInputType";
 import { TiCancelOutline } from "react-icons/ti";
 import usePagination from "../../hooks/usePagination";
 
@@ -36,43 +33,37 @@ const ReportsTable = ({ tableHeader, list }) => {
   );
 
   return (
-    <div className={styles.reportsTable}>
-      <Table striped>
-        <thead>
-          <tr>
-            {tableHeader.map((header) => (
-              <th key={header.replaceAll(" ", "")}>{header}</th>
-            ))}
-          </tr>
-        </thead>
-        {currentList && currentList.length > 0 ? (
-          <tbody>
-            {currentList.map((listItem) => (
-              <tr key={listItem?.loanId}>
-                <td>{listItem?.loanId}</td>
-                <td>{listItem?.clientName}</td>
-                <td>{`N ${numberWithCommas(listItem?.loanAmount)}`}</td>
-                <td>{`N ${numberWithCommas(listItem?.monthlyRepayment)}`}</td>
-                <td>{`N ${numberWithCommas(listItem?.totalRepayment)}`}</td>
-                <td>{listItem?.tenure}</td>
-                <td>{_.startCase(listItem?.status)}</td>
-                <td>{listItem?.decisionReason || "_____"}</td>
-                <td>
-                  {convertUnixDatetoReadable(listItem?.decisionDate) || "_____"}
-                </td>
-                <td>{listItem?.processorInCharge || "_____"}</td>
-                <td>{listItem?.authorizerInCharge || "_____"}</td>
-                <td>{listItem?.onboardedBy}</td>
-              </tr>
-            ))}
-          </tbody>
+    <div className={styles.wrapper}>
+      <div className={styles.reportsTable}>
+        <Table striped>
+          <thead>
+            <tr>
+              {tableHeader.map((header) => (
+                <th key={header.replaceAll(" ", "")}>{header}</th>
+              ))}
+            </tr>
+          </thead>
+          {currentList && currentList.length > 0 ? (
+            <tbody>
+              {currentList.map((listItem) => {
+                const arrayOfValues = Object.values(listItem);
+                return (
+                  <tr key={listItem?.loanId}>
+                    {arrayOfValues.map((value) => (
+                      <td>{value || "_____"}</td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          ) : null}
+        </Table>
+        {!currentList || currentList.length === 0 ? (
+          <div className={styles.nullList}>
+            <TiCancelOutline size="6em" color="rgba(116, 23, 99, 0.6)" />
+          </div>
         ) : null}
-      </Table>
-      {!currentList || currentList.length === 0 ? (
-        <div className={styles.nullList}>
-          <TiCancelOutline size="6em" color="rgba(116, 23, 99, 0.6)" />
-        </div>
-      ) : null}
+      </div>
       {currentList && currentList.length > 0 ? (
         <div className={styles.tableFooter}>
           <div className={styles.rowsInput}>

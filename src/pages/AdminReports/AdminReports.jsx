@@ -17,6 +17,11 @@ import InputField from "../../components/InputField/InputField";
 import ReportsTable from "../../components/ReportsTable/ReportsTable";
 import Loader from "../../components/Loader/Loader";
 import { Context as LoanContext } from "../../context/LoanContext";
+import { numberWithCommas } from "../../utils/nigeriaStates";
+import _ from "lodash";
+import { convertUnixDatetoReadable } from "../../utils/convertInputType";
+import { filterStaff } from "../../utils/data";
+import useUserList from "../../hooks/useUserList";
 
 const LoanReportTable = ({ filterInput }) => {
   const {
@@ -29,7 +34,11 @@ const LoanReportTable = ({ filterInput }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(loans);
+  const [staffList] = useUserList(true);
+
+  // console.log(staffList);
+
+  // console.log(loans);
 
   const filteredList = useMemo(() => {
     if (filterInput === "active loans") {
@@ -48,28 +57,47 @@ const LoanReportTable = ({ filterInput }) => {
   const processedLoanList = useMemo(() => {
     return filteredList.map((loan) => {
       const container = {};
+      const processor = filterStaff(staffList, loan?.processorOfficerInCharge);
+      const authorizer = filterStaff(staffList, loan?.adminOfficerInCharge);
+      const salesAgent = filterStaff(staffList, loan?.addedBy);
+
       container.loanId = loan._id.slice(0, 7);
       container.clientName = `${loan.clientInfo[0].firstName} ${loan.clientInfo[0].lastName}`;
       container.loanAmount =
-        loan.approvedAmount > 0 ? loan.approvedAmount : loan.amount;
-      container.monthlyRepayment = loan?.monthlyRepayment;
-      container.totalRepayment =
-        loan.calculatedPayBack ||
-        Number(loan?.paymentPeriod.split(" ")[0]) * loan.monthlyRepayment;
+        loan.approvedAmount > 0
+          ? `N ${numberWithCommas(loan.approvedAmount)}`
+          : `N ${numberWithCommas(loan.amount)}`;
+      container.monthlyRepayment = `N ${numberWithCommas(
+        loan?.monthlyRepayment
+      )}`;
+      container.totalRepayment = loan.calculatedPayBack
+        ? `N ${numberWithCommas(loan?.calculatedPayBack)}`
+        : `N ${numberWithCommas(
+            Number(loan?.paymentPeriod.split(" ")[0]) * loan.monthlyRepayment
+          )}`;
       container.tenure =
         loan.approvedTenure || loan?.paymentPeriod.split(" ")[0];
-      container.status = loan?.status;
+      container.status = _.startCase(loan?.status);
       container.decisionReason =
         loan?.adminDecisionReason || loan?.processorDecisionReason;
       container.decisionDate =
-        loan?.adminDecisionTime || loan?.processorDecisionTime;
-      container.processorInCharge = loan?.processorOfficerInCharge;
-      container.authorizerInCharge = loan?.adminOfficerInCharge;
-      container.onboardedBy = loan?.addedBy;
+        convertUnixDatetoReadable(loan?.adminDecisionTime) ||
+        convertUnixDatetoReadable(loan?.processorDecisionTime);
+      container.processorInCharge = processor
+        ? `${processor.firstName} ${processor.lastName}`
+        : "_____";
+      container.authorizerInCharge = authorizer
+        ? `${authorizer.firstName} ${authorizer.lastName}`
+        : "_____";
+      container.onboardedBy = salesAgent
+        ? `${salesAgent.firstName} ${salesAgent.lastName}`
+        : "_____";
 
       return container;
     });
-  }, [filteredList]);
+  }, [filteredList, staffList]);
+
+  console.log(processedLoanList);
 
   const tableHeaders = [
     "Loan ID",
@@ -97,7 +125,78 @@ const LoanReportTable = ({ filterInput }) => {
   );
 };
 
-const AdhocReportTable = () => {
+const AdhocReportTable = ({ filterInput }) => {
+  const {
+    state: { loading, loans },
+    retrieveClientLoans,
+  } = useContext(LoanContext);
+
+  useEffect(() => {
+    retrieveClientLoans();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  console.log(loans);
+
+  const [staffList] = useUserList(true);
+  const [clientList] = useUserList(false);
+
+  console.log(clientList);
+
+  const filteredList = useMemo(() => {
+    if (filterInput === "active loans") {
+      return loans.filter((loanInstance) => loanInstance.status === "approved");
+    } else if (filterInput === "pending loans") {
+      return loans.filter((loanInstance) => loanInstance.status === "pending");
+    } else if (filterInput === "declined loans") {
+      return loans.filter((loanInstance) => loanInstance.status === "declined");
+    } else if (filterInput === "expired loans") {
+      return loans.filter((loanInstance) => loanInstance.status === "expired");
+    } else {
+      return loans;
+    }
+  }, [loans, filterInput]);
+
+  const processedLoanList = useMemo(() => {
+    return filteredList.map((loan) => {
+      const container = {};
+      const processor = filterStaff(staffList, loan?.processorOfficerInCharge);
+      const authorizer = filterStaff(staffList, loan?.adminOfficerInCharge);
+      const salesAgent = filterStaff(staffList, loan?.addedBy);
+
+      const client = filterStaff(clientList, loan.userId);
+      const { city, street, state } = client?.more_info[0]?.residence;
+
+      container.loanId = loan._id.slice(0, 7);
+      container.clientName = `${loan.clientInfo[0].firstName} ${loan.clientInfo[0].lastName}`;
+      container.phoneNumber = loan?.clientInfo[0].phoneNumber.replace("234", 0);
+      container.emailAddress = loan?.clientInfo[0].email;
+      container.address = `${street}, ${city}, ${_.startCase(state)}`;
+      container.bvn = `${client?.more_info[0]?.bioData?.BVN}`;
+      container.totalRepayment = loan.calculatedPayBack
+        ? `N ${numberWithCommas(loan?.calculatedPayBack)}`
+        : `N ${numberWithCommas(
+            Number(loan?.paymentPeriod.split(" ")[0]) * loan.monthlyRepayment
+          )}`;
+      container.tenure =
+        loan.approvedTenure || loan?.paymentPeriod.split(" ")[0];
+      container.overpayment = `N ${numberWithCommas(loan?.overdue)}`;
+      container.processorInCharge = processor
+        ? `${processor.firstName} ${processor.lastName}`
+        : "_____";
+      container.authorizerInCharge = authorizer
+        ? `${authorizer.firstName} ${authorizer.lastName}`
+        : "_____";
+      container.onboardedBy = salesAgent
+        ? `${salesAgent.firstName} ${salesAgent.lastName}`
+        : "_____";
+
+      return container;
+    });
+  }, [clientList, filteredList, staffList]);
+
+  console.log(processedLoanList);
+
   const tableHeaders = [
     "Loan ID",
     "Client Name",
@@ -115,7 +214,11 @@ const AdhocReportTable = () => {
 
   return (
     <>
-      <ReportsTable tableHeader={tableHeaders} />
+      {loading ? (
+        <Loader />
+      ) : (
+        <ReportsTable list={processedLoanList} tableHeader={tableHeaders} />
+      )}
     </>
   );
 };
@@ -196,7 +299,7 @@ const AdminReports = () => {
           <LoanReportTable filterInput={loanFilterInput} />
         </Route>
         <Route path={`${path}/adhoc`}>
-          <AdhocReportTable />
+          <AdhocReportTable filterInput={loanFilterInput} />
         </Route>
       </Switch>
     </Dashboard>

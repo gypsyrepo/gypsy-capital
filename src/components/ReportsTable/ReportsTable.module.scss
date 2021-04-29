@@ -1,29 +1,10 @@
-.reportsTable {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 24px 24px 60px 24px;
-  box-shadow: 8px 15px 30px #0000001a;
-  overflow-x: scroll;
+.wrapper {
   position: relative;
-  table {
-    thead {
-      background-color: #741763;
-      color: #fff;
-      th,
-      td {
-        white-space: nowrap;
-      }
-    }
-    tbody {
-      td {
-        white-space: nowrap;
-      }
-    }
-  }
   .tableFooter {
     display: flex;
     align-items: center;
     position: absolute;
+    bottom: 20px;
     right: 24px;
     .rowsInput {
       p {
@@ -62,6 +43,30 @@
       }
       a {
         color: #000;
+      }
+    }
+  }
+}
+
+.reportsTable {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 24px 24px 60px 24px;
+  box-shadow: 8px 15px 30px #0000001a;
+  overflow-x: scroll;
+  position: relative;
+  table {
+    thead {
+      background-color: #741763;
+      color: #fff;
+      th,
+      td {
+        white-space: nowrap;
+      }
+    }
+    tbody {
+      td {
+        white-space: nowrap;
       }
     }
   }
