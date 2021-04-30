@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const convertInput = (val) => {
   let convertedToNumber = val.split(",");
   convertedToNumber = Number(convertedToNumber.join(""));
@@ -9,3 +11,10 @@ export const stripCommasInNumber = (numberString) => {
   let convertedToNumber = numberString.split(",");
   return Number(convertedToNumber.join(""));
 };
+
+export const convertUnixDatetoReadable = (unixTime) => {
+  if(unixTime) {
+    return moment.unix(Number(unixTime) / 1000).format("llll") 
+  }
+  return "______"
+}

@@ -12,7 +12,7 @@ import { convertInput } from "../../utils/convertInputType";
 import { toast, ToastContainer } from "react-toastify";
 import { toWords } from "number-to-words";
 
-const OfferLetterForm = ({ setState, loanData }) => {
+const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
   console.log(loanData);
   const [offerFormData, setOfferFormData] = useState({
     date: "",
@@ -612,6 +612,7 @@ const OfferLetterForm = ({ setState, loanData }) => {
             >
               {({ blob, url, loading, error }) => {
                 console.log(blob, url);
+                saveBlob(blob);
                 return loading
                   ? "Loading document..."
                   : "Download Offer Letter";

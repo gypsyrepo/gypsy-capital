@@ -11,7 +11,7 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
 
   return (
     <Route {...rest}>
-      { loggedIn ? 
+      { loggedIn && user.role === "client" ? 
           <Component /> :
           <Redirect to={{ pathname: pageUrl.SIGNIN_PAGE, state: { from: location } }} />
       }

@@ -27,7 +27,7 @@ const AuthorizerLoans = () => {
   return (
     <Dashboard sidebarRoutes={authorizerRoutes} location={location}>
       {!loading ? (
-        <LoanList loanList={loans} userRole={user.role} />
+        <LoanList loanList={loans} userRole={user?.role} />
       ) : (
         <Loader />
       )}

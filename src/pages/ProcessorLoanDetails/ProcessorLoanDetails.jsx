@@ -29,27 +29,84 @@ import { RiSendPlaneFill } from "react-icons/ri";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import DocumentModal from "../../components/DocumentModal/DocumentModal";
+import Loader from "../../components/Loader/Loader";
+import AccountInfo from "../../components/AccountInfo/AccountInfo";
+import AccountHistory from "../../components/AccountHistory/AccountHistory";
 
 export const MonoTab = ({ clientId }) => {
+  const [showAcctStatement, setShowAcctStatement] = useState(false);
+  const [showAcctInfo, setShowAcctInfo] = useState(false);
+  const [showAcctHistory, setShowAcctHistory] = useState(false);
+
   const {
-    state: { loading },
+    state: {
+      statementPdf,
+      infoLoading,
+      statementLoading,
+      loading,
+      accountInfo,
+      monoStatus,
+      transactionHistory,
+    },
     getAccountInfo,
     getAccountStatement,
+    getAccountTransactionHistory,
+    checkMonoStatus,
   } = useContext(MonoContext);
 
-  const retrieveAccountInfo = () => {
+  const retrieveAccountInfo = async () => {
     console.log(clientId);
-    getAccountInfo(clientId);
+    await getAccountInfo(clientId);
+    setShowAcctInfo(true);
   };
 
-  const retrieveAccountStatement = () => {
-    getAccountStatement(clientId, 3);
+  const retrieveAccountStatement = async () => {
+    await getAccountStatement(clientId, 3);
+    setShowAcctStatement(true);
   };
+
+  const retrieveTransactionHistory = async () => {
+    const now = new Date();
+    const today = `${
+      now.getDate().toString().length < 2 ? `0${now.getDate()}` : now.getDate()
+    }/${
+      (now.getMonth() + 1).toString().length < 2
+        ? `0${now.getMonth() + 1}`
+        : now.getMonth() + 1
+    }/${now.getFullYear()}`;
+    const oneYearAgo = `${
+      now.getDate().toString().length < 2 ? `0${now.getDate()}` : now.getDate()
+    }/${
+      (now.getMonth() + 1).toString().length < 2
+        ? `0${now.getMonth() + 1}`
+        : now.getMonth() + 1
+    }/${now.getFullYear() - 1}`;
+
+    await getAccountTransactionHistory(clientId, {
+      start: oneYearAgo,
+      end: today,
+    });
+    setShowAcctHistory(true);
+  };
+
+  useEffect(() => {
+    checkMonoStatus(clientId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    console.log(statementPdf);
+  }, [statementPdf]);
+
+  if (!monoStatus) {
+    return <Loader />;
+  }
 
   return (
     <>
       <div className={styles.status}>
-        <p>Status: Inactive</p>
+        <p>{`Status: ${_.startCase(monoStatus)}`}</p>
       </div>
       <div className={styles.monoContainer}>
         <Row>
@@ -61,8 +118,8 @@ export const MonoTab = ({ clientId }) => {
               bgColor="#741763"
               size="lg"
               color="#EBEBEB"
-              disabled={loading}
-              loading={loading}
+              disabled={statementLoading}
+              loading={statementLoading}
             >
               Get Account Statement
             </Button>
@@ -73,12 +130,12 @@ export const MonoTab = ({ clientId }) => {
             <Button
               className="mt-4"
               fullWidth
-              // clicked={updateContactInfo}
+              clicked={retrieveTransactionHistory}
               bgColor="#741763"
               size="lg"
               color="#EBEBEB"
-              // disabled={loading}
-              // loading={loading}
+              disabled={loading}
+              loading={loading}
             >
               Get Transaction History
             </Button>
@@ -93,14 +150,41 @@ export const MonoTab = ({ clientId }) => {
               bgColor="#741763"
               size="lg"
               color="#EBEBEB"
-              disabled={loading}
-              loading={loading}
+              disabled={infoLoading}
+              loading={infoLoading}
             >
               Get Account Info
             </Button>
           </Col>
         </Row>
       </div>
+      {showAcctStatement && (
+        <DocumentModal
+          fileTitle="Account Statement"
+          fileUrl={statementPdf}
+          closeModal={() => {
+            setShowAcctStatement(false);
+          }}
+        />
+      )}
+      {showAcctInfo && (
+        <DocumentModal
+          fileTitle="Account Information"
+          childComponent={<AccountInfo info={accountInfo?.account} />}
+          closeModal={() => {
+            setShowAcctInfo(false);
+          }}
+        />
+      )}
+      {showAcctHistory && (
+        <DocumentModal
+          fileTitle="Account History"
+          childComponent={<AccountHistory history={transactionHistory?.data} />}
+          closeModal={() => {
+            setShowAcctHistory(false);
+          }}
+        />
+      )}
     </>
   );
 };

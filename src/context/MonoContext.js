@@ -1,7 +1,7 @@
 import createDataContext from './createDataContext';
 import gypsy from '../api/gypsy-web';
 import resolveToken from '../utils/resolveToken';
-import history from '../utils/history';
+// import history from '../utils/history';
 // import _ from 'lodash';
 
 
@@ -9,6 +9,18 @@ const monoReducer = (state, action) => {
   switch(action.type) {
     case 'set_loading':
       return { ...state, loading: action.payload }
+    case 'set_statement_loading':
+      return { ...state, statementLoading: action.payload }
+    case 'set_statement_pdf':
+      return { ...state, statementPdf: action.payload }
+    case 'set_account_info':
+      return { ...state, accountInfo: action.payload }
+    case 'set_mono_status':
+      return { ...state, monoStatus: action.payload }
+    case 'set_transaction_history':
+      return { ...state, transactionHistory: action.payload }
+    case 'set_info_loading':
+      return { ...state, infoLoading: action.payload }
     case 'set_error':
       return { ...state, error: action.payload }
     case 'set_link_success':
@@ -47,7 +59,7 @@ const authenticateUser = dispatch => async(userId, code) => {
 }
 
 const getAccountInfo = dispatch => async(userId) => {
-  dispatch({ type: "set_loading", payload: true });
+  dispatch({ type: "set_info_loading", payload: true });
   try {
     const token = resolveToken();
     const response = await gypsy.get(`/api/mono/account_info/${userId}`, {
@@ -56,23 +68,57 @@ const getAccountInfo = dispatch => async(userId) => {
       }
     });
     console.log(response.data.data);
-    dispatch({ type: "set_loading", payload: false });
+    dispatch({
+      type: 'set_account_info',
+      payload: response.data.data
+    })
+    dispatch({ type: "set_info_loading", payload: false });
   } catch(err) {
     if(err.response) {
       console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message
       dispatch({
+        type: 'set_account_info',
+        payload: null
+      })
+      dispatch({
         type: "set_error",
         payload: errorMessage
       });
-      dispatch({ type: "set_loading", payload: false });
+      dispatch({ type: "set_info_loading", payload: false });
     }
   }
 }
 
+const checkMonoStatus = dispatch => async(userId) => {
+  try {
+    const token = resolveToken()
+    const response = await gypsy.get(`/api/mono/account_info/${userId}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    if(response.data.data) {
+      dispatch({
+        type: 'set_mono_status',
+        payload: 'active'
+      })
+    } else {
+      dispatch({
+        type: 'set_mono_status',
+        payload: 'inactive'
+      })
+    }
+  } catch(err) {
+    dispatch({
+      type: 'set_mono_status',
+      payload: 'inactive'
+    })
+  }
+}
 
 const getAccountStatement = dispatch => async(userId, months) => {
-  dispatch({ type: "set_loading", payload: true });
+  dispatch({ type: "set_statement_loading", payload: true });
   try {
     const token = resolveToken();
     const response = await gypsy.get(`/api/mono/account_statement/${userId}/${months}`, {
@@ -81,7 +127,8 @@ const getAccountStatement = dispatch => async(userId, months) => {
       }
     });
     console.log(response.data);
-    dispatch({ type: "set_loading", payload: false });
+    dispatch({ type: "set_statement_pdf", payload: response.data.data.path})
+    dispatch({ type: "set_statement_loading", payload: false });
   } catch(err) {
     if(err.response) {
       console.log(err.response.data);
@@ -90,16 +137,26 @@ const getAccountStatement = dispatch => async(userId, months) => {
         type: "set_error",
         payload: errorMessage
       });
-      dispatch({ type: "set_loading", payload: false });
+      dispatch({ type: "set_statement_loading", payload: false });
     }
   }
 }
 
-const getAccountTransactionHistory = dispatch => async(userId) => {
+const getAccountTransactionHistory = dispatch => async(userId, period) => {
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
-    const response = await gypsy.get(`/api/mono/transaction_history/${userId}`,   )
+    const response = await gypsy.post(`/api/mono/transaction_history/${userId}`, period,  {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    console.log(response.data.data)
+    dispatch({
+      type: "set_transaction_history",
+      payload: response.data.data
+    });
+    dispatch({ type: "set_loading", payload: false });
   } catch(err) {
     if(err.response) {
       console.log(err.response.data);
@@ -124,6 +181,6 @@ const clearErrors = dispatch => () => {
 
 export const { Context, Provider } = createDataContext(
   monoReducer,
-  { authenticateUser, resetLinkSuccess, clearErrors, getAccountInfo, getAccountStatement },
-  { loading: false, error: null, linkSuccess: false }
+  { authenticateUser, resetLinkSuccess, clearErrors, getAccountInfo, getAccountStatement, getAccountTransactionHistory, checkMonoStatus },
+  { statementLoading: false, infoLoading: false, error: null, linkSuccess: false, loading: false, statementPdf: null, accountInfo: null, accountHistory: null, monoStatus: null, transactionHistory: null }
 )

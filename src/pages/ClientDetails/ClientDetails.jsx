@@ -53,7 +53,7 @@ export const Biodata = ({ data, userId, reloadClients, userRole }) => {
         firstName: data.firstName,
         lastName: data.lastName,
         gender: _.capitalize(data.gender),
-        dateOfBirth: !data.DOB.includes("-")
+        dateOfBirth: data.DOB.includes("/")
           ? moment(data?.DOB, "DD/MM/YYYY").toDate()
           : null,
         emailAddress: data.email,
@@ -119,7 +119,7 @@ export const Biodata = ({ data, userId, reloadClients, userRole }) => {
     <>
       <ToastContainer position="top-center" />
       <div className={styles.profileImg}>
-        {data.profilePhoto ? (
+        {data?.profilePhoto ? (
           <img src={data?.profilePhoto} alt="user identity" />
         ) : (
           <div className={styles.placeholder} alt="image placeholder"></div>
@@ -369,6 +369,7 @@ export const Bank = ({ data, userId }) => {
   });
 
   const [loanDeets] = useLoanDetails(userId);
+  console.log(loanDeets);
 
   useEffect(() => {
     if (data) {

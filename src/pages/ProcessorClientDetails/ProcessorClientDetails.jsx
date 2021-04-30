@@ -11,7 +11,7 @@ import {
   Employer,
   ClientLoan,
 } from "../ClientDetails/ClientDetails";
-import { Row, Col, Modal } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { FiEye } from "react-icons/fi";
@@ -19,8 +19,9 @@ import { Context as UserContext } from "../../context/UserContext";
 import { Context as AuthContext } from "../../context/AuthContext";
 import Loader from "../../components/Loader/Loader";
 import useLoanDetails from "../../hooks/useLoanDetails";
+import DocumentModal from "../../components/DocumentModal/DocumentModal";
 
-const DocCard = ({ docTitle, docLink }) => {
+const DocCard = ({ docTitle, docLink, type }) => {
   const [show, setShow] = useState(false);
 
   const openDoc = () => {
@@ -43,11 +44,24 @@ const DocCard = ({ docTitle, docLink }) => {
         </div>
       </div>
       <h4 className={styles.docTitle}>{docTitle}</h4>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Body className={styles.documentImg}>
-          <img width="100%" src={docLink} alt="documents" />
-        </Modal.Body>
-      </Modal>
+      {show && type === "image" && (
+        <DocumentModal
+          fileTitle={docTitle}
+          childComponent={
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <img style={{ maxWidth: "100%" }} src={docLink} alt="documents" />
+            </div>
+          }
+          closeModal={handleClose}
+        />
+      )}
+      {show && type === "pdf" && (
+        <DocumentModal
+          fileTitle={docTitle}
+          fileUrl={docLink}
+          closeModal={handleClose}
+        />
+      )}
     </>
   );
 };
@@ -64,24 +78,28 @@ export const DocTab = ({ userId }) => {
           <DocCard
             docTitle="Identification"
             docLink={loanDeets?.client[0]?.identity?.identityImageUrl}
+            type="image"
           />
         </Col>
         <Col>
           <DocCard
             docTitle="Proof of Address"
             docLink={loanDeets?.residence[0]?.residenceProof}
+            type="image"
           />
         </Col>
         <Col>
           <DocCard
             docTitle="Official Document"
             docLink={loanDeets?.employment[0]?.officialDocumentUrl}
+            type="image"
           />
         </Col>
         <Col>
           <DocCard
             docTitle="Statement of Account"
             docLink={loanDeets?.bank[0]?.accountStatementUrl}
+            type="pdf"
           />
         </Col>
       </Row>
@@ -173,7 +191,10 @@ const ProcessorClientDetails = () => {
               <NextOfKin data={userDetails && { ...userDetails.nextOfKin }} />
             )}
             {detailSection === "bank" && (
-              <Bank data={userDetails && { ...userDetails.bank }} />
+              <Bank
+                data={userDetails && { ...userDetails.bank }}
+                userId={clientId}
+              />
             )}
             {detailSection === "employ" && (
               <Employer

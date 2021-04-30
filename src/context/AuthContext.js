@@ -77,6 +77,32 @@ const registerUser = (dispatch) => async (data, callback) => {
   }
 };
 
+const addStaff = (dispatch) => async (data) => {
+  dispatch({ type: "loading_state", payload: true });
+  dispatch({ type: "set_error", payload: null });
+  try {
+    const token = resolveToken();
+    const response = await gypsy.post("/client/signup", data, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    dispatch({ type: "loading_state", payload: false });
+    console.log(response);
+  } catch(err) {
+    dispatch({ type: "loading_state", payload: false });
+    if (err.response) {
+      console.log(err.response);
+      const errorMessage = err.response.data.error || err.response.data.message;
+      console.log(errorMessage)
+      dispatch({
+        type: "set_error",
+        payload: errorMessage
+      })
+    }
+  }
+}
+
 const addUserByAgent = (dispatch) => async (data, callback) => {
   dispatch({ type: "loading_state", payload: true });
   dispatch({ type: "set_error", payload: null });
@@ -330,7 +356,8 @@ export const { Context, Provider } = createPersistDataContext(
     getCurrentlyAddedUser,
     addUserByAgent,
     resetInactiveUserStatus,
-    clearMessage
+    clearMessage,
+    addStaff
   },
   {
     user: null,

@@ -1,0 +1,61 @@
+:root {
+  --fontColorOne: #212121;
+  --fontFamilyOne: "Source Sans Pro";
+  --fontFamilyTwo: "Kanit";
+  --backgroundOne: " #F5F5F5";
+}
+
+.welcomeGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h2 {
+    font-weight: 700;
+  }
+  p {
+    font-family: var(--fontFamilyOne);
+    font-size: 1.05rem;
+  }
+}
+
+.loanReportNavGroup {
+  border-bottom: 1px solid #741763;
+  margin-left: -40px;
+  margin-right: -40px;
+  .navItem {
+    font-size: 1.3rem;
+    font-family: var(--fontFamilyOne);
+    font-weight: 600;
+    text-align: center;
+    padding: 20px 0;
+    cursor: pointer;
+  }
+}
+
+.filterSection {
+  margin-top: 30px;
+  margin-bottom: 35px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  button {
+    background-color: #f6f6f6;
+    border: 1px solid #bdbdbd;
+    border-radius: 5px;
+    padding: 6px 24px;
+    font-family: var(--fontFamilyOne);
+    font-size: 1.15rem;
+    &:focus {
+      outline: none;
+    }
+    .icon {
+      font-size: 1.5rem;
+      margin-right: 20px;
+      color: #741763;
+    }
+  }
+  .inputWrapper {
+    width: 180px;
+  }
+}

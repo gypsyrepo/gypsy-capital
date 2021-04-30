@@ -66,6 +66,8 @@ const LoanList = ({ loanList, userRole }) => {
   const detailRoutePrefix = useMemo(() => {
     if (userRole === "sales") {
       return "sales-agent";
+    } else if (userRole === "super") {
+      return "super-admin";
     } else {
       return userRole;
     }
@@ -105,6 +107,7 @@ const LoanList = ({ loanList, userRole }) => {
             <thead>
               <tr>
                 <th>Loan ID</th>
+                <th>Client Name</th>
                 <th>Monthly Repayment</th>
                 <th>Tenure</th>
                 <th>Status</th>
@@ -133,6 +136,9 @@ const LoanList = ({ loanList, userRole }) => {
                           {loan._id.slice(0, 6)}
                         </Link>
                       </td>
+                      <td>{`${loan?.clientInfo[0]?.firstName.split(" ")[0]} ${
+                        loan?.clientInfo[0]?.lastName
+                      }`}</td>
                       <td>{`N ${numberWithCommas(loan.monthlyRepayment)}`}</td>
                       <td>{loan.paymentPeriod}</td>
                       <td>{_.capitalize(loan.status)}</td>

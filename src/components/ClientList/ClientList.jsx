@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import styles from "./ClientList.module.scss";
 import { Pagination, Table } from "react-bootstrap";
 import { TiCancelOutline } from "react-icons/ti";
@@ -6,8 +6,9 @@ import usePagination from "../../hooks/usePagination";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import _ from "lodash";
+import Button from "../Button/Button";
 
-const ClientList = ({ clientList, role }) => {
+const ClientList = ({ clientList, role, handleBtnClick }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
   // eslint-disable-next-line no-unused-vars
@@ -35,26 +36,47 @@ const ClientList = ({ clientList, role }) => {
     pageNumberLimit
   );
 
+  const detailRoutePrefix = useMemo(() => {
+    if (role === "sales") {
+      return "sales-agent";
+    } else if (role === "super") {
+      return "super-admin";
+    } else {
+      return role;
+    }
+  }, [role]);
+
   return (
     <>
       <div className={styles.welcomeGroup}>
         <div>
-          <h2>Clients</h2>
+          <h2>{role === "client" ? `Clients` : `Staffs`}</h2>
           <p className={styles.currentDate}>
             Today is {moment().format("dddd Do[,] MMMM")}.
           </p>
         </div>
+        {role === "super" && (
+          <Button
+            className={styles.addBtn}
+            bgColor="#741763"
+            color="#fff"
+            size="lg"
+            clicked={handleBtnClick}
+          >
+            Add New
+          </Button>
+        )}
       </div>
       <div className={styles.overview}>
         <div className={styles.overviewBox}>
-          <h3>Clients Overview</h3>
+          <h3>{`${role === "client" ? "Clients" : "Staff"} Overview`}</h3>
           <Table striped className={styles.table}>
             <thead>
               <tr>
-                <th>Client Name</th>
-                <th>Client ID</th>
+                <th>{`${role === "client" ? "Client" : "Staff"} Name`}</th>
+                <th>{`${role === "client" ? "Client" : "Staff"} ID`}</th>
                 <th>Phone Number</th>
-                <th>BVN</th>
+                <th>{role === "client" ? `BVN` : `Role`}</th>
                 <th>Date Created</th>
               </tr>
             </thead>
@@ -66,12 +88,16 @@ const ClientList = ({ clientList, role }) => {
                       client.lastName
                     )}`}</td>
                     <td className={styles.loanId}>
-                      <Link to={`/${role}/client/${client._id}`}>
+                      <Link to={`/${detailRoutePrefix}/client/${client._id}`}>
                         {client._id.slice(0, 6)}
                       </Link>
                     </td>
                     <td>{client.phoneNumber.replace("234", "0")}</td>
-                    <td>{client?.more_info[0]?.bioData?.BVN || "-----"}</td>
+                    {role === "client" ? (
+                      <td>{client?.more_info[0]?.bioData?.BVN || "-----"}</td>
+                    ) : (
+                      <td>{_.startCase(client?.role)}</td>
+                    )}
                     <td>{moment(client.createdAt).format("lll")}</td>
                   </tr>
                 ))}

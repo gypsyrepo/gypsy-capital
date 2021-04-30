@@ -92,7 +92,10 @@ const AuthorizerClientDetails = () => {
             <NextOfKin data={userDetails && { ...userDetails.nextOfKin }} />
           )}
           {visibleSection === "bank" && (
-            <Bank data={userDetails && { ...userDetails.bank }} />
+            <Bank
+              data={userDetails && { ...userDetails.bank }}
+              userId={clientId}
+            />
           )}
           {visibleSection === "employ" && (
             <Employer
