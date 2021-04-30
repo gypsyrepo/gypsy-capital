@@ -23,6 +23,7 @@ import { validateInput } from "../../utils/validateInput";
 //   stripCommasInNumber,
 // } from "../../utils/convertInputType";
 import { toast, ToastContainer } from "react-toastify";
+import { convertUnixDatetoReadable } from "../../utils/convertInputType";
 
 export const BasicInfo = ({ data, userRole }) => {
   const [basicInfo, setBasicInfo] = useState({
@@ -138,7 +139,7 @@ export const BasicInfo = ({ data, userRole }) => {
   );
 };
 
-const LoanStatus = ({ data }) => {
+export const LoanStatus = ({ data }) => {
   const [loanStatus, setLoanStatus] = useState({
     status: "",
     processorDecision: "",
@@ -155,17 +156,16 @@ const LoanStatus = ({ data }) => {
     if (data) {
       setLoanStatus({
         status: _.capitalize(data.status),
-        processorDecision: data.processorDecision || "Pending",
+        processorDecision: _.startCase(data.processorDecision) || "Pending",
         processorDecReason: data.processorDecisionReason || "_____",
         processorInCharge: data.processorOfficerInCharge || "None",
-        processorDecTime:
-          moment
-            .unix(Number(data.processorDecisionTime) / 1000)
-            .format("llll") || "_____",
-        adminDecision: data.adminDecision || "Pending",
+        processorDecTime: convertUnixDatetoReadable(
+          data?.processorDecisionTime
+        ),
+        adminDecision: _.startCase(data?.adminDecision) || "Pending",
         adminDecReason: data.adminDecisionReason || "_____",
         adminInCharge: data.adminOfficerInCharge || "None",
-        adminDecTime: data.adminDecisionTime || "______",
+        adminDecTime: convertUnixDatetoReadable(data?.adminDecisionTime),
       });
     }
   }, [data]);
@@ -347,7 +347,7 @@ export const RepaymentSchedule = ({ data, userRole, loanId, reloadLoan }) => {
 
   const scheduleTemplate = () => (
     <>
-      {userRole === "processor" || userRole === "authorizer" ? (
+      {userRole === "processor" || "authorizer" || "super" ? (
         <div className={[styles.repayment, "mb-5"].join(" ")}>
           <Table>
             <thead>
@@ -378,7 +378,7 @@ export const RepaymentSchedule = ({ data, userRole, loanId, reloadLoan }) => {
               <th>Overpayment</th>
               <th>Date of Payment</th>
               <th>Loan Balance</th>
-              {userRole === "authorizer" && <th>Action</th>}
+              {userRole === "authorizer" || "super" ? <th>Action</th> : null}
             </tr>
           </thead>
           <tbody>
@@ -417,7 +417,7 @@ export const RepaymentSchedule = ({ data, userRole, loanId, reloadLoan }) => {
                     </td>
                     <td>{track?.dateofPayment || repaidDate}</td>
                     <td>{track?.loanBalance || loanBalance}</td>
-                    {userRole === "authorizer" && (
+                    {userRole === "authorizer" || "super" ? (
                       <td>
                         <button
                           disabled={track.status}
@@ -426,7 +426,7 @@ export const RepaymentSchedule = ({ data, userRole, loanId, reloadLoan }) => {
                           Manual Repayment
                         </button>
                       </td>
-                    )}
+                    ) : null}
                   </tr>
                 );
               })}

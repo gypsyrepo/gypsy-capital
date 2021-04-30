@@ -191,7 +191,10 @@ const ProcessorClientDetails = () => {
               <NextOfKin data={userDetails && { ...userDetails.nextOfKin }} />
             )}
             {detailSection === "bank" && (
-              <Bank data={userDetails && { ...userDetails.bank }} />
+              <Bank
+                data={userDetails && { ...userDetails.bank }}
+                userId={clientId}
+              />
             )}
             {detailSection === "employ" && (
               <Employer

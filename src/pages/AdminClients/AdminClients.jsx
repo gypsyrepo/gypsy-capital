@@ -1,19 +1,15 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
+import { routes } from "../../routes/sidebarRoutes";
 import { useLocation } from "react-router-dom";
 import Dashboard from "../../components/Dashboard/Dashboard";
-import { routes } from "../../routes/sidebarRoutes";
 import ClientList from "../../components/ClientList/ClientList";
 import Loader from "../../components/Loader/Loader";
 import { Context as UserContext } from "../../context/UserContext";
-import { Context as AuthContext } from "../../context/AuthContext";
 
-const AuthorizerClients = () => {
-  const authorizerRoutes = routes[3];
+const AdminClients = () => {
+  const adminRoutes = routes[4];
   const location = useLocation();
 
-  const {
-    state: { user },
-  } = useContext(AuthContext);
   const {
     state: { clientsForRole, loading },
     getClientListForRole,
@@ -24,10 +20,14 @@ const AuthorizerClients = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const lenders = useMemo(() => {
+    return clientsForRole.filter((user) => user.role === "client");
+  }, [clientsForRole]);
+
   return (
-    <Dashboard sidebarRoutes={authorizerRoutes} location={location}>
+    <Dashboard sidebarRoutes={adminRoutes} location={location}>
       {!loading ? (
-        <ClientList clientList={clientsForRole} role={user.role} />
+        <ClientList clientList={lenders} role="client" />
       ) : (
         <Loader />
       )}
@@ -35,4 +35,4 @@ const AuthorizerClients = () => {
   );
 };
 
-export default AuthorizerClients;
+export default AdminClients;

@@ -22,6 +22,7 @@ import Footer from "../../components/Footer/Footer";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import { convertInput } from "../../utils/convertInputType";
 import ScrollToTopOnMount from "../../components/ScrollToTopOnMount/ScrollToTopOnMount";
+import LazyLoad from "react-lazyload";
 
 const HomePage = () => {
   const { url } = useRouteMatch();
@@ -75,31 +76,41 @@ const HomePage = () => {
           </Col>
           <Col md={6} sm={12} className={styles.imageGroup}>
             <div className={styles.imgContainer}>
-              <img
-                className={styles.mainImg}
-                src={ExcitedCustomer}
-                alt="An excited customer"
-              />
-              <img
-                className={styles.minorImg}
-                src={ExcitedCustomerMinor}
-                alt="An excited customer"
-              />
-              <img
-                className={styles.minorImg2}
-                src={Clients}
-                alt="Excited customers"
-              />
-              <img
-                src={Circle}
-                className={styles.firstCircle}
-                alt="presentation"
-              />
-              <img
-                src={Circle}
-                className={styles.secondCircle}
-                alt="presentation"
-              />
+              <LazyLoad height={200} once>
+                <img
+                  className={styles.mainImg}
+                  src={ExcitedCustomer}
+                  alt="An excited customer"
+                />
+              </LazyLoad>
+              <LazyLoad height={200} once>
+                <img
+                  className={styles.minorImg}
+                  src={ExcitedCustomerMinor}
+                  alt="An excited customer"
+                />
+              </LazyLoad>
+              <LazyLoad height={200} once>
+                <img
+                  className={styles.minorImg2}
+                  src={Clients}
+                  alt="Excited customers"
+                />
+              </LazyLoad>
+              <LazyLoad once>
+                <img
+                  src={Circle}
+                  className={styles.firstCircle}
+                  alt="presentation"
+                />
+              </LazyLoad>
+              <LazyLoad once>
+                <img
+                  src={Circle}
+                  className={styles.secondCircle}
+                  alt="presentation"
+                />
+              </LazyLoad>
             </div>
           </Col>
         </Row>
@@ -167,7 +178,9 @@ const HomePage = () => {
           </Col>
           <Col sm={12} md={6} className={styles.imageGroup}>
             <div className={styles.imageContainer}>
-              <img src={AboutImg} alt="About Gypsy" />
+              <LazyLoad once height={200} offset={100}>
+                <img src={AboutImg} alt="About Gypsy" />
+              </LazyLoad>
               <div className={styles.rect}></div>
             </div>
           </Col>
@@ -207,7 +220,13 @@ const HomePage = () => {
                 style={{ borderBottom: "4px solid #841FE8" }}
               >
                 <div className={styles.iconWrapper}>
-                  <img src={Notes} alt="Gypsy Notes" className={styles.notes} />
+                  <LazyLoad once offset={100}>
+                    <img
+                      src={Notes}
+                      alt="Gypsy Notes"
+                      className={styles.notes}
+                    />
+                  </LazyLoad>
                 </div>
                 <h3>Gypsy Notes</h3>
                 <p>
@@ -227,11 +246,13 @@ const HomePage = () => {
                 style={{ borderBottom: "4px solid #FF5800" }}
               >
                 <div className={styles.iconWrapper}>
-                  <img
-                    src={Advisory}
-                    alt="Financial Advisory"
-                    className={styles.advisory}
-                  />
+                  <LazyLoad once offset={100}>
+                    <img
+                      src={Advisory}
+                      alt="Financial Advisory"
+                      className={styles.advisory}
+                    />
+                  </LazyLoad>
                 </div>
                 <h3>Financial Advisory</h3>
                 <p>
@@ -248,11 +269,13 @@ const HomePage = () => {
                 style={{ borderBottom: "4px solid #015514" }}
               >
                 <div className={styles.iconWrapper}>
-                  <img
-                    src={Alternative}
-                    alt="Alternative Investment"
-                    className={styles.alternative}
-                  />
+                  <LazyLoad once offset={100}>
+                    <img
+                      src={Alternative}
+                      alt="Alternative Investment"
+                      className={styles.alternative}
+                    />
+                  </LazyLoad>
                 </div>
                 <h3>Alternative Investment</h3>
                 <p>

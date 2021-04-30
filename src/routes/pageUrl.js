@@ -32,6 +32,13 @@ const AUTHORIZER_LOANS = '/authorizer/loans';
 const AUTHORIZER_CLIENTS = '/authorizer/clients';
 const AUTHORIZER_CLIENT_DETAILS = '/authorizer/client/:clientId';
 const AUTHORIZER_LOAN_DETAILS = '/authorizer/loan/:loanId';
+const ADMIN_OVERVIEW = '/super-admin/overview';
+const ADMIN_LOANS = '/super-admin/loans';
+const ADMIN_CLIENTS = '/super-admin/clients';
+const ADMIN_CLIENT_DETAILS = '/super-admin/client/:clientId';
+const ADMIN_LOAN_DETAILS = '/super-admin/loan/:loanId';
+const ADMIN_STAFF = '/super-admin/staffs';
+const ADMIN_REPORTS = '/super-admin/reports';
 
 const pageUrl = {
     HOMEPAGE,
@@ -67,7 +74,14 @@ const pageUrl = {
     AUTHORIZER_LOANS,
     AUTHORIZER_CLIENTS,
     AUTHORIZER_CLIENT_DETAILS,
-    AUTHORIZER_LOAN_DETAILS
+    AUTHORIZER_LOAN_DETAILS,
+    ADMIN_OVERVIEW,
+    ADMIN_CLIENTS,
+    ADMIN_LOANS,
+    ADMIN_CLIENT_DETAILS,
+    ADMIN_LOAN_DETAILS,
+    ADMIN_STAFF,
+    ADMIN_REPORTS
 }
 
 export default pageUrl;

@@ -3,7 +3,6 @@ import { Context as LoanContext } from '../context/LoanContext';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (clientId) => {
-
   const [loanDeets, setLoanDeets] = useState(null);
   const { state: { loans, loanDetails }, retrieveClientLoans, retrieveLoan } = useContext(LoanContext);
 
@@ -16,6 +15,8 @@ export default (clientId) => {
     return loans.filter(loan => loan.clientInfo[0]?._id === clientId)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loans]);
+
+  console.log(clientId)
 
   useEffect(() => {
    retrieveLoan(userLoans[0]?._id)

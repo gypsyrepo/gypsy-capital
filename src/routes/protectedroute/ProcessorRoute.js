@@ -4,14 +4,14 @@ import { Context as AuthContext } from '../../context/AuthContext';
 import pageUrl from '../pageUrl';
 
 
-const ProtectedRoute = ({component: Component, ...rest}) => {
+const ProcessorRoute = ({component: Component, ...rest}) => {
 
   const { state: { loggedIn, user } } = useContext(AuthContext);
   const location = useLocation()
 
   return (
     <Route {...rest}>
-      { loggedIn && user.role === "client" ? 
+      { loggedIn && user.role === "processor" ? 
           <Component /> :
           <Redirect to={{ pathname: pageUrl.SIGNIN_PAGE, state: { from: location } }} />
       }
@@ -20,4 +20,4 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
 }
 
 
-export default ProtectedRoute;
+export default ProcessorRoute;

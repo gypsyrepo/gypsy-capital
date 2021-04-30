@@ -1,38 +1,40 @@
 import React, { useContext, useEffect } from "react";
+import { routes } from "../../routes/sidebarRoutes";
 import { useLocation } from "react-router-dom";
 import Dashboard from "../../components/Dashboard/Dashboard";
 import LoanList from "../../components/LoanList/LoanList";
-import { routes } from "../../routes/sidebarRoutes";
-import { Context as AuthContext } from "../../context/AuthContext";
-import { Context as LoanContext } from "../../context/LoanContext";
 import Loader from "../../components/Loader/Loader";
+import { Context as LoanContext } from "../../context/LoanContext";
+import { Context as AuthContext } from "../../context/AuthContext";
 
-const AuthorizerLoans = () => {
-  const authorizerRoutes = routes[3];
+const AdminLoans = () => {
+  const adminRoutes = routes[4];
   const location = useLocation();
 
-  const {
-    state: { user },
-  } = useContext(AuthContext);
   const {
     state: { loading, loans },
     retrieveClientLoans,
   } = useContext(LoanContext);
+  const {
+    state: { user },
+  } = useContext(AuthContext);
 
   useEffect(() => {
     retrieveClientLoans();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log(loans);
+
   return (
-    <Dashboard sidebarRoutes={authorizerRoutes} location={location}>
-      {!loading ? (
-        <LoanList loanList={loans} userRole={user?.role} />
-      ) : (
+    <Dashboard sidebarRoutes={adminRoutes} location={location}>
+      {loading ? (
         <Loader />
+      ) : (
+        <LoanList loanList={loans} userRole={user?.role} />
       )}
     </Dashboard>
   );
 };
 
-export default AuthorizerLoans;
+export default AdminLoans;

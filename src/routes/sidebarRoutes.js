@@ -3,7 +3,7 @@ import { FiLayers } from 'react-icons/fi';
 import { BiCreditCard } from 'react-icons/bi';
 import { AiOutlineUser } from 'react-icons/ai';
 import { GiTakeMyMoney, GiMoneyStack } from 'react-icons/gi';
-import { FaUser } from 'react-icons/fa';
+import { FaUser, FaUserTie, FaFileAlt } from 'react-icons/fa';
 import { BiSupport } from 'react-icons/bi';
 import { RiUser3Fill } from 'react-icons/ri';
 
@@ -118,10 +118,44 @@ const authorizerRoutes = [
   }
 ]
 
+const adminRoutes = [
+  {
+    label: "Dashboard",
+    link: pageUrl.ADMIN_OVERVIEW,
+    rootLink: pageUrl.ADMIN_OVERVIEW,
+    icon: FiLayers
+  },
+  {
+    label: "Clients",
+    link: pageUrl.ADMIN_CLIENTS,
+    rootLink: '/super-admin/client',
+    icon: FaUser
+  },
+  {
+    label: "Loans",
+    link: pageUrl.ADMIN_LOANS,
+    rootLink: '/super-admin/loan',
+    icon: GiMoneyStack
+  }, 
+  {
+    label: "Staff",
+    link: `/super-admin/staffs/list`,
+    rootLink: pageUrl.ADMIN_STAFF,
+    icon: FaUserTie
+  },
+  {
+    label: "Reports",
+    link: `/super-admin/reports/loan`,
+    rootLink: pageUrl.ADMIN_REPORTS,
+    icon: FaFileAlt
+  }
+]
+
 
 export const routes = [
   clientRoutes,
   salesRoutes,
   processorRoutes,
-  authorizerRoutes
+  authorizerRoutes,
+  adminRoutes
 ]
