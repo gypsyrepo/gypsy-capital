@@ -14,6 +14,7 @@ import Director1 from "../../assets/director.png";
 import Director2 from "../../assets/director-2.png";
 import { useRouteMatch } from "react-router-dom";
 import ScrollToTopOnMount from "../../components/ScrollToTopOnMount/ScrollToTopOnMount";
+import LazyLoad from "react-lazyload";
 
 const ValueBox = ({ title, children, icon, borderColor }) => {
   return (
@@ -82,12 +83,14 @@ const AboutUs = ({ history }) => {
     <>
       <ScrollToTopOnMount />
       <NavBar history={history} location={url} />
-      <div className={styles.heroSection}>
-        <div className={styles.container}>
-          <h2>About Us</h2>
+      <LazyLoad>
+        <div className={styles.heroSection}>
+          <div className={styles.container}>
+            <h2>About Us</h2>
+          </div>
+          <div className={styles.bgOverlay}></div>
         </div>
-        <div className={styles.bgOverlay}></div>
-      </div>
+      </LazyLoad>
       <div className={styles.moreInfo}>
         <div className={styles.container}>
           <Row className="align-items-center">
