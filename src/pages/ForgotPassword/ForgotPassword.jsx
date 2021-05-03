@@ -1,27 +1,36 @@
-import React, { useContext, useEffect, useState } from 'react';
-import styles from './ForgotPassword.module.scss';
-import Logo from '../../assets/logo.png';
-import InputField from '../../components/InputField/InputField';
-import Button from '../../components/Button/Button';
-import { Context as UserContext } from '../../context/UserContext';
-import { ToastContainer, toast  } from 'react-toastify';
-
+import React, { useContext, useEffect, useState } from "react";
+import styles from "./ForgotPassword.module.scss";
+import Logo from "../../assets/logo.png";
+import InputField from "../../components/InputField/InputField";
+import Button from "../../components/Button/Button";
+import { Context as UserContext } from "../../context/UserContext";
+import { ToastContainer, toast } from "react-toastify";
 
 const ForgotPassword = () => {
-
-  const [email, setEmail] = useState('');
-  const { state: { loading, error }, resetPassword, clearErrors } = useContext(UserContext);
+  const [email, setEmail] = useState("");
+  const {
+    state: { loading, error },
+    resetPassword,
+    clearErrors,
+  } = useContext(UserContext);
 
   useEffect(() => {
-    if(error) {
+    if (error) {
       toast.error(error);
       clearErrors();
     }
-  }, [error])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
 
   const initiatePasswordReset = () => {
     resetPassword(email);
-  }
+  };
+
+  const handleSubmitWithKeyPress = (e) => {
+    if (e.key.toLowerCase() === "enter" || e.code.toLowerCase() === "enter") {
+      initiatePasswordReset();
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -30,19 +39,20 @@ const ForgotPassword = () => {
       <h1>Forgot Password?</h1>
       <p>Enter the email address associated with your account</p>
       <div className={styles.formBox}>
-        <InputField 
+        <InputField
           type="email"
           label="Email"
           nameAttr="email"
           value={email}
+          handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
           changed={(val) => setEmail(val)}
         />
         <Button
-          fullWidth 
+          fullWidth
           clicked={initiatePasswordReset}
-          className="mt-4" 
-          bgColor="#741763" 
-          size="lg" 
+          className="mt-4"
+          bgColor="#741763"
+          size="lg"
           color="#EBEBEB"
           loading={loading}
           disabled={loading}
@@ -51,8 +61,7 @@ const ForgotPassword = () => {
         </Button>
       </div>
     </div>
-  )
-}
-
+  );
+};
 
 export default ForgotPassword;

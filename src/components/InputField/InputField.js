@@ -13,7 +13,8 @@ const InputField = ({
   placeholder,
   error,
   disable,
-  customDefault
+  customDefault,
+  handleKeyPress,
 }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -35,6 +36,7 @@ const InputField = ({
             placeholder={placeholder}
             onChange={(e) => changed(e.currentTarget.value)}
             disabled={disable}
+            onKeyPress={(e) => handleKeyPress && handleKeyPress(e)}
           />
         ) : null}
         {type === "password" && (
@@ -43,6 +45,7 @@ const InputField = ({
             name={nameAttr}
             value={value}
             onChange={(e) => changed(e.currentTarget.value)}
+            onKeyPress={(e) => handleKeyPress(e)}
           />
         )}
         {type === "select" && (
@@ -51,9 +54,10 @@ const InputField = ({
             name={nameAttr}
             value={value}
             onChange={(e) => changed(e.currentTarget.value)}
+            onKeyPress={(e) => handleKeyPress(e)}
           >
             <option value="none" selected disabled hidden>
-              { customDefault ? customDefault : 'Select...'}
+              {customDefault ? customDefault : "Select..."}
             </option>
             {options.map((option) => {
               return (
@@ -78,6 +82,7 @@ const InputField = ({
             name={nameAttr}
             placeholder={placeholder}
             disabled={disable}
+            onKeyPress={(e) => handleKeyPress(e)}
           />
         )}
         {type === "password" && (
