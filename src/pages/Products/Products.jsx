@@ -127,11 +127,13 @@ const HowItWorks = ({
               </>
             )}
             {imageCopy && (
-              <img
-                src={imageCopy}
-                alt={productName}
-                className={styles.imgCopy}
-              />
+              <LazyLoad offset={100} height={200} once>
+                <img
+                  src={imageCopy}
+                  alt={productName}
+                  className={styles.imgCopy}
+                />
+              </LazyLoad>
             )}
           </Col>
         </Row>
@@ -172,7 +174,7 @@ const MenuBox = ({ icon, menuTitle, linkUrl, linkPath }) => {
         className={linkUrl === linkPath ? styles.activeMenu : styles.menuBox}
       >
         <div className={styles.iconWrapper}>
-          <LazyLoad height={200} once>
+          <LazyLoad offset={100} height={200} once>
             <img
               src={icon}
               alt="Consumer Credit"
@@ -258,28 +260,36 @@ const Products = () => {
               <Row>
                 <Col sm={12} md={3} className="mb-4">
                   <div className={styles.iconWrapper}>
-                    <img src={Funding} alt="Fast funding" />
+                    <LazyLoad offset={100} height={200} once>
+                      <img src={Funding} alt="Fast funding" />
+                    </LazyLoad>
                   </div>
                   <h3>Funding Capacity</h3>
                   <p>Up to ₦500,000</p>
                 </Col>
                 <Col sm={12} md={3} className="mb-4">
                   <div className={styles.iconWrapper}>
-                    <img src={Accept} alt="terms" />
+                    <LazyLoad offset={100} height={200} once>
+                      <img src={Accept} alt="terms" />
+                    </LazyLoad>
                   </div>
                   <h3>Term</h3>
                   <p>Up to 6 months</p>
                 </Col>
                 <Col sm={12} md={3} className="mb-4">
                   <div className={styles.iconWrapper}>
-                    <img src={Calendar} alt="schedule" />
+                    <LazyLoad offset={100} height={200} once>
+                      <img src={Calendar} alt="schedule" />
+                    </LazyLoad>
                   </div>
                   <h3>Payment Schedule</h3>
                   <p>Monthly</p>
                 </Col>
                 <Col sm={12} md={3} className="mb-4">
                   <div className={styles.iconWrapper}>
-                    <img src={Time} alt="speed" />
+                    <LazyLoad offset={100} height={200} once>
+                      <img src={Time} alt="speed" />
+                    </LazyLoad>
                   </div>
                   <h3>Speed</h3>
                   <p>As fast as 24 hours</p>
