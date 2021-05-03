@@ -156,43 +156,51 @@ const AboutUs = ({ history }) => {
       <div className={styles.teamSection}>
         <div className={styles.container}>
           <h2>Meet Our Dynamic Team</h2>
-          <TeamDisplay
-            title="Managing Director/CEO"
-            memberImg={CEO}
-            name="Ayodeji Mekuleyi"
-          >
-            With a wealth of experience spanning up to 10years in business
-            management, Ayo is constantly looking for innovative ways to drive
-            financial inclusion, value and possibilities for today’s personal
-            and business ecosystems.
-          </TeamDisplay>
-          <TeamDisplay
-            title="Managing Partner / Director"
-            memberImg={Partner}
-            name="Valentine Ndianefo"
-          >
-            He is fondly referred to as the numbers expert hinged on his
-            profound knowledge in accounting attained from his work experience
-            in the banking sector.
-          </TeamDisplay>
-          <TeamDisplay
-            title="Non-Executive Director"
-            memberImg={Director1}
-            name="Magaret Hall"
-          >
-            Apart from earning her stripes as a seasoned and exceptionally
-            skilled business strategy & management personnel, she is an
-            accomplished entrepreneur with a distinctive academic background
-            stemming from international exposure.
-          </TeamDisplay>
-          <TeamDisplay
-            title="Non-Executive Director"
-            memberImg={Director2}
-            name="Senator Hosea Ehinlanwo (phd.)"
-          >
-            A seasoned and distinguished public administrator with over 35 years
-            of business, academic and administrative experience.
-          </TeamDisplay>
+          <LazyLoad offset={100}>
+            <TeamDisplay
+              title="Managing Director/CEO"
+              memberImg={CEO}
+              name="Ayodeji Mekuleyi"
+            >
+              With a wealth of experience spanning up to 10years in business
+              management, Ayo is constantly looking for innovative ways to drive
+              financial inclusion, value and possibilities for today’s personal
+              and business ecosystems.
+            </TeamDisplay>
+          </LazyLoad>
+          <LazyLoad offset={100}>
+            <TeamDisplay
+              title="Managing Partner / Director"
+              memberImg={Partner}
+              name="Valentine Ndianefo"
+            >
+              He is fondly referred to as the numbers expert hinged on his
+              profound knowledge in accounting attained from his work experience
+              in the banking sector.
+            </TeamDisplay>
+          </LazyLoad>
+          <LazyLoad offset={100}>
+            <TeamDisplay
+              title="Non-Executive Director"
+              memberImg={Director1}
+              name="Magaret Hall"
+            >
+              Apart from earning her stripes as a seasoned and exceptionally
+              skilled business strategy & management personnel, she is an
+              accomplished entrepreneur with a distinctive academic background
+              stemming from international exposure.
+            </TeamDisplay>
+          </LazyLoad>
+          <LazyLoad offset={100}>
+            <TeamDisplay
+              title="Non-Executive Director"
+              memberImg={Director2}
+              name="Senator Hosea Ehinlanwo (phd.)"
+            >
+              A seasoned and distinguished public administrator with over 35
+              years of business, academic and administrative experience.
+            </TeamDisplay>
+          </LazyLoad>
         </div>
       </div>
       <Footer />
