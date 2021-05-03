@@ -178,9 +178,7 @@ const HomePage = () => {
           </Col>
           <Col sm={12} md={6} className={styles.imageGroup}>
             <div className={styles.imageContainer}>
-              <LazyLoad once height={200} offset={100}>
-                <img src={AboutImg} alt="About Gypsy" />
-              </LazyLoad>
+              <img src={AboutImg} alt="About Gypsy" />
               <div className={styles.rect}></div>
             </div>
           </Col>
