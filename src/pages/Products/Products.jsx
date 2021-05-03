@@ -127,13 +127,11 @@ const HowItWorks = ({
               </>
             )}
             {imageCopy && (
-              <LazyLoad offset={100} height={200} once>
-                <img
-                  src={imageCopy}
-                  alt={productName}
-                  className={styles.imgCopy}
-                />
-              </LazyLoad>
+              <img
+                src={imageCopy}
+                alt={productName}
+                className={styles.imgCopy}
+              />
             )}
           </Col>
         </Row>
