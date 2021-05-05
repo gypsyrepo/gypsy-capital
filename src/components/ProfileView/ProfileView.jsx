@@ -3,7 +3,7 @@ import styles from "./ProfileView.module.scss";
 import { Row, Col } from "react-bootstrap";
 import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
-import { BiCreditCard, BiPlus } from "react-icons/bi";
+import { BiCreditCard } from "react-icons/bi";
 import { RiBankFill } from "react-icons/ri";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as UserContext } from "../../context/UserContext";
@@ -29,6 +29,16 @@ const ProfileView = () => {
     confirmPassword: "",
   });
 
+  const [remitaData, setRemitaData] = useState({
+    card: "",
+    otp: "",
+  });
+
+  const [remitaDataError, setRemitaDataError] = useState({
+    card: null,
+    otp: null,
+  });
+
   const profilePicRef = useRef();
 
   const {
@@ -42,14 +52,14 @@ const ProfileView = () => {
   useEffect(() => {
     getClientDetails(user.user_id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userDetails]);
 
   useEffect(() => {
     if (userDetails) {
       // setProfileData({
       //   firstName
       // })
-      console.log(userDetails);
+      // console.log(userDetails);
       const { bioData, identity, residence } = userDetails;
       setProfileData({
         firstName: bioData.firstName,
@@ -64,7 +74,6 @@ const ProfileView = () => {
   }, [userDetails]);
 
   const goToProfileSection = (section) => {
-    console.log("works");
     setVisibleSection(section);
   };
 
@@ -121,7 +130,7 @@ const ProfileView = () => {
             </div>
             <div className={styles.uploadBtn}>
               <input type="file" id="profilePic" hidden ref={profilePicRef} />
-              <label htmlFor="profilePic">Change Profile Picture</label>
+              {/* <label htmlFor="profilePic">Change Profile Picture</label> */}
             </div>
             <Row className="mb-4">
               <Col sm={12} md={6} className="mb-4 mb-md-0">
@@ -177,7 +186,7 @@ const ProfileView = () => {
                 />
               </Col>
             </Row>
-            <Button
+            {/* <Button
               className="mt-5"
               fullWidth
               bgColor="#741763"
@@ -185,7 +194,7 @@ const ProfileView = () => {
               color="#EBEBEB"
             >
               Edit Info
-            </Button>
+            </Button> */}
           </div>
         )}
         {visibleSection === "security" && (
@@ -251,7 +260,7 @@ const ProfileView = () => {
                 onClick={() => setVisiblePaymentSection("card")}
               >
                 <BiCreditCard className={styles.icon} />
-                Card
+                Remita
               </button>
               <button
                 className={
@@ -265,10 +274,55 @@ const ProfileView = () => {
             </div>
             <div className={styles.content}>
               {visiblePaymentSection === "card" && (
-                <div className={styles.addCard}>
+                <div className={styles.addRemita}>
                   <div className={styles.cardInner}>
-                    <BiPlus size="2em" />
-                    <p>Add Card</p>
+                    {/* <BiPlus size="2em" />
+                    <p>Add Card</p> */}
+                    <Row className="mb-3">
+                      <Col>
+                        <InputField
+                          type="text"
+                          nameAttr="card-remita"
+                          changed={(val) => {
+                            setRemitaData({ ...remitaData, card: val });
+                            setRemitaDataError({
+                              ...remitaDataError,
+                              card: null,
+                            });
+                          }}
+                          value={remitaData.card}
+                          error={remitaDataError?.card}
+                          label="Card"
+                        />
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <InputField
+                          type="number"
+                          nameAttr="otp-remita"
+                          changed={(val) => {
+                            setRemitaData({ ...remitaData, otp: val });
+                            setRemitaDataError({
+                              ...remitaDataError,
+                              otp: null,
+                            });
+                          }}
+                          value={remitaData.otp}
+                          error={remitaDataError?.otp}
+                          label="OTP"
+                        />
+                      </Col>
+                    </Row>
+                    <Button
+                      bgColor="#a02089"
+                      color="#fff"
+                      size="lg"
+                      className="mt-5"
+                      fullWidth
+                    >
+                      Submit
+                    </Button>
                   </div>
                 </div>
               )}
