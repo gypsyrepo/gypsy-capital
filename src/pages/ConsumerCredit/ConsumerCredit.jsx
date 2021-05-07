@@ -80,7 +80,7 @@ const ConsumerCredit = () => {
   };
 
   const updateBankInfo = (data) => {
-    addBankInfoForLoan(data, currentLoanId, retrieveClientLoans);
+    addBankInfoForLoan(data, currentLoanId);
   };
 
   const resumeApplication = () => {
@@ -96,7 +96,7 @@ const ConsumerCredit = () => {
     }
   };
 
-  console.log(loans);
+  // console.log(error);
 
   return (
     <>

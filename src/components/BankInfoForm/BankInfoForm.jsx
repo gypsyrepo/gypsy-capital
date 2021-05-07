@@ -71,6 +71,12 @@ const BankInfoForm = ({ submitBankInfo }) => {
     }
   };
 
+  const handleSubmitWithKeyPress = (e) => {
+    if (e.key.toLowerCase() === "enter" || e.code.toLowerCase() === "enter") {
+      uploadBankInfo();
+    }
+  };
+
   useEffect(() => {
     if (bankInfo.accountNumber.length === 10 && bankInfo.bankName) {
       const bank = bankList.find(
@@ -105,6 +111,7 @@ const BankInfoForm = ({ submitBankInfo }) => {
             label="Bank Name"
             options={bankNames}
             value={bankInfo.bankName}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setBankErrors({ ...bankErrors, bankName: null });
               setBankInfo({ ...bankInfo, bankName: val });
@@ -119,6 +126,7 @@ const BankInfoForm = ({ submitBankInfo }) => {
             label="Bank Account Type"
             options={["Savings", "Current"]}
             value={bankInfo.accountType}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setBankErrors({ ...bankErrors, accountType: null });
               setBankInfo({ ...bankInfo, accountType: val });
@@ -134,6 +142,7 @@ const BankInfoForm = ({ submitBankInfo }) => {
             nameAttr="acctNumber"
             label="Account Number"
             value={bankInfo.accountNumber}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setBankErrors({ ...bankErrors, accountNumber: null });
               setBankInfo({ ...bankInfo, accountNumber: val });
@@ -148,6 +157,7 @@ const BankInfoForm = ({ submitBankInfo }) => {
               nameAttr="acctName"
               label="Account Name"
               value={bankInfo.accountName}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               disable={true}
               changed={(val) => setBankInfo({ ...bankInfo, accountName: val })}
             />

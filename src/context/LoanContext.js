@@ -246,22 +246,26 @@ const retrieveLoan = (dispatch) => async (loanId) => {
   }
 };
 
-const sendOfferLetter = dispatch => async(loanId, sendData) => {
+const sendOfferLetter = (dispatch) => async (loanId, sendData) => {
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
-    const response = await gypsy.post(`/user/loan/offer_letter/${loanId}`, sendData, {
-      headers: {
-        "Authorization": `Bearer ${token}`
+    const response = await gypsy.post(
+      `/user/loan/offer_letter/${loanId}`,
+      sendData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
+    );
     // console.log(response.data);
     dispatch({
       type: "set_message",
-      payload: response.data.message
+      payload: response.data.message,
     });
     dispatch({ type: "set_loading", payload: false });
-  } catch(err) {
+  } catch (err) {
     if (err.response) {
       console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message;
@@ -272,7 +276,7 @@ const sendOfferLetter = dispatch => async(loanId, sendData) => {
       dispatch({ type: "set_loading", payload: false });
     }
   }
-}
+};
 
 const clearError = (dispatch) => () => {
   dispatch({
@@ -293,7 +297,12 @@ const clearMessage = (dispatch) => () => {
     type: "set_message",
     payload: null,
   });
-}
+};
+
+const savePartialState = (state) => {
+  const { currentLoanId } = state;
+  sessionStorage.setItem(`gypsy-currentLoanId`, currentLoanId);
+};
 
 export const { Context, Provider } = createDataContext(
   loanReducer,
@@ -308,7 +317,7 @@ export const { Context, Provider } = createDataContext(
     resetApplyStage,
     retrieveLoan,
     sendOfferLetter,
-    clearMessage
+    clearMessage,
   },
   {
     loading: false,
@@ -318,6 +327,8 @@ export const { Context, Provider } = createDataContext(
     loanApplicationStage: null,
     currentLoanId: null,
     incomplete: false,
-    message: null
-  }
+    message: null,
+  },
+  _,
+  savePartialState
 );

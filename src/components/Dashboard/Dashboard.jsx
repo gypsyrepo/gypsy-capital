@@ -12,6 +12,8 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import placeholderAvatar from "../../assets/placeholder.png";
 import { FiLogOut } from "react-icons/fi";
 import _ from "lodash";
+import useSearchClient from "../../hooks/useSearchClient";
+import SearchTable from "../SearchTable/SearchTable";
 
 const Dashboard = ({ children, sidebarRoutes, location }) => {
   // console.log(location)
@@ -25,12 +27,9 @@ const Dashboard = ({ children, sidebarRoutes, location }) => {
   };
 
   const [menuOpen, setMenuOpen] = useState(false);
-
   const [searchTerm, setSearchTerm] = useState("");
 
-  if (!user) {
-    return null;
-  }
+  const [searchResult] = useSearchClient(searchTerm);
 
   return (
     <div className={styles.container}>
@@ -196,7 +195,13 @@ const Dashboard = ({ children, sidebarRoutes, location }) => {
           </div>
         </Col>
         <Col sm={12} lg={9} className={styles.mainPanel}>
-          <div className={styles.mainContent}>{children}</div>
+          <div className={styles.mainContent}>
+            {searchTerm.length === 0 ? (
+              children
+            ) : (
+              <SearchTable role={user.role} searchList={searchResult} />
+            )}
+          </div>
         </Col>
       </Row>
     </div>

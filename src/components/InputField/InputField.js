@@ -45,7 +45,7 @@ const InputField = ({
             name={nameAttr}
             value={value}
             onChange={(e) => changed(e.currentTarget.value)}
-            onKeyPress={(e) => handleKeyPress(e)}
+            onKeyPress={(e) => handleKeyPress && handleKeyPress(e)}
           />
         )}
         {type === "select" && (
@@ -54,7 +54,7 @@ const InputField = ({
             name={nameAttr}
             value={value}
             onChange={(e) => changed(e.currentTarget.value)}
-            onKeyPress={(e) => handleKeyPress(e)}
+            onKeyPress={(e) => handleKeyPress && handleKeyPress(e)}
           >
             <option value="none" selected disabled hidden>
               {customDefault ? customDefault : "Select..."}
@@ -82,7 +82,7 @@ const InputField = ({
             name={nameAttr}
             placeholder={placeholder}
             disabled={disable}
-            onKeyPress={(e) => handleKeyPress(e)}
+            onKeyPress={(e) => handleKeyPress && handleKeyPress(e)}
           />
         )}
         {type === "password" && (

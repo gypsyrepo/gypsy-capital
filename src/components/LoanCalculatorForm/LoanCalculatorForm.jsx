@@ -31,6 +31,7 @@ export const DtiRangeSlider = ({ label, dtiVal, setVal }) => {
 const LoanCalculatorForm = ({ delegateApply }) => {
   const {
     state: { loading },
+    // eslint-disable-next-line no-unused-vars
     loanApply,
   } = useContext(LoanContext);
   const {
@@ -138,6 +139,12 @@ const LoanCalculatorForm = ({ delegateApply }) => {
     }
   };
 
+  const handleSubmitWithKeyPress = (e) => {
+    if (e.key.toLowerCase() === "enter" || e.code.toLowerCase() === "enter") {
+      submitLoanCalcData();
+    }
+  };
+
   if (daysOfMonth.length === 0) {
     return null;
   }
@@ -152,6 +159,7 @@ const LoanCalculatorForm = ({ delegateApply }) => {
             type="text"
             nameAttr="salary"
             value={loanCalcData.monthlySalary}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               const { includesAlphabet, convertedToNumber } = convertInput(val);
               if (!includesAlphabet) {
@@ -178,6 +186,7 @@ const LoanCalculatorForm = ({ delegateApply }) => {
             options={daysOfMonth}
             nameAttr="payday"
             value={loanCalcData.payDay}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setLoanCalcDataErrors({ ...loanCalcDataErrors, payDay: null });
               setLoanCalcData({ ...loanCalcData, payDay: val });
@@ -193,6 +202,7 @@ const LoanCalculatorForm = ({ delegateApply }) => {
             type="text"
             nameAttr="loanAmt"
             value={loanCalcData.loanAmount}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               const { includesAlphabet, convertedToNumber } = convertInput(val);
               if (!includesAlphabet) {
@@ -228,6 +238,7 @@ const LoanCalculatorForm = ({ delegateApply }) => {
             ]}
             nameAttr="installmentCycle"
             value={loanCalcData.installmentPeriod}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setLoanCalcDataErrors({
                 ...loanCalcDataErrors,
@@ -273,6 +284,7 @@ const LoanCalculatorForm = ({ delegateApply }) => {
             ]}
             nameAttr="loanPurpose"
             value={loanCalcData.loanPurpose}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setLoanCalcDataErrors({
                 ...loanCalcDataErrors,
@@ -293,6 +305,7 @@ const LoanCalculatorForm = ({ delegateApply }) => {
             label="Estimated Monthly Payment"
             nameAttr="monthlyPayment"
             value={loanCalcData.estimatedMonthlyPayment}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             disable={true}
             changed={(val) => {
               setLoanCalcDataErrors({
