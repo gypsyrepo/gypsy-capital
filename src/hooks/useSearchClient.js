@@ -10,7 +10,7 @@ export default (searchedTerm) => {
     return staffList.filter((user) => {
       if (!isNaN(refinedTerm)) {
         return (
-          user?.phoneNumber.includes(searchedTerm) ||
+          user?.phoneNumber.includes(searchedTerm.replace("0", "234")) ||
           user?.more_info[0]?.bioData?.BVN.includes(searchedTerm) ||
           user?.more_info[0]?.bioData?.alternativePhoneNumber.includes(
             searchedTerm

@@ -1,11 +1,12 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import styles from "./SearchTable.module.scss";
 import { Table } from "react-bootstrap";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import Highlighter from "react-highlight-words";
 
-const SearchTable = ({ searchList, role }) => {
+const SearchTable = ({ searchList, role, searchTerm }) => {
   const detailRoutePrefix = useMemo(() => {
     if (role === "sales") {
       return "sales-agent";
@@ -15,6 +16,8 @@ const SearchTable = ({ searchList, role }) => {
       return role;
     }
   }, [role]);
+
+  useEffect(() => {}, [searchTerm]);
 
   return (
     <div className={styles.tableContainer}>
@@ -29,20 +32,40 @@ const SearchTable = ({ searchList, role }) => {
             <th>Date Created</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="table-body">
           {searchList.map((client) => {
             return (
               <tr>
-                <td>{`${_.capitalize(client.firstName)} ${_.capitalize(
-                  client.lastName
-                )}`}</td>
+                <td>
+                  <Highlighter
+                    searchWords={[searchTerm]}
+                    textToHighlight={`${_.capitalize(
+                      client.firstName
+                    )} ${_.capitalize(client.lastName)}`}
+                    autoEscape={true}
+                  />
+                </td>
                 <td>
                   <Link to={`/${detailRoutePrefix}/client/${client._id}`}>
                     {client._id.slice(0, 6)}
                   </Link>
                 </td>
-                <td>{client.phoneNumber.replace("234", "0")}</td>
-                <td>{client?.more_info[0]?.bioData?.BVN || "-----"}</td>
+                <td>
+                  <Highlighter
+                    searchWords={[searchTerm]}
+                    textToHighlight={client.phoneNumber.replace("234", "0")}
+                    autoEscape={true}
+                  />
+                </td>
+                <td>
+                  <Highlighter
+                    searchWords={[searchTerm]}
+                    textToHighlight={
+                      client?.more_info[0]?.bioData?.BVN || "-----"
+                    }
+                    autoEscape={true}
+                  />
+                </td>
                 <td>{moment(client.createdAt).format("lll")}</td>
               </tr>
             );

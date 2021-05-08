@@ -1,7 +1,13 @@
 @import "~bootstrap/scss/bootstrap";
 
 .spinner-grow {
-    background-color: #741763 !important;
-    height: 3rem;
-    width: 3rem;
+  background-color: #741763 !important;
+  height: 3rem;
+  width: 3rem;
+}
+
+mark {
+  //   background-color: yellow;
+  font-weight: bold;
+  color: inherit;
 }

@@ -199,7 +199,11 @@ const Dashboard = ({ children, sidebarRoutes, location }) => {
             {searchTerm.length === 0 ? (
               children
             ) : (
-              <SearchTable role={user.role} searchList={searchResult} />
+              <SearchTable
+                searchTerm={searchTerm}
+                role={user.role}
+                searchList={searchResult}
+              />
             )}
           </div>
         </Col>
