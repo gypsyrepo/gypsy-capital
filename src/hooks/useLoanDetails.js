@@ -1,33 +1,37 @@
-import { useContext, useEffect, useState, useMemo } from 'react';
-import { Context as LoanContext } from '../context/LoanContext';
+import { useContext, useEffect, useState, useMemo } from "react";
+import { Context as LoanContext } from "../context/LoanContext";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (clientId) => {
   const [loanDeets, setLoanDeets] = useState(null);
-  const { state: { loans, loanDetails }, retrieveClientLoans, retrieveLoan } = useContext(LoanContext);
+  const {
+    state: { loans, loanDetails, loading },
+    retrieveClientLoans,
+    retrieveLoan,
+  } = useContext(LoanContext);
 
-   useEffect(() => {
+  useEffect(() => {
     retrieveClientLoans();
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-   const userLoans = useMemo(() => {
-    return loans.filter(loan => loan.clientInfo[0]?._id === clientId)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const userLoans = useMemo(() => {
+    return loans.filter((loan) => loan.clientInfo[0]?._id === clientId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loans]);
 
-  console.log(clientId)
+  console.log(clientId);
 
   useEffect(() => {
-   retrieveLoan(userLoans[0]?._id)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userLoans])
+    retrieveLoan(userLoans[0]?._id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userLoans]);
 
   useEffect(() => {
-   if(loanDetails) {
-    setLoanDeets(loanDetails);
-   }
-  }, [loanDetails])
+    if (loanDetails) {
+      setLoanDeets(loanDetails);
+    }
+  }, [loanDetails]);
 
-  return [ loanDeets ];
-}
+  return [loanDeets, loading];
+};

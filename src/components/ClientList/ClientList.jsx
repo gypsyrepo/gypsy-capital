@@ -50,7 +50,7 @@ const ClientList = ({ clientList, role, handleBtnClick }) => {
     <>
       <div className={styles.welcomeGroup}>
         <div>
-          <h2>{role === "client" ? `Clients` : `Staffs`}</h2>
+          <h2>{role !== "super" ? `Clients` : `Staffs`}</h2>
           <p className={styles.currentDate}>
             Today is {moment().format("dddd Do[,] MMMM")}.
           </p>
@@ -69,14 +69,14 @@ const ClientList = ({ clientList, role, handleBtnClick }) => {
       </div>
       <div className={styles.overview}>
         <div className={styles.overviewBox}>
-          <h3>{`${role === "client" ? "Clients" : "Staff"} Overview`}</h3>
+          <h3>{`${role !== "super" ? "Clients" : "Staff"} Overview`}</h3>
           <Table striped className={styles.table}>
             <thead>
               <tr>
-                <th>{`${role === "client" ? "Client" : "Staff"} Name`}</th>
-                <th>{`${role === "client" ? "Client" : "Staff"} ID`}</th>
+                <th>{`${role !== "super" ? "Client" : "Staff"} Name`}</th>
+                <th>{`${role !== "super" ? "Client" : "Staff"} ID`}</th>
                 <th>Phone Number</th>
-                <th>{role === "client" ? `BVN` : `Role`}</th>
+                <th>{role !== "super" ? `BVN` : `Role`}</th>
                 <th>Date Created</th>
               </tr>
             </thead>
@@ -93,7 +93,7 @@ const ClientList = ({ clientList, role, handleBtnClick }) => {
                       </Link>
                     </td>
                     <td>{client.phoneNumber.replace("234", "0")}</td>
-                    {role === "client" ? (
+                    {role !== "super" ? (
                       <td>{client?.more_info[0]?.bioData?.BVN || "-----"}</td>
                     ) : (
                       <td>{_.startCase(client?.role)}</td>

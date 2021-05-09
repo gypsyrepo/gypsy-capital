@@ -4,7 +4,7 @@ import { Context as UserContext } from "../context/UserContext";
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (isStaff) => {
   const {
-    state: { clientsForRole },
+    state: { clientsForRole, loading },
     getClientListForRole,
   } = useContext(UserContext);
 
@@ -19,5 +19,5 @@ export default (isStaff) => {
       : clientsForRole.filter((client) => client.role === "client");
   }, [clientsForRole, isStaff]);
 
-  return [staffList];
+  return [staffList, loading];
 };

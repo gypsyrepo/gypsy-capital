@@ -165,6 +165,7 @@ export const MonoTab = ({ clientId }) => {
           closeModal={() => {
             setShowAcctStatement(false);
           }}
+          useProxy
         />
       )}
       {showAcctInfo && (

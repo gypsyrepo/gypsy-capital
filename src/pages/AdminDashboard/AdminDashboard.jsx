@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import styles from "./AdminDashboard.module.scss";
 import Dashboard from "../../components/Dashboard/Dashboard";
 import { routes } from "../../routes/sidebarRoutes";
@@ -7,7 +7,6 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as LoanContext } from "../../context/LoanContext";
 import { Context as UserContext } from "../../context/UserContext";
 import moment from "moment";
-import { AiOutlineCalendar } from "react-icons/ai";
 import { TiCancelOutline } from "react-icons/ti";
 import { numberWithCommas } from "../../utils/nigeriaStates";
 import Loader from "../../components/Loader/Loader";
@@ -21,11 +20,14 @@ import PendingStat from "../../assets/salesDashboard/pending.png";
 import RepaymentStat from "../../assets/salesDashboard/repayment.png";
 import TotalStat from "../../assets/salesDashboard/total.png";
 import _ from "lodash";
+import DateFilterButton from "../../components/DateFilterButton/DateFilterButton";
 
 const AdminDashboard = () => {
   const adminRoutes = routes[4];
   const location = useLocation();
   const history = useHistory();
+
+  const [filterDialogState, setFilterDialogState] = useState(false);
 
   const {
     state: { user },
@@ -96,10 +98,10 @@ const AdminDashboard = () => {
             Today is {moment().format("dddd Do[,] MMMM")}.
           </p>
         </div>
-        <button>
-          <AiOutlineCalendar className={styles.icon} />
-          Last 7 days
-        </button>
+        <DateFilterButton
+          open={filterDialogState}
+          setState={() => setFilterDialogState(!filterDialogState)}
+        />
       </div>
       {!listLoading && !loading ? (
         <>

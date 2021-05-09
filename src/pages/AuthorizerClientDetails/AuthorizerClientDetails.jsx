@@ -102,7 +102,9 @@ const AuthorizerClientDetails = () => {
               data={userDetails.employer && { ...userDetails.employer }}
             />
           )}
-          {visibleSection === "doc" && <DocTab />}
+          {visibleSection === "doc" && (
+            <DocTab userId={userDetails?.clientId} />
+          )}
           {visibleSection === "loans" && (
             <ClientLoan
               userId={userDetails && userDetails.clientId}

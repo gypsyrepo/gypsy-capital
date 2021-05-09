@@ -36,6 +36,7 @@ const LoanContactForm = ({ submitContact }) => {
   });
 
   const [lgaOptions, setLgaOptions] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [lgaLoading, setLgaLoading] = useState(false);
 
   useEffect(() => {
@@ -69,6 +70,12 @@ const LoanContactForm = ({ submitContact }) => {
     }
   };
 
+  const handleSubmitWithKeyPress = (e) => {
+    if (e.key.toLowerCase() === "enter" || e.code.toLowerCase() === "enter") {
+      updateContactInfo();
+    }
+  };
+
   return (
     <div className={styles.contactForm}>
       <ToastContainer position="top-center" />
@@ -79,6 +86,7 @@ const LoanContactForm = ({ submitContact }) => {
             nameAttr="address"
             type="text"
             value={contactAddress.streetAddress}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setContactErrors({ ...contactErrors, streetAddress: null });
               setContactAddress({ ...contactAddress, streetAddress: val });
@@ -94,6 +102,7 @@ const LoanContactForm = ({ submitContact }) => {
             nameAttr="city"
             label="City"
             value={contactAddress.city}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setContactErrors({ ...contactErrors, city: null });
               setContactAddress({ ...contactAddress, city: val });
@@ -108,6 +117,7 @@ const LoanContactForm = ({ submitContact }) => {
             label="State"
             options={nigeriaStates}
             value={contactAddress.state}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setContactErrors({ ...contactErrors, state: null });
               setContactAddress({ ...contactAddress, state: val });
@@ -123,6 +133,7 @@ const LoanContactForm = ({ submitContact }) => {
               label="Local Govt. Area"
               options={lgaOptions}
               value={contactAddress.lga}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setContactErrors({ ...contactErrors, lga: null });
                 setContactAddress({ ...contactAddress, lga: val });
@@ -144,6 +155,7 @@ const LoanContactForm = ({ submitContact }) => {
             nameAttr="residentialStatus"
             options={["Renting", "Owned"]}
             value={contactAddress.residentialStatus}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setContactErrors({ ...contactErrors, residentialStatus: null });
               setContactAddress({ ...contactAddress, residentialStatus: val });

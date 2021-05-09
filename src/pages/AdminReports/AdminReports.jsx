@@ -20,10 +20,47 @@ import { Context as LoanContext } from "../../context/LoanContext";
 import { numberWithCommas } from "../../utils/nigeriaStates";
 import _ from "lodash";
 import { convertUnixDatetoReadable } from "../../utils/convertInputType";
-import { filterStaff } from "../../utils/data";
+import {
+  convertArrayToTable,
+  createFileUrl,
+  createXMLTable,
+  downloadFile,
+  filterStaff,
+} from "../../utils/data";
 import useUserList from "../../hooks/useUserList";
 
-const LoanReportTable = ({ filterInput }) => {
+const LoanReportTable = ({ loanList, tableHeaders, loading }) => {
+  return (
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <ReportsTable tableHeader={tableHeaders} list={loanList} />
+      )}
+    </>
+  );
+};
+
+const AdhocReportTable = ({ loanList, loading, tableHeaders }) => {
+  return (
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <ReportsTable list={loanList} tableHeader={tableHeaders} />
+      )}
+    </>
+  );
+};
+
+const AdminReports = () => {
+  const adminRoutes = routes[4];
+  const location = useLocation();
+  const { path } = useRouteMatch();
+  const history = useHistory();
+  const [staffList] = useUserList(true);
+  const [clientList] = useUserList(false);
+
   const {
     state: { loading, loans },
     retrieveClientLoans,
@@ -34,25 +71,21 @@ const LoanReportTable = ({ filterInput }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [staffList] = useUserList(true);
-
-  // console.log(staffList);
-
-  // console.log(loans);
+  const [loanFilterInput, setLoanFilterInput] = useState(null);
 
   const filteredList = useMemo(() => {
-    if (filterInput === "active loans") {
+    if (loanFilterInput === "active loans") {
       return loans.filter((loanInstance) => loanInstance.status === "approved");
-    } else if (filterInput === "pending loans") {
+    } else if (loanFilterInput === "pending loans") {
       return loans.filter((loanInstance) => loanInstance.status === "pending");
-    } else if (filterInput === "declined loans") {
+    } else if (loanFilterInput === "declined loans") {
       return loans.filter((loanInstance) => loanInstance.status === "declined");
-    } else if (filterInput === "expired loans") {
+    } else if (loanFilterInput === "expired loans") {
       return loans.filter((loanInstance) => loanInstance.status === "expired");
     } else {
       return loans;
     }
-  }, [loans, filterInput]);
+  }, [loans, loanFilterInput]);
 
   const processedLoanList = useMemo(() => {
     return filteredList.map((loan) => {
@@ -61,8 +94,15 @@ const LoanReportTable = ({ filterInput }) => {
       const authorizer = filterStaff(staffList, loan?.adminOfficerInCharge);
       const salesAgent = filterStaff(staffList, loan?.addedBy);
 
+      const client = filterStaff(clientList, loan.userId);
+      const { city, street, state } = client?.more_info[0]?.residence;
+
       container.loanId = loan._id.slice(0, 7);
       container.clientName = `${loan.clientInfo[0].firstName} ${loan.clientInfo[0].lastName}`;
+      container.phoneNumber = loan?.clientInfo[0].phoneNumber.replace("234", 0);
+      container.emailAddress = loan?.clientInfo[0].email;
+      container.address = `${street}, ${city}, ${_.startCase(state)}`;
+      container.bvn = `${client?.more_info[0]?.bioData?.BVN}`;
       container.loanAmount =
         loan.approvedAmount > 0
           ? `N ${numberWithCommas(loan.approvedAmount)}`
@@ -83,103 +123,6 @@ const LoanReportTable = ({ filterInput }) => {
       container.decisionDate =
         convertUnixDatetoReadable(loan?.adminDecisionTime) ||
         convertUnixDatetoReadable(loan?.processorDecisionTime);
-      container.processorInCharge = processor
-        ? `${processor.firstName} ${processor.lastName}`
-        : "_____";
-      container.authorizerInCharge = authorizer
-        ? `${authorizer.firstName} ${authorizer.lastName}`
-        : "_____";
-      container.onboardedBy = salesAgent
-        ? `${salesAgent.firstName} ${salesAgent.lastName}`
-        : "_____";
-
-      return container;
-    });
-  }, [filteredList, staffList]);
-
-  console.log(processedLoanList);
-
-  const tableHeaders = [
-    "Loan ID",
-    "Client Name",
-    "Loan Amount",
-    "Monthly Repayment",
-    "Total Repayment",
-    "Tenure",
-    "Status",
-    "Decision Reason",
-    "Decision Date",
-    "Processor in Charge",
-    "Authorizer in Charge",
-    "Onboarded by",
-  ];
-
-  return (
-    <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <ReportsTable tableHeader={tableHeaders} list={processedLoanList} />
-      )}
-    </>
-  );
-};
-
-const AdhocReportTable = ({ filterInput }) => {
-  const {
-    state: { loading, loans },
-    retrieveClientLoans,
-  } = useContext(LoanContext);
-
-  useEffect(() => {
-    retrieveClientLoans();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  console.log(loans);
-
-  const [staffList] = useUserList(true);
-  const [clientList] = useUserList(false);
-
-  console.log(clientList);
-
-  const filteredList = useMemo(() => {
-    if (filterInput === "active loans") {
-      return loans.filter((loanInstance) => loanInstance.status === "approved");
-    } else if (filterInput === "pending loans") {
-      return loans.filter((loanInstance) => loanInstance.status === "pending");
-    } else if (filterInput === "declined loans") {
-      return loans.filter((loanInstance) => loanInstance.status === "declined");
-    } else if (filterInput === "expired loans") {
-      return loans.filter((loanInstance) => loanInstance.status === "expired");
-    } else {
-      return loans;
-    }
-  }, [loans, filterInput]);
-
-  const processedLoanList = useMemo(() => {
-    return filteredList.map((loan) => {
-      const container = {};
-      const processor = filterStaff(staffList, loan?.processorOfficerInCharge);
-      const authorizer = filterStaff(staffList, loan?.adminOfficerInCharge);
-      const salesAgent = filterStaff(staffList, loan?.addedBy);
-
-      const client = filterStaff(clientList, loan.userId);
-      const { city, street, state } = client?.more_info[0]?.residence;
-
-      container.loanId = loan._id.slice(0, 7);
-      container.clientName = `${loan.clientInfo[0].firstName} ${loan.clientInfo[0].lastName}`;
-      container.phoneNumber = loan?.clientInfo[0].phoneNumber.replace("234", 0);
-      container.emailAddress = loan?.clientInfo[0].email;
-      container.address = `${street}, ${city}, ${_.startCase(state)}`;
-      container.bvn = `${client?.more_info[0]?.bioData?.BVN}`;
-      container.totalRepayment = loan.calculatedPayBack
-        ? `N ${numberWithCommas(loan?.calculatedPayBack)}`
-        : `N ${numberWithCommas(
-            Number(loan?.paymentPeriod.split(" ")[0]) * loan.monthlyRepayment
-          )}`;
-      container.tenure =
-        loan.approvedTenure || loan?.paymentPeriod.split(" ")[0];
       container.overpayment = `N ${numberWithCommas(loan?.overdue)}`;
       container.processorInCharge = processor
         ? `${processor.firstName} ${processor.lastName}`
@@ -191,47 +134,51 @@ const AdhocReportTable = ({ filterInput }) => {
         ? `${salesAgent.firstName} ${salesAgent.lastName}`
         : "_____";
 
-      return container;
+      return location.pathname.includes("loan")
+        ? _.omit(container, [
+            "phoneNumber",
+            "emailAddress",
+            "address",
+            "bvn",
+            "overpayment",
+          ])
+        : _.omit(container, [
+            "monthlyRepayment",
+            "status",
+            "loanAmount",
+            "decisionDate",
+            "decisionReason",
+          ]);
     });
-  }, [clientList, filteredList, staffList]);
+  }, [filteredList, staffList, clientList, location.pathname]);
 
   console.log(processedLoanList);
 
-  const tableHeaders = [
+  const reportTableHeaders = [
     "Loan ID",
     "Client Name",
-    "Phone Number",
-    "Email Address",
-    "Address",
-    "BVN",
-    "Total Repayment",
-    "Tenure",
-    "Overpayment",
+    location.pathname.includes("loan") ? "Loan Amount" : "Phone Number",
+    location.pathname.includes("loan") ? "Monthly Repayment" : "Email Address",
+    location.pathname.includes("loan") ? "Total Repayment" : "Address",
+    location.pathname.includes("loan") ? "Tenure" : "BVN",
+    location.pathname.includes("loan") ? "Status" : "Total Repayment",
+    location.pathname.includes("loan") ? "Decision Reason" : "Tenure",
+    location.pathname.includes("loan") ? "Decision Date" : "Overpayment",
     "Processor in Charge",
     "Authorizer in Charge",
-    "Onboarder by",
+    "Onboarded by",
   ];
 
-  return (
-    <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <ReportsTable list={processedLoanList} tableHeader={tableHeaders} />
-      )}
-    </>
-  );
-};
-
-const AdminReports = () => {
-  const adminRoutes = routes[4];
-  const location = useLocation();
-  const { path } = useRouteMatch();
-  const history = useHistory();
-
-  console.log(path);
-
-  const [loanFilterInput, setLoanFilterInput] = useState(null);
+  const initiateExcelDownload = () => {
+    const table = convertArrayToTable(reportTableHeaders, processedLoanList);
+    const nowTimestamp = new Date().getTime();
+    const fileName = location.pathname.includes("loan")
+      ? `Loan Report - ${nowTimestamp}`
+      : `Adhoc Report - ${nowTimestamp}`;
+    const xmlTable = createXMLTable(table, fileName);
+    const downloadUrl = createFileUrl(xmlTable);
+    downloadFile(downloadUrl, fileName);
+  };
 
   return (
     <Dashboard sidebarRoutes={adminRoutes} location={location}>
@@ -242,7 +189,12 @@ const AdminReports = () => {
             Today is {moment().format("dddd Do[,] MMMM")}.
           </p>
         </div>
-        <Button bgColor="#741763" color="#fff" size="lg">
+        <Button
+          clicked={initiateExcelDownload}
+          bgColor="#741763"
+          color="#fff"
+          size="lg"
+        >
           Download
         </Button>
       </div>
@@ -296,10 +248,18 @@ const AdminReports = () => {
       </div>
       <Switch>
         <Route path={`${path}/loan`}>
-          <LoanReportTable filterInput={loanFilterInput} />
+          <LoanReportTable
+            tableHeaders={reportTableHeaders}
+            loanList={processedLoanList}
+            loading={loading}
+          />
         </Route>
         <Route path={`${path}/adhoc`}>
-          <AdhocReportTable filterInput={loanFilterInput} />
+          <AdhocReportTable
+            tableHeaders={reportTableHeaders}
+            loanList={processedLoanList}
+            loading={loading}
+          />
         </Route>
       </Switch>
     </Dashboard>

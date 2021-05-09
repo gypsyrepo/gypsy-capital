@@ -31,6 +31,8 @@ const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
     memoAddress: "",
     memoName: "",
     memoSign: "",
+    totalRepayment: "",
+    loanTenure: "",
   });
 
   const [formErr, setFormErr] = useState({
@@ -50,6 +52,8 @@ const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
     memoAddress: true,
     memoName: true,
     memoSign: true,
+    totalRepayment: true,
+    loanTenure: true,
   });
 
   const [btnState, setBtnState] = useState(false);
@@ -71,6 +75,12 @@ const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
       loanPurpose: _.startCase(loanData?.loanPurpose),
       monthlyRepayment: numberWithCommas(loanData?.monthlyRepayment),
       repaymentSource: "Salary",
+      loanTenure: loanData.approvedTenure
+        ? `${loanData.approvedTenure} month(s)`
+        : loanData.paymentPeriod,
+      totalRepayment:
+        loanData?.calculatedPayBack &&
+        numberWithCommas(loanData?.calculatedPayBack),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -365,6 +375,46 @@ const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
                       });
                     }}
                     className={!formErr?.repaymentSource ? styles.error : null}
+                  />
+                </Col>
+              </Row>
+              <Row className="mb-4 align-items-center">
+                <Col md={4}>
+                  <p>Total Repayment:</p>
+                </Col>
+                <Col md={8}>
+                  <input
+                    type="text"
+                    name="totalRepayment"
+                    value={offerFormData.totalRepayment}
+                    onChange={(e) => {
+                      setFormErr({ ...formErr, totalRepayment: true });
+                      setOfferFormData({
+                        ...offerFormData,
+                        totalRepayment: e.currentTarget.value,
+                      });
+                    }}
+                    className={!formErr?.totalRepayment ? styles.error : null}
+                  />
+                </Col>
+              </Row>
+              <Row className="mb-4 align-items-center">
+                <Col md={4}>
+                  <p>Loan Tenure:</p>
+                </Col>
+                <Col md={8}>
+                  <input
+                    type="text"
+                    name="loanTenure"
+                    value={offerFormData.loanTenure}
+                    onChange={(e) => {
+                      setFormErr({ ...formErr, loanTenure: true });
+                      setOfferFormData({
+                        ...offerFormData,
+                        loanTenure: e.currentTarget.value,
+                      });
+                    }}
+                    className={!formErr?.loanTenure ? styles.error : null}
                   />
                 </Col>
               </Row>
