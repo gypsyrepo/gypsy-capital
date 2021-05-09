@@ -130,6 +130,12 @@ const PersonalForm = ({ submit }) => {
     }
   };
 
+  const handleSubmitWithKeyPress = (e) => {
+    if (e.key.toLowerCase() === "enter" || e.code.toLowerCase() === "enter") {
+      handleSubmit();
+    }
+  };
+
   useEffect(() => {
     if (user && userDetails) {
       setBiodata({
@@ -163,6 +169,7 @@ const PersonalForm = ({ submit }) => {
               type="text"
               nameAttr="fullname"
               value={biodata.fullName}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setBiodataErrors({ ...biodataErrors, fullName: null });
                 setBiodata({ ...biodata, fullName: val });
@@ -189,6 +196,7 @@ const PersonalForm = ({ submit }) => {
               type="number"
               nameAttr="bvnPhoneNo"
               value={biodata.bvnPhoneNo}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setBiodataErrors({ ...biodataErrors, bvnPhoneNo: null });
                 setBiodata({ ...biodata, bvnPhoneNo: val });
@@ -202,6 +210,7 @@ const PersonalForm = ({ submit }) => {
               type="email"
               nameAttr="email"
               value={biodata.email}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setBiodataErrors({ ...biodataErrors, email: null });
                 setBiodata({ ...biodata, email: val });
@@ -217,6 +226,7 @@ const PersonalForm = ({ submit }) => {
               type="text"
               nameAttr="PhoneNo"
               value={biodata.phoneNo}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setBiodataErrors({ ...biodataErrors, phoneNo: null });
                 setBiodata({ ...biodata, phoneNo: val });
@@ -230,6 +240,7 @@ const PersonalForm = ({ submit }) => {
               type="text"
               nameAttr="altPhoneNo"
               value={biodata.altPhone}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setBiodataErrors({ ...biodataErrors, altPhone: null });
                 setBiodata({ ...biodata, altPhone: val });
@@ -246,6 +257,7 @@ const PersonalForm = ({ submit }) => {
               options={["Female", "Male", "Other"]}
               nameAttr="gender"
               value={biodata.gender}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setBiodataErrors({ ...biodataErrors, gender: null });
                 setBiodata({ ...biodata, gender: val });
@@ -264,6 +276,7 @@ const PersonalForm = ({ submit }) => {
               type="text"
               nameAttr="residentStreet"
               value={residentialInfo.street}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setResidentialErrors({ ...residentialErrors, street: null });
                 setResidentialInfo({ ...residentialInfo, street: val });
@@ -279,6 +292,7 @@ const PersonalForm = ({ submit }) => {
               type="text"
               nameAttr="city"
               value={residentialInfo.city}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setResidentialErrors({ ...residentialErrors, city: null });
                 setResidentialInfo({ ...residentialInfo, city: val });
@@ -293,6 +307,7 @@ const PersonalForm = ({ submit }) => {
               options={nigeriaStates}
               nameAttr="state"
               value={residentialInfo.state}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setResidentialErrors({ ...residentialErrors, state: null });
                 setResidentialInfo({ ...residentialInfo, state: val });
@@ -311,6 +326,7 @@ const PersonalForm = ({ submit }) => {
               type="text"
               nameAttr="kinFullname"
               value={kinInfo.fullName}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setKinErrors({ ...kinErrors, fullName: null });
                 setKinInfo({ ...kinInfo, fullName: val });
@@ -324,6 +340,7 @@ const PersonalForm = ({ submit }) => {
               type="text"
               nameAttr="kinRelationship"
               value={kinInfo.relationship}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setKinErrors({ ...kinErrors, relationship: null });
                 setKinInfo({ ...kinInfo, relationship: val });
@@ -339,6 +356,7 @@ const PersonalForm = ({ submit }) => {
               type="email"
               nameAttr="kinEmail"
               value={kinInfo.email}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setKinErrors({ ...kinErrors, email: null });
                 setKinInfo({ ...kinInfo, email: val });
@@ -352,6 +370,7 @@ const PersonalForm = ({ submit }) => {
               type="text"
               nameAttr="kinPhone"
               value={kinInfo.phoneNo}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setKinErrors({ ...kinErrors, phoneNo: null });
                 setKinInfo({ ...kinInfo, phoneNo: val });
@@ -368,6 +387,7 @@ const PersonalForm = ({ submit }) => {
               nameAttr="kinAddress"
               placeholder="Street address to the nearest bus stop"
               value={kinInfo.address}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setKinErrors({ ...kinErrors, address: null });
                 setKinInfo({ ...kinInfo, address: val });
@@ -391,6 +411,7 @@ const PersonalForm = ({ submit }) => {
               options={bankNames}
               nameAttr="bank"
               value={bankInfo.bankName}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setBankInfoErrors({ ...bankInfoErrors, bankName: null });
                 setBankInfo({ ...bankInfo, bankName: val });
@@ -405,6 +426,7 @@ const PersonalForm = ({ submit }) => {
               options={["Savings", "Current"]}
               nameAttr="acountType"
               value={bankInfo.accountType}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setBankInfoErrors({ ...bankInfoErrors, accountType: null });
                 setBankInfo({ ...bankInfo, accountType: val });
@@ -420,6 +442,7 @@ const PersonalForm = ({ submit }) => {
               label="Account Number"
               nameAttr="accountNo"
               value={bankInfo.accountNumber}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setBankInfoErrors({ ...bankInfoErrors, accountNumber: null });
                 setBankInfo({ ...bankInfo, accountNumber: val });
@@ -436,6 +459,7 @@ const PersonalForm = ({ submit }) => {
                 type="text"
                 nameAttr="accountName"
                 value={bankInfo.accountName}
+                handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
                 disable={true}
                 changed={(val) => {
                   setBankInfoErrors({ ...bankInfoErrors, accountName: null });

@@ -78,6 +78,12 @@ const OtpVerify = () => {
     }
   };
 
+  const handleSubmitWithKeyPress = (e) => {
+    if (e.key.toLowerCase() === "enter" || e.code.toLowerCase() === "enter") {
+      handleSubmit();
+    }
+  };
+
   return (
     <div className={styles.container}>
       <img src={Logo} alt="Gypsy Logo" />
@@ -92,6 +98,7 @@ const OtpVerify = () => {
               label="One Time Password"
               nameAttr="otp"
               value={otp}
+              handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
               changed={(val) => {
                 setValidationErr(null);
                 setOtp(val);

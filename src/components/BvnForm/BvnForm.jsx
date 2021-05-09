@@ -54,6 +54,12 @@ const BvnForm = ({ submit }) => {
     }
   };
 
+  const handleSubmitWithKeyPress = (e) => {
+    if (e.key.toLowerCase() === "enter" || e.code.toLowerCase() === "enter") {
+      verifyCustomer();
+    }
+  };
+
   return (
     <div className={styles.bvnFormBox}>
       <p>
@@ -67,6 +73,7 @@ const BvnForm = ({ submit }) => {
             nameAttr="bvn"
             type="text"
             value={verificationData.userBvn}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setVerificationError({ ...verificationError, userBvn: null });
               setVerificationData({ ...verificationData, userBvn: val });
@@ -83,6 +90,7 @@ const BvnForm = ({ submit }) => {
             type="select"
             options={bankNames}
             value={verificationData.bankName}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setVerificationError({ ...verificationError, bankName: null });
               setVerificationData({ ...verificationData, bankName: val });
@@ -98,6 +106,7 @@ const BvnForm = ({ submit }) => {
             nameAttr="accountNumber"
             type="numbet"
             value={verificationData.accountNumber}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setVerificationError({
                 ...verificationError,

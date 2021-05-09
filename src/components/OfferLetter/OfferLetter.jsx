@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   signature: {
+    marginTop: 30,
     flexDirection: "row",
     width: "100%",
     justifyContent: "space-between",
@@ -167,16 +168,17 @@ const OfferLetterPdf = ({ dynamicData }) => {
               style={styles.loanData}
             >{`Monthly Repayment: N${dynamicData.monthlyRepayment}`}</Text>
             <Text style={styles.loanData}>Repayment Source/Method: Salary</Text>
+            <Text
+              style={styles.loanData}
+            >{`Total Repayment: N${dynamicData.totalRepayment}`}</Text>
+            <Text
+              style={styles.loanData}
+            >{`Loan Tenure: ${dynamicData.loanTenure}`}</Text>
             <Text style={styles.termsTitle}>TERMS OF THE OFFER:</Text>
             <View style={styles.termsContent}>
               <Text style={styles.listItem}>
                 1. Disbursement is subject to the availability of funds and
                 statutory regulation
-              </Text>
-              <Text style={styles.listItem}>
-                2. The Borrower will reimburse Gypsy Capital Limited on-demand,
-                all expenses (including but not limited to legal and insurance
-                expenses and all taxes Where-so
               </Text>
             </View>
           </View>
@@ -186,10 +188,12 @@ const OfferLetterPdf = ({ dynamicData }) => {
         <View style={styles.body}>
           <View style={styles.termsContent}>
             <Text style={styles.listItem}>
-              applicable) thereon incurred by Gypsy Capital Limited in
-              Processing this facility and in suing for or recovering any sum
-              due hereunder or otherwise in enforcing or protecting its rights
-              and interests hereunder.
+              2. The Borrower will reimburse Gypsy Capital Limited on-demand,
+              all expenses (including but not limited to legal and insurance
+              expenses and all taxes Where-so applicable) thereon incurred by
+              Gypsy Capital Limited in Processing this facility and in suing for
+              or recovering any sum due hereunder or otherwise in enforcing or
+              protecting its rights and interests hereunder.
             </Text>
             <Text style={styles.listItem}>
               3. Gypsy Capital reserves the right to refuse and/or withhold
@@ -236,6 +240,12 @@ const OfferLetterPdf = ({ dynamicData }) => {
               Capital Limited has the right to upload customer's data as
               delinquent on the Credit bureau.
             </Text>
+          </View>
+        </View>
+      </Page>
+      <Page>
+        <View style={styles.body}>
+          <View style={styles.termsContent}>
             <Text style={styles.listItem}>
               5. Should any of the rentals remain un-paid, for any reason
               whatsoever, a penalty equal to 1.67% of the amount of the rental
@@ -243,10 +253,6 @@ const OfferLetterPdf = ({ dynamicData }) => {
               remained unpaid.
             </Text>
           </View>
-        </View>
-      </Page>
-      <Page>
-        <View style={styles.body}>
           <Text style={styles.termsTitle}>General</Text>
           <View style={styles.termsContent}>
             <Text style={styles.listItem}>
@@ -288,19 +294,21 @@ const OfferLetterPdf = ({ dynamicData }) => {
           <Text style={styles.paragraphOne}>
             **The parties acknowledge and agree that this agreement (offer
             letter) may execute by electronic signature, which shall be
-            considered as an original signature for all purposes and shall
-            include faxed versions of the parties original signature, copied and
-            pasted image of the parties handwritten signature on the agreement,
-            parties written name or signature using a stylus, keypad or keyboard
-            or electronically scanned and transmitted versions (e.g., via pdf)
-            of an original signature.**
+            considered as an original signature for all purposes
           </Text>
-          <Text style={styles.paragraphOne}>For Gypsy Capital</Text>
         </View>
       </Page>
       <Page>
         <View style={styles.lastPage}>
           <View style={styles.lastContent}>
+            <Text style={styles.paragraphOne}>
+              and shall include faxed versions of the parties original
+              signature, copied and pasted image of the parties handwritten
+              signature on the agreement, parties written name or signature
+              using a stylus, keypad or keyboard or electronically scanned and
+              transmitted versions (e.g., via pdf) of an original signature.**
+            </Text>
+            <Text style={styles.paragraphOne}>For Gypsy Capital.</Text>
             <View style={styles.signature}>
               <View style={styles.signGroup}>
                 <Text>Head Credit</Text>

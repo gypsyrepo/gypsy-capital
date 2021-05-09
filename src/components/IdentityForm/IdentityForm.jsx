@@ -22,6 +22,12 @@ const IdentityForm = ({ submit }) => {
     submit(idFile, passportFile, idType);
   };
 
+  const handleSubmitWithKeyPress = (e) => {
+    if (e.key.toLowerCase() === "enter" || e.code.toLowerCase() === "enter") {
+      handleSubmit();
+    }
+  };
+
   return (
     <div className={styles.identityForm}>
       <div className={styles.identification}>
@@ -39,6 +45,7 @@ const IdentityForm = ({ submit }) => {
           ]}
           nameAttr="identityType"
           value={idType}
+          handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
           changed={(val) => setIdType(val)}
         />
         <FileUploadButton

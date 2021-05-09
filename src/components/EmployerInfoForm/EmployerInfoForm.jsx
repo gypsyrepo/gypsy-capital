@@ -107,6 +107,12 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
     }
   };
 
+  const handleSubmitWithKeyPress = (e) => {
+    if (e.key.toLowerCase() === "enter" || e.code.toLowerCase() === "enter") {
+      updateLoanWorkData();
+    }
+  };
+
   return (
     <div className={styles.employerInfo}>
       <ToastContainer position="top-center" />
@@ -117,6 +123,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
             nameAttr="employerName"
             label="Employer Name"
             value={employmentInfo.employerName}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setEmploymentErrors({ ...employmentErrors, employerName: null });
               setEmploymentInfo({ ...employmentInfo, employerName: val });
@@ -130,6 +137,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
           <CustomDatePicker
             label="When did you start this job?"
             value={employmentInfo.startedDate}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setEmploymentErrors({ ...employmentErrors, startedDate: null });
               setEmploymentInfo({ ...employmentInfo, startedDate: val });
@@ -146,6 +154,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
             label="Employer Sector"
             options={workSector}
             value={employmentInfo.employerSector}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setEmploymentErrors({
                 ...employmentErrors,
@@ -165,6 +174,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
             label="Employer Industry"
             options={workIndustries}
             value={employmentInfo.employerIndustry}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setEmploymentErrors({
                 ...employmentErrors,
@@ -187,6 +197,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
             label="Employment Type"
             options={["Fulltime", "Contract", "Part-Time"]}
             value={employmentInfo.employmentType}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setEmploymentErrors({
                 ...employmentErrors,
@@ -205,6 +216,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
             nameAttr="officeEmail"
             label="Office Email Address"
             value={employmentInfo.email}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setEmploymentErrors({ ...employmentErrors, email: null });
               setEmploymentInfo({ ...employmentInfo, email: val });
@@ -238,6 +250,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
             label="Street"
             nameAttr="officeStreet"
             value={officeAddress.street}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setOfficeAddressErrors({ ...officeAddressErrors, street: null });
               setOfficeAddress({ ...officeAddress, street: val });
@@ -253,6 +266,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
             label="City"
             nameAttr="officeCity"
             value={officeAddress.city}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setOfficeAddressErrors({ ...officeAddressErrors, city: null });
               setOfficeAddress({ ...officeAddress, city: val });
@@ -267,6 +281,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
             nameAttr="officeState"
             options={nigeriaStates}
             value={officeAddress.state}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setOfficeAddressErrors({ ...officeAddressErrors, state: null });
               setOfficeAddress({ ...officeAddress, state: val });
@@ -281,6 +296,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
             nameAttr="officeLga"
             options={lgaOptions}
             value={officeAddress.lga}
+            handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
             changed={(val) => {
               setOfficeAddressErrors({ ...officeAddressErrors, lga: null });
               setOfficeAddress({ ...officeAddress, lga: val });

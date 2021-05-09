@@ -20,8 +20,9 @@ import { Context as AuthContext } from "../../context/AuthContext";
 import Loader from "../../components/Loader/Loader";
 import useLoanDetails from "../../hooks/useLoanDetails";
 import DocumentModal from "../../components/DocumentModal/DocumentModal";
+import LazyLoad from "react-lazyload";
 
-const DocCard = ({ docTitle, docLink, type }) => {
+const DocCard = ({ docTitle, docLink, type, loading }) => {
   const [show, setShow] = useState(false);
 
   const openDoc = () => {
@@ -49,7 +50,17 @@ const DocCard = ({ docTitle, docLink, type }) => {
           fileTitle={docTitle}
           childComponent={
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <img style={{ maxWidth: "100%" }} src={docLink} alt="documents" />
+              {loading ? (
+                <Loader />
+              ) : (
+                <LazyLoad once height="300">
+                  <img
+                    style={{ maxWidth: "100%" }}
+                    src={docLink}
+                    alt="documents"
+                  />
+                </LazyLoad>
+              )}
             </div>
           }
           closeModal={handleClose}
@@ -60,6 +71,7 @@ const DocCard = ({ docTitle, docLink, type }) => {
           fileTitle={docTitle}
           fileUrl={docLink}
           closeModal={handleClose}
+          useProxy={false}
         />
       )}
     </>
@@ -67,7 +79,8 @@ const DocCard = ({ docTitle, docLink, type }) => {
 };
 
 export const DocTab = ({ userId }) => {
-  const [loanDeets] = useLoanDetails(userId);
+  console.log(userId);
+  const [loanDeets, loading] = useLoanDetails(userId);
 
   console.log(loanDeets);
 
@@ -79,6 +92,7 @@ export const DocTab = ({ userId }) => {
             docTitle="Identification"
             docLink={loanDeets?.client[0]?.identity?.identityImageUrl}
             type="image"
+            loading={loading}
           />
         </Col>
         <Col>
@@ -86,6 +100,7 @@ export const DocTab = ({ userId }) => {
             docTitle="Proof of Address"
             docLink={loanDeets?.residence[0]?.residenceProof}
             type="image"
+            loading={loading}
           />
         </Col>
         <Col>
@@ -93,6 +108,7 @@ export const DocTab = ({ userId }) => {
             docTitle="Official Document"
             docLink={loanDeets?.employment[0]?.officialDocumentUrl}
             type="image"
+            loading={loading}
           />
         </Col>
         <Col>
@@ -100,6 +116,7 @@ export const DocTab = ({ userId }) => {
             docTitle="Statement of Account"
             docLink={loanDeets?.bank[0]?.accountStatementUrl}
             type="pdf"
+            loading={loading}
           />
         </Col>
       </Row>

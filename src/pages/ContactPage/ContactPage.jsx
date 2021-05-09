@@ -8,6 +8,7 @@ import Footer from "../../components/Footer/Footer";
 import InputField from "../../components/InputField/InputField";
 import { useRouteMatch } from "react-router-dom";
 import ScrollToTopOnMount from "../../components/ScrollToTopOnMount/ScrollToTopOnMount";
+import LazyLoad from "react-lazyload";
 
 const ContactPage = ({ history }) => {
   const { url } = useRouteMatch();
@@ -30,14 +31,17 @@ const ContactPage = ({ history }) => {
       </div>
       <div className={styles.mapSection}>
         <div className={styles.container}>
-          <iframe
-            className={styles.map}
-            frameBorder={0}
-            scrolling="no"
-            marginHeight={0}
-            marginWidth={0}
-            src="https://maps.google.com/maps?hl=en&amp;q=Landmark%20Towers,%205B%20Water%20Corporation%20Rd,Oniru%20Rd,%20Victoria%20Island%20101241,%20Lagos+(Gypsy%20Capital)&amp;t=&amp;z=15&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-          ></iframe>
+          <LazyLoad once height={200}>
+            <iframe
+              className={styles.map}
+              frameBorder={0}
+              scrolling="no"
+              marginHeight={0}
+              marginWidth={0}
+              title="office location"
+              src="https://maps.google.com/maps?hl=en&amp;q=Landmark%20Towers,%205B%20Water%20Corporation%20Rd,Oniru%20Rd,%20Victoria%20Island%20101241,%20Lagos+(Gypsy%20Capital)&amp;t=&amp;z=15&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+            ></iframe>
+          </LazyLoad>
         </div>
       </div>
       <div className={styles.contactSection}>

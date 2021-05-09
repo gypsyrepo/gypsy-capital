@@ -1,0 +1,58 @@
+:root {
+  --fontColorOne: #212121;
+  --fontFamilyOne: "Source Sans Pro";
+  --fontFamilyTwo: "Kanit";
+  --backgroundOne: " #F5F5F5";
+}
+
+.dateFilterBtn {
+  position: relative;
+  button {
+    background-color: #f6f6f6;
+    border: 1px solid #bdbdbd;
+    border-radius: 5px;
+    padding: 10px 24px;
+    font-family: var(--fontFamilyOne);
+    font-size: 1.2rem;
+    &:focus {
+      outline: none;
+    }
+    .icon {
+      font-size: 1.5rem;
+      margin-right: 20px;
+      color: #741763;
+    }
+  }
+  .menuDialog {
+    width: 100%;
+    margin-top: 4px;
+    border-radius: 5px;
+    border: 1px solid #bdbdbd;
+    background-color: #f6f6f6;
+    position: absolute;
+    z-index: 20;
+    ul {
+      padding-inline-start: 0;
+      margin-block-end: 0;
+      text-align: center;
+      padding-bottom: 0;
+      li {
+        cursor: pointer;
+        list-style: none;
+        font-size: 1.1rem;
+        padding: 6px 16px;
+        border-bottom: 1px solid #bdbdbd;
+        background-color: #f6f6f6;
+        color: #000;
+        transition: background-color 0.2s ease-in, color 0.2s ease-in;
+        &:last-child {
+          border-bottom: none;
+        }
+        &:hover {
+          background-color: #741763;
+          color: #fff;
+        }
+      }
+    }
+  }
+}

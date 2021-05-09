@@ -113,6 +113,12 @@ const SignUp = () => {
     }
   };
 
+  const handleSubmitWithKeyPress = (e) => {
+    if (e.key.toLowerCase() === "enter" || e.code.toLowerCase() === "enter") {
+      handleSubmit();
+    }
+  };
+
   return (
     <>
       <ScrollToTopOnMount />
@@ -133,6 +139,7 @@ const SignUp = () => {
                 nameAttr="firstName"
                 label="First Name"
                 value={signUpValues.firstName}
+                handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
                 changed={(val) => {
                   setValidationErrors({ ...validationErrors, firstName: null });
                   setSignUpvalues({ ...signUpValues, firstName: val });
@@ -146,6 +153,7 @@ const SignUp = () => {
                 nameAttr="lastName"
                 label="Last Name"
                 value={signUpValues.lastName}
+                handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
                 changed={(val) => {
                   setValidationErrors({ ...validationErrors, lastName: null });
                   setSignUpvalues({ ...signUpValues, lastName: val });
@@ -161,6 +169,7 @@ const SignUp = () => {
                 nameAttr="email"
                 label="Email"
                 value={signUpValues.email}
+                handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
                 changed={(val) => {
                   setValidationErrors({ ...validationErrors, email: null });
                   setSignUpvalues({ ...signUpValues, email: val });
@@ -174,6 +183,7 @@ const SignUp = () => {
                 nameAttr="mobileNo"
                 label="Mobile Number"
                 value={signUpValues.mobileNumber}
+                handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
                 changed={(val) => {
                   setValidationErrors({
                     ...validationErrors,
@@ -194,6 +204,7 @@ const SignUp = () => {
                 nameAttr="password"
                 label="Password"
                 value={signUpValues.password}
+                handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
                 changed={(val) => {
                   setValidationErrors({ ...validationErrors, password: null });
                   setSignUpvalues({ ...signUpValues, password: val });
@@ -207,6 +218,7 @@ const SignUp = () => {
                 nameAttr="confirmPassword"
                 label="Confirm Password"
                 value={signUpValues.confirmPassword}
+                handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
                 changed={(val) => {
                   setValidationErrors({
                     ...validationErrors,
@@ -229,6 +241,7 @@ const SignUp = () => {
                 options={referralOptions}
                 nameAttr="publicity"
                 value={signUpValues.referralChoice}
+                handleKeyPress={(e) => handleSubmitWithKeyPress(e)}
                 changed={(val) => {
                   setValidationErrors({
                     ...validationErrors,

@@ -1,0 +1,16 @@
+:root {
+  --fontColorOne: #212121;
+  --fontFamilyOne: "Source Sans Pro";
+  --fontFamilyTwo: "Kanit";
+  --backgroundOne: "#F5F5F5";
+}
+
+.tableContainer {
+  h3 {
+    font-weight: bold;
+    font-size: 32px;
+    color: var(--fontColorOne);
+    margin-bottom: 20px;
+    font-family: var(--fontFamilyOne);
+  }
+}

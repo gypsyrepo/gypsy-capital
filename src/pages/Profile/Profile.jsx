@@ -77,7 +77,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.warning(error);
       clearErrors();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -147,42 +147,44 @@ const Profile = () => {
     <Dashboard sidebarRoutes={clientRoutes} location={location}>
       <div className={styles.container}>
         <ToastContainer position="top-center" />
-        <Switch>
-          <Route path={`${path}/setup`}>
-            <h1>Account Setup</h1>
-            <p className={styles.leadText}>
-              Fill the field to complete your profile
-            </p>
-            <ProgressBar
-              stage={setupStage[location.pathname]}
-              className={styles.profileProgress}
-            />
-            <Switch>
-              <Route path={`${path}/setup/bvn`}>
-                <BvnForm submit={submitBvn} />
-              </Route>
-              <Route path={`${path}/setup/identity`}>
-                <IdentityForm submit={submitIdentityInfo} />
-              </Route>
-              <Route path={`${path}/setup/info`}>
-                <PersonalForm submit={submitPersonalInfo} />
-              </Route>
-              <Route path={`${path}/setup/success`}>
-                <CompleteStage />
-              </Route>
-            </Switch>
-          </Route>
-          <Route path={`${path}/user`}>
-            {userDetails ? (
-              <div>
-                <h2>Profile</h2>
-                <ProfileView />
-              </div>
-            ) : (
-              <Loader />
-            )}
-          </Route>
-        </Switch>
+        {
+          <Switch>
+            <Route path={`${path}/setup`}>
+              <h1>Account Setup</h1>
+              <p className={styles.leadText}>
+                Fill the field to complete your profile
+              </p>
+              <ProgressBar
+                stage={setupStage[location.pathname]}
+                className={styles.profileProgress}
+              />
+              <Switch>
+                <Route path={`${path}/setup/bvn`}>
+                  <BvnForm submit={submitBvn} />
+                </Route>
+                <Route path={`${path}/setup/identity`}>
+                  <IdentityForm submit={submitIdentityInfo} />
+                </Route>
+                <Route path={`${path}/setup/info`}>
+                  <PersonalForm submit={submitPersonalInfo} />
+                </Route>
+                <Route path={`${path}/setup/success`}>
+                  <CompleteStage />
+                </Route>
+              </Switch>
+            </Route>
+            <Route path={`${path}/user`}>
+              {userDetails ? (
+                <div>
+                  <h2>Profile</h2>
+                  <ProfileView />
+                </div>
+              ) : (
+                <Loader />
+              )}
+            </Route>
+          </Switch>
+        }
       </div>
     </Dashboard>
   );
