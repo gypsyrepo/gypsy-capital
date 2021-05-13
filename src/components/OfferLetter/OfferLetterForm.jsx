@@ -11,6 +11,8 @@ import { numberWithCommas } from "../../utils/nigeriaStates";
 import { convertInput } from "../../utils/convertInputType";
 import { toast, ToastContainer } from "react-toastify";
 import { toWords } from "number-to-words";
+import CreditRisk from "../../assets/signatures/credit-risk.jpg";
+import Credit from "../../assets/signatures/risk.jpg";
 
 const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
   console.log(loanData);
@@ -25,14 +27,13 @@ const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
     loanPurpose: "",
     monthlyRepayment: "",
     repaymentSource: "",
-    headCreditSign: "",
-    headRiskSign: "",
     memoFullName: "",
     memoAddress: "",
     memoName: "",
     memoSign: "",
     totalRepayment: "",
     loanTenure: "",
+    repaymentStartDate: "",
   });
 
   const [formErr, setFormErr] = useState({
@@ -46,14 +47,13 @@ const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
     loanPurpose: true,
     monthlyRepayment: true,
     repaymentSource: true,
-    headCreditSign: true,
-    headRiskSign: true,
     memoFullName: true,
     memoAddress: true,
     memoName: true,
     memoSign: true,
     totalRepayment: true,
     loanTenure: true,
+    repaymentStartDate: true,
   });
 
   const [btnState, setBtnState] = useState(false);
@@ -81,6 +81,7 @@ const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
       totalRepayment:
         loanData?.calculatedPayBack &&
         numberWithCommas(loanData?.calculatedPayBack),
+      repaymentStartDate: loanData?.determinedRepaymentDate,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -105,8 +106,9 @@ const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
       loanPurpose,
       monthlyRepayment,
       repaymentSource,
-      headCreditSign,
-      headRiskSign,
+      totalRepayment,
+      loanTenure,
+      repaymentStartDate,
     }) => ({
       date,
       fullName,
@@ -118,8 +120,9 @@ const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
       loanPurpose,
       monthlyRepayment,
       repaymentSource,
-      headCreditSign,
-      headRiskSign,
+      totalRepayment,
+      loanTenure,
+      repaymentStartDate,
     }))(offerFormData);
 
     let fieldValidator = {};
@@ -400,6 +403,28 @@ const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
               </Row>
               <Row className="mb-4 align-items-center">
                 <Col md={4}>
+                  <p>Repayment Start Date:</p>
+                </Col>
+                <Col md={8}>
+                  <input
+                    type="text"
+                    name="repaymentStartDate"
+                    value={offerFormData.repaymentStartDate}
+                    onChange={(e) => {
+                      setFormErr({ ...formErr, repaymentStartDate: true });
+                      setOfferFormData({
+                        ...offerFormData,
+                        repaymentStartDate: e.currentTarget.value,
+                      });
+                    }}
+                    className={
+                      !formErr?.repaymentStartDate ? styles.error : null
+                    }
+                  />
+                </Col>
+              </Row>
+              <Row className="mb-4 align-items-center">
+                <Col md={4}>
                   <p>Loan Tenure:</p>
                 </Col>
                 <Col md={8}>
@@ -547,35 +572,15 @@ const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
             <div className={styles.signatureGroup}>
               <div>
                 <p>HEAD, CREDIT</p>
-                <textarea
-                  name="headCredit"
-                  style={{ padding: "15px 18px" }}
-                  value={offerFormData.headCreditSign}
-                  onChange={(e) => {
-                    setFormErr({ ...formErr, headCreditSign: true });
-                    setOfferFormData({
-                      ...offerFormData,
-                      headCreditSign: e.currentTarget.value,
-                    });
-                  }}
-                  className={!formErr?.headCreditSign ? styles.error : null}
-                />
+                <div className={styles.signatureWrapper}>
+                  <img src={Credit} alt="head of credit signature" />
+                </div>
               </div>
               <div>
                 <p>HEAD, CREDIT & RISK MANAGEMENT</p>
-                <textarea
-                  name="headRisk"
-                  style={{ padding: "15px 18px" }}
-                  value={offerFormData.headRiskSign}
-                  onChange={(e) => {
-                    setFormErr({ ...formErr, headRiskSign: true });
-                    setOfferFormData({
-                      ...offerFormData,
-                      headRiskSign: e.currentTarget.value,
-                    });
-                  }}
-                  className={!formErr?.headRiskSign ? styles.error : null}
-                />
+                <div className={styles.signatureWrapper2}>
+                  <img src={CreditRisk} alt="head of credit signature" />
+                </div>
               </div>
             </div>
             <div className={styles.memorandum}>
