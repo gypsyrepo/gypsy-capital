@@ -54,6 +54,7 @@ const ProfileView = () => {
   } = useContext(UserContext);
 
   const {
+    // eslint-disable-next-line no-unused-vars
     state: { loans, error: retrieveLoanError },
     retrieveClientLoans,
   } = useContext(LoanContext);
