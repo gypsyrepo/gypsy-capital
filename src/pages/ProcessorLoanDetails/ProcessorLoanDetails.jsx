@@ -610,9 +610,8 @@ export const RepayPlusApprove = ({
               label="Approved Loan Amount"
               value={setupData?.approvedLoanAmount}
               changed={(val) => {
-                const { includesAlphabet, convertedToNumber } = convertInput(
-                  val
-                );
+                const { includesAlphabet, convertedToNumber } =
+                  convertInput(val);
                 if (!includesAlphabet) {
                   setSetupData({
                     ...setupData,
@@ -628,7 +627,7 @@ export const RepayPlusApprove = ({
                 repaymentError.approvedLoanAmount &&
                 repaymentError.approvedLoanAmount
               }
-              disable={loanData?.rePaymentAPI}
+              // disable={loanData?.rePaymentAPI}
             />
           </Col>
           <Col>
@@ -747,7 +746,7 @@ export const RepayPlusApprove = ({
               type="select"
               nameAttr="repaymentApi"
               label="Repayment API"
-              options={["Paystack", "Remita", "Flutterwave"]}
+              options={["Paystack", "Remita", "Flutterwave", "Cheque"]}
               value={setupData?.repaymentApi}
               changed={(val) => {
                 setSetupData({ ...setupData, repaymentApi: val });

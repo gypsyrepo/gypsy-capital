@@ -9,6 +9,8 @@ import {
   Font,
 } from "@react-pdf/renderer";
 import WhiteLogo from "../../assets/logo-white.png";
+import CreditRisk from "../../assets/signatures/credit-risk.jpg";
+import Credit from "../../assets/signatures/risk.jpg";
 
 Font.register({
   family: "Source Sans Pro",
@@ -80,6 +82,11 @@ const styles = StyleSheet.create({
   },
   termsTitle: {
     fontWeight: "medium",
+    marginTop: 10,
+    fontSize: 16,
+  },
+  sectionTitle: {
+    fontWeight: "medium",
     marginTop: 60,
     fontSize: 16,
   },
@@ -127,6 +134,18 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 14,
   },
+  signatureWrapper: {
+    marginTop: 10,
+    width: 120,
+    height: 70,
+    backgroundColor: "#fff",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  creditSignature: {
+    width: 100,
+  },
 });
 
 const OfferLetterPdf = ({ dynamicData }) => {
@@ -173,20 +192,21 @@ const OfferLetterPdf = ({ dynamicData }) => {
             >{`Total Repayment: N${dynamicData.totalRepayment}`}</Text>
             <Text
               style={styles.loanData}
+            >{`Repayment Start Date: ${dynamicData.repaymentStartDate}`}</Text>
+            <Text
+              style={styles.loanData}
             >{`Loan Tenure: ${dynamicData.loanTenure}`}</Text>
-            <Text style={styles.termsTitle}>TERMS OF THE OFFER:</Text>
-            <View style={styles.termsContent}>
-              <Text style={styles.listItem}>
-                1. Disbursement is subject to the availability of funds and
-                statutory regulation
-              </Text>
-            </View>
           </View>
         </View>
       </Page>
       <Page>
         <View style={styles.body}>
+          <Text style={styles.termsTitle}>TERMS OF THE OFFER:</Text>
           <View style={styles.termsContent}>
+            <Text style={styles.listItem}>
+              1. Disbursement is subject to the availability of funds and
+              statutory regulation
+            </Text>
             <Text style={styles.listItem}>
               2. The Borrower will reimburse Gypsy Capital Limited on-demand,
               all expenses (including but not limited to legal and insurance
@@ -214,7 +234,7 @@ const OfferLetterPdf = ({ dynamicData }) => {
               ingenuine or unreliable this offer will automatically terminate.
             </Text>
           </View>
-          <Text style={styles.termsTitle}>EVENTS OF DEFAULT:</Text>
+          <Text style={styles.sectionTitle}>EVENTS OF DEFAULT:</Text>
           <Text style={{ marginTop: 15, fontSize: 14 }}>
             The occurrence of any of the following shall cause all outstanding
             sums under this facility to become immediately repayable:
@@ -236,9 +256,7 @@ const OfferLetterPdf = ({ dynamicData }) => {
             <Text style={styles.listItem}>
               4. Where the repayment of the facility is not discharged as at
               when due (with reference to the monthly installment payment and
-              other outstanding amounts applicable to the facility), Gypsy
-              Capital Limited has the right to upload customer's data as
-              delinquent on the Credit bureau.
+              other outstanding amounts applicable
             </Text>
           </View>
         </View>
@@ -246,6 +264,10 @@ const OfferLetterPdf = ({ dynamicData }) => {
       <Page>
         <View style={styles.body}>
           <View style={styles.termsContent}>
+            <Text style={styles.listItem}>
+              to the facility), Gypsy Capital Limited has the right to upload
+              customer's data as delinquent on the Credit bureau.
+            </Text>
             <Text style={styles.listItem}>
               5. Should any of the rentals remain un-paid, for any reason
               whatsoever, a penalty equal to 1.67% of the amount of the rental
@@ -273,7 +295,7 @@ const OfferLetterPdf = ({ dynamicData }) => {
             </Text>
           </View>
           <View style={styles.line} />
-          <Text style={styles.termsTitle}>Important Notice</Text>
+          <Text style={styles.sectionTitle}>Important Notice</Text>
           <Text style={styles.paragraphOne}>
             Please note that where this offer is not accepted within 7 (Seven)
             days, it shall be subjected to review against the prevailing market
@@ -312,14 +334,18 @@ const OfferLetterPdf = ({ dynamicData }) => {
             <View style={styles.signature}>
               <View style={styles.signGroup}>
                 <Text>Head Credit</Text>
-                <Text>{dynamicData.headCreditSign}</Text>
+                <View style={styles.signatureWrapper}>
+                  <Image style={styles.creditSignature} src={Credit} />
+                </View>
               </View>
               <View style={styles.signGroup}>
                 <Text>Head Credit & Risk Management</Text>
-                <Text>{dynamicData.headRiskSign}</Text>
+                <View style={styles.signatureWrapper}>
+                  <Image style={styles.creditSignature} src={CreditRisk} />
+                </View>
               </View>
             </View>
-            <Text style={styles.termsTitle}>Memorandum of Acceptance</Text>
+            <Text style={styles.sectionTitle}>Memorandum of Acceptance</Text>
             <Text style={styles.paragraphOne}>
               I ___________________________, OF
               _____________________________________ have read and have fully
