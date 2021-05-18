@@ -357,6 +357,8 @@ const ProfileView = () => {
                     </Row>
                     <Button
                       bgColor="#a02089"
+                      loading={loading}
+                      disabled={loading}
                       color="#fff"
                       size="lg"
                       className="mt-5"
