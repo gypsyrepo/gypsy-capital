@@ -746,7 +746,7 @@ export const RepayPlusApprove = ({
               type="select"
               nameAttr="repaymentApi"
               label="Repayment API"
-              options={["Paystack", "Remita", "Flutterwave"]}
+              options={["Paystack", "Remita", "Flutterwave", "Cheque"]}
               value={setupData?.repaymentApi}
               changed={(val) => {
                 setSetupData({ ...setupData, repaymentApi: val });
