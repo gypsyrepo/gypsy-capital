@@ -115,6 +115,33 @@ const manualPayment = (dispatch) => async (scheduleId, paymentData) => {
   }
 };
 
+const validateRemitaMandate = (dispatch) => async (loanId, validateData) => {
+  dispatch({ type: "set_loading", payload: true });
+  try {
+    const token = resolveToken();
+    const response = await gypsy.post(
+      `/remita/mandate/validate_otp/${loanId}`,
+      validateData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(response);
+    dispatch({ type: "set_loading", payload: false });
+  } catch (err) {
+    if (err.response) {
+      const errorMessage = err.response.data.error || err.response.data.message;
+      dispatch({
+        type: "set_error",
+        payload: errorMessage,
+      });
+      dispatch({ type: "set_loading", payload: false });
+    }
+  }
+};
+
 const clearError = (dispatch) => () => {
   dispatch({ type: "set_error", payload: null });
 };
@@ -141,6 +168,7 @@ export const { Context, Provider } = createDataContext(
     manualPayment,
     clearPaymentError,
     clearMessage,
+    validateRemitaMandate,
   },
   {
     loading: false,

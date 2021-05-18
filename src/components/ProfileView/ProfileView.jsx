@@ -7,7 +7,10 @@ import { BiCreditCard } from "react-icons/bi";
 import { RiBankFill } from "react-icons/ri";
 import { Context as AuthContext } from "../../context/AuthContext";
 import { Context as UserContext } from "../../context/UserContext";
+import { Context as LoanContext } from "../../context/LoanContext";
+import { Context as RepaymentContext } from "../../context/RepaymentContext";
 import MonoWidget from "../../components/MonoWidget/MonoWidget";
+import { validateInput } from "../../utils/validateInput";
 
 const ProfileView = () => {
   const [visibleSection, setVisibleSection] = useState("personalInfo");
@@ -44,22 +47,29 @@ const ProfileView = () => {
   const {
     state: { user },
   } = useContext(AuthContext);
+
   const {
     state: { userDetails },
     getClientDetails,
   } = useContext(UserContext);
 
+  const {
+    state: { loans, error: retrieveLoanError },
+    retrieveClientLoans,
+  } = useContext(LoanContext);
+
+  const {
+    state: { loading },
+    validateRemitaMandate,
+  } = useContext(RepaymentContext);
+
   useEffect(() => {
     getClientDetails(user.user_id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userDetails]);
+  }, []);
 
   useEffect(() => {
     if (userDetails) {
-      // setProfileData({
-      //   firstName
-      // })
-      // console.log(userDetails);
       const { bioData, identity, residence } = userDetails;
       setProfileData({
         firstName: bioData.firstName,
@@ -75,6 +85,39 @@ const ProfileView = () => {
 
   const goToProfileSection = (section) => {
     setVisibleSection(section);
+  };
+
+  useEffect(() => {
+    if (loans.length > 0) {
+      const pendingRemitaLoan = loans.filter(
+        (loan) =>
+          loan.rePaymentAPI.toLowerCase() === "remita" &&
+          loan.status.toLowerCase() === "pending"
+      );
+      // console.log(pendingRemitaLoan[0]._id);
+      validateRemita(pendingRemitaLoan[0]?._id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loans]);
+
+  const getPendingRemitaLoan = async () => {
+    await retrieveClientLoans();
+  };
+
+  const initiateRemitaValidate = async () => {
+    const validated = validateInput(remitaData, setRemitaDataError);
+    if (validated) {
+      await getPendingRemitaLoan();
+    }
+  };
+
+  const validateRemita = async (loanId) => {
+    const validateData = {
+      card: remitaData.card,
+      otp: remitaData.otp,
+    };
+
+    await validateRemitaMandate(loanId, validateData);
   };
 
   return (
@@ -276,8 +319,6 @@ const ProfileView = () => {
               {visiblePaymentSection === "card" && (
                 <div className={styles.addRemita}>
                   <div className={styles.cardInner}>
-                    {/* <BiPlus size="2em" />
-                    <p>Add Card</p> */}
                     <Row className="mb-3">
                       <Col>
                         <InputField
@@ -320,6 +361,7 @@ const ProfileView = () => {
                       size="lg"
                       className="mt-5"
                       fullWidth
+                      clicked={initiateRemitaValidate}
                     >
                       Submit
                     </Button>
