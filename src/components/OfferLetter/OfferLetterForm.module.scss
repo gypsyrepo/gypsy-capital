@@ -172,22 +172,33 @@
         margin-top: 40px;
         display: flex;
         justify-content: space-between;
+        .signatureWrapper {
+          margin-top: 10px;
+          width: 150px;
+          height: 90px;
+          background-color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          img {
+            width: 120px;
+          }
+        }
+        .signatureWrapper2 {
+          margin-top: 10px;
+          width: 280px;
+          height: 90px;
+          background-color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          img {
+            width: 120px;
+          }
+        }
         p {
           margin-bottom: 10px;
           font-weight: 600;
-        }
-        textarea {
-          height: 80px;
-          border: 1px solid #741763;
-          &.error {
-            border: 0.5px solid red;
-          }
-          &:active {
-            outline: none;
-          }
-          &:focus {
-            outline: none;
-          }
         }
         div {
           display: flex;
