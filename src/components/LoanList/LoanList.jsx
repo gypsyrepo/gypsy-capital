@@ -143,7 +143,9 @@ const LoanList = ({ loanList, userRole }) => {
                       <td>{loan.paymentPeriod}</td>
                       <td>{_.capitalize(loan.status)}</td>
                       <td>{"Salary"}</td>
-                      <td>{`N ${numberWithCommas(loan.amount)}`}</td>
+                      <td>{`N${numberWithCommas(
+                        loan?.approvedAmount || loan?.amount
+                      )}`}</td>
                       <td>{`N ${numberWithCommas(loanBalance)}`}</td>
                     </tr>
                   );

@@ -71,6 +71,8 @@ const LoanList = () => {
     pageNumberLimit
   );
 
+  console.log(currentList);
+
   return (
     <Dashboard sidebarRoutes={salesRoutes} location={location}>
       <div className={styles.welcomeGroup}>
@@ -141,7 +143,9 @@ const LoanList = () => {
                         <td>{loan.paymentPeriod}</td>
                         <td>{_.capitalize(loan.status)}</td>
                         <td>{"Salary"}</td>
-                        <td>{`N ${numberWithCommas(loan.amount)}`}</td>
+                        <td>{`N${numberWithCommas(
+                          loan?.approvedAmount || loan?.amount
+                        )}`}</td>
                         <td>{`${loan?.DTI}%`}</td>
                         <td>{`N ${numberWithCommas(loanBalance)}`}</td>
                       </tr>
