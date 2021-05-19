@@ -23,6 +23,7 @@ const repaymentReducer = (state, action) => {
 };
 
 const setupRepayment = (dispatch) => async (loanId, repayData, callback) => {
+  console.log(repayData);
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
