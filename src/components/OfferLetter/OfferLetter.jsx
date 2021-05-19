@@ -14,8 +14,7 @@ import Credit from "../../assets/signatures/risk.jpg";
 
 Font.register({
   family: "Source Sans Pro",
-  src:
-    "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap",
+  src: "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap",
 });
 
 const styles = StyleSheet.create({
@@ -145,6 +144,28 @@ const styles = StyleSheet.create({
   },
   creditSignature: {
     width: 100,
+  },
+  borrowerSignature: {
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 30,
+  },
+  borrowerInputLabel: {
+    fontSize: 16,
+  },
+  borrowerSignGroup: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  borrowerInputField: {
+    width: 160,
+    height: 55,
+    marginLeft: 10,
+    backgroundColor: "#fff",
+    borderColor: "#741763",
+    borderWidth: 1,
   },
 });
 
@@ -353,6 +374,16 @@ const OfferLetterPdf = ({ dynamicData }) => {
               agree to the terms and conditions of the offer and have
               accordingly affirmed same;
             </Text>
+            <View style={styles.borrowerSignature}>
+              <View style={styles.borrowerSignGroup}>
+                <Text style={styles.borrowerInputLabel}>Name:</Text>
+                <View style={styles.borrowerInputField}></View>
+              </View>
+              <View style={styles.borrowerSignGroup}>
+                <Text style={styles.borrowerInputLabel}>Signature:</Text>
+                <View style={styles.borrowerInputField}></View>
+              </View>
+            </View>
           </View>
           <View style={styles.footer}>
             <Text style={styles.footerText}>
