@@ -3,7 +3,7 @@ import { Route, Redirect, useLocation } from "react-router-dom";
 import { Context as AuthContext } from "../../context/AuthContext";
 import pageUrl from "../pageUrl";
 
-const AdminRoute = ({ component: Component, ...rest }) => {
+const AllAdminRoute = ({ component: Component, ...rest }) => {
   const {
     state: { loggedIn, user },
   } = useContext(AuthContext);
@@ -11,7 +11,10 @@ const AdminRoute = ({ component: Component, ...rest }) => {
 
   return (
     <Route {...rest}>
-      {loggedIn && user.role === "super" ? (
+      {loggedIn &&
+      (user.role === "super" ||
+        user.role === "processor" ||
+        user.role === "authorizer") ? (
         <Component />
       ) : (
         <Redirect
@@ -22,4 +25,4 @@ const AdminRoute = ({ component: Component, ...rest }) => {
   );
 };
 
-export default AdminRoute;
+export default AllAdminRoute;

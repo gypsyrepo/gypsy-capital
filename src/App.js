@@ -56,6 +56,7 @@ import SalesRoute from "./routes/protectedroute/SalesRoute";
 import ProcessorRoute from "./routes/protectedroute/ProcessorRoute";
 import AuthorizerRoute from "./routes/protectedroute/AuthorizerRoute";
 import AdminRoute from "./routes/protectedroute/AdminRoute";
+import AllAdminRoute from "./routes/protectedroute/AllAdminRoute";
 
 const RouteManager = () => {
   return (
@@ -126,10 +127,7 @@ const RouteManager = () => {
             component={ClientDetails}
           />
           <SalesRoute path={pageUrl.LOAN_LIST_PAGE} component={LoanList} />
-          <SalesRoute
-            path={pageUrl.LOAN_DETAIL_PAGE}
-            component={LoanDetail}
-          />
+          <SalesRoute path={pageUrl.LOAN_DETAIL_PAGE} component={LoanDetail} />
           <SalesRoute path={pageUrl.SUPPORT_PAGE} component={Support} />
           <ProcessorRoute
             path={pageUrl.PROCESSORS_DASHBOARD}
@@ -175,27 +173,18 @@ const RouteManager = () => {
             path={pageUrl.ADMIN_OVERVIEW}
             component={AdminDashboard}
           />
-          <AdminRoute
-            path={pageUrl.ADMIN_LOANS}
-            component={AdminLoans}
-          />
-          <AdminRoute
-            path={pageUrl.ADMIN_CLIENTS}
-            component={AdminClients}
-          />
-          <AdminRoute
-            path={pageUrl.ADMIN_STAFF}
-            component={AdminStaffs}
-          />
-          <AdminRoute
+          <AdminRoute path={pageUrl.ADMIN_LOANS} component={AdminLoans} />
+          <AdminRoute path={pageUrl.ADMIN_CLIENTS} component={AdminClients} />
+          <AdminRoute path={pageUrl.ADMIN_STAFF} component={AdminStaffs} />
+          <AllAdminRoute
             path={pageUrl.ADMIN_REPORTS}
             component={AdminReports}
           />
-          <AdminRoute 
+          <AdminRoute
             path={pageUrl.ADMIN_LOAN_DETAILS}
             component={AdminLoanDetails}
           />
-          <AdminRoute 
+          <AdminRoute
             path={pageUrl.ADMIN_CLIENT_DETAILS}
             component={AdminClientDetails}
           />

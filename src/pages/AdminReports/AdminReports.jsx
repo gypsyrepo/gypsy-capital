@@ -28,6 +28,7 @@ import {
   filterStaff,
 } from "../../utils/data";
 import useUserList from "../../hooks/useUserList";
+import { Context as AuthContext } from "../../context/AuthContext";
 
 const LoanReportTable = ({ loanList, tableHeaders, loading }) => {
   return (
@@ -54,12 +55,27 @@ const AdhocReportTable = ({ loanList, loading, tableHeaders }) => {
 };
 
 const AdminReports = () => {
-  const adminRoutes = routes[4];
   const location = useLocation();
   const { path } = useRouteMatch();
   const history = useHistory();
   const [staffList] = useUserList(true);
   const [clientList] = useUserList(false);
+  const {
+    state: { user },
+  } = useContext(AuthContext);
+
+  const userRoutes = useMemo(() => {
+    switch (user.role) {
+      case "processor":
+        return routes[2];
+      case "authorizer":
+        return routes[3];
+      case "super":
+        return routes[4];
+      default:
+        return routes[4];
+    }
+  }, [user.role]);
 
   const {
     state: { loading, loans },
@@ -181,7 +197,7 @@ const AdminReports = () => {
   };
 
   return (
-    <Dashboard sidebarRoutes={adminRoutes} location={location}>
+    <Dashboard sidebarRoutes={userRoutes} location={location}>
       <div className={styles.welcomeGroup}>
         <div>
           <h2>Reports</h2>
@@ -202,23 +218,23 @@ const AdminReports = () => {
         <Row className="mt-5 align-items-center">
           <Col
             style={
-              location.pathname.includes("/super-admin/reports/loan")
+              location.pathname.includes("/admin/reports/loan")
                 ? { backgroundColor: "#E9E9E9" }
                 : { backgroundColor: "#C4C4C4" }
             }
             className={styles.navItem}
-            onClick={() => history.push("/super-admin/reports/loan")}
+            onClick={() => history.push("/admin/reports/loan")}
           >
             Loan Report
           </Col>
           <Col
             style={
-              location.pathname.includes("/super-admin/reports/adhoc")
+              location.pathname.includes("/admin/reports/adhoc")
                 ? { backgroundColor: "#E9E9E9" }
                 : { backgroundColor: "#C4C4C4" }
             }
             className={styles.navItem}
-            onClick={() => history.push("/super-admin/reports/adhoc")}
+            onClick={() => history.push("/admin/reports/adhoc")}
           >
             Adhoc Report
           </Col>
