@@ -439,7 +439,10 @@ export const RepayPlusApprove = ({
     if (validated) {
       if (setupData.repaymentApi) {
         let data;
-        if (setupData.repaymentApi === "paystack") {
+        if (
+          setupData.repaymentApi === "paystack" ||
+          setupData.repaymentApi === "cheque"
+        ) {
           data = {
             approved_tenure: setupData.approvedTenure,
             determined_repayment_date: moment(
