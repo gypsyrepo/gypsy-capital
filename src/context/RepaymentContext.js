@@ -132,6 +132,7 @@ const validateRemitaMandate = (dispatch) => async (loanId, validateData) => {
     console.log(response);
     dispatch({ type: "set_loading", payload: false });
   } catch (err) {
+    console.log(err.response);
     if (err.response) {
       const errorMessage = err.response.data.error || err.response.data.message;
       dispatch({

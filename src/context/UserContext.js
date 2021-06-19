@@ -29,44 +29,41 @@ const userReducer = (state, action) => {
   }
 };
 
-const updatePersonalInfo = (dispatch) => async (
-  userId,
-  updateData,
-  inModal
-) => {
-  dispatch({ type: "set_error", payload: null });
-  dispatch({ type: "set_loading", payload: true });
-  try {
-    const token = resolveToken();
-    const response = await gypsy.patch(
-      `/client_details/${userId}`,
-      updateData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log(response.data);
-    dispatch({
-      type: "set_setup_stage",
-      payload: "personal_info_added",
-    });
-    dispatch({ type: "set_loading", payload: false });
-    if (!inModal) {
-      history.push("/dashboard/profile/setup/identity");
-    }
-  } catch (err) {
-    console.log(err.response);
-    if (err.response) {
+const updatePersonalInfo =
+  (dispatch) => async (userId, updateData, inModal) => {
+    dispatch({ type: "set_error", payload: null });
+    dispatch({ type: "set_loading", payload: true });
+    try {
+      const token = resolveToken();
+      const response = await gypsy.patch(
+        `/client_details/${userId}`,
+        updateData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data);
       dispatch({
-        type: "set_error",
-        payload: err.response.message,
+        type: "set_setup_stage",
+        payload: "personal_info_added",
       });
+      dispatch({ type: "set_loading", payload: false });
+      if (!inModal) {
+        history.push("/dashboard/profile/setup/identity");
+      }
+    } catch (err) {
+      console.log(err.response);
+      if (err.response) {
+        dispatch({
+          type: "set_error",
+          payload: err.response.message,
+        });
+      }
+      dispatch({ type: "set_loading", payload: false });
     }
-    dispatch({ type: "set_loading", payload: false });
-  }
-};
+  };
 
 const verifyBvn = (dispatch) => async (userId, bvn, callback, inModal) => {
   dispatch({ type: "set_error", payload: null });
@@ -111,85 +108,87 @@ const verifyBvn = (dispatch) => async (userId, bvn, callback, inModal) => {
   }
 };
 
-const verifyBvnAlt = (dispatch) => async (
-  userId,
-  verifyData,
-  callback,
-  inModal
-) => {
-  dispatch({ type: "set_error", payload: null });
-  dispatch({ type: "set_loading", payload: true });
-  console.log(verifyData);
-  try {
-    const token = resolveToken();
-    await gypsy.post(`/verify_bvn_b/${userId}`, verifyData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    // console.log(response.data);
-
-    dispatch({
-      type: "set_setup_stage",
-      payload: "bvn_verified",
-    });
-    if (callback) {
-      callback();
-    }
-    dispatch({ type: "set_loading", payload: false });
-    if (!inModal) {
-      history.push("/dashboard/profile/setup/info");
-    }
-  } catch (err) {
-    if (err.response) {
-      console.log(err.response);
-      dispatch({
-        type: "set_error",
-        payload: err.response.data.message,
-      });
-      dispatch({ type: "set_loading", payload: false });
-    }
-  }
-};
-
-const updateIdentityInfo = (dispatch) => async (
-  userId,
-  updateData,
-  inModal
-) => {
-  dispatch({ type: "set_error", payload: null });
-  dispatch({ type: "set_loading", payload: true });
-  try {
-    const token = resolveToken();
-    const response = await gypsy.patch(
-      `/media/identity/${userId}`,
-      updateData,
-      {
+const verifyBvnAlt =
+  (dispatch) => async (userId, verifyData, callback, inModal) => {
+    dispatch({ type: "set_error", payload: null });
+    dispatch({ type: "set_loading", payload: true });
+    console.log(verifyData);
+    try {
+      const token = resolveToken();
+      await gypsy.post(`/verify_bvn_b/${userId}`, verifyData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-    );
-    console.log(response.data);
-    dispatch({
-      type: "set_setup_stage",
-      payload: "identity_added",
-    });
-    dispatch({ type: "set_loading", payload: false });
-    if (!inModal) {
-      history.push("/dashboard/profile/setup/success");
-    }
-  } catch (err) {
-    if (err.response) {
-      console.log(err.response);
-      dispatch({
-        type: "set_error",
-        payload: err.response.data.message,
       });
+      // console.log(response.data);
+
+      dispatch({
+        type: "set_setup_stage",
+        payload: "bvn_verified",
+      });
+      if (callback) {
+        callback();
+      }
+      dispatch({ type: "set_loading", payload: false });
+      if (!inModal) {
+        history.push("/dashboard/profile/setup/info");
+      }
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        if (err.response.data.error) {
+          if (err.response.data.error.includes("duplicate key")) {
+            dispatch({
+              type: "set_error",
+              payload: "This BVN already exists in our system",
+            });
+          }
+        } else {
+          dispatch({
+            type: "set_error",
+            payload: err.response.data.message,
+          });
+        }
+      }
       dispatch({ type: "set_loading", payload: false });
     }
-  }
-};
+  };
+
+const updateIdentityInfo =
+  (dispatch) => async (userId, updateData, inModal) => {
+    dispatch({ type: "set_error", payload: null });
+    dispatch({ type: "set_loading", payload: true });
+    try {
+      const token = resolveToken();
+      const response = await gypsy.patch(
+        `/media/identity/${userId}`,
+        updateData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data);
+      dispatch({
+        type: "set_setup_stage",
+        payload: "identity_added",
+      });
+      dispatch({ type: "set_loading", payload: false });
+      if (!inModal) {
+        history.push("/dashboard/profile/setup/success");
+      }
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response);
+        dispatch({
+          type: "set_error",
+          payload: err.response.data.message,
+        });
+        dispatch({ type: "set_loading", payload: false });
+      }
+    }
+  };
 
 const getClientDetails = (dispatch) => async (userId) => {
   dispatch({ type: "set_loading", payload: true });

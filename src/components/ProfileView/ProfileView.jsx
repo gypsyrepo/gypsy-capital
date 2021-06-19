@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, { useState, useContext, useRef, useEffect, useMemo } from "react";
 import styles from "./ProfileView.module.scss";
 import { Row, Col } from "react-bootstrap";
 import InputField from "../InputField/InputField";
@@ -11,6 +11,7 @@ import { Context as LoanContext } from "../../context/LoanContext";
 import { Context as RepaymentContext } from "../../context/RepaymentContext";
 import MonoWidget from "../../components/MonoWidget/MonoWidget";
 import { validateInput } from "../../utils/validateInput";
+import { toast, ToastContainer } from "react-toastify";
 
 const ProfileView = () => {
   const [visibleSection, setVisibleSection] = useState("personalInfo");
@@ -60,14 +61,24 @@ const ProfileView = () => {
   } = useContext(LoanContext);
 
   const {
-    state: { loading },
+    state: { loading, error: remitaError },
     validateRemitaMandate,
+    clearError,
   } = useContext(RepaymentContext);
 
   useEffect(() => {
     getClientDetails(user.user_id);
+    retrieveClientLoans();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (remitaError) {
+      toast.error(remitaError);
+      clearError();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [remitaError]);
 
   useEffect(() => {
     if (userDetails) {
@@ -88,29 +99,18 @@ const ProfileView = () => {
     setVisibleSection(section);
   };
 
-  useEffect(() => {
+  const remitaLoan = useMemo(() => {
     if (loans.length > 0) {
       const pendingRemitaLoan = loans.filter(
         (loan) =>
-          loan.rePaymentAPI.toLowerCase() === "remita" &&
-          loan.status.toLowerCase() === "pending"
+          loan.rePaymentAPI?.toLowerCase() === "remita" &&
+          loan.status?.toLowerCase() === "pending"
       );
-      // console.log(pendingRemitaLoan[0]._id);
-      validateRemita(pendingRemitaLoan[0]?._id);
+      return pendingRemitaLoan;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loans]);
 
-  const getPendingRemitaLoan = async () => {
-    await retrieveClientLoans();
-  };
-
-  const initiateRemitaValidate = async () => {
-    const validated = validateInput(remitaData, setRemitaDataError);
-    if (validated) {
-      await getPendingRemitaLoan();
-    }
-  };
+  console.log(remitaLoan, loans);
 
   const validateRemita = async (loanId) => {
     const validateData = {
@@ -121,8 +121,21 @@ const ProfileView = () => {
     await validateRemitaMandate(loanId, validateData);
   };
 
+  const initiateRemitaValidate = async () => {
+    const validated = validateInput(remitaData, setRemitaDataError);
+
+    if (validated) {
+      if (remitaLoan.length > 0) {
+        await validateRemita(remitaLoan[0]._id);
+      } else {
+        toast.error("You have no pending remita loan!");
+      }
+    }
+  };
+
   return (
     <div className={styles.profileBox}>
+      <ToastContainer position="top-center" />
       <div className={styles.header}>
         <Row>
           <Col
