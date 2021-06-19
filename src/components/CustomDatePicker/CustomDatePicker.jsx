@@ -5,7 +5,7 @@ import { getYear, getMonth } from "date-fns";
 import _ from "lodash";
 
 const CustomDatePicker = ({ value, changed, label, error, disable }) => {
-  const years = _.range(1990, getYear(new Date()) + 1, 1);
+  const years = _.range(1900, getYear(new Date()) + 1, 1);
   const months = [
     "January",
     "February",
