@@ -41,7 +41,6 @@ const loanApply = (dispatch) => async (applyData, userId, inModal) => {
         },
       }
     );
-    console.log(response);
     dispatch({ type: "set_current_loan", payload: response.data.data.loanId });
     dispatch({ type: "set_application_stage", payload: "calculated" });
     dispatch({ type: "set_loading", payload: false });
@@ -50,12 +49,10 @@ const loanApply = (dispatch) => async (applyData, userId, inModal) => {
     }
   } catch (err) {
     if (err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message;
       if (
         errorMessage.toLowerCase() === "complete your previuos loan request"
       ) {
-        // console.log(errorMessage);
         const { loanId, data: stage } = err.response.data.data;
         dispatch({ type: "set_current_loan", payload: loanId });
         dispatch({ type: "set_incomplete_state", payload: true });
@@ -89,54 +86,45 @@ const resetApplyStage = (dispatch) => () => {
   });
 };
 
-const addAddressForLoan = (dispatch) => async (
-  addressData,
-  loanId,
-  inModal
-) => {
-  dispatch({ type: "set_loading", payload: true });
-  dispatch({ type: "set_error", payload: null });
-  try {
-    const token = resolveToken();
-    const response = await gypsy.post(
-      `/client/loan/address/${loanId}`,
-      addressData,
-      {
+const addAddressForLoan =
+  (dispatch) => async (addressData, loanId, inModal) => {
+    dispatch({ type: "set_loading", payload: true });
+    dispatch({ type: "set_error", payload: null });
+    try {
+      const token = resolveToken();
+      await gypsy.post(`/client/loan/address/${loanId}`, addressData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-    );
-    console.log(response);
-    dispatch({ type: "set_application_stage", payload: "address_added" });
-    dispatch({ type: "set_loading", payload: false });
-    if (!inModal) {
-      history.push("/dashboard/consumer-credit/apply/employer-info");
-    }
-  } catch (err) {
-    if (err.response) {
-      console.log(err.response.data);
-      const errorMessage = err.response.data.error || err.response.data.message;
-      dispatch({
-        type: "set_error",
-        payload: errorMessage,
       });
+      dispatch({ type: "set_application_stage", payload: "address_added" });
+      dispatch({ type: "set_loading", payload: false });
+      if (!inModal) {
+        history.push("/dashboard/consumer-credit/apply/employer-info");
+      }
+    } catch (err) {
+      if (err.response) {
+        const errorMessage =
+          err.response.data.error || err.response.data.message;
+        dispatch({
+          type: "set_error",
+          payload: errorMessage,
+        });
+      }
+      dispatch({ type: "set_loading", payload: false });
     }
-    dispatch({ type: "set_loading", payload: false });
-  }
-};
+  };
 
 const addWorkInfoForLoan = (dispatch) => async (workData, loanId, inModal) => {
   dispatch({ type: "set_loading", payload: true });
   dispatch({ type: "set_error", payload: null });
   try {
     const token = resolveToken();
-    const response = await gypsy.post(`/client/loan/work/${loanId}`, workData, {
+    await gypsy.post(`/client/loan/work/${loanId}`, workData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response);
     dispatch({ type: "set_application_stage", payload: "employer_added" });
     dispatch({ type: "set_loading", payload: false });
     if (!inModal) {
@@ -144,7 +132,6 @@ const addWorkInfoForLoan = (dispatch) => async (workData, loanId, inModal) => {
     }
   } catch (err) {
     if (err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message;
       dispatch({
         type: "set_error",
@@ -155,42 +142,37 @@ const addWorkInfoForLoan = (dispatch) => async (workData, loanId, inModal) => {
   }
 };
 
-const addBankInfoForLoan = (dispatch) => async (
-  bankData,
-  loanId,
-  callback,
-  inModal
-) => {
-  dispatch({ type: "set_loading", payload: true });
-  dispatch({ type: "set_error", payload: null });
-  try {
-    const token = resolveToken();
-    const response = await gypsy.post(`/client/loan/bank/${loanId}`, bankData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(response);
-    dispatch({ type: "set_application_stage", payload: "bank_added" });
-    if (callback) {
-      callback();
-    }
-    dispatch({ type: "set_loading", payload: false });
-    if (!inModal) {
-      history.push("/dashboard/consumer-credit/success");
-    }
-  } catch (err) {
-    if (err.response) {
-      console.log(err.response.data);
-      const errorMessage = err.response.data.error || err.response.data.message;
-      dispatch({
-        type: "set_error",
-        payload: errorMessage,
+const addBankInfoForLoan =
+  (dispatch) => async (bankData, loanId, callback, inModal) => {
+    dispatch({ type: "set_loading", payload: true });
+    dispatch({ type: "set_error", payload: null });
+    try {
+      const token = resolveToken();
+      await gypsy.post(`/client/loan/bank/${loanId}`, bankData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+      dispatch({ type: "set_application_stage", payload: "bank_added" });
+      if (callback) {
+        callback();
+      }
+      dispatch({ type: "set_loading", payload: false });
+      if (!inModal) {
+        history.push("/dashboard/consumer-credit/success");
+      }
+    } catch (err) {
+      if (err.response) {
+        const errorMessage =
+          err.response.data.error || err.response.data.message;
+        dispatch({
+          type: "set_error",
+          payload: errorMessage,
+        });
+      }
+      dispatch({ type: "set_loading", payload: false });
     }
-    dispatch({ type: "set_loading", payload: false });
-  }
-};
+  };
 
 const retrieveClientLoans = (dispatch) => async () => {
   dispatch({ type: "set_loading", payload: true });
@@ -210,7 +192,6 @@ const retrieveClientLoans = (dispatch) => async () => {
     dispatch({ type: "set_loading", payload: false });
   } catch (err) {
     if (err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message;
       dispatch({
         type: "set_error",
@@ -230,12 +211,10 @@ const retrieveLoan = (dispatch) => async (loanId) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response.data.data);
     dispatch({ type: "set_loan_details", payload: response.data.data });
     dispatch({ type: "set_loading", payload: false });
   } catch (err) {
     if (err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message;
       dispatch({
         type: "set_error",
@@ -259,7 +238,6 @@ const sendOfferLetter = (dispatch) => async (loanId, sendData) => {
         },
       }
     );
-    // console.log(response.data);
     dispatch({
       type: "set_message",
       payload: response.data.message,
@@ -267,7 +245,6 @@ const sendOfferLetter = (dispatch) => async (loanId, sendData) => {
     dispatch({ type: "set_loading", payload: false });
   } catch (err) {
     if (err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message;
       dispatch({
         type: "set_error",

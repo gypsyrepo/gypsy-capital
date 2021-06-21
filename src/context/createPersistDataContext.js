@@ -16,7 +16,6 @@ export default (reducer, actions, initialState, persist, saveData) => {
     useEffect(() => {
       if(persist) {
         saveData(state);
-        // console.log(state);
       }
     }, [state])
 

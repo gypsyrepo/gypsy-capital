@@ -37,17 +37,15 @@ const authenticateUser = dispatch => async(userId, code) => {
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
-    const response = await gypsy.post(`/api/mono/get_id/${userId}`, {mono_code: code}, {
+    await gypsy.post(`/api/mono/get_id/${userId}`, {mono_code: code}, {
       headers: {
         "Authorization": `Bearer ${token}`
       }
     });
-    console.log(response.data);
     dispatch({ type: 'set_link_success', payload: true });
     dispatch({ type: "set_loading", payload: false });
   } catch(err) {
     if(err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message
       dispatch({
         type: "set_error",
@@ -67,7 +65,6 @@ const getAccountInfo = dispatch => async(userId) => {
         "Authorization": `Bearer ${token}`
       }
     });
-    console.log(response.data.data);
     dispatch({
       type: 'set_account_info',
       payload: response.data.data
@@ -75,7 +72,6 @@ const getAccountInfo = dispatch => async(userId) => {
     dispatch({ type: "set_info_loading", payload: false });
   } catch(err) {
     if(err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message
       dispatch({
         type: 'set_account_info',
@@ -126,12 +122,10 @@ const getAccountStatement = dispatch => async(userId, months) => {
         "Authorization": `Bearer ${token}`
       }
     });
-    console.log(response.data);
     dispatch({ type: "set_statement_pdf", payload: response.data.data.path})
     dispatch({ type: "set_statement_loading", payload: false });
   } catch(err) {
     if(err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message
       dispatch({
         type: "set_error",
@@ -151,7 +145,6 @@ const getAccountTransactionHistory = dispatch => async(userId, period) => {
         "Authorization": `Bearer ${token}`
       }
     });
-    console.log(response.data.data)
     dispatch({
       type: "set_transaction_history",
       payload: response.data.data
@@ -159,7 +152,6 @@ const getAccountTransactionHistory = dispatch => async(userId, period) => {
     dispatch({ type: "set_loading", payload: false });
   } catch(err) {
     if(err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message
       dispatch({
         type: "set_error",

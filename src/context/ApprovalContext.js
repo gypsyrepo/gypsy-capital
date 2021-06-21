@@ -1,7 +1,6 @@
 import createDataContext from "./createDataContext";
 import gypsy from "../api/gypsy-web";
 import resolveToken from "../utils/resolveToken";
-// import _ from 'lodash';
 
 const approvalReducer = (state, action) => {
   switch (action.type) {
@@ -21,9 +20,8 @@ const approvalReducer = (state, action) => {
 const decideApproval = (dispatch) => async (loanId, decisionData, callback) => {
   dispatch({ type: "set_loading", payload: true });
   try {
-    console.log(decisionData);
     const token = resolveToken();
-    const response = await gypsy.post(
+    await gypsy.post(
       `/user/loan/action/${loanId}`,
       decisionData,
       {
@@ -32,7 +30,6 @@ const decideApproval = (dispatch) => async (loanId, decisionData, callback) => {
         },
       }
     );
-    console.log(response);
     if (callback) {
       await callback(loanId);
     }
@@ -40,7 +37,6 @@ const decideApproval = (dispatch) => async (loanId, decisionData, callback) => {
     dispatch({ type: "set_loading", payload: false });
   } catch (err) {
     if (err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message;
       dispatch({
         type: "set_error",
@@ -52,11 +48,10 @@ const decideApproval = (dispatch) => async (loanId, decisionData, callback) => {
 };
 
 const disburseLoan = (dispatch) => async (loanId, paymentData) => {
-  console.log(paymentData);
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
-    const response = await gypsy.post(
+    await gypsy.post(
       `/payment/transfer/${loanId}`,
       paymentData,
       {
@@ -65,12 +60,10 @@ const disburseLoan = (dispatch) => async (loanId, paymentData) => {
         },
       }
     );
-    console.log(response.data);
     dispatch({ type: "set_disburse_status", payload: true });
     dispatch({ type: "set_loading", payload: false });
   } catch (err) {
     if (err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message;
       dispatch({
         type: "set_error",

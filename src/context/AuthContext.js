@@ -34,7 +34,6 @@ const registerUser = (dispatch) => async (data, callback) => {
   dispatch({ type: "set_error", payload: null });
   try {
     const response = await gypsy.post("/client/signup", data);
-    console.log(response.data);
     const token = response.data.token;
     dispatch({
       type: "signin",
@@ -46,31 +45,23 @@ const registerUser = (dispatch) => async (data, callback) => {
     dispatch({ type: "loading_state", payload: false });
     history.push(pageUrl.VERIFY_OTP_PAGE);
   } catch (err) {
-    console.log(err);
     if (err.response) {
-      console.log(err.response);
-      if (err.response.data.message) {
-        dispatch({
-          type: "set_error",
-          payload: err.response.data.message,
-        });
-      } else if (err.response.data.error) {
-        const errorMessage = err.response.data.error;
-        dispatch({ type: "set_error", payload: errorMessage });
-        if (errorMessage.includes("duplicate key")) {
-          if (errorMessage.includes("phoneNumber")) {
-            dispatch({
-              type: "set_error",
-              payload: "This Phone Number already exist",
-            });
-          }
-          if (errorMessage.includes("email")) {
-            dispatch({
-              type: "set_error",
-              payload: "This Email already exist",
-            });
-          }
+      const errorMessage = err.response.data.error || err.response.data.message;
+      if (errorMessage.includes("duplicate key")) {
+        if (errorMessage.includes("phoneNumber")) {
+          dispatch({
+            type: "set_error",
+            payload: "This Phone Number already exist",
+          });
         }
+        if (errorMessage.includes("email")) {
+          dispatch({
+            type: "set_error",
+            payload: "This Email already exist",
+          });
+        }
+      } else {
+        dispatch({ type: "set_error", payload: errorMessage });
       }
     }
     dispatch({ type: "loading_state", payload: false });
@@ -82,26 +73,23 @@ const addStaff = (dispatch) => async (data) => {
   dispatch({ type: "set_error", payload: null });
   try {
     const token = resolveToken();
-    const response = await gypsy.post("/client/signup", data, {
+    await gypsy.post("/client/signup", data, {
       headers: {
-        "Authorization": `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     dispatch({ type: "loading_state", payload: false });
-    console.log(response);
-  } catch(err) {
+  } catch (err) {
     dispatch({ type: "loading_state", payload: false });
     if (err.response) {
-      console.log(err.response);
       const errorMessage = err.response.data.error || err.response.data.message;
-      console.log(errorMessage)
       dispatch({
         type: "set_error",
-        payload: errorMessage
-      })
+        payload: errorMessage,
+      });
     }
   }
-}
+};
 
 const addUserByAgent = (dispatch) => async (data, callback) => {
   dispatch({ type: "loading_state", payload: true });
@@ -114,7 +102,6 @@ const addUserByAgent = (dispatch) => async (data, callback) => {
       },
     });
     const newUserToken = response.data.token;
-    // console.log(response.data.token);
     if (callback) {
       callback(newUserToken);
     }
@@ -122,76 +109,68 @@ const addUserByAgent = (dispatch) => async (data, callback) => {
     dispatch({ type: "loading_state", payload: false });
   } catch (err) {
     if (err.response) {
-      console.log(err.response);
-      if (err.response.data.message) {
-        dispatch({
-          type: "set_error",
-          payload: err.response.data.message,
-        });
-      } else if (err.response.data.error) {
-        const errorMessage = err.response.data.error;
-        dispatch({ type: "set_error", payload: errorMessage });
-        if (errorMessage.includes("duplicate key")) {
-          if (errorMessage.includes("phoneNumber")) {
-            dispatch({
-              type: "set_error",
-              payload: "This Phone Number already exist",
-            });
-          }
-          if (errorMessage.includes("email")) {
-            dispatch({
-              type: "set_error",
-              payload: "This Email already exist",
-            });
-          }
+      const errorMessage = err.response.data.error || err.response.data.message;
+      if (errorMessage.includes("duplicate key")) {
+        if (errorMessage.includes("phoneNumber")) {
+          dispatch({
+            type: "set_error",
+            payload: "This Phone Number already exist",
+          });
         }
+        if (errorMessage.includes("email")) {
+          dispatch({
+            type: "set_error",
+            payload: "This Email already exist",
+          });
+        }
+      } else {
+        dispatch({ type: "set_error", payload: errorMessage });
       }
     }
     dispatch({ type: "loading_state", payload: false });
   }
 };
 
-const loginUser = (dispatch) => async ({ email, password }, callback) => {
-  console.log('works')
-  dispatch({ type: "set_error", payload: null });
-  dispatch({ type: "loading_state", payload: true });
-  try {
-    const response = await gypsy.post("/client/signin", { email, password });
-    const token = response.data.token;
-    dispatch({
-      type: "signin",
-      payload: token,
-    });
-    if (callback) {
-      callback(token);
-    }
-    dispatch({ type: "loading_state", payload: false });
-  } catch (err) {
-    if (err.response) {
-      console.log(err.response);
-      const errorMessage = err.response.data.error || err.response.data.message;
-      if(errorMessage === "Verify your email or phone to activate account") {
-        console.log('works')
-        dispatch({
-          type: "set_redirect_inactive_user",
-          payload: true
-        });
-      } else {
-        dispatch({
-          type: "set_error",
-          payload: errorMessage,
-        });
+const loginUser =
+  (dispatch) =>
+  async ({ email, password }, callback) => {
+    dispatch({ type: "set_error", payload: null });
+    dispatch({ type: "loading_state", payload: true });
+    try {
+      const response = await gypsy.post("/client/signin", { email, password });
+      const token = response.data.token;
+      dispatch({
+        type: "signin",
+        payload: token,
+      });
+      if (callback) {
+        callback(token);
       }
+      dispatch({ type: "loading_state", payload: false });
+    } catch (err) {
+      if (err.response) {
+        const errorMessage =
+          err.response.data.error || err.response.data.message;
+        if (errorMessage === "Verify your email or phone to activate account") {
+          dispatch({
+            type: "set_redirect_inactive_user",
+            payload: true,
+          });
+        } else {
+          dispatch({
+            type: "set_error",
+            payload: errorMessage,
+          });
+        }
+      }
+      dispatch({ type: "loading_state", payload: false });
     }
-    dispatch({ type: "loading_state", payload: false });
-  }
-};
+  };
 
 const verifyOtp = (dispatch) => async (otp, email, callback, inModal) => {
   dispatch({ type: "set_error", payload: null });
   dispatch({ type: "loading_state", payload: true });
   const token = resolveToken();
-  console.log(token);
   try {
     await gypsy.post(
       `/otp/3/verify/${email}`,
@@ -213,7 +192,6 @@ const verifyOtp = (dispatch) => async (otp, email, callback, inModal) => {
     }
   } catch (err) {
     if (err.response) {
-      // console.log(err.response.data);
       dispatch({
         type: "set_error",
         payload: err.response.data.error,
@@ -264,14 +242,12 @@ const getActiveUser = (dispatch) => async (token) => {
         },
       });
     }
-    console.log(response.data);
     dispatch({
       type: "set_user",
       payload: response.data.user,
     });
   } catch (err) {
     if (err.response) {
-      // console.log(err.response.data.message);
       dispatch({
         type: "set_error",
         payload: err.response.data.message,
@@ -290,7 +266,6 @@ const getCurrentlyAddedUser = (dispatch) => async (token) => {
     dispatch({ type: "set_current_added_user", payload: response.data.user });
   } catch (err) {
     if (err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message;
       dispatch({
         type: "set_error",
@@ -317,7 +292,7 @@ const clearMessage = (dispatch) => () => {
 const resetInactiveUserStatus = (dispatch) => () => {
   dispatch({
     type: "set_redirect_inactive_user",
-    payload: false
+    payload: false,
   });
 };
 
@@ -357,7 +332,7 @@ export const { Context, Provider } = createPersistDataContext(
     addUserByAgent,
     resetInactiveUserStatus,
     clearMessage,
-    addStaff
+    addStaff,
   },
   {
     user: null,
@@ -368,7 +343,7 @@ export const { Context, Provider } = createPersistDataContext(
     message: null,
     registerStatus: null,
     currentAddedUser: null,
-    redirectInactiveUser: false
+    redirectInactiveUser: false,
   },
   true,
   saveUserState,

@@ -31,7 +31,6 @@ const getBankList = dispatch => async() => {
         "Authorization": `Bearer ${token}`
       }
     });
-    // console.log(response.data)
     dispatch({
       type: 'set_bank_list',
       payload: response.data.data
@@ -55,7 +54,6 @@ const getPaystackBankList = dispatch => async() => {
         "Authorization": `Bearer ${token}`
       }
     });
-    // console.log(response.data.data);
     dispatch({
       type: "set_paystack_banks",
       payload: response.data.data
@@ -103,7 +101,6 @@ const verifyBankInfo = dispatch => async(accountNo, bankCode) => {
         "Authorization": `Bearer ${token}`
       }
     });
-    console.log(response.data)
     dispatch({
       type: 'set_user_bank_details',
       payload: response.data.data
@@ -111,7 +108,6 @@ const verifyBankInfo = dispatch => async(accountNo, bankCode) => {
     dispatch({ type: 'set_loading', payload: false });
   } catch(err) {
     if(err.response) {
-      console.log(err.response);
       dispatch({
         type: 'set_error',
         payload: err.response.message

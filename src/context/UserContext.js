@@ -35,7 +35,7 @@ const updatePersonalInfo =
     dispatch({ type: "set_loading", payload: true });
     try {
       const token = resolveToken();
-      const response = await gypsy.patch(
+      await gypsy.patch(
         `/client_details/${userId}`,
         updateData,
         {
@@ -44,7 +44,6 @@ const updatePersonalInfo =
           },
         }
       );
-      console.log(response.data);
       dispatch({
         type: "set_setup_stage",
         payload: "personal_info_added",
@@ -54,7 +53,6 @@ const updatePersonalInfo =
         history.push("/dashboard/profile/setup/identity");
       }
     } catch (err) {
-      console.log(err.response);
       if (err.response) {
         dispatch({
           type: "set_error",
@@ -70,12 +68,11 @@ const verifyBvn = (dispatch) => async (userId, bvn, callback, inModal) => {
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
-    const response = await gypsy.get(`/verify_bvn/${userId}/${bvn}`, {
+    await gypsy.get(`/verify_bvn/${userId}/${bvn}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response);
     dispatch({
       type: "set_setup_stage",
       payload: "bvn_verified",
@@ -89,7 +86,6 @@ const verifyBvn = (dispatch) => async (userId, bvn, callback, inModal) => {
     }
   } catch (err) {
     if (err.response) {
-      console.log(err.response.data);
       if (err.response.data.error) {
         if (err.response.data.error.includes("duplicate key")) {
           dispatch({
@@ -112,7 +108,6 @@ const verifyBvnAlt =
   (dispatch) => async (userId, verifyData, callback, inModal) => {
     dispatch({ type: "set_error", payload: null });
     dispatch({ type: "set_loading", payload: true });
-    console.log(verifyData);
     try {
       const token = resolveToken();
       await gypsy.post(`/verify_bvn_b/${userId}`, verifyData, {
@@ -120,7 +115,6 @@ const verifyBvnAlt =
           Authorization: `Bearer ${token}`,
         },
       });
-      // console.log(response.data);
 
       dispatch({
         type: "set_setup_stage",
@@ -135,7 +129,6 @@ const verifyBvnAlt =
       }
     } catch (err) {
       if (err.response) {
-        console.log(err.response.data);
         if (err.response.data.error) {
           if (err.response.data.error.includes("duplicate key")) {
             dispatch({
@@ -160,7 +153,7 @@ const updateIdentityInfo =
     dispatch({ type: "set_loading", payload: true });
     try {
       const token = resolveToken();
-      const response = await gypsy.patch(
+      await gypsy.patch(
         `/media/identity/${userId}`,
         updateData,
         {
@@ -169,7 +162,6 @@ const updateIdentityInfo =
           },
         }
       );
-      console.log(response.data);
       dispatch({
         type: "set_setup_stage",
         payload: "identity_added",
@@ -180,7 +172,6 @@ const updateIdentityInfo =
       }
     } catch (err) {
       if (err.response) {
-        console.log(err.response);
         dispatch({
           type: "set_error",
           payload: err.response.data.message,
@@ -199,13 +190,10 @@ const getClientDetails = (dispatch) => async (userId) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response.data.data);
     dispatch({ type: "set_user_details", payload: response.data.data });
     dispatch({ type: "set_loading", payload: false });
-    // console.log(response.data);
   } catch (err) {
     if (err.response) {
-      console.log(err.response);
       const errorMessage = err.response.data.error || err.response.data.message;
       if (errorMessage === "Client has not fully setup their account") {
         dispatch({ type: "set_user_details", payload: null });
@@ -228,12 +216,10 @@ const getClientList = (dispatch) => async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response.data);
     dispatch({ type: "set_client_list", payload: response.data.users });
     dispatch({ type: "set_loading", payload: false });
   } catch (err) {
     if (err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message;
       dispatch({
         type: "set_error",
@@ -253,7 +239,6 @@ const getClientListForRole = (dispatch) => async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    // console.log(response.data.data);
     dispatch({
       type: "set_clients_for_role",
       payload: _.reverse(response.data.data),
@@ -261,7 +246,6 @@ const getClientListForRole = (dispatch) => async () => {
     dispatch({ type: "set_loading", payload: false });
   } catch (err) {
     if (err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message;
       dispatch({
         type: "set_error",
@@ -277,7 +261,7 @@ const resetPassword = (dispatch) => async (userEmail) => {
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
-    const response = await gypsy.post(
+    await gypsy.post(
       "/client/reset_pwd",
       { email: userEmail },
       {
@@ -286,14 +270,11 @@ const resetPassword = (dispatch) => async (userEmail) => {
         },
       }
     );
-    console.log(response);
     dispatch({ type: "set_loading", payload: false });
     history.push({ pathname: "/password/reset", state: { email: userEmail } });
   } catch (err) {
     if (err.response) {
-      console.log(err.response);
       const errorMessage = err.response.data.error || err.response.data.message;
-      console.log(errorMessage);
       dispatch({
         type: "set_error",
         payload: errorMessage,
@@ -308,19 +289,16 @@ const createNewPassword = (dispatch) => async (data) => {
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
-    const response = await gypsy.post("/otp/3/new_pwd", data, {
+    await gypsy.post("/otp/3/new_pwd", data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response);
     dispatch({ type: "set_loading", payload: false });
     history.push("/password/reset-success");
   } catch (err) {
     if (err.response) {
-      console.log(err.response);
       const errorMessage = err.response.data.error || err.response.data.message;
-      console.log(errorMessage);
       dispatch({
         type: "set_error",
         payload: errorMessage,
@@ -340,7 +318,6 @@ const updateClientData = (dispatch) => async (clientId, newData) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response.data.message);
 
     dispatch({
       type: "set_message",
@@ -349,9 +326,7 @@ const updateClientData = (dispatch) => async (clientId, newData) => {
     dispatch({ type: "set_updating", payload: false });
   } catch (err) {
     if (err.response) {
-      console.log(err.response);
       const errorMessage = err.response.data.error || err.response.data.message;
-      console.log(errorMessage);
       dispatch({
         type: "set_error",
         payload: errorMessage,

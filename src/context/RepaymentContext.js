@@ -23,11 +23,10 @@ const repaymentReducer = (state, action) => {
 };
 
 const setupRepayment = (dispatch) => async (loanId, repayData, callback) => {
-  console.log(repayData);
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
-    const response = await gypsy.post(
+    await gypsy.post(
       `/user/loan/set_pay/${loanId}`,
       repayData,
       {
@@ -36,7 +35,6 @@ const setupRepayment = (dispatch) => async (loanId, repayData, callback) => {
         },
       }
     );
-    console.log(response.data);
     if (callback) {
       await callback(loanId);
     }
@@ -44,7 +42,6 @@ const setupRepayment = (dispatch) => async (loanId, repayData, callback) => {
     dispatch({ type: "set_loading", payload: false });
   } catch (err) {
     if (err.response) {
-      console.log(err.response.data);
       const errorMessage = err.response.data.error || err.response.data.message;
       dispatch({
         type: "set_error",
@@ -59,7 +56,7 @@ const verifyRepaymentStatus = (dispatch) => async (loanId) => {
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
-    const response = await gypsy.post(
+    await gypsy.post(
       `/paystack/verify/${loanId}`,
       {},
       {
@@ -69,11 +66,9 @@ const verifyRepaymentStatus = (dispatch) => async (loanId) => {
       }
     );
 
-    console.log(response.data);
     dispatch({ type: "set_loading", payload: false });
   } catch (err) {
     if (err.response) {
-      console.log(err.response.data);
       // const errorMessage = err.response.data.error || err.response.data.message;
       // dispatch({
       //   type: "set_error",
@@ -120,7 +115,7 @@ const validateRemitaMandate = (dispatch) => async (loanId, validateData) => {
   dispatch({ type: "set_loading", payload: true });
   try {
     const token = resolveToken();
-    const response = await gypsy.post(
+    await gypsy.post(
       `/remita/mandate/validate_otp/${loanId}`,
       validateData,
       {
@@ -129,10 +124,8 @@ const validateRemitaMandate = (dispatch) => async (loanId, validateData) => {
         },
       }
     );
-    console.log(response);
     dispatch({ type: "set_loading", payload: false });
   } catch (err) {
-    console.log(err.response);
     if (err.response) {
       const errorMessage = err.response.data.error || err.response.data.message;
       dispatch({
