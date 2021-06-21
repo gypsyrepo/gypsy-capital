@@ -18,7 +18,6 @@ const FileUploadButton = ({
   const handleInputBtnChange = (e) => {
     const [file] = e.target.files;
     const { name } = file;
-    console.log(name);
     setFileName(name);
   };
 

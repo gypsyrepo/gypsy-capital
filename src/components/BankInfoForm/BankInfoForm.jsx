@@ -53,7 +53,6 @@ const BankInfoForm = ({ submitBankInfo }) => {
       const acctStatement = acctStatementRef.current.files[0];
       const validated = validateInput(bankInfo, setBankErrors);
       if (validated) {
-        // console.log('validated')
         const data = new FormData();
         data.append("bank_name", bankInfo.bankName);
         data.append("bank_account_type", bankInfo.accountType);
@@ -83,14 +82,12 @@ const BankInfoForm = ({ submitBankInfo }) => {
         (bank) => bank.name.toLowerCase() === bankInfo.bankName
       );
       const bankCode = bank.code;
-      console.log(bankCode);
       verifyBankInfo(bankInfo.accountNumber, bankCode);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bankInfo.accountNumber, bankInfo.bankName]);
 
   useEffect(() => {
-    console.log(userBankDetails);
     if (userBankDetails) {
       setBankInfo({ ...bankInfo, accountName: userBankDetails.account_name });
     }

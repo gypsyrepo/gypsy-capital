@@ -110,8 +110,6 @@ const ProfileView = () => {
     }
   }, [loans]);
 
-  console.log(remitaLoan, loans);
-
   const validateRemita = async (loanId) => {
     const validateData = {
       card: remitaData.card,

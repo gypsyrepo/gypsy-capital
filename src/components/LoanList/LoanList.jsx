@@ -41,7 +41,6 @@ const LoanList = ({ loanList, userRole }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loanList, filterInput]);
 
-  console.log(loanList);
 
   const {
     currentList,

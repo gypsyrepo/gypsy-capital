@@ -98,14 +98,12 @@ const PersonalForm = ({ submit }) => {
         (bank) => bank.name.toLowerCase() === bankInfo.bankName
       );
       const bankCode = bank.code;
-      console.log(bankCode);
       verifyBankInfo(bankInfo.accountNumber, bankCode);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bankInfo.accountNumber, bankInfo.bankName]);
 
   useEffect(() => {
-    console.log(userBankDetails);
     if (userBankDetails) {
       setBankInfo({ ...bankInfo, accountName: userBankDetails.account_name });
     }

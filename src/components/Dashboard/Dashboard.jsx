@@ -16,7 +16,6 @@ import useSearchClient from "../../hooks/useSearchClient";
 import SearchTable from "../SearchTable/SearchTable";
 
 const Dashboard = ({ children, sidebarRoutes, location }) => {
-  // console.log(location)
 
   const {
     state: { user },

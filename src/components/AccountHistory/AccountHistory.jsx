@@ -36,7 +36,6 @@ const AccountHistory = ({ history }) => {
         )}
         {history.length > 0 &&
           transactionsToShow.map((instance) => {
-            console.log(transactionsToShow);
             return (
               <div
                 className={styles.historyInstance}

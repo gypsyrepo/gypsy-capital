@@ -22,14 +22,11 @@ export default function Mono() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(monoStatus);
-
   const monoConnect = React.useMemo(() => {
     const monoInstance = new MonoConnect({
-      onClose: () => console.log("Widget closed"),
-      onLoad: () => console.log("Widget loaded successfully"),
+      // onClose: () => console.log("Widget closed"),
+      // onLoad: () => console.log("Widget loaded successfully"),
       onSuccess: ({ code }) => {
-        console.log(`Linked successfully: ${code}`);
         authenticateUser(user.user_id, code);
       },
       // key: "test_pk_4f5soJVmo31hCbKePbfo",

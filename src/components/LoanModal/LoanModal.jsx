@@ -14,9 +14,7 @@ const Calculator = ({ clientId, stage }) => {
   const { loanApply } = useContext(LoanContext);
 
   const calculateLoan = async (data) => {
-    console.log(stage);
     await loanApply(data, clientId, true);
-    console.log(stage);
   };
 
   return (
@@ -118,6 +116,7 @@ const ApplySuccess = ({ close }) => {
     setTimeout(() => {
       close();
     }, 3000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -150,10 +149,6 @@ const LoanModal = ({ openState, closeHandler, userId }) => {
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
-    console.log(stage);
-  }, [stage]);
-
-  useEffect(() => {
     if (loanApplicationStage === "calculated") {
       setStage(1);
     }
@@ -173,6 +168,7 @@ const LoanModal = ({ openState, closeHandler, userId }) => {
       toast.error(error);
       clearError();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
   const resetAndCloseModal = () => {

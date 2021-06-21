@@ -10,7 +10,6 @@ import { validateInput } from "../../utils/validateInput";
 import { toast, ToastContainer } from "react-toastify";
 
 const SendOfferForm = ({ offerLetter, clientData, loanId }) => {
-  console.log(loanId);
   const {
     state: { loading, error, message },
     sendOfferLetter,

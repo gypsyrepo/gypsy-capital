@@ -15,7 +15,6 @@ import CreditRisk from "../../assets/signatures/credit-risk.jpg";
 import Credit from "../../assets/signatures/risk.jpg";
 
 const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
-  console.log(loanData);
   const [offerFormData, setOfferFormData] = useState({
     date: "",
     fullName: "",
@@ -142,7 +141,6 @@ const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
     } else {
       toast.error("You need to fill in all necessary fields");
     }
-    console.log(validatorValues);
   };
 
   return (
@@ -666,7 +664,6 @@ const OfferLetterForm = ({ setState, loanData, saveBlob }) => {
               fileName="offerLetter.pdf"
             >
               {({ blob, url, loading, error }) => {
-                console.log(blob, url);
                 saveBlob(blob);
                 return loading
                   ? "Loading document..."

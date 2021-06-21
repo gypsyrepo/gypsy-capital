@@ -97,7 +97,6 @@ const CustomDatePicker = ({ value, changed, label, error, disable }) => {
         )}
         selected={value}
         onChange={(date) => {
-          console.log(date);
           changed(date);
         }}
         customInput={<CustomInput />}

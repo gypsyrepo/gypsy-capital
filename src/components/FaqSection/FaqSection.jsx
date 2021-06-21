@@ -39,6 +39,7 @@ const FaqSection = ({ returnNumber }) => {
     } else if (typeof returnNumber === "string" && returnNumber === "all") {
       setFaqs(faqContent);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (faqs.length === 0) {

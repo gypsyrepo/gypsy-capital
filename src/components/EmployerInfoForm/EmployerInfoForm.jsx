@@ -78,7 +78,7 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
         setOfficeAddressErrors
       );
       const officialDoc = officialFileRef.current.files[0];
-      console.log(validatedWorkInfo, validatedWorkAddress);
+
       if (validatedWorkAddress && validatedWorkInfo) {
         const data = new FormData();
         data.append("employer_name", employmentInfo.employerName);
@@ -98,7 +98,6 @@ const EmployerInfoForm = ({ submitEmployerInfo }) => {
 
         // addWorkInfoForLoan(data, user.user_id);
         submitEmployerInfo(data);
-        // console.log(true);
       }
     } else {
       toast.error(

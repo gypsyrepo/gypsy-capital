@@ -49,11 +49,8 @@ const LoanContactForm = ({ submitContact }) => {
 
   const updateContactInfo = () => {
     if (proofofAddressRef.current.files.length > 0) {
-      console.log(proofofAddressRef);
       const proofofAddress = proofofAddressRef.current.files[0];
-      console.log(proofofAddress);
       const validated = validateInput(contactAddress, setContactErrors);
-      console.log(validated);
       if (validated) {
         const data = new FormData();
         data.append("city", contactAddress.city);

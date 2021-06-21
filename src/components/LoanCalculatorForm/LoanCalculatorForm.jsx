@@ -81,7 +81,6 @@ const LoanCalculatorForm = ({ delegateApply }) => {
 
   useEffect(() => {
     if (monthlySalary && loanAmount && installmentPeriod) {
-      // console.log(typeof monthlySalary, typeof loanAmount, installmentPeriod);
       const tenor = Number(installmentPeriod.split(" ")[0]);
       let initRate = stripCommasInNumber(loanAmount);
       let toRepay = initRate + initRate * 0.04;
@@ -92,7 +91,6 @@ const LoanCalculatorForm = ({ delegateApply }) => {
       // }
       const monthlyRepay = toRepay / tenor;
       const percentDti = (loanCalcData.dti / 100).toFixed(3);
-      console.log(percentDti);
       if (monthlyRepay > percentDti * stripCommasInNumber(monthlySalary)) {
         setLimitError(
           "You are not eligible for this amount, kindly enter a lower loan amount"

@@ -74,15 +74,15 @@ const RegisterForm = ({ submit }) => {
 
   const { state: { loading } } = useContext(AuthContext);
 
-  const emptyState = {
-    firstName: null,
-    lastName: null,
-    email: null,
-    phoneNo: null,
-    password: null,
-    confirmPassword: null,
-    referralChoice: null
-  };
+  // const emptyState = {
+  //   firstName: null,
+  //   lastName: null,
+  //   email: null,
+  //   phoneNo: null,
+  //   password: null,
+  //   confirmPassword: null,
+  //   referralChoice: null
+  // };
 
   const [registerData, setRegisterData] = useState({
     firstName: '',
@@ -121,7 +121,6 @@ const RegisterForm = ({ submit }) => {
 
   const register = () => {
     const validated = validateInput(registerData, setRegisterError);
-    console.log(validated);
     if(validated) {
       submit({
         firstName,
@@ -288,7 +287,6 @@ const ModalForm = ({ openState, closeHandler }) => {
   } = useContext(UserContext);
 
   const startUserRegistration = (data) => {
-    console.log('works');
     addUserByAgent(data, getCurrentlyAddedUser);
   }
 
@@ -348,7 +346,6 @@ const ModalForm = ({ openState, closeHandler }) => {
       identity_imageUrl: null,
       identity_profilePhoto: null
     }
-    console.log(reqData);
     updatePersonalInfo(user_id, reqData, true);
   }
 
@@ -372,6 +369,7 @@ const ModalForm = ({ openState, closeHandler }) => {
       clearErrors();
     }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error])
 
   useEffect(() => {
@@ -384,6 +382,7 @@ const ModalForm = ({ openState, closeHandler }) => {
       clearErr();
     }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userError])
 
   useEffect(() => {
