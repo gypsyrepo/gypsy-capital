@@ -168,8 +168,6 @@ const AdminReports = () => {
     });
   }, [filteredList, staffList, clientList, location.pathname]);
 
-  console.log(processedLoanList);
-
   const reportTableHeaders = [
     "Loan ID",
     "Client Name",

@@ -116,7 +116,6 @@ const LoanCalculator = () => {
                       convertedToNumber,
                     } = convertInput(val);
                     if (!includesAlphabet) {
-                      console.log(val);
                       setLoanData({
                         ...loanData,
                         proposedAmount: convertedToNumber.toLocaleString(),

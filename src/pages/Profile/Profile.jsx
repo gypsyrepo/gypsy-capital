@@ -88,7 +88,6 @@ const Profile = () => {
   };
 
   const submitPersonalInfo = async (biodata, residence, kin, bank) => {
-    console.log(biodata, residence, bank, kin);
     const { altPhone, gender } = biodata;
     const { city, state, street } = residence;
     const { accountName, accountNumber, accountType, bankName } = bank;
@@ -118,7 +117,6 @@ const Profile = () => {
   };
 
   const submitIdentityInfo = async (idRef, passportRef, idType) => {
-    console.log(idRef, passportRef, idType);
     const data = new FormData();
     data.append("identification", idRef);
     data.append("passport", passportRef);

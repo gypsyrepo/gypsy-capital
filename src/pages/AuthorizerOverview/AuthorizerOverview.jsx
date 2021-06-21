@@ -82,8 +82,6 @@ const AuthorizerOverview = () => {
     return amount;
   }, [loans]);
 
-  console.log(loans);
-
   return (
     <Dashboard sidebarRoutes={authorizerRoutes} location={location}>
       <div className={styles.welcomeGroup}>

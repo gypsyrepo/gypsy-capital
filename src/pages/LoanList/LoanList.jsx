@@ -24,8 +24,6 @@ const LoanList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(loans);
-
   const location = useLocation();
   const salesRoutes = routes[1];
   const [filterInput, setFilterInput] = useState("all");
@@ -70,8 +68,6 @@ const LoanList = () => {
     setminPageNumberLimit,
     pageNumberLimit
   );
-
-  console.log(currentList);
 
   return (
     <Dashboard sidebarRoutes={salesRoutes} location={location}>

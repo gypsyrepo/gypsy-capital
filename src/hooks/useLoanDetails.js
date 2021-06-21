@@ -20,8 +20,6 @@ export default (clientId) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loans]);
 
-  console.log(clientId);
-
   useEffect(() => {
     retrieveLoan(userLoans[0]?._id);
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -57,8 +57,6 @@ const AgentOverview = () => {
     return loans.slice(0, 5);
   }, [loans]);
 
-  // console.log(loans);
-
   return (
     <Dashboard sidebarRoutes={salesRoute} location={location}>
       <div className={styles.welcomeGroup}>

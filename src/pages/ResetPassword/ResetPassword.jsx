@@ -32,11 +32,11 @@ const ResetPassword = () => {
       toast.error(error);
       clearErrors();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error])
 
   const setNewPassword = () => {
     const validated = validateInput(resetData, setFieldErrors);
-    console.log(validated);
     if(validated) {
       const data = {
         email: location.state.email,

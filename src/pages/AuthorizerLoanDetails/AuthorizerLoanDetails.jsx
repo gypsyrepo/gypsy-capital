@@ -80,7 +80,6 @@ const Disbursal = ({ loanId, disburseBank, loanData }) => {
     const bankInfo = bankList.filter(
       (bank) => bank.name.toLowerCase() === disburseBank.bank.toLowerCase()
     );
-    // console.log(bankInfo[0].code);
     const paymentData = {
       account_bank: bankInfo[0].code,
       account_number: disburseBank.accountNumber,
@@ -199,8 +198,6 @@ const AuthorizerLoanDetails = () => {
   const setActiveTab = (link) => {
     setVisibleSection(link);
   };
-
-  console.log(loanDetails);
 
   return (
     <Dashboard sidebarRoutes={authorizerRoutes} location={location}>

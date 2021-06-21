@@ -71,7 +71,6 @@ const AdminDashboard = () => {
     return loans.slice(0, 5);
   }, [loans]);
 
-  // console.log(loans);
   const repaidAmount = useMemo(() => {
     let amount = loans
       .map((loanInstance) => loanInstance?.repayment)

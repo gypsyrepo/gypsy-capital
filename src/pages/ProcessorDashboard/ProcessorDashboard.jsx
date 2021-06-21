@@ -45,10 +45,6 @@ const ProcessorDashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    console.log(clientsForRole);
-  }, [clientsForRole]);
-
   const totalDisbursedLoans = useMemo(() => {
     let total = loans
       .filter((loan) => loan.status.toLowerCase() === "approved")
@@ -71,7 +67,6 @@ const ProcessorDashboard = () => {
     return loans.slice(0, 5);
   }, [loans]);
 
-  // console.log(loans);
   const repaidAmount = useMemo(() => {
     let amount = loans
       .map((loanInstance) => loanInstance?.repayment)

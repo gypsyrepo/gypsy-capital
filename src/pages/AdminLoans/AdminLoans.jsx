@@ -24,8 +24,6 @@ const AdminLoans = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(loans);
-
   return (
     <Dashboard sidebarRoutes={adminRoutes} location={location}>
       {loading ? (

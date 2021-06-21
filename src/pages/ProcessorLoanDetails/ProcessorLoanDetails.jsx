@@ -56,7 +56,6 @@ export const MonoTab = ({ clientId }) => {
   } = useContext(MonoContext);
 
   const retrieveAccountInfo = async () => {
-    console.log(clientId);
     await getAccountInfo(clientId);
     setShowAcctInfo(true);
   };
@@ -94,10 +93,6 @@ export const MonoTab = ({ clientId }) => {
     checkMonoStatus(clientId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    console.log(statementPdf);
-  }, [statementPdf]);
 
   if (!monoStatus) {
     return <Loader />;
@@ -302,7 +297,6 @@ export const RepayPlusApprove = ({
       let repayDate;
 
       if (loanData?.determinedRepaymentDate) {
-        console.log("works");
         repayDate = moment(
           loanData?.determinedRepaymentDate,
           "DD/MM/YYYY"
@@ -488,7 +482,6 @@ export const RepayPlusApprove = ({
     }))(setupData);
 
     const validated = validateInput(fieldsforApproval, setApprovalError);
-    console.log(validated);
     if (validated) {
       if (loanData?.rePaymentAPI || setupData?.decision === "decline") {
         if (!loanData[`${mappedRole}Decision`]) {
@@ -496,7 +489,6 @@ export const RepayPlusApprove = ({
           let data;
 
           if (setupData?.decision === "approve") {
-            console.log(setupData?.totalRepayment);
             data = {
               decision: setupData?.decision,
               approved_interest: setupData?.approvedInterest,
@@ -883,8 +875,6 @@ const ProcessorLoanDetails = () => {
     retrieveLoan(loanId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log(loanDetails);
 
   return (
     <Dashboard sidebarRoutes={processorRoute} location={location}>

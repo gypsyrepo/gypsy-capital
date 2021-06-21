@@ -47,8 +47,6 @@ const AdminStaffs = () => {
     );
   }, [clientsForRole, user?.user_id]);
 
-  console.log(staffList);
-
   const goToAddNew = () => {
     history.push("/super-admin/staffs/add");
   };
@@ -83,7 +81,6 @@ const AdminStaffs = () => {
 
     const handleAddStaff = () => {
       const validated = validateInput(addData, setValidationErrors);
-      console.log(validated);
       if (validated) {
         const data = {
           email: addData.email,

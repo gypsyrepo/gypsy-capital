@@ -35,7 +35,6 @@ export const Biodata = ({ data, userId, reloadClients, userRole }) => {
     residentialAddress: "",
     bvn: "",
   });
-  console.log(data);
 
   const [residentialStatus, setResidentialStatus] = useState("");
   const [isEditing, setIsEditing] = useState(false);
@@ -101,7 +100,6 @@ export const Biodata = ({ data, userId, reloadClients, userRole }) => {
       dob: moment(biodata?.dateOfBirth).format("DD/MM/YYYY"),
     };
 
-    // console.log(updateData);
     await updateClientData(userId, updateData);
     setIsEditing(false);
   };
@@ -369,11 +367,9 @@ export const Bank = ({ data, userId }) => {
   });
 
   const [loanDeets] = useLoanDetails(userId);
-  console.log(loanDeets);
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       setDisburseBank({
         ...disburseBank,
         bankName: _.startCase(data.bankName),
@@ -656,10 +652,6 @@ export const ClientLoan = ({ userId, canApply, userRole }) => {
     return loans.filter((loan) => loan.userId === userId);
   }, [loans, userId]);
 
-  useEffect(() => {
-    console.log(loans);
-  }, [loans]);
-
   const {
     currentList,
     items,
@@ -792,13 +784,10 @@ const ClientDetails = () => {
     getClientDetails(clientId);
 
     return () => {
-      console.log("cleanup");
       clearErrors();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // console.log(userDetails)
 
   const [detailSection, setDetailSection] = useState("biodata");
 

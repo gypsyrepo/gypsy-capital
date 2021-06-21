@@ -39,11 +39,8 @@ export const BasicInfo = ({ data, userRole }) => {
     loanPurpose: "",
   });
 
-  console.log(data);
-
   useEffect(() => {
     if (data) {
-      console.log(data);
       setBasicInfo({
         ...basicInfo,
         fullName: `${_.capitalize(data.client.firstName)} ${_.capitalize(
@@ -281,7 +278,6 @@ export const RepaymentSchedule = ({ data, userRole, loanId, reloadLoan }) => {
   useEffect(() => {
     if (data) {
       const paymentPeriod = Number(data.paymentPeriod.split(" ")[0]);
-      // console.log(paymentPeriod);
       let repaymentTrack = [];
       let instance = {
         month: 1,
@@ -304,18 +300,14 @@ export const RepaymentSchedule = ({ data, userRole, loanId, reloadLoan }) => {
           loanBalance: "____",
         };
       }
-      console.log(repaymentTrack);
       if (data.payments.length === 0) {
         setRepaymentArr(repaymentTrack);
       } else {
-        console.log(data);
-        // console.log(data?.payments)
         setRepaymentArr(data?.payments);
       }
     }
   }, [data]);
 
-  console.log(repaymentArr);
 
   const goToManualRepaymentForm = (repayId) => {
     setManualPayStatus(true);
@@ -333,9 +325,7 @@ export const RepaymentSchedule = ({ data, userRole, loanId, reloadLoan }) => {
           "datePayed",
           moment(manualRepayData.dateofPayment).format("DD/MM/YYYY")
         );
-        console.log(proof);
         data.append("image", proof);
-        // console.log(data);
         manualPayment(repayScheduleId, data);
       } else {
         toast.error(

@@ -50,8 +50,6 @@ const ClientListPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientsForRole]);
 
-  console.log(salesClients);
-
   const {
     currentList,
     items,

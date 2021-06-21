@@ -45,9 +45,7 @@ const SignIn = () => {
   );
 
   const handleSubmit = () => {
-    // console.log(signinValues);
     const validated = validateInput(signinValues, setSigninErrors);
-    // console.log(validated);
     if (validated) {
       signinAndNavigate(loginUser);
     }

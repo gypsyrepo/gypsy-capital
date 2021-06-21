@@ -26,7 +26,5 @@ export default (searchedTerm) => {
     });
   }, [searchedTerm, staffList]);
 
-  console.log(searchResult);
-
   return [searchResult];
 };

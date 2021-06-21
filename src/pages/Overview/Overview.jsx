@@ -41,13 +41,8 @@ const Overview = () => {
     const statusToDisplay = loans.filter(
       (loan) => loan.status.toLowerCase() === "pending" || "active"
     );
-    console.log(statusToDisplay[0]);
     setActiveLoan(statusToDisplay[0]);
   }, [loans]);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

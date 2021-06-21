@@ -1,6 +1,4 @@
-import { Modal } from 'bootstrap';
 import React from 'react';
-import styles from './ModalCalculator.module.scss';
 import { Modal } from 'react-bootstrap';
 
 

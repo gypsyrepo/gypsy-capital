@@ -96,8 +96,6 @@ const ConsumerCredit = () => {
     }
   };
 
-  // console.log(error);
-
   return (
     <>
       <Dashboard sidebarRoutes={clientRoutes} location={location}>

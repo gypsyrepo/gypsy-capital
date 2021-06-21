@@ -79,10 +79,7 @@ const DocCard = ({ docTitle, docLink, type, loading }) => {
 };
 
 export const DocTab = ({ userId }) => {
-  console.log(userId);
   const [loanDeets, loading] = useLoanDetails(userId);
-
-  console.log(loanDeets);
 
   return (
     <>
@@ -128,7 +125,6 @@ const ProcessorClientDetails = () => {
   const location = useLocation();
   const processorRoute = routes[2];
   const { clientId } = useParams();
-  console.log(clientId);
 
   const {
     state: { userDetails, loading },
@@ -142,8 +138,6 @@ const ProcessorClientDetails = () => {
     getClientDetails(clientId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log(userDetails);
 
   const [detailSection, setDetailSection] = useState("biodata");
 
