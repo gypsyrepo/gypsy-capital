@@ -21,6 +21,7 @@ import ProcessorDashboard from './ProcessorDashboard/ProcessorDashboard';
 import ProcessorClients from './ProcessorClients/ProcessorClients';
 import ProcessorLoans from './ProcessorLoans/ProcessorLoans';
 import ForgotPassword from './ForgotPassword/ForgotPassword';
+import Registration from './Registration/Registration';
 import ResetPassword from './ResetPassword/ResetPassword';
 import ResetSuccess from './ResetSuccess/ResetSuccess';
 import ProcessorClientDetails from './ProcessorClientDetails/ProcessorClientDetails';
@@ -62,6 +63,7 @@ export {
   ProcessorClients,
   ProcessorLoans,
   ForgotPassword,
+  Registration,
   ResetPassword,
   ResetSuccess,
   ProcessorClientDetails,

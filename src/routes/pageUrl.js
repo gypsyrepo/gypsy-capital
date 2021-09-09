@@ -25,6 +25,7 @@ const PROCESSORS_LOANS_PAGE = '/processor/loans';
 const FORGOT_PASSWORD_PAGE = '/password/email';
 const RESET_PASSWORD_PAGE = '/password/reset';
 const RESET_SUCCESS_PAGE = '/password/reset-success';
+const REGISTRATION = '/registration';
 const PROCESSORS_CLIENT_DETAILS = '/processor/client/:clientId';
 const PROCESSORS_LOAN_DETAILS = '/processor/loan/:loanId';
 const AUTHORIZER_OVERVIEW = '/authorizer/overview';
@@ -68,6 +69,7 @@ const pageUrl = {
     FORGOT_PASSWORD_PAGE,
     RESET_PASSWORD_PAGE,
     RESET_SUCCESS_PAGE,
+    REGISTRATION,
     PROCESSORS_CLIENT_DETAILS,
     PROCESSORS_LOAN_DETAILS,
     AUTHORIZER_OVERVIEW,

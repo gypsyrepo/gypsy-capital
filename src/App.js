@@ -27,6 +27,7 @@ import {
   ForgotPassword,
   ResetPassword,
   ResetSuccess,
+  Registration,
   ProcessorClientDetails,
   ProcessorLoanDetails,
   AuthorizerOverview,
@@ -97,6 +98,9 @@ const RouteManager = () => {
           </Route>
           <Route exact path={pageUrl.RESET_SUCCESS_PAGE}>
             <ResetSuccess />
+          </Route>
+          <Route exact path={pageUrl.REGISTRATION}>
+            <Registration />
           </Route>
           <ProtectedRoute path={pageUrl.PROFILE_PAGE} component={Profile} />
           <ProtectedRoute
