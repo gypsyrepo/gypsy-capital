@@ -1,3 +1,4 @@
+import Registration from './Registration/Registration';
 import SignUp from './SignUp/SignUp';
 import SignIn from './SignIn/SignIn';
 import Profile from './Profile/Profile';
@@ -39,6 +40,7 @@ import AdminLoanDetails from './AdminLoanDetails/AdminLoanDetails';
 import AdminClientDetails from './AdminClientDetails/AdminClientDetails';
 
 export {
+  Registration,
   SignUp,
   SignIn,
   Profile,

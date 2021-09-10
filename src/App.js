@@ -2,6 +2,7 @@ import "./App.scss";
 import { Router, Switch, Route } from "react-router-dom";
 import pageUrl from "./routes/pageUrl";
 import {
+  Registration,
   SignUp,
   SignIn,
   Profile,
@@ -91,6 +92,9 @@ const RouteManager = () => {
           </Route>
           <Route exact path={pageUrl.FORGOT_PASSWORD_PAGE}>
             <ForgotPassword />
+          </Route>
+          <Route exact path={pageUrl.REGISTRATION}>
+            <Registration />
           </Route>
           <Route exact path={pageUrl.RESET_PASSWORD_PAGE}>
             <ResetPassword />

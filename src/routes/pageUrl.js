@@ -39,6 +39,7 @@ const ADMIN_CLIENT_DETAILS = '/super-admin/client/:clientId';
 const ADMIN_LOAN_DETAILS = '/super-admin/loan/:loanId';
 const ADMIN_STAFF = '/super-admin/staffs';
 const ADMIN_REPORTS = '/super-admin/reports';
+const REGISTRATION = '/registration';
 
 const pageUrl = {
     HOMEPAGE,
@@ -81,7 +82,8 @@ const pageUrl = {
     ADMIN_CLIENT_DETAILS,
     ADMIN_LOAN_DETAILS,
     ADMIN_STAFF,
-    ADMIN_REPORTS
+    ADMIN_REPORTS,
+    REGISTRATION,
 }
 
 export default pageUrl;
