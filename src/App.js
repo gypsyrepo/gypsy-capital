@@ -63,7 +63,7 @@ const RouteManager = () => {
     <div className="App">
       <Router history={history}>
         <Switch>
-          {/* <Route exact path={pageUrl.HOMEPAGE}>
+          <Route exact path={pageUrl.HOMEPAGE}>
             <HomePage />
           </Route>
           <Route path={pageUrl.PRODUCTS_PAGE}>
@@ -101,7 +101,7 @@ const RouteManager = () => {
           </Route>
           <Route exact path={pageUrl.RESET_SUCCESS_PAGE}>
             <ResetSuccess />
-          </Route> */}
+          </Route>
           <ProtectedRoute path={pageUrl.PROFILE_PAGE} component={Profile} />
           <ProtectedRoute
             exact
