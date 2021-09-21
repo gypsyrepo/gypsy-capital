@@ -2,8 +2,8 @@ import "./App.scss";
 import { Router, Switch, Route } from "react-router-dom";
 import pageUrl from "./routes/pageUrl";
 import {
-  Registration,
   SignUp,
+  Registration,
   SignIn,
   Profile,
   CreditReport,

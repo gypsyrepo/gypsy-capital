@@ -1,6 +1,7 @@
 const HOMEPAGE = '/';
 const SIGNUP_PAGE = '/signup';
 const SIGNIN_PAGE = '/signin';
+const REGISTRATION = '/registration';
 const TERMS_CONDITIONS_PAGE='/terms-conditions';
 const PRIVACY_POLICY_PAGE='/privacy';
 const PROFILE_PAGE='/dashboard/profile';
@@ -39,11 +40,11 @@ const ADMIN_CLIENT_DETAILS = '/super-admin/client/:clientId';
 const ADMIN_LOAN_DETAILS = '/super-admin/loan/:loanId';
 const ADMIN_STAFF = '/super-admin/staffs';
 const ADMIN_REPORTS = '/super-admin/reports';
-const REGISTRATION = '/registration';
 
 const pageUrl = {
     HOMEPAGE,
     SIGNUP_PAGE,
+    REGISTRATION,
     SIGNIN_PAGE,
     TERMS_CONDITIONS_PAGE,
     PRIVACY_POLICY_PAGE,
@@ -83,7 +84,6 @@ const pageUrl = {
     ADMIN_LOAN_DETAILS,
     ADMIN_STAFF,
     ADMIN_REPORTS,
-    REGISTRATION,
 }
 
 export default pageUrl;
