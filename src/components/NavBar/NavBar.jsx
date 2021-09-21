@@ -55,6 +55,12 @@ const NavBar = () => {
               Contact Us
             </Link>
           </li>
+          <li>
+            <Link
+              to={pageUrl.REGISTRATION}>
+              Our Campaign
+            </Link>
+          </li>
         </ul>
         <ul className={styles.authNav}>
           <li>
@@ -94,6 +100,9 @@ const NavBar = () => {
         </Link>
         <Link style={{ opacity: menuOpen ? 1 : 0 }} to={pageUrl.CONTACT_PAGE}>
           Contact Us
+        </Link>
+        <Link style={{ opacity: menuOpen ? 1 : 0 }} to={pageUrl.REGISTRATION}>
+          Our Campaign
         </Link>
         <Link style={{ opacity: menuOpen ? 1 : 0 }} to={pageUrl.SIGNIN_PAGE}>
           Log In
