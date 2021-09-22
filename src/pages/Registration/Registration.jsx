@@ -19,6 +19,7 @@ const Registration = () => {
     clearErrors,
   } = useContext(AuthContext);
   const [subResponse, setSubResponse] = useState(null);
+  const [loader, setLoader] = useState(false);
 
   const [signUpValues, setSignUpvalues] = useState({
     firstName: "",
@@ -92,14 +93,14 @@ const Registration = () => {
     }
   };
 
-  const config = {
-    cors: 'https://cors-anywhere.herokuapp.com/', // <optional> doesn't display the cors error
-    formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLScUkvIcS0dTKKZ665T_DrumgM2TbFbOjH_88WyUdh8xEr7rxw/formResponse' 
-  };
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e){
     const validated = validateInput();
     const formData = new FormData();
+    const config = {
+      cors: 'https://cors-anywhere.herokuapp.com/', // <optional> doesn't display the cors error
+      formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdLy8ljwQm72Us9fTxS0hBd4pDkxowZ2wtCrRm1nTXV7avtTA/formResponse' 
+    };
     formData.append(`entry.238633926`, signUpValues.firstName.trim());
     formData.append(`entry.2068799774`, signUpValues.lastName.trim());
     formData.append(`entry.1111797926`, signUpValues.middleName.trim());
@@ -114,7 +115,8 @@ const Registration = () => {
     if (validated) {
       e.preventDefault()
       let response;
-      axios({
+      setLoader(true);
+      await axios({
         url: `${config.cors}${config.formUrl}`,
         method: 'post',
         data: formData,
@@ -123,10 +125,14 @@ const Registration = () => {
         // dataType: 'jsonp',
       })
       .then(() => {
-        console.log('response', response);
+        setSubResponse("You have successfully indicated your interest in a facility with Gypsy Capital. We will contact you as soon as possible if you are eligible.\n\nYou can reach on using the following:\nEmail: hello@gypsycapital.com\nPhone: tel:+2348099907888\nWhatsApp: wa.me/+2349041444888\n\nThank you.");
+        setLoader(false);
+        // console.log('response', response);
       })
       .catch(err => {
-        console.log('err', err);
+        // console.log('err', err);
+        setSubResponse("You have successfully indicated your interest in a facility with Gypsy Capital. We will contact you as soon as possible if you are eligible.\n\nYou can reach on using the following:\nEmail: hello@gypsycapital.com\nPhone: tel:+2348099907888\nWhatsApp: wa.me/+2349041444888\n\nThank you.");
+        setLoader(false);
       })
     }
   };
@@ -332,16 +338,17 @@ const Registration = () => {
             </Col>
           </Row>
           <Button
-            className={loading ? [styles.loadingBtn, "mt-5"].join(" ") : "mt-5"}
+            className={loader ? [styles.loadingBtn, "mt-5"].join(" ") : "mt-5"}
             fullWidth
             clicked={handleSubmit}
             bgColor="#741763"
             size="lg"
             color="#EBEBEB"
-            disabled={loading}
-            loading={loading}>
+            disabled={loader}
+            loading={loader}>
             Apply Now
           </Button>
+          {subResponse && <div className="text-success">{subResponse}</div>}
           <p className={styles.legalLink}>
             By continuing, you agree to our{" "}
             <Link to={pageUrl.TERMS_CONDITIONS_PAGE}>Terms and Conditions</Link>{" "}

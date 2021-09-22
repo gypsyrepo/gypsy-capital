@@ -1,5 +1,5 @@
 import "./App.scss";
-import { BrowserRouter ,Router, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route } from "react-router-dom";
 import pageUrl from "./routes/pageUrl";
 import {
   SignUp,
@@ -61,8 +61,7 @@ import AdminRoute from "./routes/protectedroute/AdminRoute";
 const RouteManager = () => {
   return (
     <div className="App">
-      {/* <Router history={history}> */}
-      <BrowserRouter>
+      <Router history={history}>
         <Switch>
           <Route exact path={pageUrl.HOMEPAGE}>
             <HomePage />
@@ -205,8 +204,7 @@ const RouteManager = () => {
             component={AdminClientDetails}
           />
         </Switch>
-      {/* </Router> */}
-      </BrowserRouter>
+      </Router>
     </div>
   );
 };
